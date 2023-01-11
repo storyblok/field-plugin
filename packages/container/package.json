@@ -1,0 +1,26 @@
+{
+  "name": "container",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@emotion/react": "*",
+    "@emotion/styled": "*",
+    "@fontsource/roboto": "*",
+    "@mui/material": "*",
+    "@storyblok/field-plugin": "workspace:*",
+    "@storyblok/mui": "0.0.18-alpha",
+    "highlight.js": "11.7.0",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@types/react-dom": "*",
+    "@vitejs/plugin-react": "*"
+  }
+}

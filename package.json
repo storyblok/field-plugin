@@ -1,0 +1,54 @@
+{
+  "name": "field-plugin",
+  "version": "0.0.0",
+  "description": "SDK for creating Field Plugins for Storyblok.",
+  "author": {
+    "name": "Storyblok",
+    "email": "it@storyblok.com",
+    "url": "https://www.storyblok.com/"
+  },
+  "private": true,
+  "license": "UNLICENSED",
+  "contributors": [
+    {
+      "name": "Johannes Lindgren",
+      "email": "johannes.lindgren@storyblok.com",
+      "url": "https://www.storyblok.com/"
+    },
+    {
+      "name": "Bibiana Sebestianova",
+      "email": "bibiana.sebestianova@storyblok.com",
+      "url": "https://www.storyblok.com/"
+    }
+  ],
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "yarn": "^3.2.4"
+  },
+  "packageManager": "yarn@3.2.4",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "yarn workspaces foreach run build",
+    "test": "yarn workspaces foreach run test",
+    "check types": "yarn workspaces foreach check-types",
+    "lint": "eslint .",
+    "dev:container": "yarn workspace container run dev",
+    "dev:demo": "yarn workspace demo run dev"
+  },
+  "devDependencies": {
+    "@emotion/react": "11.10.5",
+    "@emotion/styled": "11.10.5",
+    "@fontsource/roboto": "4.5.8",
+    "@mui/material": "5.11.0",
+    "@storyblok/mui": "0.0.18-alpha",
+    "@types/node": "18.11.18",
+    "@types/react-dom": "18.0.10",
+    "@vitejs/plugin-react": "^3.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "4.9.4",
+    "vite": "3.2.3"
+  }
+}

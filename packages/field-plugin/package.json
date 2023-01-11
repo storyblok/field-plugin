@@ -1,0 +1,26 @@
+{
+  "name": "@storyblok/field-plugin",
+  "version": "0.1-alpha",
+  "description": "SDK for creating Field Plugins for Storyblok.",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/field-plugin.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/field-plugin.js",
+      "require": "./dist/field-plugin.umd.js"
+    }
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "build": "vite build && tsc --declaration --emitDeclarationOnly"
+  },
+  "devDependencies": {
+    "@types/node": "*",
+    "vite": "*"
+  }
+}
