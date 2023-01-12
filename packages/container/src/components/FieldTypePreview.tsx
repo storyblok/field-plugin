@@ -8,7 +8,7 @@ const Iframe = forwardRef<
     height: string
     isModal: boolean
   }
->((props, ref) => {
+>(function Iframe(props, ref) {
   return (
     <Box
       component="iframe"
@@ -90,7 +90,7 @@ export const FieldTypePreview = forwardRef<
     height: string
     isModal: boolean
   }
->((props, ref) => {
+>(function FieldTypePreview(props, ref) {
   return (
     <>
       <Backdrop

@@ -13,7 +13,8 @@ export type MessageToPlugin = {
   language: string
   spaceId: number | null
   story: unknown
-  storyId: number | undefined  // TODO sometimes string?
+  // TODO sometimes string?
+  storyId: number | undefined
   blockId: number | undefined
   token: string | null
   // Related to the field type itself

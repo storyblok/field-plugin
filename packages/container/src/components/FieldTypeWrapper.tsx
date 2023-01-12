@@ -66,7 +66,6 @@ export const FieldTypeWrapper: FunctionComponent = () => {
     () => ({
       model: value,
       schema: schema,
-      // TODO:
       action: 'loaded',
       uid: uid,
       blockId: undefined,
@@ -79,7 +78,6 @@ export const FieldTypeWrapper: FunctionComponent = () => {
     [value, schema],
   )
 
-  // TODO bundle in a hook
   const dispatchLoaded = useCallback(
     (loadedData: MessageToPlugin) => {
       fieldTypeIframe.current?.contentWindow?.postMessage(
@@ -87,7 +85,7 @@ export const FieldTypeWrapper: FunctionComponent = () => {
         iframeOrigin,
       )
     },
-    [fieldTypeIframe.current, iframeOrigin, loadedData],
+    [iframeOrigin],
   )
   // Sync field type with the state
   // Unfortunately, it is not possible to sync isModal or height this way
@@ -119,7 +117,7 @@ export const FieldTypeWrapper: FunctionComponent = () => {
           window,
         },
       ),
-    [uid, iframeOrigin, onLoaded, setValue, setHeight, setModal],
+    [iframeOrigin, onLoaded, setValue, setHeight, setModal, onGetContext],
   )
 
   return (

@@ -6,7 +6,8 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
-      name: 'index', // TODO why does the name become "field-plugin"?
+      // TODO why does the name become the package.json > name anyways?
+      name: 'index',
     },
   },
 })
