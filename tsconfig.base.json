@@ -2,14 +2,15 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
     "moduleResolution": "Node",
     "useDefineForClassFields": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
     "baseUrl": ".",
+    "outDir": "dist",
     //    Code correctness; affects behaviour of code
     "allowUnreachableCode": false,
     "alwaysStrict": true,
@@ -25,4 +26,12 @@
     "useUnknownInCatchVariables": true,
     "allowJs": false
   },
+  "exclude": [
+    "node_modules",
+    "packages/*/node_modules",
+  ],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
