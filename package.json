@@ -33,7 +33,7 @@
   "scripts": {
     "build": "yarn workspaces foreach run build",
     "test": "jest",
-    "check:types": "yarn workspaces foreach run check-types",
+    "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
     "dev:container": "yarn workspace container run dev",
     "dev:demo": "yarn workspace demo run dev"
