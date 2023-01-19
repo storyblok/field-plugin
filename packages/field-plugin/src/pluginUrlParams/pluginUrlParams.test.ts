@@ -1,5 +1,6 @@
 import { pluginUrlParamsFromUrl } from './pluginUrlParamsFromUrl'
 
+// TODO new tests with template
 const template = {
   uid: '123',
   protocol: 'http:',

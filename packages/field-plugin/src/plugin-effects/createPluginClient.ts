@@ -34,6 +34,7 @@ export const createPluginClient: CreatePluginClient = (onUpdateState) => {
   //  Because the container doesn't send the full state in its messages, we need to track it ourselves.
   //  isModal and height is not included in the messages to the children and must thus be tracked here.
   //  In future improved versions of the plugin API, this should not be needed.
+  // eslint-disable-next-line functional/no-let
   let state: PluginState = defaultState
   const onMessage: OnMessageToPlugin = (data) => {
     state = {
