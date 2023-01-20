@@ -1,5 +1,5 @@
-import { red } from "kleur/colors";
-import { loadEnvironmentVariables } from "../utils";
+import { red } from 'kleur/colors';
+import { loadEnvironmentVariables } from '../utils';
 
 export type FieldType = { id: number; name: string; body: string };
 
@@ -7,23 +7,23 @@ const getDefaultHeaders = () => {
   loadEnvironmentVariables();
 
   return {
-    Authorization: process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN ?? "",
-    "Content-Type": "application/json",
+    Authorization: process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN ?? '',
+    'Content-Type': 'application/json',
   };
 };
 
 const handleError = (error?: string) => {
   if (error) {
-    if (error === "Unauthorized") {
+    if (error === 'Unauthorized') {
       console.log(
-        red("[ERROR]"),
-        "The environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` is missing or wrong."
+        red('[ERROR]'),
+        'The environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` is missing or wrong.',
       );
       console.log(
-        "Create .env file at the root of this repository and configure the variable."
+        'Create .env file at the root of this repository and configure the variable.',
       );
     } else {
-      console.log(red("[ERROR]"), "Failed to fetch field types.");
+      console.log(red('[ERROR]'), 'Failed to fetch field types.');
       console.log(`  > ${error}`);
     }
     process.exit(1);
@@ -31,13 +31,13 @@ const handleError = (error?: string) => {
 };
 
 export const fetchFieldTypes = async (page = 1) => {
-  const fetch = (await import("node-fetch")).default;
+  const fetch = (await import('node-fetch')).default;
   const response = await fetch(
     `https://mapi.storyblok.com/v1/field_types/?page=${page}`,
     {
-      method: "GET",
+      method: 'GET',
       headers: getDefaultHeaders(),
-    }
+    },
   );
   const json = (await response.json()) as {
     error?: string;
@@ -71,19 +71,19 @@ export const updateFieldType: UpdateFieldTypeFunc = async ({
   id,
   field_type,
 }) => {
-  const fetch = (await import("node-fetch")).default;
+  const fetch = (await import('node-fetch')).default;
   const response = await fetch(
     `https://mapi.storyblok.com/v1/field_types/${id}`,
     {
-      method: "PUT",
+      method: 'PUT',
       headers: getDefaultHeaders(),
       body: JSON.stringify({
         field_type,
       }),
-    }
+    },
   );
   if (!response.ok) {
-    console.log(red("[ERROR]"), "Failed to update the field-type.");
+    console.log(red('[ERROR]'), 'Failed to update the field-type.');
     console.log(`  > status: ${response.status}`);
     console.log(`  > statusText: ${response.statusText}`);
   }
@@ -91,9 +91,9 @@ export const updateFieldType: UpdateFieldTypeFunc = async ({
 };
 
 export const createFieldType = async (name: string) => {
-  const fetch = (await import("node-fetch")).default;
+  const fetch = (await import('node-fetch')).default;
   const response = await fetch(`https://mapi.storyblok.com/v1/field_types/`, {
-    method: "POST",
+    method: 'POST',
     headers: getDefaultHeaders(),
     body: JSON.stringify({
       field_type: {
