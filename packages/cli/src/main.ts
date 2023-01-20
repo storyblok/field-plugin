@@ -1,5 +1,5 @@
 import { generate, TEMPLATES } from './generate'
-import { deploy } from './deploy'
+import { deploy, type DeployArgs } from './deploy'
 import { newProject } from './newProject'
 import { Command } from 'commander'
 
@@ -24,7 +24,7 @@ export const main = () => {
         name?: string
         skipPrompts?: boolean
       }>()
-      await deploy({ fieldPluginName: name, skipPrompts })
+      await deploy({ fieldPluginName: name, skipPrompts } as DeployArgs)
     })
 
   const templateOptions = TEMPLATES.map(

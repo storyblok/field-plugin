@@ -12,10 +12,15 @@ import {
 } from './field_types'
 import { loadEnvironmentVariables } from './utils'
 
-export type DeployArgs = {
-  fieldPluginName?: string
-  skipPrompts?: boolean
-}
+export type DeployArgs =
+  | {
+      fieldPluginName?: string
+      skipPrompts?: false
+    }
+  | {
+      fieldPluginName: string
+      skipPrompts: true
+    }
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
 
