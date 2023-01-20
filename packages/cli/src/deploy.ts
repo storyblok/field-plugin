@@ -1,51 +1,51 @@
-import { existsSync, readFileSync, lstatSync } from 'fs'
-import { bold, cyan, red, yellow, green } from 'kleur/colors'
-import { basename, resolve } from 'path'
-import prompts from 'prompts'
-import walk from 'walkdir'
-import { FIELD_PLUGINS_PATH, REPO_ROOT_DIR } from './const'
+import { existsSync, readFileSync, lstatSync } from "fs";
+import { bold, cyan, red, yellow, green } from "kleur/colors";
+import { basename, resolve } from "path";
+import prompts from "prompts";
+import walk from "walkdir";
+import { FIELD_PLUGINS_PATH, REPO_ROOT_DIR } from "./const";
 import {
   createFieldType,
   fetchAllFieldTypes,
   updateFieldType,
   type FieldType,
-} from './field_types'
-import { loadEnvironmentVariables } from './utils'
+} from "./field_types";
+import { loadEnvironmentVariables } from "./utils";
 
 export type DeployArgs =
   | {
-      fieldPluginName?: string
-      skipPrompts?: false
+      fieldPluginName?: string;
+      skipPrompts?: false;
     }
   | {
-      fieldPluginName: string
-      skipPrompts: true
-    }
+      fieldPluginName: string;
+      skipPrompts: true;
+    };
 
-type DeployFunc = (args: DeployArgs) => Promise<void>
+type DeployFunc = (args: DeployArgs) => Promise<void>;
 
 export const validateDeployOptions = ({
   fieldPluginName,
   skipPrompts,
 }: DeployArgs) => {
   if (skipPrompts && !fieldPluginName) {
-    console.log(red('[ERROR]'), 'Cannot skip prompts without name.\n')
-    console.log('Use --name option to define a plugin name!')
-    process.exit(1)
+    console.log(red("[ERROR]"), "Cannot skip prompts without name.\n");
+    console.log("Use --name option to define a plugin name!");
+    process.exit(1);
   }
-}
+};
 
 type UpdateExistingFieldPluginFunc = (args: {
-  fieldType: FieldType
-  skipPrompts?: boolean
-  packageName: string
-  output: string
-}) => Promise<boolean>
+  fieldType: FieldType;
+  skipPrompts?: boolean;
+  packageName: string;
+  output: string;
+}) => Promise<boolean>;
 
 type CreateNewFieldPluginFunc = (args: {
-  packageName: string
-  output: string
-}) => Promise<boolean>
+  packageName: string;
+  output: string;
+}) => Promise<boolean>;
 
 const updateExistingFieldPlugin: UpdateExistingFieldPluginFunc = async ({
   fieldType,
@@ -53,25 +53,25 @@ const updateExistingFieldPlugin: UpdateExistingFieldPluginFunc = async ({
   packageName,
   output,
 }) => {
-  console.log(bold(cyan('[info] Found a matching field type.')))
+  console.log(bold(cyan("[info] Found a matching field type.")));
 
-  const mode = skipPrompts ? 'update' : await selectUpsertMode()
+  const mode = skipPrompts ? "update" : await selectUpsertMode();
 
-  if (mode === 'create') {
+  if (mode === "create") {
     const packageJsonPath = resolve(
       REPO_ROOT_DIR,
       FIELD_PLUGINS_PATH,
       packageName,
-      'package.json',
-    )
+      "package.json"
+    );
     console.log(
-      bold(red('[ERROR]')),
-      'You cannot create a new field type because the same name already exists.',
-    )
-    console.log('You must rename the one in this repository first.')
-    console.log(`  Rename \`name\` value at the following file:`)
-    console.log(`  > ${packageJsonPath}`)
-    process.exit(1)
+      bold(red("[ERROR]")),
+      "You cannot create a new field type because the same name already exists."
+    );
+    console.log("You must rename the one in this repository first.");
+    console.log(`  Rename \`name\` value at the following file:`);
+    console.log(`  > ${packageJsonPath}`);
+    process.exit(1);
   }
 
   return await updateFieldType({
@@ -79,8 +79,8 @@ const updateExistingFieldPlugin: UpdateExistingFieldPluginFunc = async ({
     field_type: {
       body: output,
     },
-  })
-}
+  });
+};
 
 const createNewFieldPlugin: CreateNewFieldPluginFunc = async ({
   packageName,
@@ -89,77 +89,78 @@ const createNewFieldPlugin: CreateNewFieldPluginFunc = async ({
   console.log(
     bold(
       cyan(
-        '[info] A matching field type is not found. So, we are creating a new field type on Storyblok.',
-      ),
-    ),
-  )
+        "[info] A matching field type is not found. So, we are creating a new field type on Storyblok."
+      )
+    )
+  );
 
-  const fieldType = await createFieldType(packageName)
+  const fieldType = await createFieldType(packageName);
   return await updateFieldType({
     id: fieldType.id,
     field_type: {
       body: output,
     },
-  })
-}
+  });
+};
 
 export const deploy: DeployFunc = async ({ fieldPluginName, skipPrompts }) => {
-  console.log(bold(cyan('\nWelcome!')))
-  console.log("Let's deploy a field-plugin.\n")
+  console.log(bold(cyan("\nWelcome!")));
+  console.log("Let's deploy a field-plugin.\n");
 
-  loadEnvironmentVariables()
+  loadEnvironmentVariables();
   if (!process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN) {
     console.log(
-      red('[ERROR]'),
-      'Cannot find an environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`.',
-    )
+      red("[ERROR]"),
+      "Cannot find an environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`."
+    );
     console.log(
-      'Create .env file at the root of this repository and configure the variable.',
-    )
-    process.exit(1)
+      "Create .env file at the root of this repository and configure the variable."
+    );
+    process.exit(1);
   }
 
-  const packageName = getPackageName(fieldPluginName) ?? (await selectPackage())
+  const packageName =
+    getPackageName(fieldPluginName) ?? (await selectPackage());
 
-  console.log(bold(cyan(`[info] Building \`${packageName}\`...`)))
-  const { execaCommandSync } = await import('execa')
+  console.log(bold(cyan(`[info] Building \`${packageName}\`...`)));
+  const { execaCommandSync } = await import("execa");
 
   try {
     console.log(
       execaCommandSync(`yarn build ${packageName}`, {
         cwd: REPO_ROOT_DIR,
-      }).stdout,
-    )
-    console.log('')
+      }).stdout
+    );
+    console.log("");
   } catch (err) {
-    console.log((err as Error).message)
-    console.log(red('[ERROR]'), 'Build failed.')
-    process.exit(1)
+    console.log((err as Error).message);
+    console.log(red("[ERROR]"), "Build failed.");
+    process.exit(1);
   }
 
   const outputPath = resolve(
     REPO_ROOT_DIR,
     FIELD_PLUGINS_PATH,
     packageName,
-    'dist',
-    'index.js',
-  )
+    "dist",
+    "index.js"
+  );
   if (!existsSync(outputPath)) {
     console.log(
-      red('[ERROR]'),
-      'The build output is not found at the following path:',
-    )
-    console.log(`  > ${outputPath}`)
-    process.exit(1)
+      red("[ERROR]"),
+      "The build output is not found at the following path:"
+    );
+    console.log(`  > ${outputPath}`);
+    process.exit(1);
   }
-  const output = readFileSync(outputPath).toString()
+  const output = readFileSync(outputPath).toString();
 
-  console.log(bold(cyan('[info] Fetching field plugnis...')))
-  const fieldTypes = await fetchAllFieldTypes()
+  console.log(bold(cyan("[info] Fetching field plugnis...")));
+  const fieldTypes = await fetchAllFieldTypes();
 
   const matchingFieldType = fieldTypes.find(
-    (fieldType) => fieldType.name === packageName,
-  )
+    (fieldType) => fieldType.name === packageName
+  );
 
   const result = matchingFieldType
     ? await updateExistingFieldPlugin({
@@ -171,125 +172,125 @@ export const deploy: DeployFunc = async ({ fieldPluginName, skipPrompts }) => {
     : await createNewFieldPlugin({
         packageName,
         output,
-      })
+      });
 
   if (result) {
     console.log(
-      bold(green('[SUCCESS]')),
-      'The field-type is deployed successfully.',
-    )
+      bold(green("[SUCCESS]")),
+      "The field-type is deployed successfully."
+    );
   } else {
-    console.log(red('[ERROR]'), 'Failed to deploy the field-type.')
+    console.log(red("[ERROR]"), "Failed to deploy the field-type.");
   }
-}
+};
 
 const getPackageName = (fieldPluginName?: string): string | undefined => {
   if (!fieldPluginName) {
-    return
+    return;
   }
 
-  const path = resolve(REPO_ROOT_DIR, FIELD_PLUGINS_PATH, fieldPluginName)
+  const path = resolve(REPO_ROOT_DIR, FIELD_PLUGINS_PATH, fieldPluginName);
 
   if (!lstatSync(path).isDirectory()) {
-    return
+    return;
   }
 
   if (!isBuildable(path)) {
-    return
+    return;
   }
 
-  return fieldPluginName
-}
+  return fieldPluginName;
+};
 
 const selectPackage = async () => {
-  const packages: string[] = []
+  const packages: string[] = [];
   walk.sync(
     resolve(REPO_ROOT_DIR, FIELD_PLUGINS_PATH),
     { max_depth: 1 },
     (path, stat) => {
       if (!stat.isDirectory()) {
-        return
+        return;
       }
 
       if (!isBuildable(path)) {
-        return
+        return;
       }
       // eslint-disable-next-line functional/immutable-data
-      packages.push(path)
-    },
-  )
+      packages.push(path);
+    }
+  );
 
   const { packageName } = (await prompts(
     [
       {
-        type: 'select',
-        name: 'packageName',
-        message: 'Which field-type?',
+        type: "select",
+        name: "packageName",
+        message: "Which field-type?",
         choices: packages.map((path) => {
-          const packageName = basename(path)
+          const packageName = basename(path);
           return {
             title: packageName,
             value: packageName,
-          }
+          };
         }),
       },
     ],
     {
       onCancel: () => {
-        process.exit(1)
+        process.exit(1);
       },
-    },
-  )) as { packageName: string }
+    }
+  )) as { packageName: string };
 
-  return packageName
-}
+  return packageName;
+};
 
 const selectUpsertMode = async () => {
   const { mode } = (await prompts([
     {
-      type: 'select',
-      name: 'mode',
-      message: 'Update the existing field type?',
+      type: "select",
+      name: "mode",
+      message: "Update the existing field type?",
       choices: [
         {
-          title: 'Yes, update it.',
-          value: 'update',
+          title: "Yes, update it.",
+          value: "update",
         },
         {
-          title: 'No, create a new one.',
-          value: 'create',
+          title: "No, create a new one.",
+          value: "create",
         },
       ],
     },
-  ])) as { mode: 'update' | 'create' }
+  ])) as { mode: "update" | "create" };
 
-  return mode
-}
+  return mode;
+};
 
 const isBuildable = (path: string) => {
-  if (!existsSync(resolve(path, 'package.json'))) {
+  if (!existsSync(resolve(path, "package.json"))) {
     console.log(
       `[info] ${FIELD_PLUGINS_PATH}${yellow(
-        basename(path),
-      )} doesn't have \`package.json\`.`,
-    )
-    return false
+        basename(path)
+      )} doesn't have \`package.json\`.`
+    );
+    return false;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const packageJson = JSON.parse(
-    readFileSync(resolve(path, 'package.json')).toString(),
-  )
+    readFileSync(resolve(path, "package.json")).toString()
+  );
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   if (!packageJson.scripts?.build) {
     console.log(
       `[info] ${FIELD_PLUGINS_PATH}${yellow(
-        basename(path),
-      )}/package.json doesn't have \`build\` script.`,
-    )
-    return false
+        basename(path)
+      )}/package.json doesn't have \`build\` script.`
+    );
+    return false;
   }
 
-  return true
-}
+  return true;
+};
