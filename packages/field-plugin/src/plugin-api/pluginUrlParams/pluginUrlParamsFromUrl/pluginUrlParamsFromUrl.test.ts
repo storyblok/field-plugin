@@ -1,14 +1,6 @@
 import { pluginUrlParamsFromUrl } from './pluginUrlParamsFromUrl'
 
-// TODO new tests with template
-const template = {
-  uid: '123',
-  protocol: 'http:',
-  host: 'localhost:1234',
-  preview: '1',
-}
-
-describe('pluginUrlParamsFromUrl', () => {
+describe('deserializing PluginUrlParams', () => {
   test('that the leading question mark in argument string is optional', () => {
     expect(
       pluginUrlParamsFromUrl(
