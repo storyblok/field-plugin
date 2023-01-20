@@ -1,55 +1,54 @@
-import { generate, TEMPLATES } from './generate';
-import { deploy, DeployArgs } from './deploy';
-import { Command } from 'commander';
-import { red } from 'kleur/colors';
+import { generate, TEMPLATES } from './generate'
+import { deploy } from './deploy'
+import { newProject } from './newProject'
+import { Command } from 'commander'
 
-const program = new Command();
+const program = new Command()
 
-export function validateDeployOptions({
-  fieldPluginName,
-  skipPrompts,
-}: DeployArgs) {
-  if (skipPrompts && !fieldPluginName) {
-    console.log(red('[ERROR]'), 'Cannot skip prompts without name.\n');
-    console.log('Use --name option to define a plugin name!');
-    process.exit(1);
-  }
-}
+export const main = () => {
+  program
+    .command('new', { isDefault: true })
+    .description('creates a new repository to start developing field plugins')
+    .action(function () {
+      newProject()
+    })
 
-async function main() {
   program
     .command('deploy')
     .description('deploys your selected plugin to Storyblok')
     .option('--name <value>', 'name of plugin to be deployed')
     .option('--skipPrompts', 'deploys without prompts', false)
-    .action(async function () {
-      const { name, skipPrompts } = this.opts();
-      validateDeployOptions({ fieldPluginName: name, skipPrompts });
-      await deploy({ fieldPluginName: name, skipPrompts });
-    });
+    .action(async function (this: Command) {
+      // eslint-disable-next-line functional/no-this-expression
+      const { name, skipPrompts } = this.opts<{
+        name?: string
+        skipPrompts?: boolean
+      }>()
+      await deploy({ fieldPluginName: name, skipPrompts })
+    })
 
   const templateOptions = TEMPLATES.map(
-    (template) => `'${template.value}'`
-  ).join(' | ');
+    (template) => `'${template.value}'`,
+  ).join(' | ')
   program
     .command('generate')
     .description('generates new field-plugin inside your project')
     .option(
       '--template <value>',
-      `name of template to use (${templateOptions})`
+      `name of template to use (${templateOptions})`,
     )
     .option(
       '--name <value>',
-      'name of plugin (Lowercase alphanumeric and dash)'
+      'name of plugin (Lowercase alphanumeric and dash)',
     )
-    .action(async function () {
-      const { name, template } = this.opts();
-      await generate({ packageName: name, template });
-    });
+    .action(async function (this: Command) {
+      // eslint-disable-next-line functional/no-this-expression
+      const { name, template } = this.opts<{
+        name?: string
+        template?: string
+      }>()
+      await generate({ packageName: name, template })
+    })
 
-  program.parse(process.argv);
-}
-
-if (process.env.NODE_ENV !== 'test') {
-  main();
+  program.parse(process.argv)
 }

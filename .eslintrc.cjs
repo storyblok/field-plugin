@@ -51,7 +51,13 @@ module.exports = {
         jest: true,
         node: true,
       }
-    }
+    },
+    {
+      files: ['packages/cli/**'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
   ],
   rules: {
     'no-warning-comments': 'warn',

@@ -37,13 +37,15 @@
     "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
     "dev:container": "yarn workspace container run dev",
-    "dev:demo": "yarn workspace demo run dev"
+    "dev:demo": "yarn workspace demo run dev",
+    "cli": "npx @storyblok/field-plugin-cli"
   },
   "devDependencies": {
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@fontsource/roboto": "4.5.8",
     "@mui/material": "5.11.0",
+    "@storyblok/field-plugin-cli": "workspace:*",
     "@storyblok/mui": "0.0.18-alpha",
     "@types/jest": "29.0.3",
     "@types/node": "18.11.18",
