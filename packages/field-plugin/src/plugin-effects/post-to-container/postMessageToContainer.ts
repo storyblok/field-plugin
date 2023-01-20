@@ -1,6 +1,6 @@
-import { originFromPluginParams } from '../../plugin-api/originFromPluginParams'
+import { originFromPluginParams } from '../../plugin-api/pluginUrlParams/originFromPluginParams/originFromPluginParams'
 import { MessageToContainer } from './MessageToContainer'
-import { pluginUrlParamsFromUrl } from '../../pluginUrlParams'
+import { pluginUrlParamsFromUrl } from '../../plugin-api/pluginUrlParams/pluginUrlParamsFromUrl'
 
 export type MessageToWrapper = {
   event: string

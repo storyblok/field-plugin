@@ -1,4 +1,4 @@
-import { PluginUrlParams } from '../plugin-api'
+import { PluginUrlParams } from '../../index'
 
 export const pluginUrlParamsFromUrl = (
   url: string,
@@ -10,14 +10,20 @@ export const pluginUrlParamsFromUrl = (
   const host = searchParams.get('host') ?? undefined
   const preview = searchParams.get('preview') ?? undefined
 
-  return typeof uid !== 'undefined' &&
-    typeof protocol !== 'undefined' &&
-    typeof host !== 'undefined'
-    ? {
-        uid,
-        protocol,
-        host,
-        preview: typeof preview !== 'undefined',
-      }
-    : undefined
+  if (protocol !== 'http:' && protocol !== 'https:') {
+    return undefined
+  }
+
+  if (typeof uid === 'undefined' || typeof host === 'undefined') {
+    return undefined
+  }
+
+  const secure = protocol === 'https:'
+
+  return {
+    uid,
+    secure,
+    host,
+    preview: typeof preview !== 'undefined',
+  }
 }

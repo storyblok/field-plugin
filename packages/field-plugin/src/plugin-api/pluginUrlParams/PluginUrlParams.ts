@@ -4,7 +4,7 @@
  */
 export type PluginUrlParams = {
   uid: string
-  protocol: string
+  secure: boolean
   host: string
   preview: boolean
 }
