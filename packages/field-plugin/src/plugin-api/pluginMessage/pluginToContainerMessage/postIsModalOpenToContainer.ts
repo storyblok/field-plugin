@@ -1,5 +1,5 @@
 import { postMessageToContainer } from './postMessageToContainer'
-import { SetModalOpen } from '../../plugin-api/types'
+import { SetModalOpen } from './PluginToContainer'
 
 /**
  * Instructs the parent window to open the filed type in a modal window.

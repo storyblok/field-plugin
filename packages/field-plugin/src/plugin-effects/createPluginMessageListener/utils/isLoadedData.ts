@@ -1,4 +1,4 @@
-import { MessageToPlugin } from '../../../container-effects/post-to-plugin'
+import { MessageToPlugin } from '../../../container-effects'
 import { hasKey } from '../../../utils'
 
 // TODO better validation

@@ -4,11 +4,11 @@ import {
   postIsModalOpenToContainer,
   postValueToContainer,
   postHeightToContainer,
-} from './post-to-container'
+} from '../plugin-api/pluginMessage'
 import { PluginClient } from './PluginClient'
 import { PluginState } from './PluginState'
 import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
-import { OnMessageToPlugin } from '../plugin-api/types'
+import { OnMessageToPlugin } from '../plugin-api/pluginMessage'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {

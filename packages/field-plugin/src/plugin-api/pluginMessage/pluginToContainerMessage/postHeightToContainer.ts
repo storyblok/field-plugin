@@ -1,5 +1,5 @@
 import { postMessageToContainer } from './postMessageToContainer'
-import { SetHeight } from '../../plugin-api/types'
+import { SetHeight } from './PluginToContainer'
 
 /**
  * Instructs the parent window to increase the height of this window's containing iframe.

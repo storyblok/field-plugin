@@ -1,4 +1,4 @@
-import { hasKey } from '../../utils'
+import { hasKey } from '../../../utils'
 
 export type MessageToContainer<Event extends string> = {
   action: 'plugin-changed'

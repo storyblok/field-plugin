@@ -1,7 +1,8 @@
 /**
  * Actions that can be sent to the field type wrapper
  */
-import { SetHeight, SetModalOpen, SetValue } from '../plugin-api/types'
+
+import { SetHeight, SetModalOpen, SetValue } from '../plugin-api/pluginMessage'
 
 /**
  * All actions that are exposed to the plugin application.

@@ -1,8 +1,8 @@
 import { hasKey } from '../../utils'
 import { isLoadedData } from './utils/isLoadedData'
-import { originFromPluginParams } from '../../plugin-api/pluginUrlParams/originFromPluginParams/originFromPluginParams'
-import { OnMessageToPlugin } from '../../plugin-api/types'
-import { pluginUrlParamsFromUrl } from '../../plugin-api/pluginUrlParams/pluginUrlParamsFromUrl'
+import { originFromPluginParams } from '../../plugin-api/pluginUrlParams'
+import { pluginUrlParamsFromUrl } from '../../plugin-api/pluginUrlParams'
+import { OnMessageToPlugin } from '../../plugin-api/pluginMessage'
 
 export type CreatePluginMessageListener = (
   onStateChange: OnMessageToPlugin,

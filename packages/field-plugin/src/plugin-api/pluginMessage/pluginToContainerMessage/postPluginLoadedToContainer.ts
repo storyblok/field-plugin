@@ -1,5 +1,5 @@
 import { postMessageToContainer } from './postMessageToContainer'
-import { OnPluginReady } from '../../plugin-api/types'
+import { OnPluginReady } from './PluginToContainer'
 
 // TODO rename
 /**

@@ -1,7 +1,7 @@
 /**
  * @returns function for cleaning up side effects
  */
-import { postHeightToContainer } from './post-to-container'
+import { postHeightToContainer } from '../plugin-api/pluginMessage'
 
 export const createAutoResizer = () => {
   const handleResize = () => {

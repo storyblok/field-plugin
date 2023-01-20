@@ -1,5 +1,5 @@
 import { postMessageToContainer } from './postMessageToContainer'
-import { OnGetContext } from '../../plugin-api/types'
+import { OnGetContext } from './PluginToContainer'
 
 /**
  * TODO document what this does. Should it be exposed to the client? When should it be used?
