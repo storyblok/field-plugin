@@ -37,8 +37,7 @@
     "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
     "dev:container": "yarn workspace container run dev",
-    "dev:demo": "yarn workspace demo run dev",
-    "cli": "npx @storyblok/field-plugin-cli"
+    "dev:demo": "yarn workspace demo run dev"
   },
   "devDependencies": {
     "@emotion/react": "11.10.5",

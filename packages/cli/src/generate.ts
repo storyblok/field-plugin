@@ -8,7 +8,7 @@ import {
   readFileSync,
   writeFileSync,
 } from 'fs'
-import { render } from 'mustache'
+import Mustache from 'mustache'
 import walk from 'walkdir'
 import { FIELD_PLUGINS_PATH, REPO_ROOT_DIR } from './const'
 
@@ -102,7 +102,7 @@ export const generate: GenerateFunc = async (args) => {
         newFilePath,
         // wrong typing from @types/mustache
         // eslint-disable-next-line
-        render(readFileSync(file).toString(), {
+        Mustache.render(readFileSync(file).toString(), {
           packageName,
         }),
       )
