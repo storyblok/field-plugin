@@ -1,12 +1,12 @@
 import { PluginState } from './PluginState'
-import { PluginClient } from './PluginClient'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { createAutoResizer } from './createAutoResizer'
 import { createPluginClient } from './createPluginClient'
+import { PluginActions } from '../actions'
 
 export type CreatePlugin = (
   onUpdate: (state: PluginState) => void,
-) => [PluginClient, () => void]
+) => [PluginActions, () => void]
 
 /**
  * @returns cleanup function

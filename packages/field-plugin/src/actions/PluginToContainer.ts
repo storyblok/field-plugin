@@ -3,3 +3,10 @@ export type SetValue = (value: unknown) => void
 export type SetModalOpen = (isModal: boolean) => void
 export type SetPluginReady = () => void
 export type RequestContext = () => void
+export type PluginActions = {
+  setHeight: SetHeight
+  setValue: SetValue
+  setModalOpen: SetModalOpen
+  setPluginReady: SetPluginReady
+  requestContext: RequestContext
+}

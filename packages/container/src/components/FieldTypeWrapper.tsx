@@ -105,11 +105,11 @@ export const FieldTypeWrapper: FunctionComponent = () => {
     () =>
       createContainerMessageListener(
         {
-          onValueChange: setValue,
-          onLoaded,
-          onHeightChange: setHeight,
-          onSetModal: setModal,
-          onGetContext,
+          setValue,
+          setPluginReady: onLoaded,
+          setHeight,
+          setModalOpen: setModal,
+          requestContext: onGetContext,
         },
         {
           iframeOrigin,

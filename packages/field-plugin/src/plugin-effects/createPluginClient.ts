@@ -1,9 +1,10 @@
 import { createPluginMessageListener } from './createPluginMessageListener'
-import { PluginClient } from './PluginClient'
 import { PluginState } from './PluginState'
 import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
 import { OnMessageToPlugin } from '../plugin-api/pluginMessage'
 import {
+  PluginActions,
+  postRequestContext,
   postSetHeight,
   postSetModalOpen,
   postSetPluginReady,
@@ -27,7 +28,7 @@ export const defaultState: PluginState = {
 
 export type CreatePluginClient = (
   onUpdateState: (state: PluginState) => void,
-) => [PluginClient, () => void]
+) => [PluginActions, () => void]
 
 export const createPluginClient: CreatePluginClient = (onUpdateState) => {
   // Tracks the full state of the plugin.
@@ -72,6 +73,8 @@ export const createPluginClient: CreatePluginClient = (onUpdateState) => {
         }
         onUpdateState(state)
       },
+      setPluginReady: postSetPluginReady,
+      requestContext: postRequestContext,
     },
     cleanupEventListener,
   ]

@@ -5,22 +5,10 @@ import {
   isPluginToWrapperMessage,
   isValueChangeMessage,
 } from '../../plugin-api/pluginMessage'
-import {
-  RequestContext,
-  SetPluginReady,
-  SetHeight,
-  SetModalOpen,
-  SetValue,
-} from '../../actions'
+import { PluginActions } from '../../actions'
 
 export type CreateContainerListener = (
-  eventHandlers: {
-    onHeightChange: SetHeight
-    onValueChange: SetValue
-    onSetModal: SetModalOpen
-    onLoaded: SetPluginReady
-    onGetContext: RequestContext
-  },
+  eventHandlers: PluginActions,
   options: {
     window: Window
     iframeOrigin: string
@@ -45,16 +33,16 @@ export const createContainerMessageListener: CreateContainerListener = (
     }
 
     if (isValueChangeMessage(message)) {
-      eventHandlers.onValueChange(message.model)
+      eventHandlers.setValue(message.model)
     }
     if (isPluginLoadedMessage(message)) {
-      eventHandlers.onLoaded()
+      eventHandlers.setPluginReady()
     }
     if (isModalChangeMessage(message)) {
-      eventHandlers.onSetModal(message.status)
+      eventHandlers.setModalOpen(message.status)
     }
     if (isHeightChangeMessage(message)) {
-      eventHandlers.onHeightChange(message.height)
+      eventHandlers.setHeight(message.height)
     }
   }
 
