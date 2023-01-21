@@ -1,4 +1,4 @@
-import { FieldTypeSchema } from '../../index'
+import { FieldTypeSchema } from './FieldTypeSchema'
 import { hasKey } from '../../../utils'
 
 /**
