@@ -1,5 +1,5 @@
 import { postMessageToContainer } from './postMessageToContainer'
-import { SetModalOpen } from './actions'
+import { SetModalOpen } from './index'
 
 /**
  * Instructs the parent window to open the filed type in a modal window.
