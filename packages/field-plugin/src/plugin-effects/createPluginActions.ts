@@ -26,11 +26,11 @@ export const defaultState: PluginState = {
   spaceId: undefined,
 }
 
-export type CreatePluginClient = (
+export type CreatePluginActions = (
   onUpdateState: (state: PluginState) => void,
 ) => [PluginActions, () => void]
 
-export const createPluginClient: CreatePluginClient = (onUpdateState) => {
+export const createPluginActions: CreatePluginActions = (onUpdateState) => {
   // Tracks the full state of the plugin.
   //  Because the container doesn't send the full state in its messages, we need to track it ourselves.
   //  isModal and height is not included in the messages to the children and must thus be tracked here.

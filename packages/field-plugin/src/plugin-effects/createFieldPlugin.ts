@@ -1,10 +1,10 @@
 import { PluginState } from './PluginState'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { createAutoResizer } from './createAutoResizer'
-import { createPluginClient } from './createPluginClient'
+import { createPluginActions } from './createPluginActions'
 import { PluginActions } from '../actions'
 
-export type CreatePlugin = (
+export type CreateFieldPlugin = (
   onUpdate: (state: PluginState) => void,
 ) => [PluginActions, () => void]
 
@@ -12,14 +12,14 @@ export type CreatePlugin = (
  * @returns cleanup function
  */
 // TODO rename to createPlugin
-export const createFieldType: CreatePlugin = (onUpdateState) => {
+export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
   // TODO option to opt out from auto resizer
   const cleanupAutoResizeSideEffects = createAutoResizer()
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
   const [actions, cleanupPluginClientSideEffects] =
-    createPluginClient(onUpdateState)
+    createPluginActions(onUpdateState)
 
   const cleanup = () => {
     cleanupPluginClientSideEffects()

@@ -1,2 +1,2 @@
-export * from './createPlugin'
+export * from './createFieldPlugin'
 export * from './PluginState'
