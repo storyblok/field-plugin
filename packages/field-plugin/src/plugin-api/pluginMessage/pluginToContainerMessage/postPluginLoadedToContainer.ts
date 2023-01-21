@@ -1,7 +1,6 @@
 import { postMessageToContainer } from './postMessageToContainer'
-import { OnPluginReady } from './PluginToContainer'
+import { OnPluginReady } from './actions'
 
-// TODO rename
 /**
  * Informs the Storyblok Application that the plugin is loaded and ready to receive messages.
  */

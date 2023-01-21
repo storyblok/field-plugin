@@ -1,0 +1,1 @@
+Actions are functions that can be invoked by the plugin to mutate the state in the plugin container window.

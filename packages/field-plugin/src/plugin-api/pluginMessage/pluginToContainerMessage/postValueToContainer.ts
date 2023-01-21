@@ -1,5 +1,5 @@
 import { postMessageToContainer } from './postMessageToContainer'
-import { SetValue } from './PluginToContainer'
+import { SetValue } from './actions'
 
 /**
  * Instructs the parent window to update the content with a new value.
