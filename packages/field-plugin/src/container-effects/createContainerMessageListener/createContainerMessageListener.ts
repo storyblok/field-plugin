@@ -6,8 +6,8 @@ import {
   isValueChangeMessage,
 } from '../../plugin-api/pluginMessage'
 import {
-  OnGetContext,
-  OnPluginReady,
+  RequestContext,
+  SetPluginReady,
   SetHeight,
   SetModalOpen,
   SetValue,
@@ -18,8 +18,8 @@ export type CreateContainerListener = (
     onHeightChange: SetHeight
     onValueChange: SetValue
     onSetModal: SetModalOpen
-    onLoaded: OnPluginReady
-    onGetContext: OnGetContext
+    onLoaded: SetPluginReady
+    onGetContext: RequestContext
   },
   options: {
     window: Window

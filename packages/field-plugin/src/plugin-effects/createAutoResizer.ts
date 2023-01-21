@@ -1,11 +1,11 @@
 /**
  * @returns function for cleaning up side effects
  */
-import { postHeightToContainer } from '../actions'
+import { postSetHeight } from '../actions'
 
 export const createAutoResizer = () => {
   const handleResize = () => {
-    postHeightToContainer(document.body.clientHeight)
+    postSetHeight(document.body.clientHeight)
   }
   const observer = new MutationObserver(handleResize)
   observer.observe(document.body, {

@@ -6,10 +6,10 @@ export type MessageToWrapper = {
   event: string
 } & Record<string, unknown>
 
-export type PostMessageToContainer = (message: MessageToWrapper) => void
+export type PostPluginMessage = (message: MessageToWrapper) => void
 
-// TODO include information about the result in the return signature, like an error
-export const postMessageToContainer: PostMessageToContainer = (message) => {
+// TODO include information about the result in the return signature, like an error, or boolean
+export const postPluginMessage: PostPluginMessage = (message) => {
   const fieldTypeParams = pluginUrlParamsFromUrl(window.location.search)
   if (!fieldTypeParams) {
     // The custom field's containing iframe does not have all required search params

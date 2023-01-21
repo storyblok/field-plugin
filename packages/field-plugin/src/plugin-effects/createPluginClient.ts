@@ -4,10 +4,10 @@ import { PluginState } from './PluginState'
 import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
 import { OnMessageToPlugin } from '../plugin-api/pluginMessage'
 import {
-  postHeightToContainer,
-  postIsModalOpenToContainer,
-  postPluginLoadedToContainer,
-  postValueToContainer,
+  postSetHeight,
+  postSetModalOpen,
+  postSetPluginReady,
+  postSetValue,
 } from '../actions'
 
 // TODO get rid of this default state
@@ -44,11 +44,11 @@ export const createPluginClient: CreatePluginClient = (onUpdateState) => {
     onUpdateState(state)
   }
   const cleanupEventListener = createPluginMessageListener(onMessage)
-  postPluginLoadedToContainer() // Receive the current value
+  postSetPluginReady() // Receive the current value
   return [
     {
       setHeight: (height) => {
-        postHeightToContainer(height)
+        postSetHeight(height)
         state = {
           ...state,
           height,
@@ -56,7 +56,7 @@ export const createPluginClient: CreatePluginClient = (onUpdateState) => {
         onUpdateState(state)
       },
       setValue: (value) => {
-        postValueToContainer(value)
+        postSetValue(value)
         state = {
           ...state,
           value,
@@ -65,7 +65,7 @@ export const createPluginClient: CreatePluginClient = (onUpdateState) => {
         onUpdateState(state)
       },
       setModalOpen: (isModalOpen) => {
-        postIsModalOpenToContainer(isModalOpen)
+        postSetModalOpen(isModalOpen)
         state = {
           ...state,
           isModalOpen,
