@@ -1,10 +1,10 @@
-import { hasKey } from '../../utils'
+import { hasKey } from '../../../utils'
 import {
   originFromPluginParams,
   isMessageToPlugin,
   pluginUrlParamsFromUrl,
   OnMessageToPlugin,
-} from '../../plugin-api'
+} from '../../../plugin-api'
 
 export type CreatePluginMessageListener = (
   onStateChange: OnMessageToPlugin,

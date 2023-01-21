@@ -1,4 +1,4 @@
-import { FieldTypeOption } from '../../plugin-api'
+import { FieldTypeOption } from '../../../plugin-api'
 
 export const recordFromOptions = (
   options: FieldTypeOption[],
