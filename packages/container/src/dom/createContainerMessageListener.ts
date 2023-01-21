@@ -4,8 +4,8 @@ import {
   isPluginLoadedMessage,
   isPluginToWrapperMessage,
   isValueChangeMessage,
-} from '../../plugin-api/pluginMessage'
-import { PluginActions } from '../../actions'
+  PluginActions,
+} from '@storyblok/field-plugin'
 
 export type CreateContainerListener = (
   eventHandlers: PluginActions,

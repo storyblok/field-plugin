@@ -31,8 +31,8 @@ import { FieldTypePreview } from './FieldTypePreview'
 import { FlexTypography } from './FlexTypography'
 import {
   FieldTypeSchema,
-  createContainerMessageListener,
 } from '@storyblok/field-plugin'
+import {createContainerMessageListener} from "../dom/createContainerMessageListener";
 
 const wrapperProtocol = 'http:'
 const wrapperHost = 'localhost:7070'
