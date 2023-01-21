@@ -1,8 +1,10 @@
 import { hasKey } from '../../utils'
-import { originFromPluginParams } from '../../plugin-api/pluginUrlParams'
-import { pluginUrlParamsFromUrl } from '../../plugin-api/pluginUrlParams'
-import { OnMessageToPlugin } from '../../plugin-api/pluginMessage'
-import { isMessageToPlugin } from '../../plugin-api/pluginMessage/containerToPluginMessage/MessageToPlugin'
+import {
+  originFromPluginParams,
+  isMessageToPlugin,
+  pluginUrlParamsFromUrl,
+  OnMessageToPlugin,
+} from '../../plugin-api'
 
 export type CreatePluginMessageListener = (
   onStateChange: OnMessageToPlugin,
