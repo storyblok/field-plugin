@@ -1,4 +1,4 @@
-import { PluginUrlParams } from '../../index'
+import { PluginUrlParams } from '../PluginUrlParams'
 
 export const pluginUrlParamsFromUrl = (
   url: string,
