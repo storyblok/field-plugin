@@ -1,14 +1,14 @@
 import { createPluginMessageListener } from './createPluginMessageListener'
-import {
-  postPluginLoadedToContainer,
-  postIsModalOpenToContainer,
-  postValueToContainer,
-  postHeightToContainer,
-} from '../plugin-api/pluginMessage'
 import { PluginClient } from './PluginClient'
 import { PluginState } from './PluginState'
 import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
 import { OnMessageToPlugin } from '../plugin-api/pluginMessage'
+import {
+  postHeightToContainer,
+  postIsModalOpenToContainer,
+  postPluginLoadedToContainer,
+  postValueToContainer,
+} from '../actions'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {

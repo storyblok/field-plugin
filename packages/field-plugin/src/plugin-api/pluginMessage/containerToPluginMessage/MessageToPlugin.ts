@@ -1,4 +1,5 @@
-import { FieldTypeSchema } from '../../plugin-api'
+import { FieldTypeSchema } from '../../index'
+import { hasKey } from '../../../utils'
 
 /**
  * The message that the field type wrapper (parent) sends to the
@@ -21,3 +22,6 @@ export type MessageToPlugin = {
   schema: FieldTypeSchema
   model: unknown
 }
+
+export const isMessageToPlugin = (data: unknown): data is MessageToPlugin =>
+  hasKey(data, 'action') && data.action === 'loaded'

@@ -1,6 +1,6 @@
-import { MessageToPlugin } from '../../container-effects/post-to-plugin'
 import { recordFromOptions } from './recordFromOptions'
 import { PluginState } from '../index'
+import { MessageToPlugin } from '../../plugin-api/pluginMessage/containerToPluginMessage/MessageToPlugin'
 
 export const partialPluginStateFromMessage = (
   loadedData: MessageToPlugin,

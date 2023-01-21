@@ -4,12 +4,14 @@ import {
   isPluginLoadedMessage,
   isPluginToWrapperMessage,
   isValueChangeMessage,
+} from '../../plugin-api/pluginMessage'
+import {
   OnGetContext,
   OnPluginReady,
   SetHeight,
   SetModalOpen,
   SetValue,
-} from '../../plugin-api/pluginMessage'
+} from '../../actions'
 
 export type CreateContainerListener = (
   eventHandlers: {

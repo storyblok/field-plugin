@@ -1,8 +1,8 @@
 import { hasKey } from '../../utils'
-import { isLoadedData } from './utils/isLoadedData'
 import { originFromPluginParams } from '../../plugin-api/pluginUrlParams'
 import { pluginUrlParamsFromUrl } from '../../plugin-api/pluginUrlParams'
 import { OnMessageToPlugin } from '../../plugin-api/pluginMessage'
+import { isMessageToPlugin } from '../../plugin-api/pluginMessage/containerToPluginMessage/MessageToPlugin'
 
 export type CreatePluginMessageListener = (
   onStateChange: OnMessageToPlugin,
@@ -30,7 +30,7 @@ export const createPluginMessageListener: CreatePluginMessageListener = (
       // Not intended for this field type
       return
     }
-    if (isLoadedData(data)) {
+    if (isMessageToPlugin(data)) {
       onStateChange(data)
     }
   }
