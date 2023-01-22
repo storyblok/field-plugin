@@ -1,7 +1,7 @@
-import { FieldTypeOption } from '../../../plugin-api'
+import { FieldPluginOption } from '../../../plugin-api'
 
 export const recordFromOptions = (
-  options: FieldTypeOption[],
+  options: FieldPluginOption[],
 ): Record<string, string> =>
   options.reduce((options, option) => {
     // eslint-disable-next-line functional/immutable-data
