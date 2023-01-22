@@ -15,6 +15,20 @@ describe('isHeightChangeMessage', () => {
   it('is a MessageToContainer', () => {
     expect(isMessageToContainer(stub)).toBeTruthy()
   })
+  it('requires event to be "heightChange"', () => {
+    expect(
+      isHeightChangeMessage({
+        ...stub,
+        event: 'heightChange',
+      }),
+    ).toBeTruthy()
+    expect(
+      isHeightChangeMessage({
+        ...stub,
+        event: 'somethingElse',
+      }),
+    ).toBeFalsy()
+  })
   test('that height is a number', () => {
     expect(isHeightChangeMessage(stub)).toBeTruthy()
     expect(

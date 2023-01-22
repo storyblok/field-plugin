@@ -12,6 +12,20 @@ describe('ValueChangeMessage', () => {
   it('is a MessageToContainer', () => {
     expect(isMessageToContainer(stub)).toBeTruthy()
   })
+  it('requires event to be "update"', () => {
+    expect(
+      isValueChangeMessage({
+        ...stub,
+        event: 'update',
+      }),
+    ).toBeTruthy()
+    expect(
+      isValueChangeMessage({
+        ...stub,
+        event: 'somethingElse',
+      }),
+    ).toBeFalsy()
+  })
   test('that the model property is present', () => {
     const { model: _, ...withoutModel } = stub
     expect(isValueChangeMessage(withoutModel)).toBeFalsy()

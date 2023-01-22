@@ -12,6 +12,20 @@ describe('ModalChangeMessage', () => {
   it('is a MessageToContainer', () => {
     expect(isMessageToContainer(stub)).toBeTruthy()
   })
+  it('requires event to be "toggleModal"', () => {
+    expect(
+      isModalChangeMessage({
+        ...stub,
+        event: 'toggleModal',
+      }),
+    ).toBeTruthy()
+    expect(
+      isModalChangeMessage({
+        ...stub,
+        event: 'somethingElse',
+      }),
+    ).toBeFalsy()
+  })
   it('has a status', () => {
     expect(
       isModalChangeMessage({
