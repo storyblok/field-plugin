@@ -1,10 +1,7 @@
-import {
-  isPluginToWrapperMessage,
-  MessageToContainer,
-} from './MessageToContainer'
+import { isMessageToContainer, MessageToContainer } from './MessageToContainer'
 
 export type PluginLoadedMessage = MessageToContainer<'loaded'>
 export const isPluginLoadedMessage = (
   obj: unknown,
 ): obj is PluginLoadedMessage =>
-  isPluginToWrapperMessage(obj) && obj.event === 'loaded'
+  isMessageToContainer(obj) && obj.event === 'loaded'

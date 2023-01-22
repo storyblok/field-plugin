@@ -6,7 +6,7 @@ export type MessageToContainer<Event extends string> = {
   event: Event
 }
 
-export const isPluginToWrapperMessage = (
+export const isMessageToContainer = (
   obj: unknown,
 ): obj is MessageToContainer<string> =>
   hasKey(obj, 'action') &&
