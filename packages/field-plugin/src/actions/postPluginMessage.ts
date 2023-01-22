@@ -1,5 +1,5 @@
-import { originFromPluginParams } from '../plugin-api/pluginUrlParams/originFromPluginParams/originFromPluginParams'
-import { MessageToContainer } from '../plugin-api/pluginMessage/pluginToContainerMessage/MessageToContainer'
+import { originFromPluginParams } from '../plugin-api'
+import { MessageToContainer } from '../plugin-api'
 import { pluginUrlParamsFromUrl } from '../plugin-api'
 
 export type MessageToWrapper = {
