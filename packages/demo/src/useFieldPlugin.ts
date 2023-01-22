@@ -1,5 +1,5 @@
 import {
-  createFieldType,
+  createFieldPlugin,
   PluginActions,
   PluginState,
 } from '@storyblok/field-plugin'
@@ -14,7 +14,7 @@ export const useFieldPlugin: UseFieldPlugin = () => {
   const [actions, setActions] = useState<PluginActions | undefined>(undefined)
 
   useEffect(() => {
-    const [actions, cleanupSideEffects] = createFieldType(setState)
+    const [actions, cleanupSideEffects] = createFieldPlugin(setState)
     setActions(actions)
     return cleanupSideEffects
   }, [])

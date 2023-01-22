@@ -1,4 +1,4 @@
-import { FieldTypeSchema } from './FieldTypeSchema'
+import { FieldPluginSchema } from './FieldPluginSchema'
 import { hasKey } from '../../../utils'
 
 /**
@@ -19,7 +19,7 @@ export type MessageToPlugin = {
   blockId: number | undefined
   token: string | null
   // Related to the field type itself
-  schema: FieldTypeSchema
+  schema: FieldPluginSchema
   model: unknown
 }
 
