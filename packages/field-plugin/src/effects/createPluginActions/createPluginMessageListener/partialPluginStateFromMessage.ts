@@ -1,4 +1,4 @@
-import { recordFromOptions } from './recordFromOptions'
+import { recordFromFieldPluginOptions } from '../../../plugin-api'
 import { PluginState } from '../../index'
 import { MessageToPlugin } from '../../../plugin-api'
 
@@ -11,7 +11,7 @@ export const partialPluginStateFromMessage = (
   blockId: loadedData.blockId ?? undefined,
   language: loadedData.language ?? undefined,
   token: loadedData.token ?? undefined,
-  options: recordFromOptions(loadedData.schema.options),
+  options: recordFromFieldPluginOptions(loadedData.schema.options),
   uid: loadedData.uid ?? undefined,
   value: loadedData.model ?? undefined,
 })
