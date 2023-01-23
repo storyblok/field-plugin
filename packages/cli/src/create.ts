@@ -1,3 +1,3 @@
-export const newProject = () => {
+export const create = () => {
   console.log('💡 new project')
 }
