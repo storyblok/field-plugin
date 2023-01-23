@@ -12,12 +12,12 @@ import Mustache from 'mustache'
 import walk from 'walkdir'
 import { FIELD_PLUGINS_PATH, REPO_ROOT_DIR } from './const'
 
-export type GenerateArgs = {
+export type AddArgs = {
   packageName?: string
   template?: string
 }
 
-export type GenerateFunc = (args: GenerateArgs) => Promise<void>
+export type AddFunc = (args: AddArgs) => Promise<void>
 
 export const TEMPLATES = [
   {
@@ -66,7 +66,7 @@ const selectTemplate = async () => {
   return template
 }
 
-export const generate: GenerateFunc = async (args) => {
+export const add: AddFunc = async (args) => {
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's create a field-type extension.\n")
 

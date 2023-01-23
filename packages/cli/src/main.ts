@@ -1,16 +1,16 @@
-import { generate, TEMPLATES } from './generate'
+import { add, TEMPLATES } from './add'
 import { deploy, type DeployArgs } from './deploy'
-import { newProject } from './newProject'
+import { create } from './create'
 import { Command } from 'commander'
 
 const program = new Command()
 
 export const main = () => {
   program
-    .command('new', { isDefault: true })
+    .command('create', { isDefault: true })
     .description('creates a new repository to start developing field plugins')
     .action(function () {
-      newProject()
+      create()
     })
 
   program
@@ -31,8 +31,8 @@ export const main = () => {
     (template) => `'${template.value}'`,
   ).join(' | ')
   program
-    .command('generate')
-    .description('generates new field-plugin inside your project')
+    .command('add')
+    .description('adds new field-plugin inside your project')
     .option(
       '--template <value>',
       `name of template to use (${templateOptions})`,
@@ -47,7 +47,7 @@ export const main = () => {
         name?: string
         template?: string
       }>()
-      await generate({ packageName: name, template })
+      await add({ packageName: name, template })
     })
 
   program.parse(process.argv)
