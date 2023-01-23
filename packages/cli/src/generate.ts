@@ -27,15 +27,15 @@ export const TEMPLATES = [
   },
 ];
 
-async function askPackageName() {
-  const { packageName } = await prompts(
+const askPackageName = async () => {
+  const { packageName } = (await prompts(
     [
       {
         type: "text",
         name: "packageName",
         message:
           "What is your project name?\n  (Lowercase alphanumeric and dash are allowed.)",
-        validate: (name) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
+        validate: (name: string) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
       },
     ],
     {
@@ -43,12 +43,12 @@ async function askPackageName() {
         process.exit(1);
       },
     }
-  );
+  )) as { packageName: string };
   return packageName;
-}
+};
 
-async function selectTemplate() {
-  const { template } = await prompts(
+const selectTemplate = async () => {
+  const { template } = (await prompts(
     [
       {
         type: "select",
@@ -62,9 +62,9 @@ async function selectTemplate() {
         process.exit(1);
       },
     }
-  );
+  )) as { template: string };
   return template;
-}
+};
 
 export const generate: GenerateFunc = async (args) => {
   console.log(bold(cyan("\nWelcome!")));
@@ -100,6 +100,8 @@ export const generate: GenerateFunc = async (args) => {
       );
       writeFileSync(
         newFilePath,
+        // wrong typing from @types/mustache
+        // eslint-disable-next-line
         Mustache.render(readFileSync(file).toString(), {
           packageName,
         })

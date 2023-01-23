@@ -3,7 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "bin": "./bin.js",
+  "files": [
+    "bin.js",
+    "dist",
+    "templates"
+  ],
   "scripts": {
+    "prepare": "vite build",
     "generate": "yarn build:quiet && node ./dist/main.cjs generate",
     "deploy": "yarn build:quiet && node ./dist/main.cjs deploy",
     "build": "vite build",
@@ -24,6 +31,7 @@
   },
   "devDependencies": {
     "@types/execa": "2.0.0",
+    "@types/mustache": "4.2.2",
     "@types/prompts": "2.4.2",
     "vitest": "0.25.3"
   }

@@ -45,6 +45,12 @@ module.exports = {
         node: true,
       },
     },
+    {
+      files: ['packages/cli/**'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
   ],
   rules: {
     'no-warning-comments': 'warn',

@@ -1511,11 +1511,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storyblok/field-plugin-cli@workspace:packages/cli":
+"@storyblok/field-plugin-cli@workspace:*, @storyblok/field-plugin-cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin-cli@workspace:packages/cli"
   dependencies:
     "@types/execa": 2.0.0
+    "@types/mustache": 4.2.2
     "@types/prompts": 2.4.2
     commander: ^9.5.0
     dotenv: ^16.0.3
@@ -1527,6 +1528,8 @@ __metadata:
     vite: ^4.0.3
     vitest: 0.25.3
     walkdir: ^0.4.1
+  bin:
+    field-plugin-cli: ./bin.js
   languageName: unknown
   linkType: soft
 
@@ -1714,6 +1717,13 @@ __metadata:
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
   checksum: 527bddfe62db9012fccd7627794bd4c71beb77601861055d87e3ee464f2217c85fca7a4b56ae677478367bbd248dbde13553312b7d4dbc702a2f2bbf60c4018d
+  languageName: node
+  linkType: hard
+
+"@types/mustache@npm:4.2.2":
+  version: 4.2.2
+  resolution: "@types/mustache@npm:4.2.2"
+  checksum: 1fa67a519f4302c96615524be4c8248067da02ca047bae9d4c4bb79977135ac7c15dcc388e7c70b8a817b9497004d5ca5c77a155dcb096bea16d53d4cdbe75d2
   languageName: node
   linkType: hard
 
@@ -3662,6 +3672,7 @@ __metadata:
     "@emotion/styled": 11.10.5
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
+    "@storyblok/field-plugin-cli": "workspace:*"
     "@storyblok/mui": 0.0.18-alpha
     "@types/jest": 29.0.3
     "@types/node": 18.11.18
