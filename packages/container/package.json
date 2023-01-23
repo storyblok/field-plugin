@@ -15,7 +15,7 @@
     "@fontsource/roboto": "*",
     "@mui/material": "*",
     "@storyblok/field-plugin": "workspace:*",
-    "@storyblok/mui": "0.0.18-alpha",
+    "@storyblok/mui": "0.0.19-alpha",
     "highlight.js": "11.7.0",
     "react": "*",
     "react-dom": "*"
