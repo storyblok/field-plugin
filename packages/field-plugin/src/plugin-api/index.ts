@@ -1,2 +1,2 @@
-export * from './FieldTypeSchema'
-export * from './PluginUrlParams'
+export * from './pluginMessage'
+export * from './pluginUrlParams'
