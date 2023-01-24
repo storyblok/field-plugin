@@ -3,14 +3,14 @@ import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
 import prompts from 'prompts'
 import walk from 'walkdir'
-import { FIELD_PLUGINS_PATH, REPO_ROOT_DIR } from './const'
+import { FIELD_PLUGINS_PATH, REPO_ROOT_DIR } from '../const'
 import {
   createFieldType,
   fetchAllFieldTypes,
   updateFieldType,
   type FieldType,
-} from './field_types'
-import { loadEnvironmentVariables } from './utils'
+} from '../field_types'
+import { runCommand, loadEnvironmentVariables } from '../utils'
 
 export type DeployArgs =
   | {
@@ -122,13 +122,14 @@ export const deploy: DeployFunc = async ({ fieldPluginName, skipPrompts }) => {
   const packageName = getPackageName(fieldPluginName) ?? (await selectPackage())
 
   console.log(bold(cyan(`[info] Building \`${packageName}\`...`)))
-  const { execaCommandSync } = await import('execa')
 
   try {
     console.log(
-      execaCommandSync(`yarn build ${packageName}`, {
-        cwd: REPO_ROOT_DIR,
-      }).stdout,
+      (
+        await runCommand(`yarn build ${packageName}`, {
+          cwd: REPO_ROOT_DIR,
+        })
+      ).stdout,
     )
     console.log('')
   } catch (err) {
