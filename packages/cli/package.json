@@ -16,8 +16,7 @@
     "build": "vite build",
     "build:quiet": "vite build --logLevel error",
     "test": "vitest run",
-    "test:watch": "vitest watch",
-    "lint": "eslint ."
+    "test:watch": "vitest watch"
   },
   "dependencies": {
     "commander": "^9.5.0",
