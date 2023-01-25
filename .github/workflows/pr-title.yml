@@ -6,4 +6,4 @@ on:
 steps:
   - uses: deepakputhraya/action-pr-title@master
     with:
-      allowed_prefixes: 'chore,EXT-'
+      allowed_prefixes: 'EXT-'
