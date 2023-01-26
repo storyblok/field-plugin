@@ -1529,7 +1529,7 @@ __metadata:
     vitest: 0.25.3
     walkdir: ^0.4.1
   bin:
-    field-plugin-cli: ./bin.js
+    field-plugin: ./bin.js
   languageName: unknown
   linkType: soft
 

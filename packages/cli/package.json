@@ -3,7 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "bin": "./bin.js",
+  "bin": {
+    "field-plugin": "./bin.js"
+  },
   "files": [
     "bin.js",
     "dist",
