@@ -10,12 +10,7 @@ import {
 } from 'fs'
 import Mustache from 'mustache'
 import walk from 'walkdir'
-import {
-  FIELD_PLUGINS_PATH,
-  REPO_ROOT_DIR,
-  TEMPLATES,
-  TEMPLATES_PATH,
-} from '../const'
+import { TEMPLATES, TEMPLATES_PATH } from '../../config'
 import { runCommand } from '../utils'
 
 export type AddArgs = {

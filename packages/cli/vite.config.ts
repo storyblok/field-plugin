@@ -23,6 +23,7 @@ export default defineConfig({
         'execa',
         'node-fetch',
         'commander',
+        'fs-extra',
       ],
     },
   },
