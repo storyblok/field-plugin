@@ -31,8 +31,8 @@ import { FieldTypePreview } from './FieldTypePreview'
 import { FlexTypography } from './FlexTypography'
 import {
   FieldTypeSchema,
-  createContainerMessageListener,
 } from '@storyblok/field-plugin'
+import {createContainerMessageListener} from "../dom/createContainerMessageListener";
 
 const wrapperProtocol = 'http:'
 const wrapperHost = 'localhost:7070'
@@ -105,11 +105,11 @@ export const FieldTypeWrapper: FunctionComponent = () => {
     () =>
       createContainerMessageListener(
         {
-          onValueChange: setValue,
-          onLoaded,
-          onHeightChange: setHeight,
-          onSetModal: setModal,
-          onGetContext,
+          setValue,
+          setPluginReady: onLoaded,
+          setHeight,
+          setModalOpen: setModal,
+          requestContext: onGetContext,
         },
         {
           iframeOrigin,
