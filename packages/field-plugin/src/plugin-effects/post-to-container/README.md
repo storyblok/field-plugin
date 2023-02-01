@@ -1,1 +1,0 @@
-This module contains all means for plugins to post messages to plugin containers.
