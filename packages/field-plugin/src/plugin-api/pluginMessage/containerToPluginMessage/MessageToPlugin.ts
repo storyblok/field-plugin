@@ -1,4 +1,4 @@
-import { FieldPluginSchema } from './FieldPluginSchema'
+import { FieldPluginSchema, isFieldPluginSchema } from './FieldPluginSchema'
 import { hasKey } from '../../../utils'
 
 /**
@@ -10,13 +10,15 @@ export type MessageToPlugin = {
   // Metadata
   action: 'loaded'
   uid: string
-  // Related to the context the field type is displayed within
-  language: string
-  spaceId: number | null
-  story: unknown
+  // The language relates to the context the field type is displayed within.
+  //  If there's no context, for example in the field plugin editor, an empty string will be returned
+  language: string | ''
   // TODO sometimes string?
   storyId: number | undefined
+  story: unknown
   blockId: number | undefined
+  // Space context
+  spaceId: number | null
   token: string | null
   // Related to the field type itself
   schema: FieldPluginSchema
@@ -24,4 +26,9 @@ export type MessageToPlugin = {
 }
 
 export const isMessageToPlugin = (data: unknown): data is MessageToPlugin =>
-  hasKey(data, 'action') && data.action === 'loaded'
+  hasKey(data, 'action') &&
+  data.action === 'loaded' &&
+  hasKey(data, 'uid') &&
+  typeof data.uid === 'string' &&
+  hasKey(data, 'schema') &&
+  isFieldPluginSchema(data.schema)
