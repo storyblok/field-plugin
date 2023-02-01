@@ -57,7 +57,7 @@ describe('MessageToPlugin', () => {
       expect(
         isMessageToPlugin({
           ...stub,
-          uid: null,
+          uid: 123,
         }),
       ).toBeFalsy()
     })

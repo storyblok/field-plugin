@@ -1,4 +1,4 @@
-import { FieldPluginSchema } from './FieldPluginSchema'
+import { FieldPluginSchema, isFieldPluginSchema } from './FieldPluginSchema'
 import { hasKey } from '../../../utils'
 
 /**
@@ -24,4 +24,9 @@ export type MessageToPlugin = {
 }
 
 export const isMessageToPlugin = (data: unknown): data is MessageToPlugin =>
-  hasKey(data, 'action') && data.action === 'loaded'
+  hasKey(data, 'action') &&
+  data.action === 'loaded' &&
+  hasKey(data, 'uid') &&
+  typeof data.uid === 'string' &&
+  hasKey(data, 'schema') &&
+  isFieldPluginSchema(data.schema)
