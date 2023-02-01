@@ -18,7 +18,8 @@
   },
   "scripts": {
     "check:types": "tsc --noEmit",
-    "build": "vite build && tsc --declaration --emitDeclarationOnly"
+    "dev": "vite build --watch",
+    "build": "vite build"
   },
   "devDependencies": {
     "@types/jest": "*",
