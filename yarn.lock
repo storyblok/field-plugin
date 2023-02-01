@@ -1547,16 +1547,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/mui@npm:0.0.18-alpha":
-  version: 0.0.18-alpha
-  resolution: "@storyblok/mui@npm:0.0.18-alpha"
+"@storyblok/mui@npm:0.0.19-alpha":
+  version: 0.0.19-alpha
+  resolution: "@storyblok/mui@npm:0.0.19-alpha"
   peerDependencies:
     "@emotion/react": ">=11.9.3"
     "@emotion/styled": ">=11.9.3"
     "@mui/material": ">=5.6.1"
     react: ">=15.3.2"
     react-dom: ">=15.3.2"
-  checksum: 710cfb2da37a1dfbff2ac51456a3ae6c6b65d133e168215a86ee69bd21618abbedd31c95689bc8499f23f3730561df12db75f23f6cf79dcd89eab146d3e45f56
+  checksum: 2a4ec952a80722118506ee12092176f195c7a363447ddbae22bc5103a053688477e9986117e51ed27fe546f5bea382e8bbd7da6d7142d1c089b737049623a699
   languageName: node
   linkType: hard
 
@@ -2619,7 +2619,7 @@ __metadata:
     "@fontsource/roboto": "*"
     "@mui/material": "*"
     "@storyblok/field-plugin": "workspace:*"
-    "@storyblok/mui": 0.0.18-alpha
+    "@storyblok/mui": 0.0.19-alpha
     "@types/react-dom": "*"
     "@vitejs/plugin-react": "*"
     eslint-plugin-react: "*"
@@ -2756,7 +2756,7 @@ __metadata:
     "@emotion/styled": "*"
     "@fontsource/roboto": "*"
     "@mui/material": "*"
-    "@storyblok/mui": 0.0.18-alpha
+    "@storyblok/mui": 0.0.19-alpha
     "@types/react-dom": "*"
     "@vitejs/plugin-react": "*"
     eslint-plugin-react: "*"
@@ -3673,7 +3673,7 @@ __metadata:
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
     "@storyblok/field-plugin-cli": "workspace:*"
-    "@storyblok/mui": 0.0.18-alpha
+    "@storyblok/mui": 0.0.19-alpha
     "@types/jest": 29.0.3
     "@types/node": 18.11.18
     "@types/react-dom": 18.0.10

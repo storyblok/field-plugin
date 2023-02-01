@@ -14,7 +14,7 @@
     "@emotion/styled": "*",
     "@fontsource/roboto": "*",
     "@mui/material": "*",
-    "@storyblok/mui": "0.0.18-alpha",
+    "@storyblok/mui": "0.0.19-alpha",
     "react": "*",
     "react-dom": "*"
   },

@@ -45,7 +45,7 @@
     "@fontsource/roboto": "4.5.8",
     "@mui/material": "5.11.0",
     "@storyblok/field-plugin-cli": "workspace:*",
-    "@storyblok/mui": "0.0.18-alpha",
+    "@storyblok/mui": "0.0.19-alpha",
     "@types/jest": "29.0.3",
     "@types/node": "18.11.18",
     "@types/react-dom": "18.0.10",
