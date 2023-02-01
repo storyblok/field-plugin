@@ -1,7 +1,7 @@
 import { createPluginMessageListener } from './createPluginMessageListener'
-import { PluginState } from '../PluginState'
+import { PluginState } from '../../PluginState'
 import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
-import { OnMessageToPlugin } from '../../plugin-api'
+import { OnMessageToPlugin } from '../../../plugin-api'
 import {
   PluginActions,
   postRequestContext,
@@ -9,7 +9,7 @@ import {
   postSetModalOpen,
   postSetPluginReady,
   postSetValue,
-} from '../../actions'
+} from '../../../actions'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
