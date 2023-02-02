@@ -4,6 +4,7 @@ import { isMessageToContainer, MessageToContainer } from './MessageToContainer'
 export type HeightChangeMessage = MessageToContainer<'heightChange'> & {
   height: number
 }
+
 export const isHeightChangeMessage = (
   obj: unknown,
 ): obj is HeightChangeMessage =>
