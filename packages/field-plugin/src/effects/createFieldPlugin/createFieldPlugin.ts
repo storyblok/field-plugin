@@ -1,5 +1,5 @@
-import { PluginState } from './PluginState'
-import { PluginActions } from '../actions'
+import { PluginState } from '../PluginState'
+import { PluginActions } from '../../actions'
 import { createPluginActions } from './createPluginActions'
 import { createAutoResizer } from './createAutoResizer'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'

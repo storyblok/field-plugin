@@ -1,7 +1,7 @@
 /**
  * @returns function for cleaning up side effects
  */
-import { postSetHeight } from '../actions'
+import { postSetHeight } from '../../actions'
 
 export const createAutoResizer = () => {
   const handleResize = () => {
