@@ -1,5 +1,5 @@
 import { expect, vi } from 'vitest'
-import { validateDeployOptions } from './deploy'
+import { validateDeployOptions } from './commands/deploy'
 
 describe('deploy command', () => {
   it('validates options correctly', () => {

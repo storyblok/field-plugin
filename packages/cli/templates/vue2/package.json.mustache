@@ -7,14 +7,16 @@
     "dev": "vite --port 8080",
     "build": "vite build",
     "test": "vitest run",
-    "test:watch": "vitest watch"
+    "test:watch": "vitest watch",
+    "deploy": "field-plugin deploy"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "file:./package.tgz",
+    "@storyblok/field-plugin": "file:./storyblok-field-plugin-0.0.1-alpha.0.tgz",
     "joi": "^17.7.0",
     "vue": "^2.7.14"
   },
   "devDependencies": {
+    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.0-test.0.tgz",
     "@vitejs/plugin-vue2": "2.2.0",
     "vite": "4.0.4",
     "vite-plugin-css-injected-by-js": "2.4.0"

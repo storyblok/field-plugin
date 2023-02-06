@@ -3,14 +3,19 @@ import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
 import prompts from 'prompts'
 import walk from 'walkdir'
-import { FIELD_PLUGINS_PATH, REPO_ROOT_DIR } from './const'
+import { FIELD_PLUGINS_PATH } from '../../config'
 import {
   createFieldType,
   fetchAllFieldTypes,
   updateFieldType,
   type FieldType,
-} from './field_types'
-import { loadEnvironmentVariables } from './utils'
+} from '../field_types'
+import { runCommand, loadEnvironmentVariables } from '../utils'
+
+// TODO: it should receive an optional argument like `--chooseFrom "./field-plugins"`.
+// If it's given, it should ask user to choose one of the field plugins.
+// If not given, it should assume the current directory is a single package repository, and just proceed.
+const REPO_ROOT_DIR = '.'
 
 export type DeployArgs =
   | {
@@ -122,13 +127,14 @@ export const deploy: DeployFunc = async ({ fieldPluginName, skipPrompts }) => {
   const packageName = getPackageName(fieldPluginName) ?? (await selectPackage())
 
   console.log(bold(cyan(`[info] Building \`${packageName}\`...`)))
-  const { execaCommandSync } = await import('execa')
 
   try {
     console.log(
-      execaCommandSync(`yarn build ${packageName}`, {
-        cwd: REPO_ROOT_DIR,
-      }).stdout,
+      (
+        await runCommand(`yarn build ${packageName}`, {
+          cwd: REPO_ROOT_DIR,
+        })
+      ).stdout,
     )
     console.log('')
   } catch (err) {

@@ -10,22 +10,17 @@ import {
 } from 'fs'
 import Mustache from 'mustache'
 import walk from 'walkdir'
-import { FIELD_PLUGINS_PATH, REPO_ROOT_DIR } from './const'
+import { TEMPLATES, TEMPLATES_PATH } from '../../config'
+import { runCommand } from '../utils'
 
 export type AddArgs = {
   packageName?: string
   template?: string
+  dir?: string
+  showInstructionFor?: 'single' | 'multiple'
 }
 
 export type AddFunc = (args: AddArgs) => Promise<void>
-
-export const TEMPLATES = [
-  {
-    title: 'Vue 2',
-    // description: 'some description if exists',
-    value: 'vue2',
-  },
-]
 
 const askPackageName = async () => {
   const { packageName } = (await prompts(
@@ -34,7 +29,7 @@ const askPackageName = async () => {
         type: 'text',
         name: 'packageName',
         message:
-          'What is your project name?\n  (Lowercase alphanumeric and dash are allowed.)',
+          'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
         validate: (name: string) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
       },
     ],
@@ -73,8 +68,8 @@ export const add: AddFunc = async (args) => {
   const packageName = args.packageName || (await askPackageName())
   const template = args.template || (await selectTemplate())
 
-  const destPath = resolve(REPO_ROOT_DIR, FIELD_PLUGINS_PATH, packageName)
-  const templatePath = resolve(process.cwd(), 'templates', template) + '/'
+  const destPath = resolve(args.dir || '.', packageName)
+  const templatePath = resolve(TEMPLATES_PATH, template) + '/'
 
   if (!existsSync(templatePath)) {
     console.log(
@@ -112,9 +107,16 @@ export const add: AddFunc = async (args) => {
   })
 
   console.log(`\nRunning \`yarn install\`..\n`)
-  const { execaCommandSync } = await import('execa')
-  console.log(execaCommandSync('yarn install').stdout)
-  console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-  console.log(`- To run development mode:`)
-  console.log(`    >`, yellow(`yarn workspace ${packageName} dev`))
+  console.log((await runCommand('yarn install')).stdout)
+
+  const showInstructionFor = args.showInstructionFor || 'multiple'
+  if (showInstructionFor === 'single') {
+    console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
+    console.log(`- To run development mode:`)
+    console.log(`    >`, yellow(`yarn dev`))
+  } else if (showInstructionFor === 'multiple') {
+    console.log(bold(cyan(`\n\nYour package \`${packageName}\` is added 🚀\n`)))
+    console.log(`- To run development mode:`)
+    console.log(`    >`, yellow(`yarn dev ${packageName}`))
+  }
 }
