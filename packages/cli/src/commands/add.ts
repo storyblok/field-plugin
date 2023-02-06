@@ -10,18 +10,14 @@ import {
 } from 'fs'
 import Mustache from 'mustache'
 import walk from 'walkdir'
-import {
-  FIELD_PLUGINS_PATH,
-  REPO_ROOT_DIR,
-  TEMPLATES,
-  TEMPLATES_PATH,
-} from '../const'
+import { TEMPLATES, TEMPLATES_PATH } from '../../config'
 import { runCommand } from '../utils'
 
 export type AddArgs = {
   packageName?: string
   template?: string
   dir?: string
+  showInstructionFor?: 'single' | 'multiple'
 }
 
 export type AddFunc = (args: AddArgs) => Promise<void>
@@ -112,7 +108,15 @@ export const add: AddFunc = async (args) => {
 
   console.log(`\nRunning \`yarn install\`..\n`)
   console.log((await runCommand('yarn install')).stdout)
-  console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-  console.log(`- To run development mode:`)
-  console.log(`    >`, yellow(`yarn workspace ${packageName} dev`))
+
+  const showInstructionFor = args.showInstructionFor || 'multiple'
+  if (showInstructionFor === 'single') {
+    console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
+    console.log(`- To run development mode:`)
+    console.log(`    >`, yellow(`yarn dev`))
+  } else if (showInstructionFor === 'multiple') {
+    console.log(bold(cyan(`\n\nYour package \`${packageName}\` is added 🚀\n`)))
+    console.log(`- To run development mode:`)
+    console.log(`    >`, yellow(`yarn dev ${packageName}`))
+  }
 }

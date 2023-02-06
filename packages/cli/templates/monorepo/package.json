@@ -1,0 +1,33 @@
+{
+  "name": "field-plugins",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "yarn workspace ${0} dev",
+    "build": "yarn workspace ${0} build",
+    "test": "yarn workspace ${0} test",
+    "test:watch": "yarn workspace ${0} test:watch",
+    "new": "field-plugin add --dir \"./packages/\"",
+    "deploy": "field-plugin deploy --chooseFrom \"./packages/\"",
+    "lint": "eslint --ext .js,.vue .",
+    "format": "prettier . --write"
+  },
+  "devDependencies": {
+    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.0-test.0.tgz",
+    "@types/node": "18.11.9",
+    "@typescript-eslint/eslint-plugin": "5.45.0",
+    "@typescript-eslint/parser": "5.45.0",
+    "@vue/eslint-config-prettier": "7.0.0",
+    "@vue/eslint-config-typescript": "11.0.2",
+    "eslint": "8.28.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "prettier": "2.8.0",
+    "typescript": "4.6.4",
+    "vite": "4.0.3"
+  },
+  "packageManager": "yarn@3.2.4"
+}

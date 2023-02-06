@@ -1,7 +1,8 @@
 import { existsSync } from 'fs'
+import fse from 'fs-extra'
 import { bold, cyan, red } from 'kleur/colors'
 import { resolve } from 'path'
-import { MONOREPO_FOLDER_NAME, MONOREPO_URL } from '../../const'
+import { MONOREPO_FOLDER_NAME, TEMPLATES_PATH } from '../../../config'
 import { runCommand } from '../../utils'
 
 type CreateMonorepoFunc = (args: { dir: string }) => Promise<void>
@@ -30,15 +31,13 @@ export const createMonorepo: CreateMonorepoFunc = async ({ dir }) => {
 
   console.log(bold(cyan('[info] Creating a repository at the following path:')))
   console.log(`  > ${repoDir}`)
-  await runCommand(`git clone ${MONOREPO_URL} ${folderName}`, {
-    cwd: dir,
-  })
+  fse.copySync(resolve(TEMPLATES_PATH, 'monorepo'), repoDir)
 
   console.log(bold(cyan('[info] Running `yarn install`...')))
   await runCommand(`yarn install`, { cwd: repoDir })
 
-  console.log(bold(cyan('[info] Running `yarn plugin:add`...')))
-  await runCommand(`yarn plugin:add --dir "field_plugins/"`, {
+  console.log(bold(cyan('[info] Creating the first field-plugin...')))
+  await runCommand(`yarn new`, {
     cwd: repoDir,
     shell: true,
     stdio: 'inherit',
