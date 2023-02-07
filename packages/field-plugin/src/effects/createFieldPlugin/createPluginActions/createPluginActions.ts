@@ -10,6 +10,7 @@ import {
   postSetPluginReady,
   postSetValue,
 } from '../../../actions'
+import { postSetAssetModalOpen } from '../../../actions'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
@@ -45,7 +46,8 @@ export const createPluginActions: CreatePluginActions = (onUpdateState) => {
     onUpdateState(state)
   }
   const cleanupEventListener = createPluginMessageListener(onMessage)
-  postSetPluginReady() // Receive the current value
+  // Receive the current value
+  postSetPluginReady()
   return [
     {
       setHeight: (height) => {
@@ -73,6 +75,7 @@ export const createPluginActions: CreatePluginActions = (onUpdateState) => {
         }
         onUpdateState(state)
       },
+      setAssetModalOpen: postSetAssetModalOpen,
       setPluginReady: postSetPluginReady,
       requestContext: postRequestContext,
     },
