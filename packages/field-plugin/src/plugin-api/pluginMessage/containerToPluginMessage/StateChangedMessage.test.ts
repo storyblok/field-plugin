@@ -1,7 +1,10 @@
-import { isMessageToPlugin, MessageToPlugin } from './MessageToPlugin'
+import {
+  isStateChangedMessage,
+  StateChangedMessage,
+} from './StateChangedMessage'
 import { FieldPluginSchema } from './FieldPluginSchema'
 
-const stub: MessageToPlugin = {
+const stub: StateChangedMessage = {
   action: 'loaded',
   uid: '-preview',
   spaceId: null,
@@ -14,14 +17,14 @@ const stub: MessageToPlugin = {
   schema: { options: [], field_type: 'blah' },
 }
 
-describe('MessageToPlugin', () => {
+describe('StateChangedMessage', () => {
   it('should validate', () => {
-    expect(isMessageToPlugin(stub)).toBeTruthy()
+    expect(isStateChangedMessage(stub)).toBeTruthy()
   })
   describe('The "action" property', () => {
     it('equals "loaded"', () => {
       expect(
-        isMessageToPlugin({
+        isStateChangedMessage({
           ...stub,
           action: 'anotherString',
         }),
@@ -31,7 +34,7 @@ describe('MessageToPlugin', () => {
   describe('the "uid" property', () => {
     it('is a string', () => {
       expect(
-        isMessageToPlugin({
+        isStateChangedMessage({
           ...stub,
           uid: 'anything',
         }),
@@ -39,7 +42,7 @@ describe('MessageToPlugin', () => {
     })
     it('is not undefined', () => {
       expect(
-        isMessageToPlugin({
+        isStateChangedMessage({
           ...stub,
           uid: undefined,
         }),
@@ -47,7 +50,7 @@ describe('MessageToPlugin', () => {
     })
     it('is not null', () => {
       expect(
-        isMessageToPlugin({
+        isStateChangedMessage({
           ...stub,
           uid: null,
         }),
@@ -55,7 +58,7 @@ describe('MessageToPlugin', () => {
     })
     it('is not a number', () => {
       expect(
-        isMessageToPlugin({
+        isStateChangedMessage({
           ...stub,
           uid: 123,
         }),
@@ -65,7 +68,7 @@ describe('MessageToPlugin', () => {
   describe('The "schema" property', () => {
     it('is required', () => {
       expect(
-        isMessageToPlugin({
+        isStateChangedMessage({
           ...stub,
           schema: undefined,
         }),
@@ -73,7 +76,7 @@ describe('MessageToPlugin', () => {
     })
     it('must be a schema', () => {
       expect(
-        isMessageToPlugin({
+        isStateChangedMessage({
           ...stub,
           schema: {
             field_type: 'my-field',

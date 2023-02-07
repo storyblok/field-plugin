@@ -1,6 +1,6 @@
-import { MessageToPlugin } from './MessageToPlugin'
+import { StateChangedMessage } from './StateChangedMessage'
 
 /**
  * The plugin container's sends it's state to the plugin
  */
-export type OnMessageToPlugin = (data: MessageToPlugin) => void
+export type OnMessageToPlugin = (data: StateChangedMessage) => void

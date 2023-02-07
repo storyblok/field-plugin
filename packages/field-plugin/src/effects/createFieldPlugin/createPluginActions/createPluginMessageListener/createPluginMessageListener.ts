@@ -1,9 +1,10 @@
-import { hasKey } from '../../../../utils'
 import {
   originFromPluginParams,
-  isMessageToPlugin,
+  isStateChangedMessage,
   pluginUrlParamsFromUrl,
   OnMessageToPlugin,
+  isMessageToPlugin,
+  isAssetSelectedMessage,
 } from '../../../../plugin-api'
 
 export type CreatePluginMessageListener = (
@@ -28,12 +29,22 @@ export const createPluginMessageListener: CreatePluginMessageListener = (
       return
     }
     const { data } = event
-    if (!hasKey(data, 'uid') || data.uid !== fieldTypeParams.uid) {
+
+    if (!isMessageToPlugin(data)) {
+      return
+    }
+
+    if (data.uid !== fieldTypeParams.uid) {
       // Not intended for this field type
       return
     }
-    if (isMessageToPlugin(data)) {
+
+    if (isStateChangedMessage(data)) {
       onStateChange(data)
+    }
+
+    if (isAssetSelectedMessage(data)) {
+      console.log('is asset selected')
     }
   }
   window.addEventListener('message', handleEvent, false)

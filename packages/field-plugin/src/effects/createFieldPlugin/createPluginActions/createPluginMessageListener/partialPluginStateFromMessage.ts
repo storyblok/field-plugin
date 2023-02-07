@@ -1,9 +1,9 @@
 import { recordFromFieldPluginOptions } from '../../../../plugin-api'
 import { PluginState } from '../../../index'
-import { MessageToPlugin } from '../../../../plugin-api'
+import { StateChangedMessage } from '../../../../plugin-api'
 
 export const partialPluginStateFromMessage = (
-  loadedData: MessageToPlugin,
+  loadedData: StateChangedMessage,
 ): Omit<PluginState, 'height' | 'isModalOpen'> => ({
   spaceId: loadedData.spaceId ?? undefined,
   story: loadedData.story ?? undefined,
