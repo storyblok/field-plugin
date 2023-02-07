@@ -3,7 +3,8 @@ export type SetValue = (value: unknown) => void
 export type SetModalOpen = (isModal: boolean) => void
 export type SetPluginReady = () => void
 export type RequestContext = () => void
-export type SetAssetModalOpen = (callback: (filename: string) => void) => void
+export type SetAssetModalOpen = (field: string) => void
+export type SelectAsset = (callback: (filename: string) => void) => void
 
 export type PluginActions = {
   setHeight: SetHeight
@@ -11,5 +12,5 @@ export type PluginActions = {
   setModalOpen: SetModalOpen
   setPluginReady: SetPluginReady
   requestContext: RequestContext
-  setAssetModalOpen: SetAssetModalOpen
+  selectAsset: SelectAsset
 }

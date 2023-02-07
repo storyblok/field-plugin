@@ -13,8 +13,8 @@ import {
   postSetModalOpen,
   postSetPluginReady,
   postSetValue,
+  postSetAssetModalOpen,
 } from '../../../actions'
-import { postSetAssetModalOpen } from '../../../actions'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
@@ -101,7 +101,7 @@ export const createPluginActions: CreatePluginActions = (onUpdateState) => {
         }
         onUpdateState(state)
       },
-      setAssetModalOpen: (callback) => {
+      selectAsset: (callback) => {
         const uid = Math.random().toString(32).slice(2, 10)
         assetSelectedCallbackRef = {
           uid,

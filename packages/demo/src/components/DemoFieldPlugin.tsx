@@ -33,7 +33,7 @@ export const DemoFieldPlugin: FunctionComponent = () => {
       </Button>
       <Button
         onClick={() =>
-          actions.setAssetModalOpen((filename) =>
+          actions.selectAsset((filename) =>
             console.log('picked a file: ', filename),
           )
         }
