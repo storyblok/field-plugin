@@ -5,7 +5,6 @@ export type AssetModalChangeMessage = MessageToContainer<'showAssetModal'> & {
   field: string
 }
 
-//TODO: add tests
 export const isAssetModalChangeMessage = (
   obj: unknown,
 ): obj is AssetModalChangeMessage =>
