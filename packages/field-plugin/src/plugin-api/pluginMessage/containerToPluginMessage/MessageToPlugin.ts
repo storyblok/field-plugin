@@ -1,5 +1,5 @@
 import { hasKey } from '../../../utils'
-// TODO: add tests
+
 export type MessageToPlugin<Action extends string> = {
   action: Action
   uid: string

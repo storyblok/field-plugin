@@ -4,7 +4,7 @@ import { hasKey } from '../../../utils'
 //TODO: tests
 export type AssetSelectedMessage = MessageToPlugin<'asset-selected'> & {
   field: string
-  filename: 'string'
+  filename: string
 }
 
 export const isAssetSelectedMessage = (
