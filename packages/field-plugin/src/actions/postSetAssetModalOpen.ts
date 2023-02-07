@@ -1,12 +1,11 @@
 import { postPluginMessage } from './postPluginMessage'
-import { SetAssetModalOpen } from './index'
 
 /**
  * TODO: change
  * Instructs the parent window to open the filed type in a modal window.
  * @param field
  */
-export const postSetAssetModalOpen: SetAssetModalOpen = (field) =>
+export const postSetAssetModalOpen: (field: string) => void = (field) =>
   postPluginMessage({
     event: 'showAssetModal',
     field,

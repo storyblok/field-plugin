@@ -7,7 +7,9 @@ export type AssetSelectedMessage = MessageToPlugin<'asset-selected'> & {
   filename: 'string'
 }
 
-export const isAssetSelectedMessage = (obj: unknown) =>
+export const isAssetSelectedMessage = (
+  obj: unknown,
+): obj is AssetSelectedMessage =>
   isMessageToPlugin(obj) &&
   obj.action === 'asset-selected' &&
   hasKey(obj, 'field') &&

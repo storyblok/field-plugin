@@ -31,7 +31,13 @@ export const DemoFieldPlugin: FunctionComponent = () => {
       <Button onClick={() => actions?.setValue((value ?? 0) + 1)}>
         Increment
       </Button>
-      <Button onClick={() => actions.setAssetModalOpen('')}>
+      <Button
+        onClick={() =>
+          actions.setAssetModalOpen((filename) =>
+            console.log('picked a file: ', filename),
+          )
+        }
+      >
         Open Asset Selector
       </Button>
     </Stack>

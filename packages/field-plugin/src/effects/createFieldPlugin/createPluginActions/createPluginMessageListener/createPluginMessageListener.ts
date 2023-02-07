@@ -2,13 +2,15 @@ import {
   originFromPluginParams,
   isStateChangedMessage,
   pluginUrlParamsFromUrl,
-  OnMessageToPlugin,
+  OnStateChangedMessage,
   isMessageToPlugin,
   isAssetSelectedMessage,
+  OnAssetSelectedMessage,
 } from '../../../../plugin-api'
 
 export type CreatePluginMessageListener = (
-  onStateChange: OnMessageToPlugin,
+  onStateChange: OnStateChangedMessage,
+  onAssetSelected: OnAssetSelectedMessage,
 ) => () => void
 
 /**
@@ -17,6 +19,7 @@ export type CreatePluginMessageListener = (
  */
 export const createPluginMessageListener: CreatePluginMessageListener = (
   onStateChange,
+  onAssetSelected,
 ) => {
   const handleEvent = (event: MessageEvent<unknown>) => {
     const fieldTypeParams = pluginUrlParamsFromUrl(window.location.search)
@@ -44,7 +47,7 @@ export const createPluginMessageListener: CreatePluginMessageListener = (
     }
 
     if (isAssetSelectedMessage(data)) {
-      console.log('is asset selected')
+      onAssetSelected(data)
     }
   }
   window.addEventListener('message', handleEvent, false)
