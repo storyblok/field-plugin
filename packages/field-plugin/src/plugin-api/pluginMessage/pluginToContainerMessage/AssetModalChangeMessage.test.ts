@@ -1,4 +1,7 @@
-import { AssetModalChangeMessage } from './AssetModalChangeMessage'
+import {
+  AssetModalChangeMessage,
+  isAssetModalChangeMessage,
+} from './AssetModalChangeMessage'
 
 const stub: AssetModalChangeMessage = {
   action: 'plugin-changed',
@@ -8,9 +11,18 @@ const stub: AssetModalChangeMessage = {
 }
 
 describe('AssetModalChangeMessage', () => {
-  it.todo('is a MessageToContainer')
-  describe('the "field" property', () => {
-    it.todo('is required')
-    it.todo('is a string')
+  it('should be an event showAssetModal', () => {
+    expect(isAssetModalChangeMessage(stub)).toBeTruthy()
+    expect(
+      isAssetModalChangeMessage({ ...stub, event: 'wrong-event' }),
+    ).toBeFalsy()
+    expect(isAssetModalChangeMessage({ ...stub, event: undefined })).toBeFalsy()
+    expect(isAssetModalChangeMessage({ ...stub, event: null })).toBeFalsy()
+  })
+  it('should include field that is of type string', () => {
+    expect(isAssetModalChangeMessage(stub)).toBeTruthy()
+    expect(isAssetModalChangeMessage({ ...stub, field: 1 })).toBeFalsy()
+    expect(isAssetModalChangeMessage({ ...stub, field: undefined })).toBeFalsy()
+    expect(isAssetModalChangeMessage({ ...stub, field: null })).toBeFalsy()
   })
 })
