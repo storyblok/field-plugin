@@ -4,6 +4,7 @@ import { bold, cyan, red } from 'kleur/colors'
 import { resolve } from 'path'
 import { MONOREPO_FOLDER_NAME, TEMPLATES_PATH } from '../../../config'
 import { runCommand } from '../../utils'
+import { add } from '../add'
 
 type CreateMonorepoFunc = (args: { dir: string }) => Promise<void>
 
@@ -37,9 +38,5 @@ export const createMonorepo: CreateMonorepoFunc = async ({ dir }) => {
   await runCommand(`yarn install`, { cwd: repoDir })
 
   console.log(bold(cyan('[info] Creating the first field-plugin...')))
-  await runCommand(`yarn new`, {
-    cwd: repoDir,
-    shell: true,
-    stdio: 'inherit',
-  })
+  await add({ dir: `${repoDir}/packages`, showInstructionFor: 'multiple' })
 }
