@@ -2,7 +2,7 @@
 import { create, add, deploy } from './commands'
 import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
-
+import packageJson from './../package.json'
 export type Template = 'vue2'
 export type Structure = 'single' | 'multiple'
 
@@ -12,6 +12,7 @@ const structureOptions = ['single', 'multiple']
 
 export const main = () => {
   program
+    .version(packageJson.version)
     .command('create', { isDefault: true })
     .description('creates a new repository to start developing field plugins')
     .option(
