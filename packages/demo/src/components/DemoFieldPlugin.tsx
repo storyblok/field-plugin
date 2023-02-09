@@ -17,6 +17,7 @@ export const DemoFieldPlugin: FunctionComponent = () => {
   const { value } = state
 
   if (typeof value !== 'undefined' && typeof value !== 'number') {
+    actions.setValue(0)
     return (
       <Box>
         Hey, why is number not number or undefined? Got: {JSON.stringify(value)}
@@ -29,6 +30,15 @@ export const DemoFieldPlugin: FunctionComponent = () => {
       <Typography>{value ?? 'undefined'}</Typography>
       <Button onClick={() => actions?.setValue((value ?? 0) + 1)}>
         Increment
+      </Button>
+      <Button
+        onClick={() =>
+          actions.selectAsset((filename) =>
+            console.log('picked a file: ', filename),
+          )
+        }
+      >
+        Open Asset Selector
       </Button>
     </Stack>
   )

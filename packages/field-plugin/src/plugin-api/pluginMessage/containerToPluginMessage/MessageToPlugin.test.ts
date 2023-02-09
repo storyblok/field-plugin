@@ -1,43 +1,19 @@
 import { isMessageToPlugin, MessageToPlugin } from './MessageToPlugin'
-import { FieldPluginSchema } from './FieldPluginSchema'
 
-const stub: MessageToPlugin = {
-  action: 'loaded',
+const stub: MessageToPlugin<'dummy'> = {
+  action: 'dummy',
   uid: '-preview',
-  spaceId: null,
-  model: undefined,
-  token: null,
-  storyId: undefined,
-  blockId: undefined,
-  story: undefined,
-  language: '',
-  schema: { options: [], field_type: 'blah' },
 }
 
-describe('MessageToPlugin', () => {
-  it('should validate', () => {
-    expect(isMessageToPlugin(stub)).toBeTruthy()
-  })
-  describe('The "action" property', () => {
-    it('equals "loaded"', () => {
+describe('message from plugin to container', () => {
+  describe('the uid property', () => {
+    it('is required', () => {
       expect(
         isMessageToPlugin({
           ...stub,
-          action: 'anotherString',
-        }),
-      ).toBeFalsy()
-    })
-  })
-  describe('the "uid" property', () => {
-    it('is a string', () => {
-      expect(
-        isMessageToPlugin({
-          ...stub,
-          uid: 'anything',
+          uid: 'abc',
         }),
       ).toBeTruthy()
-    })
-    it('is not undefined', () => {
       expect(
         isMessageToPlugin({
           ...stub,
@@ -45,15 +21,19 @@ describe('MessageToPlugin', () => {
         }),
       ).toBeFalsy()
     })
-    it('is not null', () => {
+    it('is a string', () => {
       expect(
         isMessageToPlugin({
           ...stub,
-          uid: null,
+          uid: 'abc',
+        }),
+      ).toBeTruthy()
+      expect(
+        isMessageToPlugin({
+          ...stub,
+          uid: undefined,
         }),
       ).toBeFalsy()
-    })
-    it('is not a number', () => {
       expect(
         isMessageToPlugin({
           ...stub,
@@ -62,30 +42,58 @@ describe('MessageToPlugin', () => {
       ).toBeFalsy()
     })
   })
-  describe('The "schema" property', () => {
+  describe('the action property', () => {
     it('is required', () => {
       expect(
         isMessageToPlugin({
           ...stub,
-          schema: undefined,
+          action: 'any-string',
         }),
-      ).toBeFalsy()
-    })
-    it('must be a schema', () => {
+      ).toBeTruthy()
       expect(
         isMessageToPlugin({
           ...stub,
-          schema: {
-            field_type: 'my-field',
-            options: [
-              {
-                name: 'a',
-                value: 'ab',
-              },
-            ],
-          } as FieldPluginSchema,
+          action: undefined,
+        }),
+      ).toBeFalsy()
+    })
+    it('is a string', () => {
+      expect(
+        isMessageToPlugin({
+          ...stub,
+          action: 'any-string',
         }),
       ).toBeTruthy()
+      expect(
+        isMessageToPlugin({
+          ...stub,
+          action: 123,
+        }),
+      ).toBeFalsy()
+      expect(
+        isMessageToPlugin({
+          ...stub,
+          action: undefined,
+        }),
+      ).toBeFalsy()
+      expect(
+        isMessageToPlugin({
+          ...stub,
+          action: true,
+        }),
+      ).toBeFalsy()
+      expect(
+        isMessageToPlugin({
+          ...stub,
+          action: false,
+        }),
+      ).toBeFalsy()
+      expect(
+        isMessageToPlugin({
+          ...stub,
+          action: null,
+        }),
+      ).toBeFalsy()
     })
   })
 })

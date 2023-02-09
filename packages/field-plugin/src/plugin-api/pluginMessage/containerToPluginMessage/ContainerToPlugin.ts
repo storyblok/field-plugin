@@ -1,6 +1,8 @@
-import { MessageToPlugin } from './MessageToPlugin'
+import { StateChangedMessage } from './StateChangedMessage'
+import { AssetSelectedMessage } from './AssetSelectedMessage'
 
 /**
  * The plugin container's sends it's state to the plugin
  */
-export type OnMessageToPlugin = (data: MessageToPlugin) => void
+export type OnStateChangedMessage = (data: StateChangedMessage) => void
+export type OnAssetSelectedMessage = (filename: AssetSelectedMessage) => void

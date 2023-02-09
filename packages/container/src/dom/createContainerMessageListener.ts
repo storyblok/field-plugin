@@ -2,7 +2,7 @@ import {
   isHeightChangeMessage,
   isModalChangeMessage,
   isPluginLoadedMessage,
-  isPluginToWrapperMessage,
+  isMessageToContainer,
   isValueChangeMessage,
   PluginActions,
 } from '@storyblok/field-plugin'
@@ -24,7 +24,7 @@ export const createContainerMessageListener: CreateContainerListener = (
     if (event.origin !== options.iframeOrigin) {
       return
     }
-    if (!isPluginToWrapperMessage(event.data)) {
+    if (!isMessageToContainer(event.data)) {
       return
     }
     const message = event.data

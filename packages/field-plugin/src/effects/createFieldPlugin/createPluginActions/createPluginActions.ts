@@ -1,7 +1,11 @@
+/* eslint-disable functional/no-let */
 import { createPluginMessageListener } from './createPluginMessageListener'
 import { PluginState } from '../../PluginState'
 import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
-import { OnMessageToPlugin } from '../../../plugin-api'
+import {
+  OnAssetSelectedMessage,
+  OnStateChangedMessage,
+} from '../../../plugin-api'
 import {
   PluginActions,
   postRequestContext,
@@ -9,6 +13,7 @@ import {
   postSetModalOpen,
   postSetPluginReady,
   postSetValue,
+  postSetAssetModalOpen,
 } from '../../../actions'
 
 // TODO get rid of this default state
@@ -30,22 +35,45 @@ export type CreatePluginActions = (
   onUpdateState: (state: PluginState) => void,
 ) => [PluginActions, () => void]
 
+// eslint-disable-next-line functional/no-mixed-type
+type CallbackRef = {
+  // using field as sort of uid
+  uid: string
+  callback: (filename: string) => void
+}
+
 export const createPluginActions: CreatePluginActions = (onUpdateState) => {
   // Tracks the full state of the plugin.
   //  Because the container doesn't send the full state in its messages, we need to track it ourselves.
   //  isModal and height is not included in the messages to the children and must thus be tracked here.
   //  In future improved versions of the plugin API, this should not be needed.
-  // eslint-disable-next-line functional/no-let
   let state: PluginState = defaultState
-  const onMessage: OnMessageToPlugin = (data) => {
+
+  let assetSelectedCallbackRef: CallbackRef | undefined = undefined
+
+  const onStateChange: OnStateChangedMessage = (data) => {
     state = {
       ...state,
       ...partialPluginStateFromMessage(data),
     }
     onUpdateState(state)
   }
-  const cleanupEventListener = createPluginMessageListener(onMessage)
-  postSetPluginReady() // Receive the current value
+  const onAssetSelected: OnAssetSelectedMessage = (data) => {
+    if (!assetSelectedCallbackRef) {
+      return
+    }
+    if (assetSelectedCallbackRef.uid === data.field) {
+      assetSelectedCallbackRef.callback(data.filename)
+    }
+  }
+
+  const cleanupEventListener = createPluginMessageListener(
+    onStateChange,
+    onAssetSelected,
+  )
+
+  // Receive the current value
+  postSetPluginReady()
   return [
     {
       setHeight: (height) => {
@@ -72,6 +100,14 @@ export const createPluginActions: CreatePluginActions = (onUpdateState) => {
           isModalOpen,
         }
         onUpdateState(state)
+      },
+      selectAsset: (callback) => {
+        const uid = Math.random().toString(32).slice(2, 10)
+        assetSelectedCallbackRef = {
+          uid,
+          callback,
+        }
+        postSetAssetModalOpen(uid)
       },
       setPluginReady: postSetPluginReady,
       requestContext: postRequestContext,

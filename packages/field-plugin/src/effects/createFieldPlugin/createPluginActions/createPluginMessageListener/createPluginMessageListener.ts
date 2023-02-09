@@ -1,13 +1,16 @@
-import { hasKey } from '../../../../utils'
 import {
   originFromPluginParams,
-  isMessageToPlugin,
+  isStateChangedMessage,
   pluginUrlParamsFromUrl,
-  OnMessageToPlugin,
+  OnStateChangedMessage,
+  isMessageToPlugin,
+  isAssetSelectedMessage,
+  OnAssetSelectedMessage,
 } from '../../../../plugin-api'
 
 export type CreatePluginMessageListener = (
-  onStateChange: OnMessageToPlugin,
+  onStateChange: OnStateChangedMessage,
+  onAssetSelected: OnAssetSelectedMessage,
 ) => () => void
 
 /**
@@ -16,6 +19,7 @@ export type CreatePluginMessageListener = (
  */
 export const createPluginMessageListener: CreatePluginMessageListener = (
   onStateChange,
+  onAssetSelected,
 ) => {
   const handleEvent = (event: MessageEvent<unknown>) => {
     const fieldTypeParams = pluginUrlParamsFromUrl(window.location.search)
@@ -28,12 +32,22 @@ export const createPluginMessageListener: CreatePluginMessageListener = (
       return
     }
     const { data } = event
-    if (!hasKey(data, 'uid') || data.uid !== fieldTypeParams.uid) {
+
+    if (!isMessageToPlugin(data)) {
+      return
+    }
+
+    if (data.uid !== fieldTypeParams.uid) {
       // Not intended for this field type
       return
     }
-    if (isMessageToPlugin(data)) {
+
+    if (isStateChangedMessage(data)) {
       onStateChange(data)
+    }
+
+    if (isAssetSelectedMessage(data)) {
+      onAssetSelected(data)
     }
   }
   window.addEventListener('message', handleEvent, false)

@@ -1,32 +1,14 @@
-import { FieldPluginSchema, isFieldPluginSchema } from './FieldPluginSchema'
 import { hasKey } from '../../../utils'
 
-/**
- * The message that the field type wrapper (parent) sends to the
- *  field type (child) via postMessage().
- */
-// TODO verify this structure
-export type MessageToPlugin = {
-  // Metadata
-  action: 'loaded'
+export type MessageToPlugin<Action extends string> = {
+  action: Action
   uid: string
-  // Related to the context the field type is displayed within
-  language: string
-  spaceId: number | null
-  story: unknown
-  // TODO sometimes string?
-  storyId: number | undefined
-  blockId: number | undefined
-  token: string | null
-  // Related to the field type itself
-  schema: FieldPluginSchema
-  model: unknown
 }
 
-export const isMessageToPlugin = (data: unknown): data is MessageToPlugin =>
-  hasKey(data, 'action') &&
-  data.action === 'loaded' &&
-  hasKey(data, 'uid') &&
-  typeof data.uid === 'string' &&
-  hasKey(data, 'schema') &&
-  isFieldPluginSchema(data.schema)
+export const isMessageToPlugin = (
+  obj: unknown,
+): obj is MessageToPlugin<string> =>
+  hasKey(obj, 'action') &&
+  typeof obj.action === 'string' &&
+  hasKey(obj, 'uid') &&
+  typeof obj.uid === 'string'
