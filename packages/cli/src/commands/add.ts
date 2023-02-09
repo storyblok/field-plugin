@@ -1,4 +1,4 @@
-import { bold, cyan, yellow, red } from 'kleur/colors'
+import { bold, cyan, red, green } from 'kleur/colors'
 import prompts from 'prompts'
 import { resolve, dirname } from 'path'
 import {
@@ -67,8 +67,8 @@ export const add: AddFunc = async (args) => {
 
   const packageName = args.packageName || (await askPackageName())
   const template = args.template || (await selectTemplate())
-
-  const destPath = resolve(args.dir || '.', packageName)
+  const rootPath = resolve(args.dir || '.')
+  const destPath = resolve(rootPath, packageName)
   const templatePath = resolve(TEMPLATES_PATH, template) + '/'
 
   if (!existsSync(templatePath)) {
@@ -107,16 +107,26 @@ export const add: AddFunc = async (args) => {
   })
 
   console.log(`\nRunning \`yarn install\`..\n`)
-  console.log((await runCommand('yarn install')).stdout)
+  console.log(
+    (
+      await runCommand('yarn install', {
+        cwd: destPath,
+      })
+    ).stdout,
+  )
 
+  console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
   const showInstructionFor = args.showInstructionFor || 'multiple'
+
+  console.log(`- To run development mode run the following commands:`)
+
   if (showInstructionFor === 'single') {
-    console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-    console.log(`- To run development mode:`)
-    console.log(`    >`, yellow(`yarn dev`))
-  } else if (showInstructionFor === 'multiple') {
-    console.log(bold(cyan(`\n\nYour package \`${packageName}\` is added 🚀\n`)))
-    console.log(`- To run development mode:`)
-    console.log(`    >`, yellow(`yarn dev ${packageName}`))
+    console.log(`    >`, green(`cd ${destPath}`))
+    console.log(`    >`, green(`yarn dev`))
+    return
   }
+
+  const parentPath = resolve(rootPath, '..')
+  console.log(`    >`, green(`cd ${parentPath}`))
+  console.log(`    >`, green(`yarn dev ${packageName}`))
 }

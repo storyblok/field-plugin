@@ -11,13 +11,13 @@
     "build": "yarn workspace ${0} build",
     "test": "yarn workspace ${0} test",
     "test:watch": "yarn workspace ${0} test:watch",
-    "new": "field-plugin add --dir \"./packages/\"",
-    "deploy": "field-plugin deploy --chooseFrom \"./packages/\"",
+    "new": "field-plugin add --dir \"./packages\"",
+    "deploy": "field-plugin deploy --chooseFrom \"./packages\"",
     "lint": "eslint --ext .js,.vue .",
     "format": "prettier . --write"
   },
   "devDependencies": {
-    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.1-alpha.0.tgz",
+    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.1-alpha.1.tgz",
     "@types/node": "18.11.9",
     "@typescript-eslint/eslint-plugin": "5.45.0",
     "@typescript-eslint/parser": "5.45.0",
