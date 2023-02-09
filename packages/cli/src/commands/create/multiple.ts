@@ -5,8 +5,13 @@ import { resolve } from 'path'
 import { MONOREPO_FOLDER_NAME, TEMPLATES_PATH } from '../../../config'
 import { runCommand } from '../../utils'
 import { add } from '../add'
+import { Template } from '../../main'
 
-type CreateMonorepoFunc = (args: { dir: string }) => Promise<void>
+type CreateMonorepoFunc = (args: {
+  dir: string
+  packageName?: string
+  template?: Template
+}) => Promise<void>
 
 const getPossibleFolderName = (dir: string) => {
   if (!existsSync(resolve(dir, MONOREPO_FOLDER_NAME))) {
@@ -26,7 +31,11 @@ const getPossibleFolderName = (dir: string) => {
   process.exit(1)
 }
 
-export const createMonorepo: CreateMonorepoFunc = async ({ dir }) => {
+export const createMonorepo: CreateMonorepoFunc = async ({
+  dir,
+  packageName,
+  template,
+}) => {
   const folderName = getPossibleFolderName(dir)
   const repoDir = resolve(dir, folderName)
 
@@ -38,5 +47,10 @@ export const createMonorepo: CreateMonorepoFunc = async ({ dir }) => {
   await runCommand(`yarn install`, { cwd: repoDir })
 
   console.log(bold(cyan('[info] Creating the first field-plugin...')))
-  await add({ dir: `${repoDir}/packages`, showInstructionFor: 'multiple' })
+  await add({
+    dir: `${repoDir}/packages`,
+    showInstructionFor: 'multiple',
+    packageName,
+    template,
+  })
 }

@@ -12,12 +12,13 @@ import Mustache from 'mustache'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
 import { runCommand } from '../utils'
+import { Structure } from '../main'
 
 export type AddArgs = {
   packageName?: string
   template?: string
   dir?: string
-  showInstructionFor?: 'single' | 'multiple'
+  showInstructionFor?: Structure
 }
 
 export type AddFunc = (args: AddArgs) => Promise<void>

@@ -1,9 +1,13 @@
 import prompts from 'prompts'
 import { createMonorepo } from './multiple'
 import { createSinglePackageRepo } from './single'
+import { Structure, Template } from '../../main'
 
 export type CreateArgs = {
   dir?: string
+  structure?: Structure
+  packageName?: string
+  template?: Template
 }
 
 export type CreateFunc = (args: CreateArgs) => Promise<void>
@@ -35,17 +39,18 @@ const selectRepositoryStructure = async () => {
         process.exit(1)
       },
     },
-  )) as { structure: 'single' | 'multiple' }
+  )) as { structure: Structure }
   return structure
 }
 
 export const create: CreateFunc = async (opts) => {
-  const dir = opts.dir ?? '.'
+  const { dir = '.', packageName, template } = opts
 
-  const structure = await selectRepositoryStructure()
+  const structure = opts.structure || (await selectRepositoryStructure())
+
   if (structure === 'single') {
-    await createSinglePackageRepo({ dir })
+    await createSinglePackageRepo({ dir, packageName, template })
   } else if (structure === 'multiple') {
-    await createMonorepo({ dir })
+    await createMonorepo({ dir, packageName, template })
   }
 }
