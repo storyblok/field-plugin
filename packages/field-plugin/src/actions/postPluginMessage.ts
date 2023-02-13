@@ -1,4 +1,3 @@
-import { originFromPluginParams } from '../plugin-api'
 import { MessageToContainer } from '../plugin-api'
 import { pluginUrlParamsFromUrl } from '../plugin-api'
 
@@ -24,7 +23,7 @@ export const postPluginMessage: PostPluginMessage = (message) => {
       uid: fieldTypeParams.uid,
       ...message,
     },
-    originFromPluginParams(fieldTypeParams),
+    '*',
   )
 }
 
