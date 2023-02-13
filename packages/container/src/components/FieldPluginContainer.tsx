@@ -6,7 +6,13 @@ import {
   useRef,
   useState,
 } from 'react'
-import { MessageToPlugin } from '@storyblok/field-plugin'
+import {
+  AssetSelectedMessage,
+  originFromPluginParams,
+  PluginUrlParams,
+  StateChangedMessage,
+  urlSearchParamsFromPluginUrlParams,
+} from '@storyblok/field-plugin'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
@@ -29,26 +35,24 @@ import { SchemaEditor } from './SchemaEditor'
 import { ObjectDisplay } from './ObjectDisplay'
 import { FieldTypePreview } from './FieldTypePreview'
 import { FlexTypography } from './FlexTypography'
-import {
-  FieldTypeSchema,
-} from '@storyblok/field-plugin'
-import {createContainerMessageListener} from "../dom/createContainerMessageListener";
+import { FieldPluginSchema } from '@storyblok/field-plugin'
+import { createContainerMessageListener } from '../dom/createContainerMessageListener'
 
-const wrapperProtocol = 'http:'
 const wrapperHost = 'localhost:7070'
 const uid = '-preview'
 
-// type State = {
-//   isModal: boolean
-//   height: number
-//   schema: FieldTypeSchema
-//   value: unknown
-// }
+const pluginParams: PluginUrlParams = {
+  uid,
+  host: wrapperHost,
+  secure: false,
+  preview: true,
+}
 
-export const FieldTypeWrapper: FunctionComponent = () => {
+export const FieldPluginContainer: FunctionComponent = () => {
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
   const iframeOrigin = 'http://localhost:8080'
-  const iframeSrc = `${iframeOrigin}?uid=${uid}&protocol=${wrapperProtocol}&host=${wrapperHost}&preview=1`
+  const urlSearchParams = urlSearchParamsFromPluginUrlParams(pluginParams)
+  const iframeSrc = `${iframeOrigin}?${urlSearchParams}`
 
   const { error } = useNotifications()
 
@@ -56,13 +60,13 @@ export const FieldTypeWrapper: FunctionComponent = () => {
   // TODO replace with useReducer
   const [isModal, setModal] = useState(false)
   const [height, setHeight] = useState(300)
-  const [schema, setSchema] = useState<FieldTypeSchema>({
+  const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
     options: [],
   })
   const [value, setValue] = useState<unknown>(undefined)
 
-  const loadedData = useMemo<MessageToPlugin>(
+  const loadedData = useMemo<StateChangedMessage>(
     () => ({
       model: value,
       schema: schema,
@@ -78,24 +82,39 @@ export const FieldTypeWrapper: FunctionComponent = () => {
     [value, schema],
   )
 
-  const dispatchLoaded = useCallback(
-    (loadedData: MessageToPlugin) => {
-      fieldTypeIframe.current?.contentWindow?.postMessage(
-        loadedData,
-        iframeOrigin,
-      )
+  const dispatchStateChanged = useCallback(
+    (message: StateChangedMessage) => {
+      fieldTypeIframe.current?.contentWindow?.postMessage(message, iframeOrigin)
     },
     [iframeOrigin],
   )
+  const dispatchAssetSelected = useCallback(
+    (message: AssetSelectedMessage) => {
+      fieldTypeIframe.current?.contentWindow?.postMessage(message, iframeOrigin)
+    },
+    [iframeOrigin],
+  )
+
   // Sync field type with the state
   // Unfortunately, it is not possible to sync isModal or height this way
   useEffect(() => {
-    dispatchLoaded(loadedData)
-  }, [dispatchLoaded, loadedData])
+    dispatchStateChanged(loadedData)
+  }, [dispatchStateChanged, loadedData])
   // Listen to messages from field type iframe
   const onLoaded = useCallback(() => {
-    dispatchLoaded(loadedData)
-  }, [dispatchLoaded, loadedData])
+    dispatchStateChanged(loadedData)
+  }, [dispatchStateChanged, loadedData])
+  const onAssetSelected = useCallback(
+    (field: string) => {
+      dispatchAssetSelected({
+        uid: uid,
+        field,
+        action: 'asset-selected',
+        filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
+      })
+    },
+    [dispatchAssetSelected],
+  )
 
   const onGetContext = useCallback(() => {
     error('getContext has not been implemented yet')
@@ -110,6 +129,7 @@ export const FieldTypeWrapper: FunctionComponent = () => {
           setHeight,
           setModalOpen: setModal,
           requestContext: onGetContext,
+          selectAsset: onAssetSelected,
         },
         {
           iframeOrigin,
@@ -117,7 +137,15 @@ export const FieldTypeWrapper: FunctionComponent = () => {
           window,
         },
       ),
-    [iframeOrigin, onLoaded, setValue, setHeight, setModal, onGetContext],
+    [
+      iframeOrigin,
+      onLoaded,
+      setValue,
+      setHeight,
+      setModal,
+      onGetContext,
+      onAssetSelected,
+    ],
   )
 
   return (

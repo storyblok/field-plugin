@@ -7,13 +7,13 @@ import {
   ListSubheader,
   Stack,
 } from '@mui/material'
-import { FieldTypeOption, FieldTypeSchema } from '@storyblok/field-plugin'
+import { FieldPluginOption, FieldPluginSchema } from '@storyblok/field-plugin'
 import { PlusIcon } from '@storyblok/mui'
 import { OptionEditor } from './OptionEditor'
 
 export const SchemaEditor: FunctionComponent<{
-  schema: FieldTypeSchema
-  setSchema: (options: FieldTypeSchema) => void
+  schema: FieldPluginSchema
+  setSchema: (options: FieldPluginSchema) => void
 }> = (props) => {
   const handleAddOption = () => {
     props.setSchema({
@@ -27,14 +27,14 @@ export const SchemaEditor: FunctionComponent<{
       ],
     })
   }
-  const handleRemoveOption = (option: FieldTypeOption) => () => {
+  const handleRemoveOption = (option: FieldPluginOption) => () => {
     props.setSchema({
       ...props.schema,
       options: props.schema.options.filter((o) => o !== option),
     })
   }
   const handleChangeOption =
-    (option: FieldTypeOption) => (newValue: FieldTypeOption) => {
+    (option: FieldPluginOption) => (newValue: FieldPluginOption) => {
       const index = props.schema.options.indexOf(option)
       props.setSchema({
         ...props.schema,

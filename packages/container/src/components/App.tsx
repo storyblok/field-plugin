@@ -1,16 +1,16 @@
 import { FunctionComponent } from 'react'
 import { lightTheme, NotificationProvider } from '@storyblok/mui'
 import { Container, CssBaseline, ThemeProvider } from '@mui/material'
-import { FieldTypeWrapperAppBar } from './FieldTypeWrapperAppBar'
-import { FieldTypeWrapper } from './FieldTypeWrapper'
+import { FieldPluginContainerAppBar } from './FieldPluginContainerAppBar'
+import { FieldPluginContainer } from './FieldPluginContainer'
 
 export const App: FunctionComponent = () => (
   <ThemeProvider theme={lightTheme}>
     <CssBaseline />
-    <FieldTypeWrapperAppBar />
+    <FieldPluginContainerAppBar />
     <NotificationProvider>
       <Container maxWidth="md">
-        <FieldTypeWrapper />
+        <FieldPluginContainer />
       </Container>
     </NotificationProvider>
   </ThemeProvider>
