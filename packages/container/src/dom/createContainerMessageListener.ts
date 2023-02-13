@@ -18,7 +18,6 @@ type ContainerActions = {
   setModalOpen: SetModalOpen
   setPluginReady: SetPluginReady
   requestContext: RequestContext
-  selectAsset: (field: string) => void
 }
 
 export type CreateContainerListener = (
@@ -57,8 +56,6 @@ export const createContainerMessageListener: CreateContainerListener = (
     }
     if (isHeightChangeMessage(message)) {
       eventHandlers.setHeight(message.height)
-    } else if (isAssetModalChangeMessage(message)) {
-      eventHandlers.selectAsset(message.field)
     } else {
       console.warn(
         `Container received unknown message from plugin: ${JSON.stringify(
