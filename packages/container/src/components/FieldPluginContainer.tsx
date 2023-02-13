@@ -88,6 +88,12 @@ export const FieldPluginContainer: FunctionComponent = () => {
     },
     [iframeOrigin],
   )
+  const dispatchAssetSelected = useCallback(
+    (message: AssetSelectedMessage) => {
+      fieldTypeIframe.current?.contentWindow?.postMessage(message, iframeOrigin)
+    },
+    [iframeOrigin],
+  )
 
   // Sync field type with the state
   // Unfortunately, it is not possible to sync isModal or height this way
@@ -98,6 +104,17 @@ export const FieldPluginContainer: FunctionComponent = () => {
   const onLoaded = useCallback(() => {
     dispatchStateChanged(loadedData)
   }, [dispatchStateChanged, loadedData])
+  const onAssetSelected = useCallback(
+    (field: string) => {
+      dispatchAssetSelected({
+        uid: uid,
+        field,
+        action: 'asset-selected',
+        filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
+      })
+    },
+    [dispatchAssetSelected],
+  )
 
   const onGetContext = useCallback(() => {
     error('getContext has not been implemented yet')
@@ -112,6 +129,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
           setHeight,
           setModalOpen: setModal,
           requestContext: onGetContext,
+          selectAsset: onAssetSelected,
         },
         {
           iframeOrigin,
@@ -119,7 +137,15 @@ export const FieldPluginContainer: FunctionComponent = () => {
           window,
         },
       ),
-    [iframeOrigin, onLoaded, setValue, setHeight, setModal, onGetContext],
+    [
+      iframeOrigin,
+      onLoaded,
+      setValue,
+      setHeight,
+      setModal,
+      onGetContext,
+      onAssetSelected,
+    ],
   )
 
   return (
