@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react'
 import { AppBar, Toolbar, Typography } from '@mui/material'
 import { StoryblokLogo } from './StoryblokLogo'
 
-export const FieldTypeWrapperAppBar: FunctionComponent = () => (
+export const FieldPluginContainerAppBar: FunctionComponent = () => (
   <AppBar position="relative">
     <Toolbar>
       <StoryblokLogo />

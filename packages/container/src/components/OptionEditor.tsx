@@ -1,11 +1,11 @@
 import { ChangeEvent, FunctionComponent } from 'react'
 import { Box, Divider, IconButton, InputBase } from '@mui/material'
 import { DeleteIcon, HandleIcon } from '@storyblok/mui'
-import { FieldTypeOption } from '@storyblok/field-plugin'
+import { FieldPluginOption } from '@storyblok/field-plugin'
 
 export const OptionEditor: FunctionComponent<{
-  option: FieldTypeOption
-  setOption: (option: FieldTypeOption) => void
+  option: FieldPluginOption
+  setOption: (option: FieldPluginOption) => void
   removeOption: () => void
 }> = (props) => {
   const handleChangeName = (

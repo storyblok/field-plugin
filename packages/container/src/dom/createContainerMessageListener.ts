@@ -4,11 +4,24 @@ import {
   isPluginLoadedMessage,
   isMessageToContainer,
   isValueChangeMessage,
-  PluginActions,
+  isAssetModalChangeMessage,
+  RequestContext,
+  SetHeight,
+  SetModalOpen,
+  SetPluginReady,
+  SetValue,
 } from '@storyblok/field-plugin'
 
+type ContainerActions = {
+  setHeight: SetHeight
+  setValue: SetValue
+  setModalOpen: SetModalOpen
+  setPluginReady: SetPluginReady
+  requestContext: RequestContext
+}
+
 export type CreateContainerListener = (
-  eventHandlers: PluginActions,
+  eventHandlers: ContainerActions,
   options: {
     window: Window
     iframeOrigin: string
@@ -43,6 +56,12 @@ export const createContainerMessageListener: CreateContainerListener = (
     }
     if (isHeightChangeMessage(message)) {
       eventHandlers.setHeight(message.height)
+    } else {
+      console.warn(
+        `Container received unknown message from plugin: ${JSON.stringify(
+          message,
+        )}`,
+      )
     }
   }
 
