@@ -6,13 +6,3 @@ export type ValueChangeMessage = MessageToContainer<'update'> & {
 }
 export const isValueChangeMessage = (obj: unknown): obj is ValueChangeMessage =>
   isMessageToContainer(obj) && obj.event === 'update' && hasKey(obj, 'model')
-
-export const valueChangeMessage = (
-  uid: string,
-  model: unknown,
-): ValueChangeMessage => ({
-  action: 'plugin-changed',
-  event: 'update',
-  uid,
-  model,
-})
