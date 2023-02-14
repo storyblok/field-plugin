@@ -10,13 +10,8 @@ export const createAutoResizer = (
   const handleResize = () => {
     postToContainer(heightChangeMessage(uid, document.body.clientHeight))
   }
-  const observer = new MutationObserver(handleResize)
-  observer.observe(document.body, {
-    attributes: true,
-    childList: true,
-    characterData: true,
-    subtree: true,
-  })
+  const observer = new ResizeObserver(handleResize)
+  observer.observe(document.body)
   // window.addEventListener('resize', handleResize, false)
   return () => {
     observer.disconnect()
