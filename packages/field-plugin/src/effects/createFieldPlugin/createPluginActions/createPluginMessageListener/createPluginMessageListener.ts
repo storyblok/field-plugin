@@ -1,5 +1,4 @@
 import {
-  originFromPluginParams,
   isStateChangedMessage,
   pluginUrlParamsFromUrl,
   OnStateChangedMessage,
@@ -25,10 +24,6 @@ export const createPluginMessageListener: CreatePluginMessageListener = (
     const fieldTypeParams = pluginUrlParamsFromUrl(window.location.search)
     if (typeof fieldTypeParams === 'undefined') {
       // Missing search params
-      return
-    }
-    if (event.origin !== originFromPluginParams(fieldTypeParams)) {
-      // Not intended for this field type
       return
     }
     const { data } = event
