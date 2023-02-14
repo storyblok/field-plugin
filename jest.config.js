@@ -1,6 +1,7 @@
-/** @type {import('jest').Config} */
 const config = {
-  projects: ['<rootDir>/packages/*'],
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  testRegex: '.*\\.test\\.(js|jsx|ts|tsx)$',
 }
 
 export default config
