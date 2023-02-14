@@ -12,3 +12,13 @@ export const isAssetModalChangeMessage = (
   obj.event === 'showAssetModal' &&
   hasKey(obj, 'field') &&
   typeof obj.field === 'string'
+
+export const assetModalChangeMessage = (
+  uid: string,
+  field: string,
+): AssetModalChangeMessage => ({
+  action: 'plugin-changed',
+  event: 'showAssetModal',
+  uid,
+  field,
+})

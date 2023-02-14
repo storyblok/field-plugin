@@ -12,3 +12,13 @@ export const isHeightChangeMessage = (
   obj.event === 'heightChange' &&
   hasKey(obj, 'height') &&
   typeof obj.height === 'number'
+
+export const heightChangeMessage = (
+  uid: string,
+  height: number,
+): HeightChangeMessage => ({
+  action: 'plugin-changed',
+  event: 'heightChange',
+  uid,
+  height,
+})

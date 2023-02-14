@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "test": "jest",
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
