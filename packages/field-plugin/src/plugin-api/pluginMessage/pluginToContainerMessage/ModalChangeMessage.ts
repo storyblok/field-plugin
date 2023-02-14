@@ -9,13 +9,3 @@ export const isModalChangeMessage = (obj: unknown): obj is ModalChangeMessage =>
   obj.event === 'toggleModal' &&
   hasKey(obj, 'status') &&
   typeof obj.status === 'boolean'
-
-export const modalChangeMessage = (
-  uid: string,
-  status: boolean,
-): ModalChangeMessage => ({
-  action: 'plugin-changed',
-  event: 'toggleModal',
-  uid,
-  status,
-})

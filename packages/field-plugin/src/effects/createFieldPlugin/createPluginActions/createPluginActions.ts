@@ -3,16 +3,18 @@ import { createPluginMessageListener } from './createPluginMessageListener'
 import { PluginState } from '../../PluginState'
 import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
 import {
-  assetModalChangeMessage,
-  getContextMessage,
-  heightChangeMessage,
-  modalChangeMessage,
   OnAssetSelectedMessage,
   OnStateChangedMessage,
-  pluginLoadedMessage,
-  valueChangeMessage,
 } from '../../../plugin-api'
-import { PluginActions } from '../../../actions'
+import {
+  PluginActions,
+  postRequestContext,
+  postSetHeight,
+  postSetModalOpen,
+  postSetPluginReady,
+  postSetValue,
+  postSetAssetModalOpen,
+} from '../../../actions'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
@@ -30,8 +32,6 @@ export const defaultState: PluginState = {
 }
 
 export type CreatePluginActions = (
-  uid: string,
-  postToContainer: (message: unknown) => void,
   onUpdateState: (state: PluginState) => void,
 ) => [PluginActions, () => void]
 
@@ -42,11 +42,7 @@ type CallbackRef = {
   callback: (filename: string) => void
 }
 
-export const createPluginActions: CreatePluginActions = (
-  uid,
-  postToContainer,
-  onUpdateState,
-) => {
+export const createPluginActions: CreatePluginActions = (onUpdateState) => {
   // Tracks the full state of the plugin.
   //  Because the container doesn't send the full state in its messages, we need to track it ourselves.
   //  isModal and height is not included in the messages to the children and must thus be tracked here.
@@ -72,17 +68,16 @@ export const createPluginActions: CreatePluginActions = (
   }
 
   const cleanupEventListener = createPluginMessageListener(
-    uid,
     onStateChange,
     onAssetSelected,
   )
 
   // Receive the current value
-  postToContainer(pluginLoadedMessage(uid))
+  postSetPluginReady()
   return [
     {
       setHeight: (height) => {
-        postToContainer(heightChangeMessage(uid, height))
+        postSetHeight(height)
         state = {
           ...state,
           height,
@@ -90,7 +85,7 @@ export const createPluginActions: CreatePluginActions = (
         onUpdateState(state)
       },
       setValue: (value) => {
-        postToContainer(valueChangeMessage(uid, value))
+        postSetValue(value)
         state = {
           ...state,
           value,
@@ -99,7 +94,7 @@ export const createPluginActions: CreatePluginActions = (
         onUpdateState(state)
       },
       setModalOpen: (isModalOpen) => {
-        postToContainer(modalChangeMessage(uid, isModalOpen))
+        postSetModalOpen(isModalOpen)
         state = {
           ...state,
           isModalOpen,
@@ -107,15 +102,15 @@ export const createPluginActions: CreatePluginActions = (
         onUpdateState(state)
       },
       selectAsset: (callback) => {
-        const callbackRef = Math.random().toString(32).slice(2, 10)
+        const uid = Math.random().toString(32).slice(2, 10)
         assetSelectedCallbackRef = {
-          uid: callbackRef,
+          uid,
           callback,
         }
-        postToContainer(assetModalChangeMessage(uid, callbackRef))
+        postSetAssetModalOpen(uid)
       },
-      setPluginReady: () => postToContainer(pluginLoadedMessage(uid)),
-      requestContext: () => postToContainer(getContextMessage(uid)),
+      setPluginReady: postSetPluginReady,
+      requestContext: postRequestContext,
     },
     cleanupEventListener,
   ]

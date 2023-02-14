@@ -1,14 +1,11 @@
 /**
  * @returns function for cleaning up side effects
  */
-import { heightChangeMessage } from '../../plugin-api'
+import { postSetHeight } from '../../actions'
 
-export const createAutoResizer = (
-  uid: string,
-  postToContainer: (message: unknown) => void,
-) => {
+export const createAutoResizer = () => {
   const handleResize = () => {
-    postToContainer(heightChangeMessage(uid, document.body.clientHeight))
+    postSetHeight(document.body.clientHeight)
   }
   const observer = new MutationObserver(handleResize)
   observer.observe(document.body, {
@@ -20,5 +17,6 @@ export const createAutoResizer = (
   // window.addEventListener('resize', handleResize, false)
   return () => {
     observer.disconnect()
+    // window.removeEventListener('resize', handleResize, false)
   }
 }
