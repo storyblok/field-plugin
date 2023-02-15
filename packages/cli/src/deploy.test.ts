@@ -1,5 +1,5 @@
 import { expect, vi } from 'vitest'
-import { validateDeployOptions } from './commands/deploy'
+import { validateDeployOptions } from './commands'
 
 describe('deploy command', () => {
   it('validates options correctly', () => {
@@ -30,6 +30,7 @@ describe('deploy command', () => {
 
     validateDeployOptions({
       skipPrompts: true,
+      fieldPluginName: 'name',
     })
     expect(exitSpy).toHaveBeenCalledTimes(1)
     expect(logSpy).toHaveBeenCalledTimes(2)

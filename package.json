@@ -22,8 +22,7 @@
     }
   ],
   "workspaces": [
-    "packages/*",
-    "field-plugins/*"
+    "packages/*"
   ],
   "engines": {
     "yarn": "^3.2.4"

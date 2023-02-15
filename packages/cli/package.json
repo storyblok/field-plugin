@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "prepare": "yarn build",
-    "generate": "yarn build:quiet && node ./dist/main.cjs generate",
-    "deploy": "yarn build:quiet && node ./dist/main.cjs deploy",
+    "create": "vite build:quiet && node bin.js",
+    "deploy": "vite build:quiet && node bin.js deploy",
     "build": "vite build && cp -r templates dist/",
     "build:quiet": "vite build --logLevel error",
     "test": "vitest run",

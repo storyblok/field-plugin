@@ -48,15 +48,20 @@ export const main = () => {
     .command('deploy')
     .description('deploys your selected plugin to Storyblok')
     .option('--name <value>', 'name of plugin to be deployed')
+    .option('--token <value>', 'Storyblok personal access token')
     .option('--skipPrompts', 'deploys without prompts', false)
     .action(async function (this: Command) {
-      const { name, skipPrompts } = this.opts<{
+      const { name, skipPrompts, token } = this.opts<{
         name?: string
         skipPrompts?: boolean
+        token?: string
       }>()
-      await deploy({ fieldPluginName: name, skipPrompts } as Parameters<
-        typeof deploy
-      >[0])
+      //TODO: fix typing
+      await deploy({
+        fieldPluginName: name,
+        skipPrompts,
+        token,
+      } as Parameters<typeof deploy>[0])
     })
 
   program
