@@ -3,27 +3,28 @@ import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
 import prompts from 'prompts'
 import walk from 'walkdir'
-import { FIELD_PLUGINS_PATH } from '../../config'
-import { runCommand, validateToken } from '../utils'
+import { loadEnvironmentVariables, runCommand, validateToken } from '../utils'
 import { StoryblokClient } from '../storyblok/storyblok-client'
 
 // TODO: it should receive an optional argument like `--chooseFrom "./field-plugins"`.
 // If it's given, it should ask user to choose one of the field plugins.
 // If not given, it should assume the current directory is a single package repository, and just proceed.
-const REPO_ROOT_DIR = '.'
 
 export type FieldType = { id: number; name: string; body: string }
 
+//TODO: fix types
 export type DeployArgs =
   | {
-      fieldPluginName?: string
-      skipPrompts?: false
       token?: string
+      skipPrompts?: false
+      chooseFrom?: string
+      dir: string
     }
   | {
-      fieldPluginName: string
+      token: string
       skipPrompts: true
-      token?: string
+      dir: string
+      chooseFrom: undefined
     }
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
@@ -33,20 +34,34 @@ type GetFieldPluginToUpdateFunc = (args: {
   skipPrompts?: boolean
   packageName: string
   output: string
+  path: string
 }) => Promise<{ id: number; field_type: { body: string } }>
 
 export const deploy: DeployFunc = async ({
-  fieldPluginName,
   skipPrompts,
   token,
+  chooseFrom,
+  dir,
 }) => {
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's deploy a field-plugin.\n")
 
-  const validatedToken = validateToken(token)
+  loadEnvironmentVariables()
 
-  const packageName = getPackageName(fieldPluginName) ?? (await selectPackage())
-  const outputPath = await buildPackage(packageName)
+  const validatedToken = validateToken(token)
+  const pathToPackage = dir
+
+  //TODO:if chooseFrom is defined then selected is possible otherwise take from packagejson
+  const packageName = chooseFrom
+    ? await selectPackage(chooseFrom)
+    : getPackageName(pathToPackage)
+
+  if (!packageName) {
+    process.exit(1)
+  }
+
+  console.log(bold(cyan(`[info] Building \`${packageName}\`...`)))
+  const outputPath = await buildPackage(pathToPackage)
 
   if (!existsSync(outputPath)) {
     console.log(
@@ -60,6 +75,7 @@ export const deploy: DeployFunc = async ({
   const output = readFileSync(outputPath).toString()
 
   await upsertFieldPlugin({
+    path: pathToPackage,
     packageName,
     skipPrompts,
     token: validatedToken,
@@ -68,7 +84,7 @@ export const deploy: DeployFunc = async ({
 
   console.log(
     bold(green('[SUCCESS]')),
-    'The field-type is deployed successfully.',
+    'The field plugin is deployed successfully.',
   )
 }
 
@@ -77,7 +93,9 @@ const upsertFieldPlugin = async ({
   skipPrompts,
   token,
   output,
+  path,
 }: {
+  path: string
   packageName: string
   skipPrompts?: boolean
   token: string
@@ -96,6 +114,7 @@ const upsertFieldPlugin = async ({
   if (matchingFieldType) {
     const fieldPlugin = await getFieldPluginToUpdate({
       fieldType: matchingFieldType,
+      path,
       packageName,
       skipPrompts,
       output,
@@ -111,12 +130,10 @@ const upsertFieldPlugin = async ({
       ),
     ),
   )
-  const createdFieldPlugin = await storyblokClient.createFieldType(packageName)
-  await storyblokClient.updateFieldType({
-    id: createdFieldPlugin.id,
-    field_type: {
-      body: output,
-    },
+
+  await storyblokClient.createFieldType({
+    name: packageName,
+    body: output,
   })
 }
 
@@ -125,18 +142,13 @@ const getFieldPluginToUpdate: GetFieldPluginToUpdateFunc = async ({
   skipPrompts,
   packageName,
   output,
+  path,
 }) => {
   console.log(bold(cyan('[info] Found a matching field type.')))
 
   const mode = skipPrompts ? 'update' : await selectUpsertMode()
-
   if (mode === 'create') {
-    const packageJsonPath = resolve(
-      REPO_ROOT_DIR,
-      FIELD_PLUGINS_PATH,
-      packageName,
-      'package.json',
-    )
+    const packageJsonPath = resolve(path, packageName, 'package.json')
     console.log(
       bold(red('[ERROR]')),
       'You cannot create a new field type because the same name already exists.',
@@ -155,13 +167,7 @@ const getFieldPluginToUpdate: GetFieldPluginToUpdateFunc = async ({
   }
 }
 
-const getPackageName = (fieldPluginName?: string): string | undefined => {
-  if (!fieldPluginName) {
-    return
-  }
-
-  const path = resolve(REPO_ROOT_DIR, FIELD_PLUGINS_PATH, fieldPluginName)
-
+const getPackageName = (path: string): string | undefined => {
   if (!lstatSync(path).isDirectory()) {
     return
   }
@@ -170,26 +176,31 @@ const getPackageName = (fieldPluginName?: string): string | undefined => {
     return
   }
 
-  return fieldPluginName
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const json: { name: string } = JSON.parse(
+    readFileSync(resolve(path, 'package.json')).toString(),
+  )
+
+  if (!json.name) {
+    return
+  }
+
+  return json.name
 }
 
-const selectPackage = async () => {
+const selectPackage = async (chooseFrom: string) => {
   const packages: string[] = []
-  walk.sync(
-    resolve(REPO_ROOT_DIR, FIELD_PLUGINS_PATH),
-    { max_depth: 1 },
-    (path, stat) => {
-      if (!stat.isDirectory()) {
-        return
-      }
+  walk.sync(resolve(chooseFrom), { max_depth: 1 }, (path, stat) => {
+    if (!stat.isDirectory()) {
+      return
+    }
 
-      if (!isBuildable(path)) {
-        return
-      }
-      // eslint-disable-next-line functional/immutable-data
-      packages.push(path)
-    },
-  )
+    if (!isBuildable(path)) {
+      return
+    }
+    // eslint-disable-next-line functional/immutable-data
+    packages.push(path)
+  })
 
   const { packageName } = (await prompts(
     [
@@ -241,9 +252,7 @@ const selectUpsertMode = async () => {
 const isBuildable = (path: string) => {
   if (!existsSync(resolve(path, 'package.json'))) {
     console.log(
-      `[info] ${FIELD_PLUGINS_PATH}${yellow(
-        basename(path),
-      )} doesn't have \`package.json\`.`,
+      `[info] ${yellow(basename(path))} doesn't have \`package.json\`.`,
     )
     return false
   }
@@ -256,7 +265,7 @@ const isBuildable = (path: string) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   if (!packageJson.scripts?.build) {
     console.log(
-      `[info] ${FIELD_PLUGINS_PATH}${yellow(
+      `[info] ${yellow(
         basename(path),
       )}/package.json doesn't have \`build\` script.`,
     )
@@ -266,14 +275,12 @@ const isBuildable = (path: string) => {
   return true
 }
 
-const buildPackage = async (packageName: string): Promise<string> => {
-  console.log(bold(cyan(`[info] Building \`${packageName}\`...`)))
-
+const buildPackage = async (path: string): Promise<string> => {
   try {
     console.log(
       (
-        await runCommand(`yarn build ${packageName}`, {
-          cwd: REPO_ROOT_DIR,
+        await runCommand(`yarn build`, {
+          cwd: path,
         })
       ).stdout,
     )
@@ -284,23 +291,5 @@ const buildPackage = async (packageName: string): Promise<string> => {
     process.exit(1)
   }
 
-  return resolve(
-    REPO_ROOT_DIR,
-    FIELD_PLUGINS_PATH,
-    packageName,
-    'dist',
-    'index.js',
-  )
-}
-
-export const validateDeployOptions = ({
-  fieldPluginName,
-  skipPrompts,
-}: DeployArgs) => {
-  //TODO: if single repo and no plugin name then this is fine
-  if (skipPrompts && !fieldPluginName) {
-    console.log(red('[ERROR]'), 'Cannot skip prompts without name.\n')
-    console.log('Use --name option to define a plugin name!')
-    process.exit(1)
-  }
+  return resolve(path, 'dist', 'index.js')
 }

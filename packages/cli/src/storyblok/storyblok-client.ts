@@ -1,5 +1,8 @@
 import { red } from 'kleur/colors'
 
+const PARTNER_FIELD_TYPES_API_ENDPOINT =
+  'https://mapi.storyblok.com/v1/partner_field_types/'
+
 export type FieldType = { id: number; name: string; body: string }
 
 export const StoryblokClient = (token: string) => {
@@ -11,7 +14,7 @@ export const StoryblokClient = (token: string) => {
   const fetchFieldTypes = async (page = 1) => {
     const fetch = (await import('node-fetch')).default
     const response = await fetch(
-      `https://mapi.storyblok.com/v1/field_types/?page=${page}`,
+      `${PARTNER_FIELD_TYPES_API_ENDPOINT}?page=${page}`,
       {
         method: 'GET',
         headers,
@@ -47,16 +50,13 @@ export const StoryblokClient = (token: string) => {
 
   const updateFieldType: UpdateFieldTypeFunc = async ({ id, field_type }) => {
     const fetch = (await import('node-fetch')).default
-    const response = await fetch(
-      `https://mapi.storyblok.com/v1/field_types/${id}`,
-      {
-        method: 'PUT',
-        headers: headers,
-        body: JSON.stringify({
-          field_type,
-        }),
-      },
-    )
+    const response = await fetch(`${PARTNER_FIELD_TYPES_API_ENDPOINT}${id}`, {
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify({
+        field_type,
+      }),
+    })
     if (!response.ok) {
       console.log(red('[ERROR]'), 'Failed to update the field-type.')
       console.log(`  > status: ${response.status}`)
@@ -65,15 +65,14 @@ export const StoryblokClient = (token: string) => {
     return response.ok
   }
 
-  const createFieldType = async (name: string) => {
+  //TODO: type
+  const createFieldType = async (body: { name: string; body?: unknown }) => {
     const fetch = (await import('node-fetch')).default
-    const response = await fetch(`https://mapi.storyblok.com/v1/field_types/`, {
+    const response = await fetch(`${PARTNER_FIELD_TYPES_API_ENDPOINT}`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        field_type: {
-          name,
-        },
+        field_type: body,
       }),
     })
     const json = (await response.json()) as {

@@ -47,20 +47,30 @@ export const main = () => {
   program
     .command('deploy')
     .description('deploys your selected plugin to Storyblok')
-    .option('--name <value>', 'name of plugin to be deployed')
     .option('--token <value>', 'Storyblok personal access token')
     .option('--skipPrompts', 'deploys without prompts', false)
+    .option(
+      '--chooseFrom <value>',
+      'path to where all field plugin are located in a monorepo setup',
+    )
+    .addOption(
+      new Option('--dir <value>', 'path to field plugin to be deployed')
+        .conflicts('chooseFrom')
+        .default('.'),
+    )
     .action(async function (this: Command) {
-      const { name, skipPrompts, token } = this.opts<{
-        name?: string
-        skipPrompts?: boolean
+      const { dir, skipPrompts, token, chooseFrom } = this.opts<{
         token?: string
+        skipPrompts?: boolean
+        dir: string
+        chooseFrom?: string
       }>()
       //TODO: fix typing
       await deploy({
-        fieldPluginName: name,
         skipPrompts,
         token,
+        dir,
+        chooseFrom,
       } as Parameters<typeof deploy>[0])
     })
 
