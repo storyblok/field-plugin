@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Storyblok Field-Type plugin</title>
+</head>
+<body class="uk-form">
+<div id="plugin"></div>
+<link href="https://plugins.storyblok.com/assets/css/index-latest.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+  body,
+  html {
+    height: auto;
+    background: transparent;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  @media (max-width: 479px) {
+    .uk-form input,
+    .uk-form select,
+    .uk-form textarea {
+      font-size: inherit;
+    }
+  }
+</style>
+<script type="text/javascript">
+  window.StoryblokPluginRegistered = false;
+  window.StoryblokFieldUid = 'dev';
+  // window.StoryblokLocalMode = true;
+</script>
+<script src="https://app.storyblok.com/assets/js/fieldtype-wrapper.js"></script>
+<!-- Field type Script-->
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

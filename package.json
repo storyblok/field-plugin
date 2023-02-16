@@ -23,7 +23,7 @@
   ],
   "workspaces": [
     "packages/*",
-    "field-plugins/*"
+    "examples/*"
   ],
   "engines": {
     "yarn": "^3.2.4"
@@ -36,6 +36,7 @@
     "test": "jest",
     "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
+    "example:vue3": "yarn workspace vue3 run dev",
     "dev:container": "yarn workspace container run dev",
     "dev:demo": "yarn workspace demo run dev"
   },
