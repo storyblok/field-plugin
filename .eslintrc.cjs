@@ -71,7 +71,6 @@ module.exports = {
     'functional/no-let': 'error',
     'functional/no-throw-statement': 'error',
     'functional/no-class': 'error',
-    'functional/no-mixed-type': 'error',
     'functional/no-this-expression': 'error',
     'functional/no-loop-statement': 'error',
     'functional/no-promise-reject': 'error',
