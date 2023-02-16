@@ -35,7 +35,6 @@ export type CreatePluginActions = (
   onUpdateState: (state: PluginState) => void,
 ) => [PluginActions, () => void]
 
-// eslint-disable-next-line functional/no-mixed-type
 type CallbackRef = {
   // using field as sort of uid
   uid: string
