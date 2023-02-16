@@ -19,13 +19,11 @@
   "scripts": {
     "check:types": "tsc --noEmit",
     "dev": "vite build --watch",
+    "test": "jest",
     "build": "vite build"
   },
   "devDependencies": {
-    "@types/jest": "*",
     "@types/node": "*",
-    "jest": "*",
-    "ts-jest": "*",
     "typescript": "*",
     "vite": "*",
     "vite-plugin-dts": "*"
