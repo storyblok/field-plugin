@@ -1,7 +1,7 @@
 /**
  * @returns function for cleaning up side effects
  */
-import { heightChangeMessage } from '../../plugin-api'
+import { heightChangeMessage } from '../plugin-api'
 
 export const createAutoResizer = (
   uid: string,

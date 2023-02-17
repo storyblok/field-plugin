@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-let */
 import { createPluginMessageListener } from './createPluginMessageListener'
-import { PluginState } from '../../PluginState'
+import { PluginState } from '../PluginState'
 import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
 import {
   assetModalChangeMessage,
@@ -11,8 +11,8 @@ import {
   OnStateChangedMessage,
   pluginLoadedMessage,
   valueChangeMessage,
-} from '../../../plugin-api'
-import { PluginActions } from '../../../actions'
+} from '../../plugin-api'
+import { PluginActions } from '../PluginActions'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
