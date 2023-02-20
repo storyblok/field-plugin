@@ -5,7 +5,7 @@
 /* eslint-disable functional/no-let */
 
 import { createAutoResizer } from './createAutoResizer'
-import {isHeightChangeMessage} from "../plugin-api";
+import { isHeightChangeMessage } from '../plugin-api'
 
 const uid = '093w2jfido'
 
@@ -18,20 +18,23 @@ describe('auto resizer', () => {
     expect(observe).toHaveBeenCalledWith(document.body)
   })
   it('disconnects when the cleanup function is called', () => {
-    const { disconnect } = mockResizeObserver()
+    const { mockResize } = mockResizeObserver()
     const postToContainer = jest.fn()
     const cleanup = createAutoResizer(uid, postToContainer)
-    expect(disconnect).not.toHaveBeenCalled()
+    expect(postToContainer).toHaveBeenCalledTimes(0)
+    mockResize()
+    expect(postToContainer).toHaveBeenCalledTimes(1)
     cleanup()
-    expect(disconnect).toHaveBeenCalled()
+    mockResize()
+    expect(postToContainer).toHaveBeenCalledTimes(1)
   })
   it('post to container the correct number of times', () => {
     const { mockResize } = mockResizeObserver()
     const postToContainer = jest.fn()
     mockResize()
-    expect(postToContainer).not.toHaveBeenCalled()
+    expect(postToContainer).toHaveBeenCalledTimes(0)
     createAutoResizer(uid, postToContainer)
-    expect(postToContainer).not.toHaveBeenCalled()
+    expect(postToContainer).toHaveBeenCalledTimes(0)
     mockResize()
     expect(postToContainer).toHaveBeenCalledTimes(1)
     mockResize()
@@ -69,7 +72,6 @@ describe('auto resizer', () => {
 
 const mockResizeObserver = () => {
   const observe = jest.fn()
-  const disconnect = jest.fn()
 
   // eslint-disable-next-line functional/no-let
   let mockEvents: (() => void)[] = []
@@ -79,6 +81,9 @@ const mockResizeObserver = () => {
     .fn()
     .mockImplementation((onEvent: () => void) => {
       mockEvents = [...mockEvents, onEvent]
+      const disconnect = () => {
+        mockEvents = mockEvents.filter((it) => it !== onEvent)
+      }
       return {
         observe,
         disconnect,
@@ -87,7 +92,6 @@ const mockResizeObserver = () => {
 
   return {
     observe,
-    disconnect,
     mockResize,
   }
 }
