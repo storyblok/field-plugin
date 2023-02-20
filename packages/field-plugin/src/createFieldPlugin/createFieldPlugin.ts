@@ -1,9 +1,9 @@
-import { PluginState } from '../PluginState'
-import { PluginActions } from '../../actions'
+import { PluginState } from './PluginState'
 import { createPluginActions } from './createPluginActions'
 import { createAutoResizer } from './createAutoResizer'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
-import { pluginUrlParamsFromUrl } from '../../plugin-api'
+import { pluginUrlParamsFromUrl } from '../plugin-api'
+import { PluginActions } from './PluginActions'
 
 export type CreateFieldPlugin = (
   onUpdate: (state: PluginState) => void,
