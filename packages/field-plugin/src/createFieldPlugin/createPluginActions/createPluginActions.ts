@@ -11,7 +11,7 @@ import {
   OnStateChangedMessage,
   pluginLoadedMessage,
   valueChangeMessage,
-} from '../../plugin-api'
+} from '../../messaging'
 import { PluginActions } from '../PluginActions'
 
 // TODO get rid of this default state

@@ -2,7 +2,7 @@ import { PluginState } from './PluginState'
 import { createPluginActions } from './createPluginActions'
 import { createAutoResizer } from './createAutoResizer'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
-import { pluginUrlParamsFromUrl } from '../plugin-api'
+import { pluginUrlParamsFromUrl } from '../messaging'
 import { PluginActions } from './PluginActions'
 
 export type CreateFieldPlugin = (

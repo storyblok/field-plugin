@@ -1,7 +1,7 @@
 import {
   OnAssetSelectedMessage,
   OnStateChangedMessage,
-} from '../../../plugin-api'
+} from '../../../messaging'
 import { handlePluginMessage } from './handlePluginMessage'
 
 export type CreatePluginMessageListener = (
