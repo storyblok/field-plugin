@@ -51,6 +51,12 @@ export const main = () => {
     .option('--skipPrompts', 'deploys without prompts', false)
     .addOption(
       new Option(
+        '--output <value>',
+        'defines location of the built output file',
+      ),
+    )
+    .addOption(
+      new Option(
         '--dir <value>',
         'path to field plugin to be deployed',
       ).default('.'),
@@ -59,13 +65,14 @@ export const main = () => {
       new Option(
         '--chooseFrom <value>',
         'path to where all field plugin are located in a monorepo setup',
-      ).conflicts(['dir', 'skipPrompts']),
+      ).conflicts(['dir', 'skipPrompts', 'output']),
     )
     .action(async function (this: Command) {
-      const { dir, skipPrompts, token, chooseFrom } = this.opts<{
-        token?: string
-        skipPrompts?: boolean
+      const { dir, skipPrompts, token, chooseFrom, output } = this.opts<{
         dir: string
+        skipPrompts: boolean
+        output?: string
+        token?: string
         chooseFrom?: string
       }>()
       //TODO: fix typing
@@ -74,6 +81,7 @@ export const main = () => {
         token,
         dir,
         chooseFrom,
+        output,
       } as Parameters<typeof deploy>[0])
     })
 

@@ -19,12 +19,14 @@ export type DeployArgs =
       skipPrompts?: false
       chooseFrom?: string
       dir: string
+      output?: string
     }
   | {
       token: string
       skipPrompts: true
       dir: string
       chooseFrom: undefined
+      output?: string
     }
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
@@ -42,6 +44,7 @@ export const deploy: DeployFunc = async ({
   token,
   chooseFrom,
   dir,
+  output,
 }) => {
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's deploy a field-plugin.\n")
@@ -66,7 +69,12 @@ export const deploy: DeployFunc = async ({
     : rootPackagePath
 
   console.log(bold(cyan(`[info] Building \`${packageName}\`...`)))
-  const outputPath = await buildPackage(packagePath)
+  await buildPackage(packagePath)
+
+  const defaultOutputPath = resolve(packagePath, 'dist', 'index.js')
+
+  const outputPath = output ? resolve(output) : defaultOutputPath
+  console.log('output', outputPath)
 
   if (!existsSync(outputPath)) {
     console.log(
@@ -77,14 +85,14 @@ export const deploy: DeployFunc = async ({
     process.exit(1)
   }
 
-  const output = readFileSync(outputPath).toString()
+  const outputFile = readFileSync(outputPath).toString()
 
   await upsertFieldPlugin({
     path: packagePath,
     packageName,
     skipPrompts,
     token: validatedToken,
-    output,
+    output: outputFile,
   })
 
   console.log(
@@ -280,7 +288,7 @@ const isBuildable = (path: string) => {
   return true
 }
 
-const buildPackage = async (path: string): Promise<string> => {
+const buildPackage = async (path: string): Promise<void> => {
   try {
     console.log(
       (
@@ -295,6 +303,4 @@ const buildPackage = async (path: string): Promise<string> => {
     console.log(red('[ERROR]'), 'Build failed.')
     process.exit(1)
   }
-
-  return resolve(path, 'dist', 'index.js')
 }

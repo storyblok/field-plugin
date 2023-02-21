@@ -17,7 +17,7 @@
     "format": "prettier . --write"
   },
   "devDependencies": {
-    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.1-alpha.11.tgz",
+    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.1-alpha.14.tgz",
     "@types/node": "18.11.9",
     "@typescript-eslint/eslint-plugin": "5.45.0",
     "@typescript-eslint/parser": "5.45.0",
