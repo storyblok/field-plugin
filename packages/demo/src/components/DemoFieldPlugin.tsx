@@ -46,7 +46,7 @@ export const DemoFieldPlugin: FunctionComponent = () => {
         justifyContent="center"
         color="text.secondary"
       >
-        {imageUrl ? (
+        {typeof imageUrl !== 'undefined' ? (
           <Box
             component="img"
             src={imageUrl}
@@ -59,7 +59,7 @@ export const DemoFieldPlugin: FunctionComponent = () => {
           </>
         )}
       </Box>
-      {imageUrl ? (
+      {typeof imageUrl !== 'undefined' ? (
         <Button
           color="error"
           startIcon={<DeleteIcon />}

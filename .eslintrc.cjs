@@ -25,6 +25,7 @@ module.exports = {
       plugins: ['@typescript-eslint'],
       rules: {
         '@typescript-eslint/restrict-plus-operands': 'error',
+        '@typescript-eslint/strict-boolean-expressions': 'error',
         '@typescript-eslint/no-misused-promises': 'off',
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-unused-vars': [
