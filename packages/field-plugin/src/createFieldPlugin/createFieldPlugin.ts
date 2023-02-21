@@ -6,20 +6,53 @@ import { pluginUrlParamsFromUrl } from '../plugin-api'
 import { PluginActions } from './PluginActions'
 
 export type CreateFieldPlugin = (
-  onUpdate: (state: PluginState) => void,
-) => [undefined, undefined] | [PluginActions, () => void]
+  onUpdate: (state: PluginResult) => void,
+) => () => void
+
+export type PluginResult =
+  | {
+      isLoading: true
+      error?: never
+      data?: never
+      actions?: never
+    }
+  | {
+      isLoading: false
+      error: Error
+      data?: never
+      actions?: never
+    }
+  | {
+      isLoading: false
+      error?: never
+      data: PluginState
+      actions: PluginActions
+    }
 
 /**
- * @returns cleanup function
+ * @returns cleanup function for side effects
  */
-// TODO rename to createPlugin
 export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
-  const params = pluginUrlParamsFromUrl(window.location.search)
   const isEmbedded = window.parent !== window
 
-  if (!params || !isEmbedded) {
-    // TODO better error type
-    return [undefined, undefined]
+  if (!isEmbedded) {
+    onUpdateState({
+      error: new Error(`The window is not embedded within another window`),
+      isLoading: false,
+    })
+    return () => undefined
+  }
+
+  const params = pluginUrlParamsFromUrl(window.location.search)
+
+  if (!params) {
+    onUpdateState({
+      error: new Error(
+        `The URL parameters does not match the expected format.`,
+      ),
+      isLoading: false,
+    })
+    return () => undefined
   }
 
   const postToContainer = (message: unknown) => {
@@ -39,14 +72,20 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
   const [actions, cleanupPluginClientSideEffects] = createPluginActions(
     params.uid,
     postToContainer,
-    onUpdateState,
+    (data) => {
+      onUpdateState({
+        isLoading: false,
+        data,
+        actions,
+      })
+    },
   )
 
-  const cleanup = () => {
+  const cleanupSideEffects = () => {
     cleanupPluginClientSideEffects()
     cleanupAutoResizeSideEffects()
     cleanupStyleSideEffects()
   }
 
-  return [actions, cleanup]
+  return cleanupSideEffects
 }
