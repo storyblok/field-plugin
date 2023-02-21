@@ -1,5 +1,5 @@
-import { recordFromFieldPluginOptions } from '../../../plugin-api'
-import { StateChangedMessage } from '../../../plugin-api'
+import { recordFromFieldPluginOptions } from '../../../messaging'
+import { StateChangedMessage } from '../../../messaging'
 import { PluginState } from '../../PluginState'
 
 export const partialPluginStateFromMessage = (

@@ -4,7 +4,7 @@ import {
   isStateChangedMessage,
   OnAssetSelectedMessage,
   OnStateChangedMessage,
-} from '../../../plugin-api'
+} from '../../../messaging'
 
 export const handlePluginMessage = (
   event: MessageEvent<unknown>,
