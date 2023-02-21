@@ -26,6 +26,7 @@ import {
   InputBase,
   Paper,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import {
@@ -212,9 +213,11 @@ export const FieldPluginContainer: FunctionComponent = () => {
                 width: '10em',
               }}
             />
-            <IconButton size="small">
-              <RefreshIcon />
-            </IconButton>
+            <Tooltip title="Reload plugin">
+              <IconButton size="small">
+                <RefreshIcon />
+              </IconButton>
+            </Tooltip>
           </Paper>
         </AccordionActions>
       </Accordion>
