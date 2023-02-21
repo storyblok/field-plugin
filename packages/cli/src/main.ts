@@ -1,8 +1,16 @@
 /* eslint-disable functional/no-this-expression */
-import { create, add, deploy } from './commands'
+import {
+  create,
+  add,
+  deploy,
+  DeployArgs,
+  AddArgs,
+  CreateArgs,
+} from './commands'
 import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
 import packageJson from './../package.json'
+
 export type Template = 'vue2'
 export type Structure = 'single' | 'multiple'
 
@@ -15,10 +23,7 @@ export const main = () => {
     .version(packageJson.version)
     .command('create', { isDefault: true })
     .description('creates a new repository to start developing field plugins')
-    .option(
-      '--dir <value>',
-      'directory to create a repository into (default: `.`)',
-    )
+    .option('--dir <value>', 'directory to create a repository into', '.')
     .option(
       '--name <value>',
       'name of plugin (Lowercase alphanumeric and dash)',
@@ -34,14 +39,9 @@ export const main = () => {
       ),
     )
     .action(async function (this: Command) {
-      const { dir, structure, template, name } = this.opts<{
-        dir?: string
-        structure?: Structure
-        template?: Template
-        name?: string
-      }>()
+      const { dir, structure, template, name } = this.opts<CreateArgs>()
 
-      await create({ dir, structure, template, packageName: name })
+      await create({ dir, structure, template, name })
     })
 
   program
@@ -68,21 +68,16 @@ export const main = () => {
       ).conflicts(['dir', 'skipPrompts', 'output']),
     )
     .action(async function (this: Command) {
-      const { dir, skipPrompts, token, chooseFrom, output } = this.opts<{
-        dir: string
-        skipPrompts: boolean
-        output?: string
-        token?: string
-        chooseFrom?: string
-      }>()
-      //TODO: fix typing
+      const { dir, skipPrompts, token, chooseFrom, output } =
+        this.opts<DeployArgs>()
+
       await deploy({
         skipPrompts,
         token,
         dir,
         chooseFrom,
         output,
-      } as Parameters<typeof deploy>[0])
+      })
     })
 
   program
@@ -97,17 +92,11 @@ export const main = () => {
       '--name <value>',
       'name of plugin (Lowercase alphanumeric and dash)',
     )
-    .option(
-      '--dir <value>',
-      'directory to create a field-plugin into (default: `.`)',
-    )
+    .option('--dir <value>', 'directory to create a field-plugin into', '.')
     .action(async function (this: Command) {
-      const { name, template, dir } = this.opts<{
-        name?: string
-        template?: string
-        dir?: string
-      }>()
-      await add({ packageName: name, template, dir })
+      const { name, template, dir } = this.opts<AddArgs>()
+
+      await add({ name, template, dir })
     })
 
   program.parse(process.argv)

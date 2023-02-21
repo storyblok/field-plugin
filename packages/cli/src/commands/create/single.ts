@@ -3,14 +3,14 @@ import { Template } from '../../main'
 
 type CreateSinglePackageRepoFunc = (args: {
   dir: string
-  packageName?: string
+  name?: string
   template?: Template
 }) => Promise<void>
 
 export const createSinglePackageRepo: CreateSinglePackageRepoFunc = async ({
   dir,
-  packageName,
+  name,
   template,
 }) => {
-  await add({ dir, packageName, template, showInstructionFor: 'single' })
+  await add({ dir, name, template, showInstructionFor: 'single' })
 }

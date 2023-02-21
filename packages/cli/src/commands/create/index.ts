@@ -4,9 +4,9 @@ import { createSinglePackageRepo } from './single'
 import { Structure, Template } from '../../main'
 
 export type CreateArgs = {
-  dir?: string
+  dir: string
   structure?: Structure
-  packageName?: string
+  name?: string
   template?: Template
 }
 
@@ -44,13 +44,13 @@ const selectRepositoryStructure = async () => {
 }
 
 export const create: CreateFunc = async (opts) => {
-  const { dir = '.', packageName, template } = opts
+  const { dir, name, template } = opts
 
   const structure = opts.structure || (await selectRepositoryStructure())
 
   if (structure === 'single') {
-    await createSinglePackageRepo({ dir, packageName, template })
+    await createSinglePackageRepo({ dir, name, template })
   } else if (structure === 'multiple') {
-    await createMonorepo({ dir, packageName, template })
+    await createMonorepo({ dir, name, template })
   }
 }

@@ -5,13 +5,36 @@ const PARTNER_FIELD_TYPES_API_ENDPOINT =
 
 export type FieldType = { id: number; name: string; body: string }
 
-export const StoryblokClient = (token: string) => {
+type CreateFieldTypeFunc = (body: {
+  name: string
+  body?: unknown
+}) => Promise<FieldType>
+
+type UpdateFieldTypeFunc = (args: {
+  id: number
+  field_type: Partial<FieldType>
+}) => Promise<boolean>
+
+type FetchAllFieldTypesFunc = (page?: number) => Promise<FieldType[]>
+
+type FieldPluginResponse = {
+  error?: string
+  field_type: FieldType
+}
+
+type StoryblokClientFunc = (token: string) => {
+  fetchAllFieldTypes: FetchAllFieldTypesFunc
+  createFieldType: CreateFieldTypeFunc
+  updateFieldType: UpdateFieldTypeFunc
+}
+
+export const StoryblokClient: StoryblokClientFunc = (token) => {
   const headers = {
     Authorization: token ?? '',
     'Content-Type': 'application/json',
   }
 
-  const fetchFieldTypes = async (page = 1) => {
+  const fetchFieldTypes: FetchAllFieldTypesFunc = async (page = 1) => {
     const fetch = (await import('node-fetch')).default
     const response = await fetch(
       `${PARTNER_FIELD_TYPES_API_ENDPOINT}?page=${page}`,
@@ -43,11 +66,6 @@ export const StoryblokClient = (token: string) => {
     return results
   }
 
-  type UpdateFieldTypeFunc = (args: {
-    id: number
-    field_type: Partial<FieldType>
-  }) => Promise<boolean>
-
   const updateFieldType: UpdateFieldTypeFunc = async ({ id, field_type }) => {
     const fetch = (await import('node-fetch')).default
     const response = await fetch(`${PARTNER_FIELD_TYPES_API_ENDPOINT}${id}`, {
@@ -65,8 +83,7 @@ export const StoryblokClient = (token: string) => {
     return response.ok
   }
 
-  //TODO: type
-  const createFieldType = async (body: { name: string; body?: unknown }) => {
+  const createFieldType: CreateFieldTypeFunc = async (body) => {
     const fetch = (await import('node-fetch')).default
     const response = await fetch(`${PARTNER_FIELD_TYPES_API_ENDPOINT}`, {
       method: 'POST',
@@ -75,11 +92,10 @@ export const StoryblokClient = (token: string) => {
         field_type: body,
       }),
     })
-    const json = (await response.json()) as {
-      error?: string
-      field_type: FieldType
-    }
+    const json = (await response.json()) as FieldPluginResponse
+
     handleError(json.error)
+
     return json.field_type
   }
 

@@ -9,7 +9,7 @@ import { Template } from '../../main'
 
 type CreateMonorepoFunc = (args: {
   dir: string
-  packageName?: string
+  name?: string
   template?: Template
 }) => Promise<void>
 
@@ -33,7 +33,7 @@ const getPossibleFolderName = (dir: string) => {
 
 export const createMonorepo: CreateMonorepoFunc = async ({
   dir,
-  packageName,
+  name,
   template,
 }) => {
   const folderName = getPossibleFolderName(dir)
@@ -47,10 +47,11 @@ export const createMonorepo: CreateMonorepoFunc = async ({
   await runCommand(`yarn install`, { cwd: repoDir })
 
   console.log(bold(cyan('[info] Creating the first field-plugin...')))
+  //TODO: make more customizable
   await add({
     dir: `${repoDir}/packages`,
     showInstructionFor: 'multiple',
-    packageName,
+    name,
     template,
   })
 }

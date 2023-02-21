@@ -6,28 +6,18 @@ import walk from 'walkdir'
 import { loadEnvironmentVariables, runCommand, validateToken } from '../utils'
 import { StoryblokClient } from '../storyblok/storyblok-client'
 
-// TODO: it should receive an optional argument like `--chooseFrom "./field-plugins"`.
 // If it's given, it should ask user to choose one of the field plugins.
 // If not given, it should assume the current directory is a single package repository, and just proceed.
 
 export type FieldType = { id: number; name: string; body: string }
 
-//TODO: fix types
-export type DeployArgs =
-  | {
-      token?: string
-      skipPrompts?: false
-      chooseFrom?: string
-      dir: string
-      output?: string
-    }
-  | {
-      token: string
-      skipPrompts: true
-      dir: string
-      chooseFrom: undefined
-      output?: string
-    }
+export type DeployArgs = {
+  skipPrompts: boolean
+  dir: string
+  token?: string
+  chooseFrom?: string
+  output?: string
+}
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
 
@@ -54,7 +44,6 @@ export const deploy: DeployFunc = async ({
   const validatedToken = validateToken(token)
   const rootPackagePath = chooseFrom ? resolve(dir, chooseFrom) : dir
 
-  //TODO: if chooseFrom is defined then selection is possible otherwise take the name from package.json
   const packageName = chooseFrom
     ? await selectPackage(chooseFrom)
     : getPackageName(rootPackagePath)
