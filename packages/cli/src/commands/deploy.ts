@@ -29,6 +29,14 @@ type GetFieldPluginToUpdateFunc = (args: {
   path: string
 }) => Promise<{ id: number; field_type: { body: string } }>
 
+type UpsertFieldPluginFunc = (args: {
+  path: string
+  packageName: string
+  skipPrompts?: boolean
+  token: string
+  output: string
+}) => Promise<void>
+
 export const deploy: DeployFunc = async ({
   skipPrompts,
   token,
@@ -90,19 +98,9 @@ export const deploy: DeployFunc = async ({
   )
 }
 
-const upsertFieldPlugin = async ({
-  packageName,
-  skipPrompts,
-  token,
-  output,
-  path,
-}: {
-  path: string
-  packageName: string
-  skipPrompts?: boolean
-  token: string
-  output: string
-}) => {
+const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
+  const { packageName, skipPrompts, token, output, path } = args
+
   const storyblokClient = StoryblokClient(token)
 
   console.log(bold(cyan('[info] Fetching field plugins...')))
@@ -139,13 +137,9 @@ const upsertFieldPlugin = async ({
   })
 }
 
-const getFieldPluginToUpdate: GetFieldPluginToUpdateFunc = async ({
-  fieldType,
-  skipPrompts,
-  packageName,
-  output,
-  path,
-}) => {
+const getFieldPluginToUpdate: GetFieldPluginToUpdateFunc = async (args) => {
+  const { fieldType, skipPrompts, packageName, output, path } = args
+
   console.log(bold(cyan('[info] Found a matching field type.')))
 
   const mode = skipPrompts ? 'update' : await selectUpsertMode()
