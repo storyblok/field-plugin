@@ -49,19 +49,24 @@ export const deploy: DeployFunc = async ({
   loadEnvironmentVariables()
 
   const validatedToken = validateToken(token)
-  const pathToPackage = dir
+  const rootPackagePath = chooseFrom ? resolve(dir, chooseFrom) : dir
 
-  //TODO:if chooseFrom is defined then selected is possible otherwise take from packagejson
+  //TODO: if chooseFrom is defined then selection is possible otherwise take the name from package.json
   const packageName = chooseFrom
     ? await selectPackage(chooseFrom)
-    : getPackageName(pathToPackage)
+    : getPackageName(rootPackagePath)
 
   if (!packageName) {
     process.exit(1)
   }
 
+  // path of the specific field-plugin package
+  const packagePath = chooseFrom
+    ? resolve(rootPackagePath, packageName)
+    : rootPackagePath
+
   console.log(bold(cyan(`[info] Building \`${packageName}\`...`)))
-  const outputPath = await buildPackage(pathToPackage)
+  const outputPath = await buildPackage(packagePath)
 
   if (!existsSync(outputPath)) {
     console.log(
@@ -75,7 +80,7 @@ export const deploy: DeployFunc = async ({
   const output = readFileSync(outputPath).toString()
 
   await upsertFieldPlugin({
-    path: pathToPackage,
+    path: packagePath,
     packageName,
     skipPrompts,
     token: validatedToken,

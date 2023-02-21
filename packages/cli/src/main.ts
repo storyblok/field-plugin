@@ -49,14 +49,17 @@ export const main = () => {
     .description('deploys your selected plugin to Storyblok')
     .option('--token <value>', 'Storyblok personal access token')
     .option('--skipPrompts', 'deploys without prompts', false)
-    .option(
-      '--chooseFrom <value>',
-      'path to where all field plugin are located in a monorepo setup',
+    .addOption(
+      new Option(
+        '--dir <value>',
+        'path to field plugin to be deployed',
+      ).default('.'),
     )
     .addOption(
-      new Option('--dir <value>', 'path to field plugin to be deployed')
-        .conflicts('chooseFrom')
-        .default('.'),
+      new Option(
+        '--chooseFrom <value>',
+        'path to where all field plugin are located in a monorepo setup',
+      ).conflicts(['dir', 'skipPrompts']),
     )
     .action(async function (this: Command) {
       const { dir, skipPrompts, token, chooseFrom } = this.opts<{
