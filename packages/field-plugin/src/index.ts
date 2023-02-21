@@ -1,2 +1,2 @@
 export * from './createFieldPlugin'
-export * from './plugin-api'
+export * from './messaging'
