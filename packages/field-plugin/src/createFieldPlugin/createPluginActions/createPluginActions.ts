@@ -1,18 +1,22 @@
 /* eslint-disable functional/no-let */
 import { createPluginMessageListener } from './createPluginMessageListener'
 import { PluginState } from '../PluginState'
-import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
 import {
   assetModalChangeMessage,
   getContextMessage,
   heightChangeMessage,
   modalChangeMessage,
-  OnAssetSelectedMessage,
-  OnStateChangedMessage,
+  OnAssetSelectMessage,
+  OnContextRequestMessage,
+  OnStateChangeMessage,
   pluginLoadedMessage,
   valueChangeMessage,
 } from '../../messaging'
 import { PluginActions } from '../PluginActions'
+import {
+  partialPluginStateFromContextRequestMessage,
+  partialPluginStateFromStateChangeMessage,
+} from './createPluginMessageListener/partialPluginStateFromMessage'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
@@ -54,14 +58,21 @@ export const createPluginActions: CreatePluginActions = (
 
   let assetSelectedCallbackRef: CallbackRef | undefined = undefined
 
-  const onStateChange: OnStateChangedMessage = (data) => {
+  const onStateChange: OnStateChangeMessage = (data) => {
     state = {
       ...state,
-      ...partialPluginStateFromMessage(data),
+      ...partialPluginStateFromStateChangeMessage(data),
     }
     onUpdateState(state)
   }
-  const onAssetSelected: OnAssetSelectedMessage = (data) => {
+  const onContextRequest: OnContextRequestMessage = (data) => {
+    state = {
+      ...state,
+      ...partialPluginStateFromContextRequestMessage(data),
+    }
+    onUpdateState(state)
+  }
+  const onAssetSelect: OnAssetSelectMessage = (data) => {
     if (!assetSelectedCallbackRef) {
       return
     }
@@ -73,7 +84,8 @@ export const createPluginActions: CreatePluginActions = (
   const cleanupEventListener = createPluginMessageListener(
     uid,
     onStateChange,
-    onAssetSelected,
+    onContextRequest,
+    onAssetSelect,
   )
 
   // Receive the current value
