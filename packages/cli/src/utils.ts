@@ -17,7 +17,7 @@ export const runCommand: RunCommandFunc = async (command, options) => {
 }
 
 //TODO testing
-export const validateToken = (token?: string): string => {
+export const validateToken = (token?: string): string | never => {
   if (token && token !== '') {
     return token
   }
