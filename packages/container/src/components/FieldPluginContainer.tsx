@@ -22,9 +22,10 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
+  FormControl,
   IconButton,
-  InputBase,
-  Paper,
+  InputLabel,
+  OutlinedInput,
   Stack,
   Tooltip,
   Typography,
@@ -43,6 +44,7 @@ import { FieldTypePreview } from './FieldTypePreview'
 import { FlexTypography } from './FlexTypography'
 import { FieldPluginSchema } from '@storyblok/field-plugin'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
+import { useDebounce } from 'use-debounce'
 
 const uid = () => Math.random().toString(32).slice(2)
 
@@ -58,7 +60,9 @@ const pluginParams: PluginUrlParams = {
 
 export const FieldPluginContainer: FunctionComponent = () => {
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
-  const [iframeOrigin, setIframeOrigin] = useState(defaultPluginOrigin)
+  const [iframeOriginInputValue, setIframeOriginInputValue] =
+    useState(defaultPluginOrigin)
+  const [iframeOrigin] = useDebounce(iframeOriginInputValue, 1000)
   const urlSearchParams = urlSearchParamsFromPluginUrlParams(pluginParams)
   const iframeSrc = `${iframeOrigin}?${urlSearchParams}`
   const [iframeUid, setIframeUid] = useState(uid)
@@ -195,30 +199,31 @@ export const FieldPluginContainer: FunctionComponent = () => {
             uid={iframeUid}
           />
         </AccordionDetails>
-        <AccordionActions onClick={refreshIframe}>
-          <Paper
-            sx={{
-              display: 'flex',
-              gap: 2,
-              alignItems: 'center',
-            }}
-          >
-            <InputBase
+        <AccordionActions sx={{ py: 8 }}>
+          <FormControl>
+            <InputLabel htmlFor="plugin-origin">Plugin Origin</InputLabel>
+            <OutlinedInput
+              id="plugin-origin"
               size="small"
-              value={iframeOrigin}
-              onChange={(e) => setIframeOrigin(e.target.value)}
+              label="Plugin Origin"
+              value={iframeOriginInputValue}
+              onChange={(e) => setIframeOriginInputValue(e.target.value)}
               placeholder={defaultPluginOrigin}
               sx={{
-                pt: 1,
-                width: '10em',
+                width: '20em',
               }}
+              endAdornment={
+                <Tooltip title="Reload plugin">
+                  <IconButton
+                    size="small"
+                    onClick={refreshIframe}
+                  >
+                    <RefreshIcon />
+                  </IconButton>
+                </Tooltip>
+              }
             />
-            <Tooltip title="Reload plugin">
-              <IconButton size="small">
-                <RefreshIcon />
-              </IconButton>
-            </Tooltip>
-          </Paper>
+          </FormControl>
         </AccordionActions>
       </Accordion>
       <Accordion>
