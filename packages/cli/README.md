@@ -5,9 +5,9 @@ The Storyblok Field Plugin Command Line Interface provides functionality to crea
 You can create a new field plugin by running:
 
 ```bash
-npx field-plugin
+npx field-plugin@latest
 # or
-npx field-plugin create
+yarn field-plugin create
 ```
 
 [//]: # (add gif with interactive ui)
