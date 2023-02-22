@@ -78,5 +78,11 @@ Now that everything is set up you can go ahead and checkout Storyblok's resource
 🔗 [Webinar Feature Focus: Field Plugin](https://www.youtube.com/watch?v=fvTWZCACDVQ)
 
 
+## :seedling: Contributing
+We are always looking for feedback to create a better developer experience. If you happen to find a bug or simply would like to suggest a new feature, you can do so by [submitting an issue](https://github.com/storyblok/field-plugin/issues).
 
-## Roadmap
+## :date: Roadmap
+In the future, we would like to add more functionality to the CLI: 
+- [ ] Templates for Vue 3, React & Angular
+- [ ] Support for different package managers (npm, pnpm)
+- [ ] Initializing git when creating a new field plugin and + option to opt out
