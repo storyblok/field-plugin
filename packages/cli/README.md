@@ -1,18 +1,36 @@
 # Storyblok Field Plugin CLI
 The Storyblok Field Plugin Command Line Interface provides functionality to create and deploy your field plugins in a much smoother and more intuitive way. Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins at once. In both cases we have got you covered. The CLI supports both a single package and a monorepo setup. To get started, use the following command:
 
-## Create
-You can create a new field plugin by running:
 
+## Installation
+You can add the cli to the project dependencies by running: 
 ```bash
-npx field-plugin@latest
-# or
-yarn field-plugin create
+yarn add @storyblok/field-plugin-cli
 ```
 
-[//]: # (add gif with interactive ui)
+## Usage
+In case no command is present the CLI will default to the `create` command.
+```bash
+yarn field-plugin [options] [command]
+# or
+npx field-plugin@latest [options] [command]
+```
+Available options and commands:
+```bash
+Options:
+  -V, --version     output the version number
+  -h, --help        display help for command
 
-for more customization you can use the following options:
+Commands:
+  create [options]  creates a new repository to start developing field plugins
+  deploy [options]  deploys your selected plugin to Storyblok
+  add    [options]  adds new field-plugin inside your project
+  help   [command]  display help for command
+
+```
+
+### create
+The `create` command allows a set of options for customization.
 
 ```bash
 --dir <value>         directory to create a repository into (default: `.`)
@@ -22,12 +40,7 @@ for more customization you can use the following options:
 -h, --help            display help for command
 ```
 
-## Add
-If you decide to add a new field plugin to your repository you can do so by running: 
-
-```bash
-npx field-plugin add
-```
+### add
 The options for the `add` command are the following:
 
 ```bash
@@ -37,7 +50,7 @@ The options for the `add` command are the following:
 -h, --help          display help for command
 ```
 
-## Deploy
+### deploy
 Uploading your field plugin implementation to Storyblok Partner Portal can be performed by simply running the `deploy` command.
 
 :warning: A token to access the Storyblok Managament API for upserting the field plugin **must** be provided. There are two ways how to pass a token to the CLI. :warning:
@@ -45,10 +58,6 @@ Uploading your field plugin implementation to Storyblok Partner Portal can be pe
 1. provide `--token <STORYBLOK_PERSONAL_ACCESS_TOKEN>` inside the `deploy` command
 2. inside `.env` or `.env.local` create a new variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` 
 
-
-```bash
-npx field-plugin deploy
-```
 For additional customizations you can add the following options to the command:
 
 ```bash
