@@ -19,14 +19,21 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import {
   Accordion,
+  AccordionActions,
   AccordionDetails,
   AccordionSummary,
+  FormControl,
+  IconButton,
+  InputLabel,
+  OutlinedInput,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material'
 import {
   ChevronDownIcon,
   ContentIcon,
+  RefreshIcon,
   SchemaIcon,
   useNotifications,
   ViewIcon,
@@ -37,12 +44,15 @@ import { FieldTypePreview } from './FieldTypePreview'
 import { FlexTypography } from './FlexTypography'
 import { FieldPluginSchema } from '@storyblok/field-plugin'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
+import { useDebounce } from 'use-debounce'
+
+const uid = () => Math.random().toString(32).slice(2)
 
 const wrapperHost = 'localhost:7070'
-const uid = '-preview'
+const defaultPluginOrigin = 'http://localhost:8080'
 
 const pluginParams: PluginUrlParams = {
-  uid,
+  uid: uid(),
   host: wrapperHost,
   secure: false,
   preview: true,
@@ -50,9 +60,12 @@ const pluginParams: PluginUrlParams = {
 
 export const FieldPluginContainer: FunctionComponent = () => {
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
-  const iframeOrigin = 'http://localhost:8080'
+  const [iframeOriginInputValue, setIframeOriginInputValue] =
+    useState(defaultPluginOrigin)
+  const [iframeOrigin] = useDebounce(iframeOriginInputValue, 1000)
   const urlSearchParams = urlSearchParamsFromPluginUrlParams(pluginParams)
   const iframeSrc = `${iframeOrigin}?${urlSearchParams}`
+  const [iframeUid, setIframeUid] = useState(uid)
 
   const { error } = useNotifications()
 
@@ -66,12 +79,16 @@ export const FieldPluginContainer: FunctionComponent = () => {
   })
   const [value, setValue] = useState<unknown>(undefined)
 
+  const refreshIframe = () => {
+    setIframeUid(uid)
+  }
+
   const loadedData = useMemo<StateChangedMessage>(
     () => ({
       model: value,
       schema: schema,
       action: 'loaded',
-      uid: uid,
+      uid: pluginParams.uid,
       blockId: undefined,
       language: 'default',
       spaceId: null,
@@ -82,17 +99,34 @@ export const FieldPluginContainer: FunctionComponent = () => {
     [value, schema],
   )
 
+  const postToPlugin = useCallback(
+    (message: unknown) => {
+      try {
+        fieldTypeIframe.current?.contentWindow?.postMessage(
+          message,
+          iframeOrigin,
+        )
+      } catch (e) {
+        error({
+          title: 'Failed to post message to plugin',
+          message: e instanceof Error ? e.message : undefined,
+        })
+      }
+    },
+    [error, iframeOrigin],
+  )
+
   const dispatchStateChanged = useCallback(
     (message: StateChangedMessage) => {
-      fieldTypeIframe.current?.contentWindow?.postMessage(message, iframeOrigin)
+      postToPlugin(message)
     },
-    [iframeOrigin],
+    [postToPlugin],
   )
   const dispatchAssetSelected = useCallback(
     (message: AssetSelectedMessage) => {
-      fieldTypeIframe.current?.contentWindow?.postMessage(message, iframeOrigin)
+      postToPlugin(message)
     },
-    [iframeOrigin],
+    [postToPlugin],
   )
 
   // Sync field type with the state
@@ -107,7 +141,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
   const onAssetSelected = useCallback(
     (field: string) => {
       dispatchAssetSelected({
-        uid: uid,
+        uid: pluginParams.uid,
         field,
         action: 'asset-selected',
         filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
@@ -133,7 +167,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
         },
         {
           iframeOrigin,
-          uid,
+          uid: pluginParams.uid,
           window,
         },
       ),
@@ -162,8 +196,35 @@ export const FieldPluginContainer: FunctionComponent = () => {
             height={`${height}px`}
             isModal={isModal}
             ref={fieldTypeIframe}
+            uid={iframeUid}
           />
         </AccordionDetails>
+        <AccordionActions sx={{ py: 8 }}>
+          <FormControl>
+            <InputLabel htmlFor="plugin-origin">Plugin Origin</InputLabel>
+            <OutlinedInput
+              id="plugin-origin"
+              size="small"
+              label="Plugin Origin"
+              value={iframeOriginInputValue}
+              onChange={(e) => setIframeOriginInputValue(e.target.value)}
+              placeholder={defaultPluginOrigin}
+              sx={{
+                width: '20em',
+              }}
+              endAdornment={
+                <Tooltip title="Reload plugin">
+                  <IconButton
+                    size="small"
+                    onClick={refreshIframe}
+                  >
+                    <RefreshIcon />
+                  </IconButton>
+                </Tooltip>
+              }
+            />
+          </FormControl>
+        </AccordionActions>
       </Accordion>
       <Accordion>
         <AccordionSummary expandIcon={<ChevronDownIcon />}>

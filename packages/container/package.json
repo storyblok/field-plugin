@@ -19,7 +19,8 @@
     "@storyblok/mui": "0.0.19-alpha",
     "highlight.js": "11.7.0",
     "react": "*",
-    "react-dom": "*"
+    "react-dom": "*",
+    "use-debounce": "^9.0.3"
   },
   "devDependencies": {
     "@types/react-dom": "*",
