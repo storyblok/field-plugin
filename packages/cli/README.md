@@ -6,6 +6,8 @@ You can create a new field plugin by running:
 
 ```bash
 npx field-plugin
+# or
+npx field-plugin create
 ```
 
 [//]: # (add gif with interactive ui)
@@ -20,21 +22,73 @@ for more customization you can use the following options:
  -h, --help            display help for command
 
 ```
-### Supported Frameworks
-We are working on providing templates for the biggest frontend frameworks. Currently, our CLI includes:
+
+## Add
+If you decide to add a new field plugin to your repository you can do so by running: 
+
+```bash
+npx field-plugin add
+```
+The options for the `add` command are the following:
+
+```bash
+  --template <value>  name of template to use (choices: "vue2")
+  --name <value>      name of plugin (Lowercase alphanumeric and dash)
+  --dir <value>       directory to create a field-plugin into (default: `.`)
+  -h, --help          display help for command
+```
+
+## Deploy
+Uploading your field plugin implementation to Storyblok Partner Portal can be performed by simply running the `deploy` command.
+
+ A token to access the Storyblok Managament API for upserting the field plugin **must** to be provided. There are two ways how to pass a token to the CLI. 
+
+1. provide `--token <STORYBLOK_PERSONAL_ACCESS_TOKEN>` inside the `deploy` command
+2. inside `.env` or `.env.local` create a new variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` 
+
+
+```bash
+npx field-plugin deploy
+```
+For additional customizations you can add the following options to the command:
+
+```bash
+--token <value>       Storyblok personal access token
+--skipPrompts         deploys without prompts (default: false)
+--output <value>      defines location of the built output file
+--dir <value>         path to field plugin to be deployed (default: ".")
+--chooseFrom <value>  path to where all field plugin are located in a monorepo setup
+-h, --help            display help for command
+```
+
+## Supported Frameworks
+We are working on providing templates for the popular frontend frameworks. Currently, our CLI includes templates created with:
 
 - Vue 2
 
-## Add
-
-
-## Deploy
-
 ## CI/CD
+[//]: # (TBD)
 
+## :books: What's next?
+Now that everything is set up you can go ahead and checkout Storyblok's resource on field plugins:
 
-## Next Steps
+<ul style="list-style: none">
+<li>
 
-[//]: # ( share resources for field types - documentation or articles or dev guides)
+ 🔗 [Field Plugin Documentation](https://www.storyblok.com/docs/plugins/field-type) 
+
+</li>
+<li>
+
+🔗 [Field Plugin Examples](https://github.com/storyblok/field-type-examples)
+
+</li>
+<li>
+
+🔗 [Webinar Feature Focus: Field Plugin](https://www.youtube.com/watch?v=fvTWZCACDVQ)
+
+</li>
+
+</ul>
 
 ## Roadmap
