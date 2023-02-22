@@ -21,7 +21,7 @@ export const defaultState: PluginState = {
   value: undefined,
   options: {},
   language: undefined,
-  blockId: undefined,
+  blockUid: undefined,
   story: undefined,
   storyId: undefined,
   token: undefined,
