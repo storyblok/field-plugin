@@ -40,7 +40,7 @@ The options for the `add` command are the following:
 ## Deploy
 Uploading your field plugin implementation to Storyblok Partner Portal can be performed by simply running the `deploy` command.
 
-:warning: A token to access the Storyblok Managament API for upserting the field plugin **must** to be provided. There are two ways how to pass a token to the CLI. :warning:
+:warning: A token to access the Storyblok Managament API for upserting the field plugin **must** be provided. There are two ways how to pass a token to the CLI. :warning:
 
 1. provide `--token <STORYBLOK_PERSONAL_ACCESS_TOKEN>` inside the `deploy` command
 2. inside `.env` or `.env.local` create a new variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` 
