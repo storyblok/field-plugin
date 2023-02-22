@@ -17,7 +17,7 @@ export type PluginState = {
   story: StoryData
   storyId: number | undefined
   // TODO: when using in state, call it _uid instead
-  blockId: string | undefined
+  blockId: number | undefined
   token: string | undefined
   uid: string
 }
