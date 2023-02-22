@@ -1,33 +1,12 @@
-import { PluginState } from './PluginState'
 import { createPluginActions } from './createPluginActions'
 import { createAutoResizer } from './createAutoResizer'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
-import { PluginActions } from './PluginActions'
+import { FieldPluginResponse } from './fieldPluginResponse'
 
 export type CreateFieldPlugin = (
-  onUpdate: (state: PluginResult) => void,
+  onUpdate: (state: FieldPluginResponse) => void,
 ) => () => void
-
-export type PluginResult =
-  | {
-      isLoading: true
-      error?: never
-      data?: never
-      actions?: never
-    }
-  | {
-      isLoading: false
-      error: Error
-      data?: never
-      actions?: never
-    }
-  | {
-      isLoading: false
-      error?: never
-      data: PluginState
-      actions: PluginActions
-    }
 
 /**
  * @returns cleanup function for side effects
