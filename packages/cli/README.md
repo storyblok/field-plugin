@@ -7,9 +7,9 @@ The Storyblok Field Plugin Command Line Interface provides functionality to crea
 In case no command is present the CLI will default to the `create` command.
 
 ```bash
-npx @storyblok/field-plugin-cli@latest [options] [command]
+npx @storyblok/field-plugin-cli@latest [command] [options]
 # or
-yarn @storyblok/field-plugin-cli [options] [command]
+yarn @storyblok/field-plugin-cli [command] [options] 
 ```
 Available options and commands:
 ```bash
@@ -26,7 +26,7 @@ Commands:
 [//]: # (TBD Add GIF with interactive mode)
 
 ### create
-The `create` command allows a set of options for customization:
+The `create` command allows a set of **optional** options for customization.
 
 ```bash
 --dir <value>         directory to create a repository into (default: `.`)
@@ -34,6 +34,15 @@ The `create` command allows a set of options for customization:
 --template <value>    name of template to use (choices: "vue2")
 --structure <value>   setup structure (choices: "single", "multiple")
 -h, --help            display help for command
+```
+
+#### Examples
+```bash
+# Creating single Field Plugin with Vue 2 template inside path/to/directory with the project name plugin-example
+npx @storyblok/field-plugin-cli create --dir=path/to/directory --name=plugin-example --template=vue2 --structure=single
+
+# Creating a monorepo with Field Plugin named multi-plugin-example inside path/to/directory with Vue 2 template
+npx @storyblok/field-plugin-cli create --dir=path/to/directory --name=multi-plugin-example --template=vue2 --structure=monorepo
 ```
 
 #### Structure
