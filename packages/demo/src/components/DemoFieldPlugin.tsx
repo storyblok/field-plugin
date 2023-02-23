@@ -11,6 +11,7 @@ import {
 export const DemoFieldPlugin: FunctionComponent = () => {
   const { isLoading, error, data, actions } = useFieldPlugin()
   const [imageUrl, setImageUrl] = useState<string | undefined>()
+
   if (isLoading) {
     return (
       <Box>
@@ -39,14 +40,8 @@ export const DemoFieldPlugin: FunctionComponent = () => {
     )
   }
 
-  console.log('storyId', typeof data.storyId, data.storyId)
-  console.log('blockUid', typeof data.blockUid, data.blockUid)
-  console.log('spaceId', typeof data.spaceId, data.spaceId)
-  console.log('story', data.story)
-
   return (
     <Stack gap={5}>
-      <Button onClick={() => actions.requestContext()}>Request Context</Button>
       <Divider>
         <Typography variant="subtitle1">Field Value</Typography>
       </Divider>
@@ -96,6 +91,11 @@ export const DemoFieldPlugin: FunctionComponent = () => {
           Select Asset
         </Button>
       )}
+      <Divider>
+        <Typography variant="subtitle1">Story</Typography>
+      </Divider>
+      <Typography textAlign="center">{JSON.stringify(data.story)}</Typography>
+      <Button onClick={() => actions.requestContext()}>Request Context</Button>
     </Stack>
   )
 }
