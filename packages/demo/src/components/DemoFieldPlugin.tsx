@@ -1,5 +1,13 @@
 import { FunctionComponent, useState } from 'react'
-import { Box, Button, Divider, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Divider,
+  FormControlLabel,
+  Stack,
+  Switch,
+  Typography,
+} from '@mui/material'
 import { useFieldPlugin } from '../useFieldPlugin'
 import {
   AssetIcon,
@@ -48,6 +56,18 @@ export const DemoFieldPlugin: FunctionComponent = () => {
       <Button onClick={() => actions?.setValue((value ?? 0) + 1)}>
         Increment
       </Button>
+      <Divider>
+        <Typography variant="subtitle1">Modal</Typography>
+      </Divider>
+      <FormControlLabel
+        control={<Switch defaultChecked />}
+        checked={data.isModalOpen}
+        onChange={() => actions.setModalOpen(!data.isModalOpen)}
+        label="Modal"
+        sx={{
+          justifyContent: 'center',
+        }}
+      />
       <Divider>
         <Typography variant="subtitle1">Asset Selector</Typography>
       </Divider>
