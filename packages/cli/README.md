@@ -1,34 +1,7 @@
 # Storyblok Field Plugin CLI
 [//]: # (TBD Add storyblok social media and package links)
 
-The Storyblok Field Plugin Command Line Interface provides functionality to create and deploy your field plugins in a much smoother and more intuitive way.  
-
-
-## :rocket:	Modes
-Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a single package and a monorepo setup.
-
-### Single
-Here is a simplified folder structure of a single package mode:
-
-```bash
-- field-plugin
-  - src
-    - App.vue/tsx/jsx
-  - index.html
-  - package.json
-```
-
-### Multiple (Monorepo)
-For a multiple package setup, we are using the following project structure:
-
-```bash
-- field-plugins
-  - packages
-    - field-plugin
-    - index.html
-    - package.json
-  - package.json
-```
+The Storyblok Field Plugin Command Line Interface provides functionality to create and deploy your field plugins in a much smoother and more intuitive way. To get started, use the following command:
 
 ## :electric_plug: Installation
 You can add the CLI to the project dependencies by running: 
@@ -66,6 +39,32 @@ The `create` command allows a set of options for customization:
 --template <value>    name of template to use (choices: "vue2")
 --structure <value>   setup structure (choices: "single", "multiple")
 -h, --help            display help for command
+```
+
+#### Structure
+Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a single package and a monorepo setup.
+
+##### single
+Here is a simplified folder structure of a single package mode:
+
+```bash
+- field-plugin
+  - src
+    - App.vue/tsx/jsx
+  - index.html
+  - package.json
+```
+
+#### multiple (Monorepo)
+For a multiple package setup, we are using the following project structure:
+
+```bash
+- field-plugins
+  - packages
+    - field-plugin
+    - index.html
+    - package.json
+  - package.json
 ```
 [//]: # (TBD Add GIF with interactive mode)
 
