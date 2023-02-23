@@ -9,7 +9,10 @@ export const App: FunctionComponent = () => (
     <CssBaseline />
     <FieldPluginContainerAppBar />
     <NotificationProvider>
-      <Container maxWidth="md">
+      <Container
+        maxWidth="md"
+        sx={{ py: 10 }}
+      >
         <FieldPluginContainer />
       </Container>
     </NotificationProvider>

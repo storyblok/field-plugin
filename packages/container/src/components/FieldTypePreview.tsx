@@ -89,6 +89,8 @@ export const FieldTypePreview = forwardRef<
     src: string
     height: string
     isModal: boolean
+    // Allows the iframe to be refreshed
+    uid?: string
   }
 >(function FieldTypePreview(props, ref) {
   return (
@@ -102,6 +104,7 @@ export const FieldTypePreview = forwardRef<
           <Iframe
             {...props}
             ref={ref}
+            key={props.uid}
           />
         </FieldTypeContainer>
       </FieldTypeModal>

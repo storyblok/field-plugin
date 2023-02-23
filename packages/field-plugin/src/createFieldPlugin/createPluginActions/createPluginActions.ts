@@ -1,7 +1,6 @@
 /* eslint-disable functional/no-let */
 import { createPluginMessageListener } from './createPluginMessageListener'
 import { PluginState } from '../PluginState'
-import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
 import {
   assetModalChangeMessage,
   getContextMessage,
@@ -13,6 +12,7 @@ import {
   valueChangeMessage,
 } from '../../messaging'
 import { PluginActions } from '../PluginActions'
+import { partialPluginStateFromMessage } from './partialPluginStateFromStateChangeMessage'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
@@ -21,8 +21,8 @@ export const defaultState: PluginState = {
   value: undefined,
   options: {},
   language: undefined,
-  blockId: undefined,
-  story: undefined,
+  story: { content: {} },
+  blockUid: undefined,
   storyId: undefined,
   token: undefined,
   uid: '-preview',

@@ -5,7 +5,7 @@
 /* eslint-disable functional/no-let */
 
 import { createAutoResizer } from './createAutoResizer'
-import { isHeightChangeMessage } from '../plugin-api'
+import { isHeightChangeMessage } from '../messaging'
 
 const uid = '093w2jfido'
 
