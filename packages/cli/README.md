@@ -88,6 +88,8 @@ The options for the `add` command are the following:
 ### deploy
 Uploading your field plugin implementation to Storyblok Partner Portal can be performed by simply running the `deploy` command.
 
+[//]: # (Add information about deploy and what is specifically does - uploading content of a file to SB, not building)
+
 >:warning: A token to access the [Storyblok Management API](https://www.storyblok.com/docs/api/management) for upserting the field plugin **must** be provided. There are two ways how to pass a token to the CLI.
 > 1. provide `--token <STORYBLOK_PERSONAL_ACCESS_TOKEN>` inside the `deploy` command
 > 2. inside `.env` or `.env.local` create a new variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` 
@@ -102,6 +104,10 @@ For additional customizations you can add the following options to the command:
 --chooseFrom <value>  path to where all field plugin are located in a monorepo setup
 -h, --help            display help for command
 ```
+
+[//]: # (Add snippet for root script to deploy a package)
+
+
 [//]: # (TBD Add GIF with interactive mode)
 ## :people_hugging: Supported Frameworks
 We are working on providing templates for the popular frontend frameworks. Currently, our CLI includes templates created with:
