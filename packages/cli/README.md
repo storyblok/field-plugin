@@ -3,18 +3,13 @@
 
 The Storyblok Field Plugin Command Line Interface provides functionality to create and deploy your field plugins in a much smoother and more intuitive way. To get started, use the following command:
 
-## :electric_plug: Installation
-You can add the CLI to the project dependencies by running: 
-```bash
-yarn add @storyblok/field-plugin-cli
-```
-
 ## Usage
 In case no command is present the CLI will default to the `create` command.
+
 ```bash
-yarn field-plugin [options] [command]
+npx @storyblok/field-plugin-cli@latest [options] [command]
 # or
-npx field-plugin@latest [options] [command]
+yarn @storyblok/field-plugin-cli [options] [command]
 ```
 Available options and commands:
 ```bash
@@ -107,11 +102,24 @@ For additional customizations you can add the following options to the command:
 
 [//]: # (Add snippet for root script to deploy a package)
 
+## :electric_plug: Installation
+You can add the CLI to an existing field plugin project by running:
+```bash
+yarn add --dev @storyblok/field-plugin-cli
+```
+
+In case you want to access the dependency globally use:
+```bash
+yarn global add @storyblok/field-plugin-cli 
+# or
+npm install @storyblok/field-plugin-cli --global
+```
 
 [//]: # (TBD Add GIF with interactive mode)
 ## :people_hugging: Supported Frameworks
 We are working on providing templates for the popular frontend frameworks. Currently, our CLI includes templates created with:
-
+- React
+- Vue 3
 - Vue 2
 
 ## :books: What's next?
@@ -124,13 +132,12 @@ Now that everything is set up you can go ahead and checkout Storyblok's resource
 🔗 [Webinar Feature Focus: Field Plugin](https://www.youtube.com/watch?v=fvTWZCACDVQ)
 
 ## :seedling: Contributing
-Please see our [contributing guidelines](https://github.com/storyblok/.github/blob/master/contributing.md) and our [code of conduct](https://www.storyblok.com/trust-center#code-of-conduct). We are always looking for feedback to create a better developer experience. If you happen to find a bug or simply would like to suggest a new feature, you can do so by [submitting an issue](https://github.com/storyblok/field-plugin/issues).
+Please see our [contributing guidelines](https://github.com/storyblok/.github/blob/master/contributing.md). We are always looking for feedback to create a better developer experience. If you happen to find a bug or simply would like to suggest a new feature, you can do so by [submitting an issue](https://github.com/storyblok/field-plugin/issues).
 
 [//]: # (TBD provide information on semantic naming conventions for brnaches?)
 
 ## :construction: Roadmap
 In the future, we would like to add more functionality to the CLI such as:
-- [ ] Templates for Vue 3, React
 - [ ] Support for different package managers (npm, pnpm)
 - [ ] Initializing git when creating a new field plugin and + option to opt out
 
