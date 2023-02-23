@@ -22,7 +22,7 @@ export const defaultState: PluginState = {
   options: {},
   language: undefined,
   blockId: undefined,
-  story: undefined,
+  story: { content: {} },
   storyId: undefined,
   token: undefined,
   uid: '-preview',

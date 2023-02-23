@@ -1,6 +1,8 @@
 /**
  * Type that describes the complete state of a field type
  */
+import { StoryData } from '../messaging'
+
 export type PluginState = {
   // Not included in the messages to plugin
   height: number
@@ -12,8 +14,9 @@ export type PluginState = {
   // Context
   language: string | undefined
   spaceId: number | undefined
-  story: unknown
+  story: StoryData
   storyId: number | undefined
+  // TODO: when using in state, call it _uid instead
   blockId: number | undefined
   token: string | undefined
   uid: string

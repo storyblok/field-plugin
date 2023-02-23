@@ -12,7 +12,7 @@ const stub: StateChangedMessage = {
   token: null,
   storyId: undefined,
   blockId: undefined,
-  story: undefined,
+  story: { content: {} },
   language: '',
   schema: { options: [], field_type: 'blah' },
 }
