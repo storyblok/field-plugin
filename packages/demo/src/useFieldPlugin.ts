@@ -1,23 +1,16 @@
-import {
-  createFieldPlugin,
-  PluginActions,
-  PluginState,
-} from '@storyblok/field-plugin'
+import { createFieldPlugin, FieldPluginResponse } from '@storyblok/field-plugin'
 import { useEffect, useState } from 'react'
 
-type UseFieldPlugin = () =>
-  | [PluginState, PluginActions]
-  | [undefined, undefined]
+type UseFieldPlugin = () => FieldPluginResponse
 
 export const useFieldPlugin: UseFieldPlugin = () => {
-  const [state, setState] = useState<PluginState | undefined>(undefined)
-  const [actions, setActions] = useState<PluginActions | undefined>(undefined)
+  const [state, setState] = useState<FieldPluginResponse>(() => ({
+    isLoading: true,
+  }))
 
   useEffect(() => {
-    const [actions, cleanupSideEffects] = createFieldPlugin(setState)
-    setActions(actions)
-    return cleanupSideEffects
+    return createFieldPlugin(setState)
   }, [])
 
-  return state && actions ? [state, actions] : [undefined, undefined]
+  return state
 }

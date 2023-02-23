@@ -16,7 +16,7 @@ import { PluginActions } from '../PluginActions'
 import {
   partialPluginStateFromContextRequestMessage,
   partialPluginStateFromStateChangeMessage,
-} from './createPluginMessageListener/partialPluginStateFromMessage'
+} from './createPluginMessageListener'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
@@ -25,8 +25,8 @@ export const defaultState: PluginState = {
   value: undefined,
   options: {},
   language: undefined,
-  blockId: undefined,
-  story: undefined,
+  story: { content: {} },
+  blockUid: undefined,
   storyId: undefined,
   token: undefined,
   uid: '-preview',
