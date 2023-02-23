@@ -92,7 +92,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
       blockId: undefined,
       language: 'default',
       spaceId: null,
-      story: undefined,
+      story: { content: {} },
       storyId: undefined,
       token: null,
     }),

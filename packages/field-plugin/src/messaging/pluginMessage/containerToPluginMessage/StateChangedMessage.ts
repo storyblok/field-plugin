@@ -1,6 +1,7 @@
 import { FieldPluginSchema, isFieldPluginSchema } from './FieldPluginSchema'
 import { hasKey } from '../../../utils'
 import { isMessageToPlugin, MessageToPlugin } from './MessageToPlugin'
+import { isStoryData, StoryData } from './StoryData'
 
 /**
  * The message that the field type wrapper (parent) sends to the
@@ -10,7 +11,7 @@ export type StateChangedMessage = MessageToPlugin<'loaded'> & {
   // If no language is available, for example via the field plugin editor, the language will be an empty string `""`
   language: string
   spaceId: number | null
-  story: unknown
+  story: StoryData
   storyId: number | undefined
   blockId: string | undefined
   token: string | null
@@ -19,10 +20,13 @@ export type StateChangedMessage = MessageToPlugin<'loaded'> & {
   model: unknown
 }
 
+// TODO full implementation of validation
 export const isStateChangedMessage = (
   data: unknown,
 ): data is StateChangedMessage =>
   isMessageToPlugin(data) &&
   data.action === 'loaded' &&
   hasKey(data, 'schema') &&
-  isFieldPluginSchema(data.schema)
+  isFieldPluginSchema(data.schema) &&
+  hasKey(data, 'story') &&
+  isStoryData(data.story)
