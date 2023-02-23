@@ -46,25 +46,31 @@ Sometimes you might want to create only a single field plugin. At other times yo
 
 ##### single
 Here is a simplified folder structure of a single package mode:
-
 ```bash
-- field-plugin
-  - src
-    - App.vue/tsx/jsx
-  - index.html
-  - package.json
+├── field-plugin
+│   ├── src
+│   ├── index.html
+│   ├── package.json
+│   ├── README.md
+│   └── ...
+└──
 ```
 
 #### multiple (Monorepo)
 For a multiple package setup, we are using the following project structure:
-
 ```bash
-- field-plugins
-  - packages
-    - field-plugin
-    - index.html
-    - package.json
-  - package.json
+├── field-plugins
+│   ├── packages
+│   │   ├── field-plugin
+│   │   │   ├── src
+│   │   │   ├── index.html
+│   │   │   ├── package.json
+│   │   │   ├── README.md
+│   │   │   └── ...
+│   │   └── ...
+│   ├── README.md
+│   └── package.json
+└── ...
 ```
 [//]: # (TBD Add GIF with interactive mode)
 
