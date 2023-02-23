@@ -1,9 +1,9 @@
+import { PluginState } from '../PluginState'
 import {
   ContextRequestMessage,
   recordFromFieldPluginOptions,
-} from '../../../messaging'
-import { StateChangedMessage } from '../../../messaging'
-import { PluginState } from '../../PluginState'
+  StateChangedMessage,
+} from '../../messaging'
 
 export const partialPluginStateFromStateChangeMessage = (
   message: StateChangedMessage,
@@ -11,7 +11,7 @@ export const partialPluginStateFromStateChangeMessage = (
   spaceId: message.spaceId ?? undefined,
   story: message.story ?? undefined,
   storyId: message.storyId ?? undefined,
-  blockId: message.blockId ?? undefined,
+  blockUid: message.blockId ?? undefined,
   language: message.language ?? undefined,
   token: message.token ?? undefined,
   options: recordFromFieldPluginOptions(message.schema.options),

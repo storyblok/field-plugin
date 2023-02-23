@@ -34,7 +34,7 @@ export const handlePluginMessage = (
     onAssetSelected(data)
   } else {
     console.debug(
-      'Plugin received unknown message from plugin:',
+      'Plugin received a message from container of an unknown type:',
       JSON.stringify(data),
     )
   }

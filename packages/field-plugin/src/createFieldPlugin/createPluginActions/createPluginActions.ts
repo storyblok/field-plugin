@@ -16,7 +16,7 @@ import { PluginActions } from '../PluginActions'
 import {
   partialPluginStateFromContextRequestMessage,
   partialPluginStateFromStateChangeMessage,
-} from './createPluginMessageListener'
+} from './partialPluginStateFromStateChangeMessage'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
