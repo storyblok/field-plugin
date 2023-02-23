@@ -3,7 +3,7 @@ The Storyblok Field Plugin Command Line Interface provides functionality to crea
 
 
 ## :electric_plug: Installation
-You can add the cli to the project dependencies by running: 
+You can add the CLI to the project dependencies by running: 
 ```bash
 yarn add @storyblok/field-plugin-cli
 ```
@@ -30,7 +30,7 @@ Commands:
 ```
 
 ### create
-The `create` command allows a set of options for customization.
+The `create` command allows a set of options for customization:
 
 ```bash
 --dir <value>         directory to create a repository into (default: `.`)
@@ -53,7 +53,7 @@ The options for the `add` command are the following:
 ### deploy
 Uploading your field plugin implementation to Storyblok Partner Portal can be performed by simply running the `deploy` command.
 
-:warning: A token to access the Storyblok Management API for upserting the field plugin **must** be provided. There are two ways how to pass a token to the CLI. :warning:
+:warning: A token to access the [Storyblok Management API](https://www.storyblok.com/docs/api/management) for upserting the field plugin **must** be provided. There are two ways how to pass a token to the CLI. :warning:
 
 1. provide `--token <STORYBLOK_PERSONAL_ACCESS_TOKEN>` inside the `deploy` command
 2. inside `.env` or `.env.local` create a new variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` 
