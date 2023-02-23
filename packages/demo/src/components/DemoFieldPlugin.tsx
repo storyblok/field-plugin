@@ -1,12 +1,17 @@
 import { FunctionComponent, useState } from 'react'
 import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import { useFieldPlugin } from '../useFieldPlugin'
-import { AssetIcon, DeleteIcon, LoadingIcon } from '@storyblok/mui'
+import {
+  AssetIcon,
+  DeleteIcon,
+  LoadingIcon,
+  SquareErrorIcon,
+} from '@storyblok/mui'
 
 export const DemoFieldPlugin: FunctionComponent = () => {
-  const [state, actions] = useFieldPlugin()
+  const { isLoading, error, data, actions } = useFieldPlugin()
   const [imageUrl, setImageUrl] = useState<string | undefined>()
-  if (typeof state === 'undefined') {
+  if (isLoading) {
     return (
       <Box>
         <LoadingIcon />
@@ -14,8 +19,16 @@ export const DemoFieldPlugin: FunctionComponent = () => {
       </Box>
     )
   }
+  if (error) {
+    return (
+      <Box>
+        <SquareErrorIcon />
+        <Typography>Error</Typography>
+      </Box>
+    )
+  }
 
-  const { value } = state
+  const { value } = data
 
   if (typeof value !== 'undefined' && typeof value !== 'number') {
     actions.setValue(0)
