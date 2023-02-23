@@ -1,8 +1,8 @@
 # Storyblok Field Plugin CLI
-The Storyblok Field Plugin Command Line Interface provides functionality to create and deploy your field plugins in a much smoother and more intuitive way. Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins at once. In both cases we have got you covered. The CLI supports both a single package and a monorepo setup. To get started, use the following command:
+The Storyblok Field Plugin Command Line Interface provides functionality to create and deploy your field plugins in a much smoother and more intuitive way. Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a single package and a monorepo setup. To get started, use the following command:
 
 
-## Installation
+## :electric_plug: Installation
 You can add the cli to the project dependencies by running: 
 ```bash
 yarn add @storyblok/field-plugin-cli
@@ -53,7 +53,7 @@ The options for the `add` command are the following:
 ### deploy
 Uploading your field plugin implementation to Storyblok Partner Portal can be performed by simply running the `deploy` command.
 
-:warning: A token to access the Storyblok Managament API for upserting the field plugin **must** be provided. There are two ways how to pass a token to the CLI. :warning:
+:warning: A token to access the Storyblok Management API for upserting the field plugin **must** be provided. There are two ways how to pass a token to the CLI. :warning:
 
 1. provide `--token <STORYBLOK_PERSONAL_ACCESS_TOKEN>` inside the `deploy` command
 2. inside `.env` or `.env.local` create a new variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` 
@@ -69,13 +69,13 @@ For additional customizations you can add the following options to the command:
 -h, --help            display help for command
 ```
 
-## Supported Frameworks
+## :people_hugging: Supported Frameworks
 We are working on providing templates for the popular frontend frameworks. Currently, our CLI includes templates created with:
 
 - Vue 2
 
-## CI/CD
-[//]: # (TBD)
+
+[//]: # (CI/CD - provide examples for how to setup a flow for ci/cd)
 
 ## :books: What's next?
 Now that everything is set up you can go ahead and checkout Storyblok's resource on field plugins:
@@ -86,12 +86,11 @@ Now that everything is set up you can go ahead and checkout Storyblok's resource
 
 🔗 [Webinar Feature Focus: Field Plugin](https://www.youtube.com/watch?v=fvTWZCACDVQ)
 
-
 ## :seedling: Contributing
 We are always looking for feedback to create a better developer experience. If you happen to find a bug or simply would like to suggest a new feature, you can do so by [submitting an issue](https://github.com/storyblok/field-plugin/issues).
 
-## :date: Roadmap
-In the future, we would like to add more functionality to the CLI: 
-- [ ] Templates for Vue 3, React & Angular
+## :construction: Roadmap
+In the future, we would like to add more functionality to the CLI such as:
+- [ ] Templates for Vue 3, React
 - [ ] Support for different package managers (npm, pnpm)
 - [ ] Initializing git when creating a new field plugin and + option to opt out
