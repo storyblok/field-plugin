@@ -1,6 +1,6 @@
-import { recordFromFieldPluginOptions } from '../../../messaging'
-import { StateChangedMessage } from '../../../messaging'
-import { PluginState } from '../../PluginState'
+import { recordFromFieldPluginOptions } from '../../messaging'
+import { StateChangedMessage } from '../../messaging'
+import { PluginState } from '../PluginState'
 
 export const partialPluginStateFromMessage = (
   loadedData: StateChangedMessage,
