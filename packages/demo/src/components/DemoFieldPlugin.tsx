@@ -19,6 +19,7 @@ import {
 export const DemoFieldPlugin: FunctionComponent = () => {
   const { isLoading, error, data, actions } = useFieldPlugin()
   const [imageUrl, setImageUrl] = useState<string | undefined>()
+
   if (isLoading) {
     return (
       <Box>
@@ -110,6 +111,11 @@ export const DemoFieldPlugin: FunctionComponent = () => {
           Select Asset
         </Button>
       )}
+      <Divider>
+        <Typography variant="subtitle1">Story</Typography>
+      </Divider>
+      <Typography textAlign="center">{JSON.stringify(data.story)}</Typography>
+      <Button onClick={() => actions.requestContext()}>Request Context</Button>
     </Stack>
   )
 }

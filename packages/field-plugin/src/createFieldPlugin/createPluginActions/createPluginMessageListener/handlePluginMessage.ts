@@ -2,15 +2,18 @@ import {
   isAssetSelectedMessage,
   isMessageToPlugin,
   isStateChangedMessage,
-  OnAssetSelectedMessage,
-  OnStateChangedMessage,
+  OnAssetSelectMessage,
+  OnContextRequestMessage,
+  OnStateChangeMessage,
 } from '../../../messaging'
+import { isContextRequestMessage } from '../../../messaging/pluginMessage/containerToPluginMessage/ContextRequestMessage'
 
 export const handlePluginMessage = (
   event: MessageEvent<unknown>,
   uid: string,
-  onStateChange: OnStateChangedMessage,
-  onAssetSelected: OnAssetSelectedMessage,
+  onStateChange: OnStateChangeMessage,
+  onContextRequest: OnContextRequestMessage,
+  onAssetSelected: OnAssetSelectMessage,
 ) => {
   const { data } = event
 
@@ -23,13 +26,16 @@ export const handlePluginMessage = (
   if (data.uid !== uid) {
     // Not intended for this field type
     return
-  }
-
-  if (isStateChangedMessage(data)) {
+  } else if (isStateChangedMessage(data)) {
     onStateChange(data)
-  }
-
-  if (isAssetSelectedMessage(data)) {
+  } else if (isContextRequestMessage(data)) {
+    onContextRequest(data)
+  } else if (isAssetSelectedMessage(data)) {
     onAssetSelected(data)
+  } else {
+    console.debug(
+      'Plugin received a message from container of an unknown type:',
+      JSON.stringify(data),
+    )
   }
 }
