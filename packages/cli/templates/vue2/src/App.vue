@@ -21,7 +21,7 @@
 import joi from 'joi';
 import ValidationResult from './components/ValidationResult.vue';
 import './style.css';
-import { createFieldType } from '@storyblok/field-plugin';
+import { createFieldPlugin } from '@storyblok/field-plugin';
 
 export default {
   components: { ValidationResult },
@@ -46,7 +46,7 @@ export default {
   },
   created() {
     //TODO: Clean up the onUpdate argument inside createFieldType
-    const [actions, cleanupSideEffects] = createFieldType((args) =>
+    const [actions, cleanupSideEffects] = createFieldPlugin((args) =>
       console.log(args)
     );
     this.actions = actions;

@@ -15,9 +15,9 @@ import { runCommand } from '../utils'
 import { Structure } from '../main'
 
 export type AddArgs = {
-  packageName?: string
+  dir: string
+  name?: string
   template?: string
-  dir?: string
   showInstructionFor?: Structure
 }
 
@@ -66,9 +66,9 @@ export const add: AddFunc = async (args) => {
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's create a field-type extension.\n")
 
-  const packageName = args.packageName || (await askPackageName())
+  const packageName = args.name || (await askPackageName())
   const template = args.template || (await selectTemplate())
-  const rootPath = resolve(args.dir || '.')
+  const rootPath = resolve(args.dir)
   const destPath = resolve(rootPath, packageName)
   const templatePath = resolve(TEMPLATES_PATH, template) + '/'
 
