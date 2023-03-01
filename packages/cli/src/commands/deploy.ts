@@ -65,9 +65,6 @@ export const deploy: DeployFunc = async ({
     ? resolve(rootPackagePath, packageName)
     : rootPackagePath
 
-  console.log(bold(cyan(`[info] Building \`${packageName}\`...`)))
-  await buildPackage(packagePath)
-
   const defaultOutputPath = resolve(packagePath, 'dist', 'index.js')
 
   const outputPath = output ? resolve(output) : defaultOutputPath
@@ -269,21 +266,4 @@ const isBuildable = (path: string) => {
   }
 
   return true
-}
-
-const buildPackage = async (path: string): Promise<void> => {
-  try {
-    console.log(
-      (
-        await runCommand(`yarn build`, {
-          cwd: path,
-        })
-      ).stdout,
-    )
-    console.log('')
-  } catch (err) {
-    console.log((err as Error).message)
-    console.log(red('[ERROR]'), 'Build failed.')
-    process.exit(1)
-  }
 }

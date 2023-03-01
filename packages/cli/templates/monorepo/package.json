@@ -12,7 +12,6 @@
     "test": "yarn workspace ${0} test",
     "test:watch": "yarn workspace ${0} test:watch",
     "new": "field-plugin add --dir \"./packages\"",
-    "deploy": "field-plugin deploy --chooseFrom \"./packages\"",
     "lint": "eslint --ext .js,.vue .",
     "format": "prettier . --write"
   },
