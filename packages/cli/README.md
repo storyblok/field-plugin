@@ -38,11 +38,14 @@ The `create` command allows a set of **optional** options for customization.
 
 #### Examples
 ```bash
-# Creating single Field Plugin with Vue 2 template inside path/to/directory with the project name plugin-example
-npx @storyblok/field-plugin-cli create --dir=path/to/directory --name=plugin-example --template=vue2 --structure=single
+# Run this simple command, but if you need, you can add more options
+npx @storyblok/field-plugin-cli
 
-# Creating a monorepo with Field Plugin named multi-plugin-example inside path/to/directory with Vue 2 template
-npx @storyblok/field-plugin-cli create --dir=path/to/directory --name=multi-plugin-example --template=vue2 --structure=monorepo
+# Create a single field plugin with Vue 2 template inside a specific directory with a specific named
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --name=<FIELD_PLUGIN_NAME> --template=vue2 --structure=single
+
+# Create a monorepo with field plugin with a specific named inside a specific directory with Vue 2 template
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --name=<FIELD_PLUGIN_NAME> --template=vue2 --structure=monorepo
 ```
 
 #### Structure
@@ -87,6 +90,14 @@ The options for the `add` command are the following:
 --dir <value>       directory to create a field-plugin into (default: `.`)
 -h, --help          display help for command
 ```
+#### Examples
+```bash
+# Run this simple command and you will be prompted to add details
+npx @storyblok/field-plugin-cli add
+
+# Add field plugin with Vue 2 template to a project outside of the current directory
+npx @storyblok/field-plugin-cli add --name=<FIELD_PLUGIN_NAME> --template=vue2 --dir=<PATH_TO_DIR>
+```
 [//]: # (TBD Add GIF with interactive mode)
 
 ### deploy
@@ -105,8 +116,22 @@ For additional customizations you can add the following options to the command:
 --skipPrompts         deploys without prompts (default: false)
 --output <value>      defines location of the built output file
 --dir <value>         path to field plugin to be deployed (default: ".")
---chooseFrom <value>  path to where all field plugin are located in a monorepo setup
 -h, --help            display help for command
+```
+
+#### Examples
+```bash
+# Run this simple command and you will be prompted to add details (this will work only if you have created STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable inside .env or .env.local)
+npx @storyblok/field-plugin-cli deploy
+
+# Deploy your field plugin by providing a token
+npx @storyblok/field-plugin-cli deploy --token=<TOKEN>
+
+# When used in a CI/CD one might want to skip the input prompts. This can be achieved with the --skipPrompts flag
+npx @storyblok/field-plugin-cli deploy --token=<TOKEN> --skipPrompts
+
+# Deploy your field plugin from outside of the project
+npx @storyblok/field-plugin-cli deploy --token=<TOKEN> --dir=<PATH_TO_DIR>
 ```
 
 [//]: # (Add snippet for root script to deploy a package)
