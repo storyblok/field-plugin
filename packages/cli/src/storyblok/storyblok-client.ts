@@ -107,7 +107,7 @@ export const StoryblokClient: StoryblokClientFunc = (token) => {
 }
 
 const handleError = (error?: string) => {
-  if (error) {
+  if (typeof error !== 'undefined' && error !== null) {
     if (error === 'Unauthorized') {
       console.log(
         red('[ERROR]'),

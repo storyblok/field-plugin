@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import { red } from 'kleur/colors'
+import prompts from 'prompts'
 
 export const loadEnvironmentVariables = () => {
   dotenv.config({ path: '.env' })
@@ -17,13 +18,13 @@ export const runCommand: RunCommandFunc = async (command, options) => {
 }
 
 //TODO testing
-export const validateToken = (token?: string): string | never => {
-  if (token && token !== '') {
+export const validateToken = (token?: string): string | undefined => {
+  if (typeof token !== 'undefined' && token !== '') {
     return token
   }
 
   if (
-    process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN &&
+    typeof process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN !== 'undefined' &&
     process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN !== ''
   ) {
     return process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
@@ -34,4 +35,25 @@ export const validateToken = (token?: string): string | never => {
     'Please provide a valid --token option value or STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable',
   )
   process.exit(1)
+}
+
+export const promptTextInput = async (
+  message: string,
+): Promise<string | never> => {
+  const { packageName } = (await prompts(
+    [
+      {
+        type: 'text',
+        name: 'packageName',
+        message,
+        validate: (name: string) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
+      },
+    ],
+    {
+      onCancel: () => {
+        process.exit(1)
+      },
+    },
+  )) as { packageName: string }
+  return packageName
 }

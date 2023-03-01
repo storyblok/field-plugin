@@ -2,12 +2,15 @@ import { existsSync, readFileSync, lstatSync } from 'fs'
 import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
 import prompts from 'prompts'
-import walk from 'walkdir'
-import { loadEnvironmentVariables, runCommand, validateToken } from '../utils'
+import {
+  loadEnvironmentVariables,
+  promptTextInput,
+  validateToken,
+} from '../utils'
 import { StoryblokClient } from '../storyblok/storyblok-client'
 
-// If it's given, it should ask user to choose one of the field plugins.
-// If not given, it should assume the current directory is a single package repository, and just proceed.
+const packageNameMessage =
+  'How would you like to call the deployed field-plugin?\n  (Lowercase alphanumeric and dash are allowed.)'
 
 export type FieldType = { id: number; name: string; body: string }
 
@@ -15,7 +18,6 @@ export type DeployArgs = {
   skipPrompts: boolean
   dir: string
   token?: string
-  chooseFrom?: string
   output?: string
 }
 
@@ -40,7 +42,6 @@ type UpsertFieldPluginFunc = (args: {
 export const deploy: DeployFunc = async ({
   skipPrompts,
   token,
-  chooseFrom,
   dir,
   output,
 }) => {
@@ -50,25 +51,23 @@ export const deploy: DeployFunc = async ({
   loadEnvironmentVariables()
 
   const validatedToken = validateToken(token)
-  const rootPackagePath = chooseFrom ? resolve(dir, chooseFrom) : dir
+  const rootPackagePath = dir
 
-  const packageName = chooseFrom
-    ? await selectPackage(chooseFrom)
-    : getPackageName(rootPackagePath)
+  // TODO: check if name option is present
+  const packageName =
+    getPackageName(rootPackagePath) ??
+    (await promptTextInput(packageNameMessage))
 
-  if (!packageName) {
+  if (typeof validatedToken === 'undefined') {
     process.exit(1)
   }
 
   // path of the specific field-plugin package
-  const packagePath = chooseFrom
-    ? resolve(rootPackagePath, packageName)
-    : rootPackagePath
 
-  const defaultOutputPath = resolve(packagePath, 'dist', 'index.js')
+  const defaultOutputPath = resolve(dir, 'dist', 'index.js')
 
-  const outputPath = output ? resolve(output) : defaultOutputPath
-  console.log('output', outputPath)
+  const outputPath =
+    typeof output !== 'undefined' ? resolve(output) : defaultOutputPath
 
   if (!existsSync(outputPath)) {
     console.log(
@@ -82,7 +81,7 @@ export const deploy: DeployFunc = async ({
   const outputFile = readFileSync(outputPath).toString()
 
   await upsertFieldPlugin({
-    path: packagePath,
+    path: rootPackagePath,
     packageName,
     skipPrompts,
     token: validatedToken,
@@ -181,45 +180,6 @@ const getPackageName = (path: string): string | undefined => {
   return json.name
 }
 
-const selectPackage = async (chooseFrom: string) => {
-  const packages: string[] = []
-  walk.sync(resolve(chooseFrom), { max_depth: 1 }, (path, stat) => {
-    if (!stat.isDirectory()) {
-      return
-    }
-
-    if (!isBuildable(path)) {
-      return
-    }
-    // eslint-disable-next-line functional/immutable-data
-    packages.push(path)
-  })
-
-  const { packageName } = (await prompts(
-    [
-      {
-        type: 'select',
-        name: 'packageName',
-        message: 'Which field plugin?',
-        choices: packages.map((path) => {
-          const packageName = basename(path)
-          return {
-            title: packageName,
-            value: packageName,
-          }
-        }),
-      },
-    ],
-    {
-      onCancel: () => {
-        process.exit(1)
-      },
-    },
-  )) as { packageName: string }
-
-  return packageName
-}
-
 const selectUpsertMode = async () => {
   const { mode } = (await prompts([
     {
@@ -255,8 +215,8 @@ const isBuildable = (path: string) => {
     readFileSync(resolve(path, 'package.json')).toString(),
   )
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  if (!packageJson.scripts?.build) {
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions,@typescript-eslint/no-unsafe-member-access
+  if (!packageJson?.scripts?.build) {
     console.log(
       `[info] ${yellow(
         basename(path),
