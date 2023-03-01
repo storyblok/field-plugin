@@ -38,7 +38,7 @@ The `create` command allows a set of **optional** options for customization.
 
 #### Examples
 ```bash
-# Run this simple command, but if you need, you can add more options
+# Run this simple command and you will be prompted to provide all required information
 npx @storyblok/field-plugin-cli
 
 # Create a single field plugin with Vue 2 template inside a specific directory with a specific named
@@ -92,7 +92,7 @@ The options for the `add` command are the following:
 ```
 #### Examples
 ```bash
-# Run this simple command and you will be prompted to add details
+# Run this simple command and you will be prompted to provide all required information
 npx @storyblok/field-plugin-cli add
 
 # Add field plugin with Vue 2 template to a project outside of the current directory
@@ -121,7 +121,7 @@ For additional customizations you can add the following options to the command:
 
 #### Examples
 ```bash
-# Run this simple command and you will be prompted to add details (this will work only if you have created STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable inside .env or .env.local)
+# Run this simple command and you will be prompted to provide all required information. NOTE: This command will work only if you have created STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable inside .env or .env.local!
 npx @storyblok/field-plugin-cli deploy
 
 # Deploy your field plugin by providing a token
