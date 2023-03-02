@@ -18,7 +18,7 @@ export const runCommand: RunCommandFunc = async (command, options) => {
 }
 
 //TODO testing
-export const validateToken = (token?: string): string | undefined => {
+export const validateToken = (token?: string): string | null => {
   if (typeof token !== 'undefined' && token !== '') {
     return token
   }
@@ -30,20 +30,23 @@ export const validateToken = (token?: string): string | undefined => {
     return process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
   }
 
-  console.log(red('[ERROR]'), 'Token to access Storyblok is undefined.')
-  console.log(
-    'Please provide a valid --token option value or STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable',
-  )
-  process.exit(1)
+  return null
 }
 
-export const promptName = async (message: string): Promise<string | never> => {
+export const promptName = async ({
+  message,
+  initialValue,
+}: {
+  message: string
+  initialValue?: string
+}): Promise<string | never> => {
   const { name } = (await prompts(
     [
       {
         type: 'text',
         name: 'name',
         message,
+        initial: initialValue,
         validate: (name: string) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
       },
     ],
