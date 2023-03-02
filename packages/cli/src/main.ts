@@ -61,21 +61,13 @@ export const main = () => {
         'path to field plugin to be deployed',
       ).default('.'),
     )
-    .addOption(
-      new Option(
-        '--chooseFrom <value>',
-        'path to where all field plugin are located in a monorepo setup',
-      ).conflicts(['dir', 'skipPrompts', 'output']),
-    )
     .action(async function (this: Command) {
-      const { dir, skipPrompts, token, chooseFrom, output } =
-        this.opts<DeployArgs>()
+      const { dir, skipPrompts, token, output } = this.opts<DeployArgs>()
 
       await deploy({
         skipPrompts,
         token,
         dir,
-        chooseFrom,
         output,
       })
     })

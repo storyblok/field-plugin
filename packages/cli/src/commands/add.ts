@@ -11,8 +11,11 @@ import {
 import Mustache from 'mustache'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
-import { runCommand } from '../utils'
+import { promptName, runCommand } from '../utils'
 import { Structure } from '../main'
+
+const packageNameMessage =
+  'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)'
 
 export type AddArgs = {
   dir: string
@@ -22,26 +25,6 @@ export type AddArgs = {
 }
 
 export type AddFunc = (args: AddArgs) => Promise<void>
-
-const askPackageName = async () => {
-  const { packageName } = (await prompts(
-    [
-      {
-        type: 'text',
-        name: 'packageName',
-        message:
-          'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
-        validate: (name: string) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
-      },
-    ],
-    {
-      onCancel: () => {
-        process.exit(1)
-      },
-    },
-  )) as { packageName: string }
-  return packageName
-}
 
 const selectTemplate = async () => {
   const { template } = (await prompts(
@@ -66,8 +49,15 @@ export const add: AddFunc = async (args) => {
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's create a field-type extension.\n")
 
-  const packageName = args.name || (await askPackageName())
-  const template = args.template || (await selectTemplate())
+  const packageName =
+    typeof args.name !== 'undefined' && args.name !== ''
+      ? args.name
+      : await promptName(packageNameMessage)
+
+  const template =
+    typeof args.template !== 'undefined'
+      ? args.template
+      : await selectTemplate()
   const rootPath = resolve(args.dir)
   const destPath = resolve(rootPath, packageName)
   const templatePath = resolve(TEMPLATES_PATH, template) + '/'
