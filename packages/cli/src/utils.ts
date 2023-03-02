@@ -37,14 +37,12 @@ export const validateToken = (token?: string): string | undefined => {
   process.exit(1)
 }
 
-export const promptTextInput = async (
-  message: string,
-): Promise<string | never> => {
-  const { packageName } = (await prompts(
+export const promptName = async (message: string): Promise<string | never> => {
+  const { name } = (await prompts(
     [
       {
         type: 'text',
-        name: 'packageName',
+        name: 'name',
         message,
         validate: (name: string) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
       },
@@ -54,6 +52,6 @@ export const promptTextInput = async (
         process.exit(1)
       },
     },
-  )) as { packageName: string }
-  return packageName
+  )) as { name: string }
+  return name
 }

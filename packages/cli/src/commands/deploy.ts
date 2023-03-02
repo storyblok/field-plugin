@@ -4,7 +4,7 @@ import { basename, resolve } from 'path'
 import prompts from 'prompts'
 import {
   loadEnvironmentVariables,
-  promptTextInput,
+  promptName,
   validateToken,
 } from '../utils'
 import { StoryblokClient } from '../storyblok/storyblok-client'
@@ -51,14 +51,12 @@ export const deploy: DeployFunc = async ({
   loadEnvironmentVariables()
 
   const validatedToken = validateToken(token)
-  const rootPackagePath = dir
 
   // TODO: check if name option is present
   const packageName =
-    getPackageName(rootPackagePath) ??
-    (await promptTextInput(packageNameMessage))
+    getPackageName(dir) ?? (await promptName(packageNameMessage))
 
-  if (typeof validatedToken === 'undefined') {
+  if (typeof validatedToken === 'undefined' || packageName === '') {
     process.exit(1)
   }
 
@@ -81,7 +79,7 @@ export const deploy: DeployFunc = async ({
   const outputFile = readFileSync(outputPath).toString()
 
   await upsertFieldPlugin({
-    path: rootPackagePath,
+    path: dir,
     packageName,
     skipPrompts,
     token: validatedToken,

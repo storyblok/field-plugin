@@ -11,7 +11,7 @@ import {
 import Mustache from 'mustache'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
-import { promptTextInput, runCommand } from '../utils'
+import { promptName, runCommand } from '../utils'
 import { Structure } from '../main'
 
 const packageNameMessage =
@@ -50,9 +50,10 @@ export const add: AddFunc = async (args) => {
   console.log("Let's create a field-type extension.\n")
 
   const packageName =
-    typeof args.name !== 'undefined'
+    typeof args.name !== 'undefined' && args.name !== ''
       ? args.name
-      : await promptTextInput(packageNameMessage)
+      : await promptName(packageNameMessage)
+
   const template =
     typeof args.template !== 'undefined'
       ? args.template
