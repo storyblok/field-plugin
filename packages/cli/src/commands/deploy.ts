@@ -2,11 +2,7 @@ import { existsSync, readFileSync, lstatSync } from 'fs'
 import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
 import prompts from 'prompts'
-import {
-  loadEnvironmentVariables,
-  promptName,
-  validateToken,
-} from '../utils'
+import { loadEnvironmentVariables, promptName, validateToken } from '../utils'
 import { StoryblokClient } from '../storyblok/storyblok-client'
 
 const packageNameMessage =
@@ -17,6 +13,7 @@ export type FieldType = { id: number; name: string; body: string }
 export type DeployArgs = {
   skipPrompts: boolean
   dir: string
+  name?: string
   token?: string
   output?: string
 }
@@ -42,6 +39,7 @@ type UpsertFieldPluginFunc = (args: {
 export const deploy: DeployFunc = async ({
   skipPrompts,
   token,
+  name,
   dir,
   output,
 }) => {
@@ -52,11 +50,27 @@ export const deploy: DeployFunc = async ({
 
   const validatedToken = validateToken(token)
 
-  // TODO: check if name option is present
-  const packageName =
-    getPackageName(dir) ?? (await promptName(packageNameMessage))
+  if (validatedToken === null) {
+    console.log(red('[ERROR]'), 'Token to access Storyblok is undefined.')
+    console.log(
+      'Please provide a valid --token option value or STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable',
+    )
+    process.exit(1)
+  }
 
-  if (typeof validatedToken === 'undefined' || packageName === '') {
+  const packageName =
+    typeof name === 'string' && name.length > 0
+      ? name
+      : await promptName({
+          message: packageNameMessage,
+          initialValue: getPackageName(dir),
+        })
+
+  if (typeof packageName !== 'string' || packageName === '') {
+    console.log(red('[ERROR]'), 'Package name is missing.')
+    console.log(
+      'Please provide a valid --name option value or type a valid one to the prompt.',
+    )
     process.exit(1)
   }
 

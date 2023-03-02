@@ -49,6 +49,10 @@ export const main = () => {
     .description('deploys your selected plugin to Storyblok')
     .option('--token <value>', 'Storyblok personal access token')
     .option('--skipPrompts', 'deploys without prompts', false)
+    .option(
+      '--name <value>',
+      'name of plugin (Lowercase alphanumeric and dash)',
+    )
     .addOption(
       new Option(
         '--output <value>',
