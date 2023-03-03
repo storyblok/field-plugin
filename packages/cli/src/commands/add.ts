@@ -1,6 +1,6 @@
 import { bold, cyan, red, green } from 'kleur/colors'
 import prompts from 'prompts'
-import { resolve, dirname } from 'path'
+import { resolve, dirname, basename } from 'path'
 import {
   existsSync,
   mkdirSync,
@@ -79,19 +79,14 @@ export const add: AddFunc = async (args) => {
     mkdirSync(dirname(destFilePath), {
       recursive: true,
     })
-    if (file.endsWith('.mustache')) {
-      const newFilePath = destFilePath.slice(
-        0,
-        destFilePath.length - '.mustache'.length,
-      )
-      writeFileSync(
-        newFilePath,
-        // wrong typing from @types/mustache
-        // eslint-disable-next-line
-        Mustache.render(readFileSync(file).toString(), {
-          packageName,
-        }),
-      )
+    if (basename(file) === 'package.json') {
+      const packageJson = JSON.parse(readFileSync(file).toString()) as Record<
+        string,
+        unknown
+      >
+      // eslint-disable-next-line functional/immutable-data
+      packageJson['name'] = packageName + '_test'
+      writeFileSync(destFilePath, JSON.stringify(packageJson, null, 2))
     } else {
       copyFileSync(file, destFilePath)
     }

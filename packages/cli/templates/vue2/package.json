@@ -1,5 +1,5 @@
 {
-  "name": "{{ packageName }}",
+  "name": "field-plugin-vue2-template",
   "private": true,
   "version": "0.0.0",
   "type": "module",
