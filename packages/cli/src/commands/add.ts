@@ -8,14 +8,10 @@ import {
   readFileSync,
   writeFileSync,
 } from 'fs'
-import Mustache from 'mustache'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
 import { promptName, runCommand } from '../utils'
 import { Structure } from '../main'
-
-const packageNameMessage =
-  'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)'
 
 export type AddArgs = {
   dir: string
@@ -52,7 +48,10 @@ export const add: AddFunc = async (args) => {
   const packageName =
     typeof args.name !== 'undefined' && args.name !== ''
       ? args.name
-      : await promptName(packageNameMessage)
+      : await promptName({
+          message:
+            'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
+        })
 
   const template =
     typeof args.template !== 'undefined'
@@ -85,7 +84,7 @@ export const add: AddFunc = async (args) => {
         unknown
       >
       // eslint-disable-next-line functional/immutable-data
-      packageJson['name'] = packageName + '_test'
+      packageJson['name'] = packageName
       writeFileSync(destFilePath, JSON.stringify(packageJson, null, 2))
     } else {
       copyFileSync(file, destFilePath)
