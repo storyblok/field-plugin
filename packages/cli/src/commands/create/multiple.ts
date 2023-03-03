@@ -3,7 +3,7 @@ import fse from 'fs-extra'
 import { bold, cyan, red } from 'kleur/colors'
 import { resolve } from 'path'
 import { MONOREPO_FOLDER_NAME, TEMPLATES_PATH } from '../../../config'
-import { runCommand } from '../../utils'
+import { initializeNewRepo, runCommand } from '../../utils'
 import { add } from '../add'
 import { Template } from '../../main'
 
@@ -50,8 +50,9 @@ export const createMonorepo: CreateMonorepoFunc = async ({
   //TODO: make more customizable
   await add({
     dir: `${repoDir}/packages`,
-    showInstructionFor: 'multiple',
+    structure: 'multiple',
     name,
     template,
   })
+  await initializeNewRepo({ dir: repoDir })
 }
