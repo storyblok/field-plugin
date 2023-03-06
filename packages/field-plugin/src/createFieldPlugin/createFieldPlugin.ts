@@ -2,7 +2,7 @@ import { createPluginActions } from './createPluginActions'
 import { createAutoResizer } from './createAutoResizer'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
-import { FieldPluginResponse } from './fieldPluginResponse'
+import { FieldPluginResponse } from './FieldPluginResponse'
 
 export type CreateFieldPlugin = (
   onUpdate: (state: FieldPluginResponse) => void,
