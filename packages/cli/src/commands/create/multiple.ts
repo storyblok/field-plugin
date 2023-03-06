@@ -1,4 +1,4 @@
-import { existsSync } from 'fs'
+import { existsSync, unlinkSync } from 'fs'
 import fse from 'fs-extra'
 import { bold, cyan, red } from 'kleur/colors'
 import { resolve } from 'path'
@@ -54,5 +54,6 @@ export const createMonorepo: CreateMonorepoFunc = async ({
     name,
     template,
   })
+  unlinkSync(`${repoDir}/packages/.gitkeep`)
   await initializeNewRepo({ dir: repoDir })
 }
