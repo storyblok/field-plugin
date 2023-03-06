@@ -1,7 +1,7 @@
 import prompts from 'prompts'
 import { createMonorepo } from './multiple'
 import { createSinglePackageRepo } from './single'
-import { Structure, Template } from '../../main'
+import { Structure, Template } from '../add'
 
 export type CreateArgs = {
   dir: string

@@ -1,5 +1,4 @@
-import { add } from '../add'
-import { Template } from '../../main'
+import { add, Template } from '../add'
 import { initializeNewRepo } from '../../utils'
 
 type CreateSinglePackageRepoFunc = (args: {

@@ -4,8 +4,7 @@ import { bold, cyan, red } from 'kleur/colors'
 import { resolve } from 'path'
 import { MONOREPO_FOLDER_NAME, TEMPLATES_PATH } from '../../../config'
 import { initializeNewRepo, runCommand } from '../../utils'
-import { add } from '../add'
-import { Template } from '../../main'
+import { add, Template } from '../add'
 
 type CreateMonorepoFunc = (args: {
   dir: string

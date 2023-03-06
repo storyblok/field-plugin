@@ -12,7 +12,10 @@ import Mustache from 'mustache'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
 import { promptName, runCommand } from '../utils'
-import { Structure } from '../main'
+
+export type Template = 'vue2'
+
+export type Structure = 'single' | 'multiple'
 
 export type AddArgs = {
   dir: string
