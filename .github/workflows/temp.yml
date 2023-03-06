@@ -15,4 +15,4 @@ jobs:
       - run: yarn workspace @storyblok/field-plugin-cli build
       - run: npx field-plugin --dir=${{runner.temp}} --name=temp-single-field-plugin --template=vue2 --structure=single
       - run: cd ${{runner.temp}}/temp-single-field-plugin
-      - run: yarn build
+      - run: pwd && yarn build
