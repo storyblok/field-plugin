@@ -9,6 +9,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.18.1
+      - run: git config --global user.email "you@example.com"
+      - run: git config --global user.name "Your Name"
       - run: yarn install
       - run: yarn workspace @storyblok/field-plugin-cli build
       - run: npx field-plugin --dir=${{runner.temp}} --name=temp-single-field-plugin --template=vue2 --structure=single
