@@ -2,40 +2,34 @@ import {
   isAssetSelectedMessage,
   isMessageToPlugin,
   isStateChangedMessage,
-  OnAssetSelectMessage,
-  OnContextRequestMessage,
-  OnStateChangeMessage,
 } from '../../../messaging'
-import { isContextRequestMessage } from '../../../messaging/pluginMessage/containerToPluginMessage/ContextRequestMessage'
+import { isContextRequestMessage } from '../../../messaging'
+import { PluginMessageCallbacks } from './createPluginMessageListener'
 
 export const handlePluginMessage = (
-  event: MessageEvent<unknown>,
+  data: unknown,
   uid: string,
-  onStateChange: OnStateChangeMessage,
-  onContextRequest: OnContextRequestMessage,
-  onAssetSelected: OnAssetSelectMessage,
+  callbacks: PluginMessageCallbacks,
 ) => {
-  const { data } = event
-
   if (!isMessageToPlugin(data)) {
+    // Other kind of event, which this function does not handle
     return
   }
 
   // TODO check origin https://app.storyblok.com/ in production mode, * in dev mode
 
   if (data.uid !== uid) {
-    // Not intended for this field type
+    // Not intended for this field plugin
     return
-  } else if (isStateChangedMessage(data)) {
-    onStateChange(data)
+  }
+
+  if (isStateChangedMessage(data)) {
+    callbacks.onStateChange(data)
   } else if (isContextRequestMessage(data)) {
-    onContextRequest(data)
+    callbacks.onContextRequest(data)
   } else if (isAssetSelectedMessage(data)) {
-    onAssetSelected(data)
+    callbacks.onAssetSelect(data)
   } else {
-    console.debug(
-      'Plugin received a message from container of an unknown type:',
-      JSON.stringify(data),
-    )
+    callbacks.onUnknownMessage(data)
   }
 }

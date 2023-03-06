@@ -1,5 +1,8 @@
 /* eslint-disable functional/no-let */
-import { createPluginMessageListener } from './createPluginMessageListener'
+import {
+  createPluginMessageListener,
+  PluginMessageCallbacks,
+} from './createPluginMessageListener'
 import { PluginState } from '../PluginState'
 import {
   assetModalChangeMessage,
@@ -9,6 +12,7 @@ import {
   OnAssetSelectMessage,
   OnContextRequestMessage,
   OnStateChangeMessage,
+  OnUnknownPluginMessage,
   pluginLoadedMessage,
   valueChangeMessage,
 } from '../../messaging'
@@ -80,13 +84,26 @@ export const createPluginActions: CreatePluginActions = (
       assetSelectedCallbackRef.callback(data.filename)
     }
   }
+  const onUnknownMessage: OnUnknownPluginMessage = (data) => {
+    // TODO remove side-effect, making functions in this file pure.
+    // TODO perhaps only show this message in development mode?
+    console.debug(
+      `Plugin received a message from container of an unknown action type "${
+        data.action
+      }". You may need to upgrade the version of the @storyblok/field-plugin library. Full message: ${JSON.stringify(
+        data,
+      )}`,
+    )
+  }
 
-  const cleanupEventListener = createPluginMessageListener(
-    uid,
+  const callbacks: PluginMessageCallbacks = {
     onStateChange,
     onContextRequest,
     onAssetSelect,
-  )
+    onUnknownMessage,
+  }
+  // TODO: return the callbacks and inkvoke the effectful createPluginMessageListener in createFieldPlugin Instead.
+  const cleanupEventListener = createPluginMessageListener(uid, callbacks)
 
   // Receive the current value
   postToContainer(pluginLoadedMessage(uid))

@@ -2,14 +2,20 @@ import {
   OnAssetSelectMessage,
   OnContextRequestMessage,
   OnStateChangeMessage,
+  OnUnknownPluginMessage,
 } from '../../../messaging'
 import { handlePluginMessage } from './handlePluginMessage'
 
+export type PluginMessageCallbacks = {
+  onStateChange: OnStateChangeMessage
+  onContextRequest: OnContextRequestMessage
+  onAssetSelect: OnAssetSelectMessage
+  onUnknownMessage: OnUnknownPluginMessage
+}
+
 export type CreatePluginMessageListener = (
   uid: string,
-  onStateChange: OnStateChangeMessage,
-  onContextRequest: OnContextRequestMessage,
-  onAssetSelected: OnAssetSelectMessage,
+  callbacks: PluginMessageCallbacks,
 ) => () => void
 
 /**
@@ -18,18 +24,10 @@ export type CreatePluginMessageListener = (
  */
 export const createPluginMessageListener: CreatePluginMessageListener = (
   uid,
-  onStateChange,
-  onContextRequest,
-  onAssetSelected,
+  callbacks,
 ) => {
   const handleEvent = (event: MessageEvent<unknown>) => {
-    handlePluginMessage(
-      event,
-      uid,
-      onStateChange,
-      onContextRequest,
-      onAssetSelected,
-    )
+    handlePluginMessage(event.data, uid, callbacks)
   }
   window.addEventListener('message', handleEvent, false)
 
