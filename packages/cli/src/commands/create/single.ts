@@ -1,5 +1,5 @@
-import { add } from '../add'
-import { Template } from '../../main'
+import { add, Template } from '../add'
+import { initializeNewRepo } from '../../utils'
 
 type CreateSinglePackageRepoFunc = (args: {
   dir: string
@@ -12,5 +12,11 @@ export const createSinglePackageRepo: CreateSinglePackageRepoFunc = async ({
   name,
   template,
 }) => {
-  await add({ dir, name, template, showInstructionFor: 'single' })
+  const { destPath } = await add({
+    dir,
+    name,
+    template,
+    structure: 'single',
+  })
+  await initializeNewRepo({ dir: destPath })
 }

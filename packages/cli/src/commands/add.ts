@@ -12,19 +12,19 @@ import Mustache from 'mustache'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
 import { promptName, runCommand } from '../utils'
-import { Structure } from '../main'
 
-const packageNameMessage =
-  'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)'
+export type Template = 'vue2'
+
+export type Structure = 'single' | 'multiple'
 
 export type AddArgs = {
   dir: string
   name?: string
   template?: string
-  showInstructionFor?: Structure
+  structure?: Structure
 }
 
-export type AddFunc = (args: AddArgs) => Promise<void>
+export type AddFunc = (args: AddArgs) => Promise<{ destPath: string }>
 
 const selectTemplate = async () => {
   const { template } = (await prompts(
@@ -52,7 +52,10 @@ export const add: AddFunc = async (args) => {
   const packageName =
     typeof args.name !== 'undefined' && args.name !== ''
       ? args.name
-      : await promptName(packageNameMessage)
+      : await promptName({
+          message:
+            'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
+        })
 
   const template =
     typeof args.template !== 'undefined'
@@ -107,17 +110,18 @@ export const add: AddFunc = async (args) => {
   )
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-  const showInstructionFor = args.showInstructionFor || 'multiple'
+  const structure = args.structure || 'single'
 
   console.log(`- To run development mode run the following commands:`)
 
-  if (showInstructionFor === 'single') {
+  if (structure === 'single') {
     console.log(`    >`, green(`cd ${destPath}`))
     console.log(`    >`, green(`yarn dev`))
-    return
+  } else {
+    const parentPath = resolve(rootPath, '..')
+    console.log(`    >`, green(`cd ${parentPath}`))
+    console.log(`    >`, green(`yarn dev ${packageName}`))
   }
 
-  const parentPath = resolve(rootPath, '..')
-  console.log(`    >`, green(`cd ${parentPath}`))
-  console.log(`    >`, green(`yarn dev ${packageName}`))
+  return { destPath }
 }

@@ -58,3 +58,12 @@ export const promptName = async ({
   )) as { name: string }
   return name
 }
+
+export const initializeNewRepo = async ({ dir }: { dir: string }) => {
+  await runCommand('git init', { cwd: dir })
+  await runCommand('git add .', { cwd: dir })
+  await runCommand('git commit -m "chore: initial commit"', {
+    shell: true,
+    cwd: dir,
+  })
+}
