@@ -11,9 +11,6 @@ import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
 import packageJson from './../package.json'
 
-export type Template = 'vue2'
-export type Structure = 'single' | 'multiple'
-
 const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
 const structureOptions = ['single', 'multiple']
