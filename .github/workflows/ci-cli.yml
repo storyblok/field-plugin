@@ -16,3 +16,8 @@ jobs:
       - run: yarn install
       - run: yarn eslint packages/cli
       - run: yarn workspace @storyblok/field-plugin-cli build
+  temp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Runner.temp:" + ${{ runner.temp }} + "RUNNER_TEMP:" + {{$RUNNER_TEMP}}
