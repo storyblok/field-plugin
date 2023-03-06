@@ -1,14 +1,14 @@
 import { bold, cyan, red, green } from 'kleur/colors'
 import prompts from 'prompts'
-import { resolve, dirname } from 'path'
+import { resolve, dirname, basename } from 'path'
 import {
   existsSync,
   mkdirSync,
   copyFileSync,
   readFileSync,
   writeFileSync,
+  unlinkSync,
 } from 'fs'
-import Mustache from 'mustache'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
 import { promptName, runCommand } from '../utils'
@@ -20,7 +20,7 @@ export type Structure = 'single' | 'multiple'
 export type AddArgs = {
   dir: string
   name?: string
-  template?: string
+  template?: Template
   structure?: Structure
 }
 
@@ -82,23 +82,23 @@ export const add: AddFunc = async (args) => {
     mkdirSync(dirname(destFilePath), {
       recursive: true,
     })
-    if (file.endsWith('.mustache')) {
-      const newFilePath = destFilePath.slice(
-        0,
-        destFilePath.length - '.mustache'.length,
-      )
-      writeFileSync(
-        newFilePath,
-        // wrong typing from @types/mustache
-        // eslint-disable-next-line
-        Mustache.render(readFileSync(file).toString(), {
-          packageName,
-        }),
-      )
+    if (basename(file) === 'package.json') {
+      const packageJson = JSON.parse(readFileSync(file).toString()) as Record<
+        string,
+        unknown
+      >
+      // eslint-disable-next-line functional/immutable-data
+      packageJson['name'] = packageName
+      writeFileSync(destFilePath, JSON.stringify(packageJson, null, 2))
     } else {
       copyFileSync(file, destFilePath)
     }
   })
+
+  if (args.structure === 'multiple') {
+    // delete the invidividual yarn.lock within monorepo
+    unlinkSync(`${destPath}/yarn.lock`)
+  }
 
   console.log(`\nRunning \`yarn install\`..\n`)
   console.log(
