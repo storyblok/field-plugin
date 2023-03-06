@@ -7,6 +7,7 @@ import {
   copyFileSync,
   readFileSync,
   writeFileSync,
+  unlinkSync,
 } from 'fs'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
@@ -19,7 +20,7 @@ export type Structure = 'single' | 'multiple'
 export type AddArgs = {
   dir: string
   name?: string
-  template?: string
+  template?: Template
   structure?: Structure
 }
 
@@ -93,6 +94,11 @@ export const add: AddFunc = async (args) => {
       copyFileSync(file, destFilePath)
     }
   })
+
+  if (args.structure === 'multiple') {
+    // delete the invidividual yarn.lock within monorepo
+    unlinkSync(`${destPath}/yarn.lock`)
+  }
 
   console.log(`\nRunning \`yarn install\`..\n`)
   console.log(
