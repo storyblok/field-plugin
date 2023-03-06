@@ -20,4 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo "Runner.temp:" + ${{ runner.temp }} + "RUNNER_TEMP:" + {{$RUNNER_TEMP}}
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.18.1
+      - run: yarn install
+      - run: yarn build
+      - run: npx field-plugin --dir=${{runner.temp}} --name=temp-single-field-plugin template=vue2
+      - run: cd ${{runner.temp}}/temp-single-field-plugin
+      - run: yarn build
