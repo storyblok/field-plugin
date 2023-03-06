@@ -107,7 +107,7 @@ export const add: AddFunc = async (args) => {
   )
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-  const structure = args.structure || 'multiple'
+  const structure = args.structure || 'single'
 
   console.log(`- To run development mode run the following commands:`)
 
