@@ -255,9 +255,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storyblok/field-plugin-cli@file:./storyblok-field-plugin-cli-0.0.1-alpha.14.tgz::locator=field-plugins%40workspace%3A.":
+"@storyblok/field-plugin-cli@file:./storyblok-field-plugin-cli-0.0.1-alpha.15.tgz::locator=field-plugins%40workspace%3A.":
   version: 0.0.0
-  resolution: "@storyblok/field-plugin-cli@file:./storyblok-field-plugin-cli-0.0.1-alpha.14.tgz::locator=field-plugins%40workspace%3A."
+  resolution: "@storyblok/field-plugin-cli@file:./storyblok-field-plugin-cli-0.0.1-alpha.15.tgz::locator=field-plugins%40workspace%3A."
   dependencies:
     commander: ^9.5.0
     dotenv: ^16.0.3
@@ -271,7 +271,7 @@ __metadata:
     walkdir: ^0.4.1
   bin:
     field-plugin: ./bin.js
-  checksum: f28d0b4bfa46275fef452550a0e47bb2f4716e1f1fc225ee1b164330d5772d8633365751aebdefc2f3ea3cbccff324d66ffdbb5826a49dd46906bc3e7ee73f5c
+  checksum: 2a01a946b0c32de5c3844943ea25fb51df27dd4cd951998bf110623bfa09e95563702c2430753944f14cd6957936542d09413d0cb467f60edf4bffc53488892f
   languageName: node
   linkType: hard
 
@@ -1268,7 +1268,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugins@workspace:."
   dependencies:
-    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.1-alpha.14.tgz"
+    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.1-alpha.15.tgz"
     "@types/node": 18.11.9
     "@typescript-eslint/eslint-plugin": 5.45.0
     "@typescript-eslint/parser": 5.45.0
