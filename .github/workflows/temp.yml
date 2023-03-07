@@ -27,5 +27,6 @@ jobs:
       - run: git config --global user.name "Your Name"
       - run: yarn install
       - run: yarn workspace @storyblok/field-plugin-cli build
-      - run: npx field-plugin --dir=${{runner.temp}} --name=temp-mono-field-plugin --template=vue2 --structure=multiple
+      - run: YARN_ENABLE_IMMUTABLE_INSTALLS=false npx field-plugin --dir=${{runner.temp}} --name=temp-mono-field-plugin --template=vue2 --structure=multiple
       - run: cd ${{runner.temp}}/field-plugins/packages/temp-single-field-plugin && yarn build
+
