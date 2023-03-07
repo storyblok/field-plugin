@@ -43,7 +43,6 @@ export const createMonorepo: CreateMonorepoFunc = async ({
   fse.copySync(resolve(TEMPLATES_PATH, 'monorepo'), repoDir)
 
   console.log(bold(cyan('[info] Running `yarn install`...')))
-  console.log((await runCommand(`yarn --version`, { cwd: repoDir })).stdout)
   await runCommand(`yarn install`, { cwd: repoDir })
 
   console.log(bold(cyan('[info] Creating the first field-plugin...')))
