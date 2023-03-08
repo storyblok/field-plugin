@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.18.1
-      - run: yarn install
+      - run: yarn install --immutable
       - name: Build the CLI
         run: yarn workspace @storyblok/field-plugin-cli build
       - name: Publish the package to NPM
