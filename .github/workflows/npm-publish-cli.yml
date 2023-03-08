@@ -18,6 +18,8 @@ jobs:
       - run: yarn install --immutable
       - name: Build the CLI
         run: yarn workspace @storyblok/field-plugin-cli build
+      - name: Checking the secret
+        run: echo ${{secrets.NPM_PUBLISH}}
       - name: Publish the package to NPM
         run: cd packages/cli && npm publish --access public --tag alpha
         env:
