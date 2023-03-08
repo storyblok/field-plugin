@@ -1,4 +1,4 @@
-name: Publish CLI to NPM
+name: Publish field-plugin to NPM
 
 on:
   release:
@@ -6,8 +6,8 @@ on:
 
 jobs:
   publish-npm:
-    if: startsWith(github.event.release.name, '@storyblok/field-plugin-cli@')
-    name: Publish CLI to NPM
+    if: startsWith(github.event.release.name, '@storyblok/field-plugin@')
+    name: Publish field-plugin to NPM
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,8 +18,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install --immutable
       - name: Build the CLI
-        run: yarn workspace @storyblok/field-plugin-cli build
+        run: yarn workspace @storyblok/field-plugin build
       - name: Publish the package to NPM
-        run: cd packages/cli && npm publish --access public --tag alpha
+        run: cd packages/field-plugin && npm publish --access public --tag alpha
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH}}
