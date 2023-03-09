@@ -1700,25 +1700,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storyblok/field-plugin-cli@npm:0.0.1-alpha.0":
-  version: 0.0.1-alpha.0
-  resolution: "@storyblok/field-plugin-cli@npm:0.0.1-alpha.0"
-  dependencies:
-    commander: ^9.5.0
-    dotenv: ^16.0.3
-    execa: ^6.1.0
-    fs-extra: ^11.1.0
-    kleur: ^4.1.5
-    node-fetch: ^3.3.0
-    prompts: ^2.4.2
-    vite: ^4.0.3
-    walkdir: ^0.4.1
-  bin:
-    field-plugin: bin.js
-  checksum: a81ee9f89938152a1e9f452c23572f076216fe1d5e4491e395e765e9ee24ed00c490054cbc7609d10278eb2ab978830b32850ead8c017f3203772a2162f018de
-  languageName: node
-  linkType: hard
-
 "@storyblok/field-plugin-cli@workspace:*, @storyblok/field-plugin-cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin-cli@workspace:packages/cli"
@@ -4381,7 +4362,6 @@ __metadata:
   resolution: "field-plugin-vue2-template@workspace:packages/cli/templates/vue2"
   dependencies:
     "@storyblok/field-plugin": 0.0.1-alpha.0
-    "@storyblok/field-plugin-cli": 0.0.1-alpha.0
     "@vitejs/plugin-vue2": 2.2.0
     joi: ^17.7.0
     vite: 4.0.4
@@ -4428,7 +4408,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugins@workspace:packages/cli/templates/monorepo"
   dependencies:
-    "@storyblok/field-plugin-cli": 0.0.1-alpha.0
     "@types/node": 18.11.9
     "@typescript-eslint/eslint-plugin": 5.45.0
     "@typescript-eslint/parser": 5.45.0

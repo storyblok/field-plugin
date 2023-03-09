@@ -8,7 +8,7 @@
     "build": "vite build",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "deploy": "npm run build && field-plugin deploy"
+    "deploy": "npm run build && npx @storyblok/field-plugin-cli@alpha deploy"
   },
   "dependencies": {
     "@storyblok/field-plugin": "0.0.1-alpha.0",
@@ -16,7 +16,6 @@
     "vue": "^2.7.14"
   },
   "devDependencies": {
-    "@storyblok/field-plugin-cli": "0.0.1-alpha.0",
     "@vitejs/plugin-vue2": "2.2.0",
     "vite": "4.0.4",
     "vite-plugin-css-injected-by-js": "2.4.0"
