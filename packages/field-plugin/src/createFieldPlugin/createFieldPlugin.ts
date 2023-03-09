@@ -63,13 +63,13 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   actions.setPluginReady()
 
-  const cleanupPluginClientSideEffects = createPluginMessageListener(
+  const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
     messageCallbacks,
   )
 
   return () => {
-    cleanupPluginClientSideEffects()
+    cleanupMessageListenerSideEffects()
     cleanupAutoResizeSideEffects()
     cleanupStyleSideEffects()
   }
