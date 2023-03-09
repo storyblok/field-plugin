@@ -100,14 +100,14 @@ export const add: AddFunc = async (args) => {
     unlinkSync(`${destPath}/yarn.lock`)
   }
 
-  // console.log(`\nRunning \`yarn install\`..\n`)
-  // console.log(
-  //   (
-  //     await runCommand('yarn install', {
-  //       cwd: destPath,
-  //     })
-  //   ).stdout,
-  // )
+  console.log(`\nRunning \`yarn install\`..\n`)
+  console.log(
+    (
+      await runCommand('yarn install', {
+        cwd: destPath,
+      })
+    ).stdout,
+  )
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
   const structure = args.structure || 'single'
