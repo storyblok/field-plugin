@@ -45,6 +45,12 @@ export type CreatePluginActions = (
   messageCallbacks: PluginMessageCallbacks
 }
 
+type CallbackRef = {
+  // using field as sort of uid
+  uid: string
+  callback: (filename: string) => void
+}
+
 export const createPluginActions: CreatePluginActions = (
   uid,
   postToContainer,
