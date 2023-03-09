@@ -1,4 +1,4 @@
-# Storyblok Field Plugin CLI
+# Storyblok Field Plugin CLI 
 [//]: # (TBD Add storyblok social media and package links)
 
 The Storyblok Field Plugin Command Line Interface provides functionality to create and deploy your field plugins in a much smoother and more intuitive way. To get started, use the following command:
