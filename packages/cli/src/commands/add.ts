@@ -82,7 +82,7 @@ export const add: AddFunc = async (args) => {
     mkdirSync(dirname(destFilePath), {
       recursive: true,
     })
-    if (basename(file) === 'package.json') {
+    if (file === resolve(templatePath, 'package.json')) {
       const packageJson = JSON.parse(readFileSync(file).toString()) as Record<
         string,
         unknown
@@ -100,14 +100,14 @@ export const add: AddFunc = async (args) => {
     unlinkSync(`${destPath}/yarn.lock`)
   }
 
-  console.log(`\nRunning \`yarn install\`..\n`)
-  console.log(
-    (
-      await runCommand('yarn install', {
-        cwd: destPath,
-      })
-    ).stdout,
-  )
+  // console.log(`\nRunning \`yarn install\`..\n`)
+  // console.log(
+  //   (
+  //     await runCommand('yarn install', {
+  //       cwd: destPath,
+  //     })
+  //   ).stdout,
+  // )
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
   const structure = args.structure || 'single'
