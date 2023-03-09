@@ -86,10 +86,15 @@ export const main = () => {
       'name of plugin (Lowercase alphanumeric and dash)',
     )
     .option('--dir <value>', 'directory to create a field-plugin into', '.')
+    .addOption(
+      new Option('--structure <value>', 'setup structure').choices(
+        structureOptions,
+      ),
+    )
     .action(async function (this: Command) {
-      const { name, template, dir } = this.opts<AddArgs>()
+      const { name, template, dir, structure } = this.opts<AddArgs>()
 
-      await add({ name, template, dir })
+      await add({ name, template, dir, structure })
     })
 
   program.parse(process.argv)
