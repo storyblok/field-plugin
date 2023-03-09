@@ -104,8 +104,6 @@ export const createPluginActions: CreatePluginActions = (
     onAssetSelect,
     onUnknownMessage,
   }
-  // TODO: return the callbacks and inkvoke the effectful createPluginMessageListener in createFieldPlugin Instead.
-  const cleanupEventListener = createPluginMessageListener(uid, callbacks)
 
   // Receive the current value
   const setPluginReady = () => postToContainer(pluginLoadedMessage(uid))
