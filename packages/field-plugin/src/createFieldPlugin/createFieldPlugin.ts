@@ -63,7 +63,6 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   actions.setPluginReady()
 
-  // TODO: return the callbacks and inkvoke the effectful createPluginMessageListener in createFieldPlugin Instead.
   const cleanupPluginClientSideEffects = createPluginMessageListener(
     params.uid,
     messageCallbacks,
