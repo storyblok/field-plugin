@@ -82,7 +82,7 @@ export const add: AddFunc = async (args) => {
     mkdirSync(dirname(destFilePath), {
       recursive: true,
     })
-    if (basename(file) === 'package.json') {
+    if (file === resolve(templatePath, 'package.json')) {
       const packageJson = JSON.parse(readFileSync(file).toString()) as Record<
         string,
         unknown

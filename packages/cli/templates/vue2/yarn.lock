@@ -259,30 +259,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storyblok/field-plugin-cli@file:./storyblok-field-plugin-cli-0.0.1-alpha.14.tgz::locator=field-plugin-vue2-template%40workspace%3A.":
-  version: 0.0.0
-  resolution: "@storyblok/field-plugin-cli@file:./storyblok-field-plugin-cli-0.0.1-alpha.14.tgz::locator=field-plugin-vue2-template%40workspace%3A."
+"@storyblok/field-plugin-cli@npm:0.0.1-alpha.0":
+  version: 0.0.1-alpha.0
+  resolution: "@storyblok/field-plugin-cli@npm:0.0.1-alpha.0"
   dependencies:
     commander: ^9.5.0
     dotenv: ^16.0.3
     execa: ^6.1.0
     fs-extra: ^11.1.0
     kleur: ^4.1.5
-    mustache: ^4.2.0
     node-fetch: ^3.3.0
     prompts: ^2.4.2
     vite: ^4.0.3
     walkdir: ^0.4.1
   bin:
-    field-plugin: ./bin.js
-  checksum: f7b2347d3d12044e417fcc5fc7c8e996fabbcb3d5cfa6449c18dc86c9fe7656ac3e3eaf298b513f28f0e22e7a6688dc35b54c5277a061c09790a26ec6892194c
+    field-plugin: bin.js
+  checksum: a81ee9f89938152a1e9f452c23572f076216fe1d5e4491e395e765e9ee24ed00c490054cbc7609d10278eb2ab978830b32850ead8c017f3203772a2162f018de
   languageName: node
   linkType: hard
 
-"@storyblok/field-plugin@file:./storyblok-field-plugin-0.0.1-alpha.0.tgz::locator=field-plugin-vue2-template%40workspace%3A.":
+"@storyblok/field-plugin@npm:0.0.1-alpha.0":
   version: 0.0.1-alpha.0
-  resolution: "@storyblok/field-plugin@file:./storyblok-field-plugin-0.0.1-alpha.0.tgz::locator=field-plugin-vue2-template%40workspace%3A."
-  checksum: ea777e7b318b40e0fca0e5b5e553b0b7aa7062853c44acd96b80235360d6977d51e883aa6dd4ed2df9ffaa8244245bab2c91afde97715fd5dfb5340dd407f018
+  resolution: "@storyblok/field-plugin@npm:0.0.1-alpha.0"
+  checksum: 879488ae21d163fc61a8eb064b9af89a48cd8add0ad3dd5f264f86679c36f4bd25e5013341613e9b91d912321480419dc24c3d8d638a2452e022fcc0b9ed5844
   languageName: node
   linkType: hard
 
@@ -667,8 +666,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-vue2-template@workspace:."
   dependencies:
-    "@storyblok/field-plugin": "file:./storyblok-field-plugin-0.0.1-alpha.0.tgz"
-    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.1-alpha.14.tgz"
+    "@storyblok/field-plugin": 0.0.1-alpha.0
+    "@storyblok/field-plugin-cli": 0.0.1-alpha.0
     "@vitejs/plugin-vue2": 2.2.0
     joi: ^17.7.0
     vite: 4.0.4
@@ -1156,15 +1155,6 @@ __metadata:
   version: 2.1.3
   resolution: "ms@npm:2.1.3"
   checksum: aa92de608021b242401676e35cfa5aa42dd70cbdc082b916da7fb925c542173e36bce97ea3e804923fe92c0ad991434e4a38327e15a1b5b5f945d66df615ae6d
-  languageName: node
-  linkType: hard
-
-"mustache@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "mustache@npm:4.2.0"
-  bin:
-    mustache: bin/mustache
-  checksum: 928fcb63e3aa44a562bfe9b59ba202cccbe40a46da50be6f0dd831b495be1dd7e38ca4657f0ecab2c1a89dc7bccba0885eab7ee7c1b215830da765758c7e0506
   languageName: node
   linkType: hard
 

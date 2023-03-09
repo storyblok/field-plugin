@@ -255,23 +255,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storyblok/field-plugin-cli@file:./storyblok-field-plugin-cli-0.0.1-alpha.15.tgz::locator=field-plugins%40workspace%3A.":
-  version: 0.0.0
-  resolution: "@storyblok/field-plugin-cli@file:./storyblok-field-plugin-cli-0.0.1-alpha.15.tgz::locator=field-plugins%40workspace%3A."
+"@storyblok/field-plugin-cli@npm:0.0.1-alpha.0":
+  version: 0.0.1-alpha.0
+  resolution: "@storyblok/field-plugin-cli@npm:0.0.1-alpha.0"
   dependencies:
     commander: ^9.5.0
     dotenv: ^16.0.3
     execa: ^6.1.0
     fs-extra: ^11.1.0
     kleur: ^4.1.5
-    mustache: ^4.2.0
     node-fetch: ^3.3.0
     prompts: ^2.4.2
     vite: ^4.0.3
     walkdir: ^0.4.1
   bin:
-    field-plugin: ./bin.js
-  checksum: 2a01a946b0c32de5c3844943ea25fb51df27dd4cd951998bf110623bfa09e95563702c2430753944f14cd6957936542d09413d0cb467f60edf4bffc53488892f
+    field-plugin: bin.js
+  checksum: a81ee9f89938152a1e9f452c23572f076216fe1d5e4491e395e765e9ee24ed00c490054cbc7609d10278eb2ab978830b32850ead8c017f3203772a2162f018de
   languageName: node
   linkType: hard
 
@@ -1268,7 +1267,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugins@workspace:."
   dependencies:
-    "@storyblok/field-plugin-cli": "file:./storyblok-field-plugin-cli-0.0.1-alpha.15.tgz"
+    "@storyblok/field-plugin-cli": 0.0.1-alpha.0
     "@types/node": 18.11.9
     "@typescript-eslint/eslint-plugin": 5.45.0
     "@typescript-eslint/parser": 5.45.0
@@ -1977,15 +1976,6 @@ __metadata:
   version: 2.1.3
   resolution: "ms@npm:2.1.3"
   checksum: aa92de608021b242401676e35cfa5aa42dd70cbdc082b916da7fb925c542173e36bce97ea3e804923fe92c0ad991434e4a38327e15a1b5b5f945d66df615ae6d
-  languageName: node
-  linkType: hard
-
-"mustache@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "mustache@npm:4.2.0"
-  bin:
-    mustache: bin/mustache
-  checksum: 928fcb63e3aa44a562bfe9b59ba202cccbe40a46da50be6f0dd831b495be1dd7e38ca4657f0ecab2c1a89dc7bccba0885eab7ee7c1b215830da765758c7e0506
   languageName: node
   linkType: hard
 
