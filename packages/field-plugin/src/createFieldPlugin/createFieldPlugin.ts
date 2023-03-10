@@ -3,6 +3,7 @@ import { createAutoResizer } from './createAutoResizer'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
+import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 
 export type CreateFieldPlugin = (
   onUpdate: (state: FieldPluginResponse) => void,
@@ -48,7 +49,7 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
-  const [actions, cleanupPluginClientSideEffects] = createPluginActions(
+  const { actions, messageCallbacks } = createPluginActions(
     params.uid,
     postToContainer,
     (data) => {
@@ -60,11 +61,16 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
     },
   )
 
-  const cleanupSideEffects = () => {
-    cleanupPluginClientSideEffects()
+  actions.setPluginReady()
+
+  const cleanupMessageListenerSideEffects = createPluginMessageListener(
+    params.uid,
+    messageCallbacks,
+  )
+
+  return () => {
+    cleanupMessageListenerSideEffects()
     cleanupAutoResizeSideEffects()
     cleanupStyleSideEffects()
   }
-
-  return cleanupSideEffects
 }
