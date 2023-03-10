@@ -1,0 +1,17 @@
+name: 'ci-cli'
+on: push
+jobs:
+  monorepo-cli-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.18.1
+      - run: git config --global user.email "you@example.com"
+      - run: git config --global user.name "Your Name"
+      - run: yarn install
+      - run: yarn workspace @storyblok/field-plugin-cli build
+      - run: npx field-plugin --dir=${{runner.temp}} --name=temp-monorepo-field-plugin --template=vue2 --structure=multiple
+      - run: cd ${{runner.temp}}/temp-monorepo-field-plugin && yarn build
