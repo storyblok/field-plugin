@@ -15,5 +15,5 @@ jobs:
       - run: yarn workspace @storyblok/field-plugin-cli build
       - run: npx field-plugin --dir=${{runner.temp}} --name=temp-monorepo-field-plugin --template=vue2 --structure=multiple
         env:
-          YARN_ENABLE_IMMUTABLE_INSTALLS: true
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
       - run: cd ${{runner.temp}}/temp-monorepo-field-plugin && yarn build
