@@ -1,6 +1,6 @@
 import { bold, cyan, red, green } from 'kleur/colors'
 import prompts from 'prompts'
-import { resolve, dirname, basename } from 'path'
+import { resolve, dirname } from 'path'
 import {
   existsSync,
   mkdirSync,
