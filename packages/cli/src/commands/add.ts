@@ -1,6 +1,6 @@
 import { bold, cyan, red, green } from 'kleur/colors'
 import prompts from 'prompts'
-import { resolve, dirname, basename } from 'path'
+import { resolve, dirname } from 'path'
 import {
   existsSync,
   mkdirSync,
@@ -94,11 +94,6 @@ export const add: AddFunc = async (args) => {
       copyFileSync(file, destFilePath)
     }
   })
-
-  if (args.structure === 'multiple') {
-    // delete the individual yarn.lock within monorepo
-    unlinkSync(`${destPath}/yarn.lock`)
-  }
 
   console.log(`\nRunning \`yarn install\`..\n`)
   console.log(
