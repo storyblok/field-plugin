@@ -95,11 +95,6 @@ export const add: AddFunc = async (args) => {
     }
   })
 
-  if (args.structure === 'multiple') {
-    // delete the individual yarn.lock within monorepo
-    unlinkSync(`${destPath}/yarn.lock`)
-  }
-
   console.log(`\nRunning \`yarn install\`..\n`)
   console.log(
     (
