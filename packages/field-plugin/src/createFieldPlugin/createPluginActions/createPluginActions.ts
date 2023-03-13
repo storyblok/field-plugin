@@ -107,7 +107,6 @@ export const createPluginActions: CreatePluginActions = (
 
   // Receive the current value
   const setPluginReady = () => postToContainer(pluginLoadedMessage(uid))
-  setPluginReady()
   return {
     actions: {
       setHeight: (height) => {
