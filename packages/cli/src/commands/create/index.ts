@@ -1,6 +1,6 @@
 import prompts from 'prompts'
-import { createMonorepo } from './multiple'
-import { createSinglePackageRepo } from './single'
+import { createMonorepo } from './monorepo'
+import { createPolyrepo } from './polyrepo'
 import { Structure, Template } from '../add'
 
 export type CreateArgs = {
@@ -22,14 +22,14 @@ const selectRepositoryStructure = async () => {
           'How many field plugins potentially do you want in this repository?',
         choices: [
           {
-            title: 'Multiple (monorepo)',
+            title: 'Monorepo (multiple packages in one repo)',
             // description: 'some description if exists',
-            value: 'multiple',
+            value: 'monorepo',
           },
           {
-            title: 'Single',
+            title: 'Polyrepo (one package in one repo)',
             // description: 'some description if exists',
-            value: 'single',
+            value: 'polyrepo',
           },
         ],
       },
@@ -48,9 +48,9 @@ export const create: CreateFunc = async (opts) => {
 
   const structure = opts.structure || (await selectRepositoryStructure())
 
-  if (structure === 'single') {
-    await createSinglePackageRepo({ dir, name, template })
-  } else if (structure === 'multiple') {
+  if (structure === 'polyrepo') {
+    await createPolyrepo({ dir, name, template })
+  } else if (structure === 'monorepo') {
     await createMonorepo({ dir, name, template })
   }
 }

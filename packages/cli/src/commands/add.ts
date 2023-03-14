@@ -7,7 +7,6 @@ import {
   copyFileSync,
   readFileSync,
   writeFileSync,
-  unlinkSync,
 } from 'fs'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
@@ -15,7 +14,7 @@ import { promptName, runCommand } from '../utils'
 
 export type Template = 'vue2'
 
-export type Structure = 'single' | 'multiple'
+export type Structure = 'polyrepo' | 'monorepo'
 
 export type AddArgs = {
   dir: string
@@ -105,11 +104,11 @@ export const add: AddFunc = async (args) => {
   )
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-  const structure = args.structure || 'single'
+  const structure = args.structure || 'polyrepo'
 
   console.log(`- To run development mode run the following commands:`)
 
-  if (structure === 'single') {
+  if (structure === 'polyrepo') {
     console.log(`    >`, green(`cd ${destPath}`))
     console.log(`    >`, green(`yarn dev`))
   } else {

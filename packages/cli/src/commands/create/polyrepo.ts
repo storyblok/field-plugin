@@ -1,13 +1,13 @@
 import { add, Template } from '../add'
 import { initializeNewRepo } from '../../utils'
 
-type CreateSinglePackageRepoFunc = (args: {
+type CreatePolyrepoFunc = (args: {
   dir: string
   name?: string
   template?: Template
 }) => Promise<void>
 
-export const createSinglePackageRepo: CreateSinglePackageRepoFunc = async ({
+export const createPolyrepo: CreatePolyrepoFunc = async ({
   dir,
   name,
   template,
@@ -16,7 +16,7 @@ export const createSinglePackageRepo: CreateSinglePackageRepoFunc = async ({
     dir,
     name,
     template,
-    structure: 'single',
+    structure: 'polyrepo',
   })
   await initializeNewRepo({ dir: destPath })
 }
