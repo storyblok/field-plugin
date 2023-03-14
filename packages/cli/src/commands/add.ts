@@ -81,17 +81,25 @@ export const add: AddFunc = async (args) => {
     mkdirSync(dirname(destFilePath), {
       recursive: true,
     })
+
     if (file === resolve(templatePath, 'package.json')) {
       const packageJson = JSON.parse(readFileSync(file).toString()) as Record<
         string,
         unknown
       >
-      // eslint-disable-next-line functional/immutable-data
-      packageJson['name'] = packageName
-      writeFileSync(destFilePath, JSON.stringify(packageJson, null, 2))
-    } else {
-      copyFileSync(file, destFilePath)
+
+      const updatedPackageJson = { ...packageJson, name: packageName }
+      writeFileSync(destFilePath, JSON.stringify(updatedPackageJson, null, 2))
+      return
     }
+
+    if (file === resolve(templatePath, 'gitignore')) {
+      const destGitIgnore = resolve(destPath, `.gitignore`)
+      copyFileSync(file, destGitIgnore)
+      return
+    }
+
+    copyFileSync(file, destFilePath)
   })
 
   console.log(`\nRunning \`yarn install\`..\n`)
