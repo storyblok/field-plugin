@@ -10,7 +10,7 @@ import {
 } from 'fs'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
-import { promptName, runCommand } from '../utils'
+import { getIncludedPathsFilter, promptName, runCommand } from '../utils'
 
 export type Template = 'vue2'
 
@@ -72,7 +72,7 @@ export const add: AddFunc = async (args) => {
     process.exit(1)
   }
 
-  walk.sync(templatePath, (file, stat) => {
+  walk.sync(templatePath, { filter: getIncludedPathsFilter }, (file, stat) => {
     if (!stat.isFile()) {
       return
     }
