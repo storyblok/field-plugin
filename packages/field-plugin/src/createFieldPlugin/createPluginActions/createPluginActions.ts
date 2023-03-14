@@ -127,7 +127,7 @@ export const createPluginActions: CreatePluginActions = (
       },
       selectAsset: (callback) => {
         assetSelectedCallbackRef = callback
-        postToContainer(assetModalChangeMessage(uid, ''))
+        postToContainer(assetModalChangeMessage(uid))
       },
       setPluginReady,
       requestContext: () => postToContainer(getContextMessage(uid)),
