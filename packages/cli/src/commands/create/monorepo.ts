@@ -46,10 +46,9 @@ export const createMonorepo: CreateMonorepoFunc = async ({
   await runCommand(`yarn install`, { cwd: repoDir })
 
   console.log(bold(cyan('[info] Creating the first field-plugin...')))
-  //TODO: make more customizable
   await add({
     dir: `${repoDir}/packages`,
-    structure: 'multiple',
+    structure: 'monorepo',
     name,
     template,
   })
