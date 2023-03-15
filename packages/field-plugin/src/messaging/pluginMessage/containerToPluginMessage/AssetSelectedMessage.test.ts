@@ -31,19 +31,22 @@ describe('AssetSelectedMessage', function () {
     })
   })
   describe('the field property', () => {
-    it('is required', () => {
+    it('is optional', () => {
       expect(
         isAssetSelectedMessage({
-          ...stub,
-          field: 'any-string',
+          action: 'asset-selected',
+          uid: '-preview',
+          filename: 'https://somthing.com/myimage.jpg',
         }),
       ).toBeTruthy()
+    })
+    it('can be undefined', () => {
       expect(
         isAssetSelectedMessage({
           ...stub,
           field: undefined,
         }),
-      ).toBeFalsy()
+      ).toBeTruthy()
     })
     it('is a string', () => {
       expect(
@@ -62,12 +65,6 @@ describe('AssetSelectedMessage', function () {
         isAssetSelectedMessage({
           ...stub,
           field: null,
-        }),
-      ).toBeFalsy()
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          field: undefined,
         }),
       ).toBeFalsy()
       expect(

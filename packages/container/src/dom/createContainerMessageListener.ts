@@ -10,6 +10,7 @@ import {
   SetModalOpen,
   SetPluginReady,
   SetValue,
+  isGetContextMessage,
 } from '@storyblok/field-plugin'
 
 type ContainerActions = {
@@ -48,17 +49,16 @@ export const createContainerMessageListener: CreateContainerListener = (
 
     if (isValueChangeMessage(message)) {
       eventHandlers.setValue(message.model)
-    }
-    if (isPluginLoadedMessage(message)) {
+    } else if (isPluginLoadedMessage(message)) {
       eventHandlers.setPluginReady()
-    }
-    if (isModalChangeMessage(message)) {
+    } else if (isModalChangeMessage(message)) {
       eventHandlers.setModalOpen(message.status)
-    }
-    if (isHeightChangeMessage(message)) {
+    } else if (isHeightChangeMessage(message)) {
       eventHandlers.setHeight(message.height)
     } else if (isAssetModalChangeMessage(message)) {
       eventHandlers.selectAsset(message.field)
+    } else if (isGetContextMessage(message)) {
+      eventHandlers.requestContext()
     } else {
       console.warn(
         `Container received unknown message from plugin: ${JSON.stringify(

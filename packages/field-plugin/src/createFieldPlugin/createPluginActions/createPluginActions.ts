@@ -1,18 +1,23 @@
 /* eslint-disable functional/no-let */
-import { createPluginMessageListener } from './createPluginMessageListener'
+import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { PluginState } from '../PluginState'
-import { partialPluginStateFromMessage } from './createPluginMessageListener/partialPluginStateFromMessage'
 import {
   assetModalChangeMessage,
   getContextMessage,
   heightChangeMessage,
   modalChangeMessage,
-  OnAssetSelectedMessage,
-  OnStateChangedMessage,
+  OnAssetSelectMessage,
+  OnContextRequestMessage,
+  OnStateChangeMessage,
+  OnUnknownPluginMessage,
   pluginLoadedMessage,
   valueChangeMessage,
 } from '../../messaging'
 import { PluginActions } from '../PluginActions'
+import {
+  partialPluginStateFromContextRequestMessage,
+  partialPluginStateFromStateChangeMessage,
+} from './partialPluginStateFromStateChangeMessage'
 
 // TODO get rid of this default state
 export const defaultState: PluginState = {
@@ -21,8 +26,8 @@ export const defaultState: PluginState = {
   value: undefined,
   options: {},
   language: undefined,
-  blockId: undefined,
-  story: undefined,
+  story: { content: {} },
+  blockUid: undefined,
   storyId: undefined,
   token: undefined,
   uid: '-preview',
@@ -33,12 +38,11 @@ export type CreatePluginActions = (
   uid: string,
   postToContainer: (message: unknown) => void,
   onUpdateState: (state: PluginState) => void,
-) => [PluginActions, () => void]
-
-type CallbackRef = {
-  // using field as sort of uid
-  uid: string
-  callback: (filename: string) => void
+) => {
+  // These functions are to be called by the field plugin when the user performs actions in the UI
+  actions: PluginActions
+  // These functions are called when the plugin receives messages from the container
+  messageCallbacks: PluginMessageCallbacks
 }
 
 export const createPluginActions: CreatePluginActions = (
@@ -52,34 +56,49 @@ export const createPluginActions: CreatePluginActions = (
   //  In future improved versions of the plugin API, this should not be needed.
   let state: PluginState = defaultState
 
-  let assetSelectedCallbackRef: CallbackRef | undefined = undefined
+  let assetSelectedCallbackRef: undefined | ((filename: string) => void) =
+    undefined
 
-  const onStateChange: OnStateChangedMessage = (data) => {
+  const onStateChange: OnStateChangeMessage = (data) => {
     state = {
       ...state,
-      ...partialPluginStateFromMessage(data),
+      ...partialPluginStateFromStateChangeMessage(data),
     }
     onUpdateState(state)
   }
-  const onAssetSelected: OnAssetSelectedMessage = (data) => {
-    if (!assetSelectedCallbackRef) {
-      return
+  const onContextRequest: OnContextRequestMessage = (data) => {
+    state = {
+      ...state,
+      ...partialPluginStateFromContextRequestMessage(data),
     }
-    if (assetSelectedCallbackRef.uid === data.field) {
-      assetSelectedCallbackRef.callback(data.filename)
-    }
+    onUpdateState(state)
+  }
+  const onAssetSelect: OnAssetSelectMessage = (data) => {
+    assetSelectedCallbackRef?.(data.filename)
+  }
+  const onUnknownMessage: OnUnknownPluginMessage = (data) => {
+    // TODO remove side-effect, making functions in this file pure.
+    //  perhaps only show this message in development mode?
+    console.debug(
+      `Plugin received a message from container of an unknown action type "${
+        data.action
+      }". You may need to upgrade the version of the @storyblok/field-plugin library. Full message: ${JSON.stringify(
+        data,
+      )}`,
+    )
   }
 
-  const cleanupEventListener = createPluginMessageListener(
-    uid,
+  const messageCallbacks: PluginMessageCallbacks = {
     onStateChange,
-    onAssetSelected,
-  )
+    onContextRequest,
+    onAssetSelect,
+    onUnknownMessage,
+  }
 
   // Receive the current value
-  postToContainer(pluginLoadedMessage(uid))
-  return [
-    {
+  const setPluginReady = () => postToContainer(pluginLoadedMessage(uid))
+  return {
+    actions: {
       setHeight: (height) => {
         postToContainer(heightChangeMessage(uid, height))
         state = {
@@ -106,16 +125,12 @@ export const createPluginActions: CreatePluginActions = (
         onUpdateState(state)
       },
       selectAsset: (callback) => {
-        const callbackRef = Math.random().toString(32).slice(2, 10)
-        assetSelectedCallbackRef = {
-          uid: callbackRef,
-          callback,
-        }
-        postToContainer(assetModalChangeMessage(uid, callbackRef))
+        assetSelectedCallbackRef = callback
+        postToContainer(assetModalChangeMessage(uid))
       },
-      setPluginReady: () => postToContainer(pluginLoadedMessage(uid)),
+      setPluginReady,
       requestContext: () => postToContainer(getContextMessage(uid)),
     },
-    cleanupEventListener,
-  ]
+    messageCallbacks,
+  }
 }

@@ -1,6 +1,5 @@
 import { resolve } from 'path'
 
-export const FIELD_PLUGINS_PATH = './field-plugins/'
 export const TEMPLATES = [
   {
     title: 'Vue 2',

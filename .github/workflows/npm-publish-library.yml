@@ -1,0 +1,25 @@
+name: Publish field-plugin to NPM
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish-npm:
+    if: startsWith(github.event.release.name, '@storyblok/field-plugin@')
+    name: Publish field-plugin to NPM
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.18.1
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn install --immutable
+      - name: Build the CLI
+        run: yarn workspace @storyblok/field-plugin build
+      - name: Publish the package to NPM
+        run: cd packages/field-plugin && npm publish --access public --tag alpha
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH}}

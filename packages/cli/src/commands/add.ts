@@ -8,40 +8,22 @@ import {
   readFileSync,
   writeFileSync,
 } from 'fs'
-import Mustache from 'mustache'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
-import { runCommand } from '../utils'
-import { Structure } from '../main'
+import { promptName, runCommand } from '../utils'
+
+export type Template = 'vue2'
+
+export type Structure = 'polyrepo' | 'monorepo'
 
 export type AddArgs = {
-  packageName?: string
-  template?: string
-  dir?: string
-  showInstructionFor?: Structure
+  dir: string
+  name?: string
+  template?: Template
+  structure?: Structure
 }
 
-export type AddFunc = (args: AddArgs) => Promise<void>
-
-const askPackageName = async () => {
-  const { packageName } = (await prompts(
-    [
-      {
-        type: 'text',
-        name: 'packageName',
-        message:
-          'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
-        validate: (name: string) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
-      },
-    ],
-    {
-      onCancel: () => {
-        process.exit(1)
-      },
-    },
-  )) as { packageName: string }
-  return packageName
-}
+export type AddFunc = (args: AddArgs) => Promise<{ destPath: string }>
 
 const selectTemplate = async () => {
   const { template } = (await prompts(
@@ -66,9 +48,19 @@ export const add: AddFunc = async (args) => {
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's create a field-type extension.\n")
 
-  const packageName = args.packageName || (await askPackageName())
-  const template = args.template || (await selectTemplate())
-  const rootPath = resolve(args.dir || '.')
+  const packageName =
+    typeof args.name !== 'undefined' && args.name !== ''
+      ? args.name
+      : await promptName({
+          message:
+            'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
+        })
+
+  const template =
+    typeof args.template !== 'undefined'
+      ? args.template
+      : await selectTemplate()
+  const rootPath = resolve(args.dir)
   const destPath = resolve(rootPath, packageName)
   const templatePath = resolve(TEMPLATES_PATH, template) + '/'
 
@@ -89,19 +81,14 @@ export const add: AddFunc = async (args) => {
     mkdirSync(dirname(destFilePath), {
       recursive: true,
     })
-    if (file.endsWith('.mustache')) {
-      const newFilePath = destFilePath.slice(
-        0,
-        destFilePath.length - '.mustache'.length,
-      )
-      writeFileSync(
-        newFilePath,
-        // wrong typing from @types/mustache
-        // eslint-disable-next-line
-        Mustache.render(readFileSync(file).toString(), {
-          packageName,
-        }),
-      )
+    if (file === resolve(templatePath, 'package.json')) {
+      const packageJson = JSON.parse(readFileSync(file).toString()) as Record<
+        string,
+        unknown
+      >
+      // eslint-disable-next-line functional/immutable-data
+      packageJson['name'] = packageName
+      writeFileSync(destFilePath, JSON.stringify(packageJson, null, 2))
     } else {
       copyFileSync(file, destFilePath)
     }
@@ -117,17 +104,18 @@ export const add: AddFunc = async (args) => {
   )
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-  const showInstructionFor = args.showInstructionFor || 'multiple'
+  const structure = args.structure || 'polyrepo'
 
   console.log(`- To run development mode run the following commands:`)
 
-  if (showInstructionFor === 'single') {
+  if (structure === 'polyrepo') {
     console.log(`    >`, green(`cd ${destPath}`))
     console.log(`    >`, green(`yarn dev`))
-    return
+  } else {
+    const parentPath = resolve(rootPath, '..')
+    console.log(`    >`, green(`cd ${parentPath}`))
+    console.log(`    >`, green(`yarn dev ${packageName}`))
   }
 
-  const parentPath = resolve(rootPath, '..')
-  console.log(`    >`, green(`cd ${parentPath}`))
-  console.log(`    >`, green(`yarn dev ${packageName}`))
+  return { destPath }
 }

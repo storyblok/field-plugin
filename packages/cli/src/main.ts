@@ -1,24 +1,26 @@
 /* eslint-disable functional/no-this-expression */
-import { create, add, deploy } from './commands'
+import {
+  create,
+  add,
+  deploy,
+  DeployArgs,
+  AddArgs,
+  CreateArgs,
+} from './commands'
 import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
 import packageJson from './../package.json'
-export type Template = 'vue2'
-export type Structure = 'single' | 'multiple'
 
 const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
-const structureOptions = ['single', 'multiple']
+const structureOptions = ['polyrepo', 'monorepo']
 
 export const main = () => {
   program
     .version(packageJson.version)
     .command('create', { isDefault: true })
     .description('creates a new repository to start developing field plugins')
-    .option(
-      '--dir <value>',
-      'directory to create a repository into (default: `.`)',
-    )
+    .option('--dir <value>', 'directory to create a repository into', '.')
     .option(
       '--name <value>',
       'name of plugin (Lowercase alphanumeric and dash)',
@@ -34,29 +36,41 @@ export const main = () => {
       ),
     )
     .action(async function (this: Command) {
-      const { dir, structure, template, name } = this.opts<{
-        dir?: string
-        structure?: Structure
-        template?: Template
-        name?: string
-      }>()
+      const { dir, structure, template, name } = this.opts<CreateArgs>()
 
-      await create({ dir, structure, template, packageName: name })
+      await create({ dir, structure, template, name })
     })
 
   program
     .command('deploy')
     .description('deploys your selected plugin to Storyblok')
-    .option('--name <value>', 'name of plugin to be deployed')
+    .option('--token <value>', 'Storyblok personal access token')
     .option('--skipPrompts', 'deploys without prompts', false)
+    .option(
+      '--name <value>',
+      'name of plugin (Lowercase alphanumeric and dash)',
+    )
+    .addOption(
+      new Option(
+        '--output <value>',
+        'defines location of the built output file',
+      ),
+    )
+    .addOption(
+      new Option(
+        '--dir <value>',
+        'path to field plugin to be deployed',
+      ).default('.'),
+    )
     .action(async function (this: Command) {
-      const { name, skipPrompts } = this.opts<{
-        name?: string
-        skipPrompts?: boolean
-      }>()
-      await deploy({ fieldPluginName: name, skipPrompts } as Parameters<
-        typeof deploy
-      >[0])
+      const { dir, skipPrompts, token, output } = this.opts<DeployArgs>()
+
+      await deploy({
+        skipPrompts,
+        token,
+        dir,
+        output,
+      })
     })
 
   program
@@ -71,17 +85,16 @@ export const main = () => {
       '--name <value>',
       'name of plugin (Lowercase alphanumeric and dash)',
     )
-    .option(
-      '--dir <value>',
-      'directory to create a field-plugin into (default: `.`)',
+    .option('--dir <value>', 'directory to create a field-plugin into', '.')
+    .addOption(
+      new Option('--structure <value>', 'setup structure').choices(
+        structureOptions,
+      ),
     )
     .action(async function (this: Command) {
-      const { name, template, dir } = this.opts<{
-        name?: string
-        template?: string
-        dir?: string
-      }>()
-      await add({ packageName: name, template, dir })
+      const { name, template, dir, structure } = this.opts<AddArgs>()
+
+      await add({ name, template, dir, structure })
     })
 
   program.parse(process.argv)

@@ -1,20 +1,19 @@
 /**
  * Type that describes the complete state of a field type
  */
+import { StoryData } from '../messaging'
+
 export type PluginState = {
-  // Not included in the messages to plugin
   height: number
   isModalOpen: boolean
-  // value
   value: unknown
-  // plugin configuration
   options: Record<string, string>
-  // Context
+  // If no language is available, for example via the field plugin editor, the language will be an empty string `""`
   language: string | undefined
   spaceId: number | undefined
-  story: unknown
+  story: StoryData
   storyId: number | undefined
-  blockId: number | undefined
+  blockUid: string | undefined
   token: string | undefined
   uid: string
 }

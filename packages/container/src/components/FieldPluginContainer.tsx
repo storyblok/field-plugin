@@ -8,6 +8,7 @@ import {
 } from 'react'
 import {
   AssetSelectedMessage,
+  ContextRequestMessage,
   originFromPluginParams,
   PluginUrlParams,
   StateChangedMessage,
@@ -22,6 +23,9 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
+  Alert,
+  AlertTitle,
+  Button,
   FormControl,
   IconButton,
   InputLabel,
@@ -58,6 +62,8 @@ const pluginParams: PluginUrlParams = {
   preview: true,
 }
 
+type TestStory = { content: { count: number } }
+
 export const FieldPluginContainer: FunctionComponent = () => {
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
   const [iframeOriginInputValue, setIframeOriginInputValue] =
@@ -66,6 +72,20 @@ export const FieldPluginContainer: FunctionComponent = () => {
   const urlSearchParams = urlSearchParamsFromPluginUrlParams(pluginParams)
   const iframeSrc = `${iframeOrigin}?${urlSearchParams}`
   const [iframeUid, setIframeUid] = useState(uid)
+
+  const [story, setStory] = useState<TestStory>({
+    content: {
+      count: 0,
+    },
+  })
+  const onMutateStory = () =>
+    setStory((oldStory) => ({
+      ...oldStory,
+      content: {
+        ...oldStory.content,
+        count: oldStory.content.count + 1,
+      },
+    }))
 
   const { error } = useNotifications()
 
@@ -92,11 +112,11 @@ export const FieldPluginContainer: FunctionComponent = () => {
       blockId: undefined,
       language: 'default',
       spaceId: null,
-      story: undefined,
+      story,
       storyId: undefined,
       token: null,
     }),
-    [value, schema],
+    [value, schema, story],
   )
 
   const postToPlugin = useCallback(
@@ -122,6 +142,12 @@ export const FieldPluginContainer: FunctionComponent = () => {
     },
     [postToPlugin],
   )
+  const dispatchContextRequest = useCallback(
+    (message: ContextRequestMessage) => {
+      postToPlugin(message)
+    },
+    [postToPlugin],
+  )
   const dispatchAssetSelected = useCallback(
     (message: AssetSelectedMessage) => {
       postToPlugin(message)
@@ -129,15 +155,19 @@ export const FieldPluginContainer: FunctionComponent = () => {
     [postToPlugin],
   )
 
-  // Sync field type with the state
-  // Unfortunately, it is not possible to sync isModal or height this way
-  useEffect(() => {
-    dispatchStateChanged(loadedData)
-  }, [dispatchStateChanged, loadedData])
   // Listen to messages from field type iframe
   const onLoaded = useCallback(() => {
     dispatchStateChanged(loadedData)
   }, [dispatchStateChanged, loadedData])
+  const onContextRequested = useCallback(
+    () =>
+      dispatchContextRequest({
+        uid: pluginParams.uid,
+        action: 'get-context',
+        story: loadedData.story,
+      }),
+    [dispatchContextRequest, loadedData.story],
+  )
   const onAssetSelected = useCallback(
     (field: string) => {
       dispatchAssetSelected({
@@ -150,10 +180,6 @@ export const FieldPluginContainer: FunctionComponent = () => {
     [dispatchAssetSelected],
   )
 
-  const onGetContext = useCallback(() => {
-    error('getContext has not been implemented yet')
-  }, [error])
-
   useEffect(
     () =>
       createContainerMessageListener(
@@ -162,7 +188,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
           setPluginReady: onLoaded,
           setHeight,
           setModalOpen: setModal,
-          requestContext: onGetContext,
+          requestContext: onContextRequested,
           selectAsset: onAssetSelected,
         },
         {
@@ -177,8 +203,8 @@ export const FieldPluginContainer: FunctionComponent = () => {
       setValue,
       setHeight,
       setModal,
-      onGetContext,
       onAssetSelected,
+      onContextRequested,
     ],
   )
 
@@ -248,14 +274,32 @@ export const FieldPluginContainer: FunctionComponent = () => {
           </FlexTypography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography variant="h3">Value</Typography>
-          <ObjectDisplay output={value} />
-          <Typography variant="h3">Height (px)</Typography>
-          <ObjectDisplay output={height} />
-          <Typography variant="h3">Schema</Typography>
-          <ObjectDisplay output={schema} />
-          <Typography variant="h3">Is Modal?</Typography>
-          <ObjectDisplay output={isModal} />
+          <Stack gap={1}>
+            <Typography variant="h3">Value</Typography>
+            <ObjectDisplay output={value} />
+            <Typography variant="h3">Height (px)</Typography>
+            <ObjectDisplay output={height} />
+            <Typography variant="h3">Schema</Typography>
+            <ObjectDisplay output={schema} />
+            <Typography variant="h3">Is Modal?</Typography>
+            <ObjectDisplay output={isModal} />
+            <Typography variant="h3">Story</Typography>
+            <ObjectDisplay output={story} />
+            <Alert severity="info">
+              <AlertTitle>Note</AlertTitle>
+              Mutating the story does not automatically update the field plugin.
+              You need to click on the Request Context button. Click on the
+              button below to mutate the story.
+            </Alert>
+            <Button
+              onClick={onMutateStory}
+              size="small"
+              color="secondary"
+              endIcon={'+1'}
+            >
+              Mutate Story
+            </Button>
+          </Stack>
         </AccordionDetails>
       </Accordion>
     </Stack>

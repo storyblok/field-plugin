@@ -1,25 +1,38 @@
-import { PluginState } from './PluginState'
 import { createPluginActions } from './createPluginActions'
 import { createAutoResizer } from './createAutoResizer'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
-import { PluginActions } from './PluginActions'
+import { FieldPluginResponse } from './FieldPluginResponse'
+import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 
 export type CreateFieldPlugin = (
-  onUpdate: (state: PluginState) => void,
-) => [undefined, undefined] | [PluginActions, () => void]
+  onUpdate: (state: FieldPluginResponse) => void,
+) => () => void
 
 /**
- * @returns cleanup function
+ * @returns cleanup function for side effects
  */
-// TODO rename to createPlugin
 export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
-  const params = pluginUrlParamsFromUrl(window.location.search)
   const isEmbedded = window.parent !== window
 
-  if (!params || !isEmbedded) {
-    // TODO better error type
-    return [undefined, undefined]
+  if (!isEmbedded) {
+    onUpdateState({
+      error: new Error(`The window is not embedded within another window`),
+      isLoading: false,
+    })
+    return () => undefined
+  }
+
+  const params = pluginUrlParamsFromUrl(window.location.search)
+
+  if (!params) {
+    onUpdateState({
+      error: new Error(
+        `The URL parameters does not match the expected format.`,
+      ),
+      isLoading: false,
+    })
+    return () => undefined
   }
 
   const postToContainer = (message: unknown) => {
@@ -36,17 +49,28 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
-  const [actions, cleanupPluginClientSideEffects] = createPluginActions(
+  const { actions, messageCallbacks } = createPluginActions(
     params.uid,
     postToContainer,
-    onUpdateState,
+    (data) => {
+      onUpdateState({
+        isLoading: false,
+        data,
+        actions,
+      })
+    },
   )
 
-  const cleanup = () => {
-    cleanupPluginClientSideEffects()
+  actions.setPluginReady()
+
+  const cleanupMessageListenerSideEffects = createPluginMessageListener(
+    params.uid,
+    messageCallbacks,
+  )
+
+  return () => {
+    cleanupMessageListenerSideEffects()
     cleanupAutoResizeSideEffects()
     cleanupStyleSideEffects()
   }
-
-  return [actions, cleanup]
 }
