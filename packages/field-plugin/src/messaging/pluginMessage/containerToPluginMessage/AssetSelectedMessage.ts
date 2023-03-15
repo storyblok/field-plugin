@@ -3,7 +3,7 @@ import { hasKey } from '../../../utils'
 
 //TODO: tests
 export type AssetSelectedMessage = MessageToPlugin<'asset-selected'> & {
-  field: string
+  field?: string
   filename: string
 }
 
@@ -12,7 +12,14 @@ export const isAssetSelectedMessage = (
 ): obj is AssetSelectedMessage =>
   isMessageToPlugin(obj) &&
   obj.action === 'asset-selected' &&
-  hasKey(obj, 'field') &&
-  typeof obj.field === 'string' &&
   hasKey(obj, 'filename') &&
-  typeof obj.filename === 'string'
+  typeof obj.filename === 'string' &&
+  hasField(obj)
+
+export const hasField = (obj: unknown) => {
+  if (!hasKey(obj, 'field') || typeof obj.field === 'undefined') {
+    // field is either omitted or set to undefined
+    return true
+  }
+  return typeof obj.field === 'string'
+}
