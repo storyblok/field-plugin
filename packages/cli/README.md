@@ -32,7 +32,7 @@ The `create` command allows a set of **optional** options for customization.
 --dir <value>         directory to create a repository into (default: `.`)
 --name <value>        name of plugin (Lowercase alphanumeric and dash)
 --template <value>    name of template to use (choices: "vue2")
---structure <value>   setup structure (choices: "single", "multiple")
+--structure <value>   setup structure (choices: "polyrepo", "monorepo")
 -h, --help            display help for command
 ```
 
@@ -42,17 +42,17 @@ The `create` command allows a set of **optional** options for customization.
 npx @storyblok/field-plugin-cli
 
 # Create a single field plugin with Vue 2 template inside a specific directory with a specific named
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --name=<FIELD_PLUGIN_NAME> --template=vue2 --structure=single
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --name=<FIELD_PLUGIN_NAME> --template=vue2 --structure=polyrepo
 
 # Create a monorepo with field plugin with a specific named inside a specific directory with Vue 2 template
 npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --name=<FIELD_PLUGIN_NAME> --template=vue2 --structure=monorepo
 ```
 
 #### Structure
-Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a single package and a monorepo setup.
+Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a polyrepo and a monorepo setup.
 
-##### single
-Here is a simplified folder structure of a single package mode:
+##### polyrepo (one package in one repo)
+Here is a simplified folder structure of a polyrepo mode:
 ```bash
 ├── field-plugin
 │   ├── src
@@ -63,8 +63,8 @@ Here is a simplified folder structure of a single package mode:
 └──
 ```
 
-#### multiple (Monorepo)
-For a multiple package setup, we are using the following project structure:
+#### monorepo (multiple packages in one repo)
+For a monorepo setup, we are using the following project structure:
 ```bash
 ├── field-plugins
 │   ├── packages

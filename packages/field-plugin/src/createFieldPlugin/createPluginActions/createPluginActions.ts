@@ -45,12 +45,6 @@ export type CreatePluginActions = (
   messageCallbacks: PluginMessageCallbacks
 }
 
-type CallbackRef = {
-  // using field as sort of uid
-  uid: string
-  callback: (filename: string) => void
-}
-
 export const createPluginActions: CreatePluginActions = (
   uid,
   postToContainer,
@@ -62,7 +56,8 @@ export const createPluginActions: CreatePluginActions = (
   //  In future improved versions of the plugin API, this should not be needed.
   let state: PluginState = defaultState
 
-  let assetSelectedCallbackRef: CallbackRef | undefined = undefined
+  let assetSelectedCallbackRef: undefined | ((filename: string) => void) =
+    undefined
 
   const onStateChange: OnStateChangeMessage = (data) => {
     state = {
@@ -79,12 +74,7 @@ export const createPluginActions: CreatePluginActions = (
     onUpdateState(state)
   }
   const onAssetSelect: OnAssetSelectMessage = (data) => {
-    if (!assetSelectedCallbackRef) {
-      return
-    }
-    if (assetSelectedCallbackRef.uid === data.field) {
-      assetSelectedCallbackRef.callback(data.filename)
-    }
+    assetSelectedCallbackRef?.(data.filename)
   }
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
     // TODO remove side-effect, making functions in this file pure.
@@ -107,7 +97,6 @@ export const createPluginActions: CreatePluginActions = (
 
   // Receive the current value
   const setPluginReady = () => postToContainer(pluginLoadedMessage(uid))
-  setPluginReady()
   return {
     actions: {
       setHeight: (height) => {
@@ -136,12 +125,8 @@ export const createPluginActions: CreatePluginActions = (
         onUpdateState(state)
       },
       selectAsset: (callback) => {
-        const callbackRef = Math.random().toString(32).slice(2, 10)
-        assetSelectedCallbackRef = {
-          uid: callbackRef,
-          callback,
-        }
-        postToContainer(assetModalChangeMessage(uid, callbackRef))
+        assetSelectedCallbackRef = callback
+        postToContainer(assetModalChangeMessage(uid))
       },
       setPluginReady,
       requestContext: () => postToContainer(getContextMessage(uid)),

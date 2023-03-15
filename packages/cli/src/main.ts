@@ -13,7 +13,7 @@ import packageJson from './../package.json'
 
 const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
-const structureOptions = ['single', 'multiple']
+const structureOptions = ['polyrepo', 'monorepo']
 
 export const main = () => {
   program
