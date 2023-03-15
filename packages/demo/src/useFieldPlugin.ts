@@ -5,7 +5,7 @@ type UseFieldPlugin = () => FieldPluginResponse
 
 export const useFieldPlugin: UseFieldPlugin = () => {
   const [state, setState] = useState<FieldPluginResponse>(() => ({
-    isLoading: true,
+    type: 'loading',
   }))
 
   useEffect(() => {
