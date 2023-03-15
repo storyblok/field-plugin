@@ -1,5 +1,4 @@
 import dotenv from 'dotenv'
-import { red } from 'kleur/colors'
 import prompts from 'prompts'
 
 export const loadEnvironmentVariables = () => {
@@ -58,6 +57,12 @@ export const promptName = async ({
   )) as { name: string }
   return name
 }
+
+export const filterPathsToInclude = (
+  directory: string,
+  files: string[],
+): string[] | Promise<string[]> =>
+  files.filter((file) => file !== 'node_modules' && file !== 'cache')
 
 export const initializeNewRepo = async ({ dir }: { dir: string }) => {
   await runCommand('git init', { cwd: dir })

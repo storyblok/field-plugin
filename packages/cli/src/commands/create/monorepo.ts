@@ -1,10 +1,14 @@
-import { existsSync, unlinkSync } from 'fs'
-import fse from 'fs-extra'
+import { copyFileSync, existsSync, mkdirSync, unlinkSync } from 'fs'
 import { bold, cyan, red } from 'kleur/colors'
-import { resolve } from 'path'
+import { dirname, resolve } from 'path'
 import { MONOREPO_FOLDER_NAME, TEMPLATES_PATH } from '../../../config'
-import { initializeNewRepo, runCommand } from '../../utils'
+import {
+  filterPathsToInclude,
+  initializeNewRepo,
+  runCommand,
+} from '../../utils'
 import { add, Template } from '../add'
+import walk from 'walkdir'
 
 type CreateMonorepoFunc = (args: {
   dir: string
@@ -37,10 +41,30 @@ export const createMonorepo: CreateMonorepoFunc = async ({
 }) => {
   const folderName = getPossibleFolderName(dir)
   const repoDir = resolve(dir, folderName)
+  const templatePath = resolve(TEMPLATES_PATH, 'monorepo') + '/'
 
   console.log(bold(cyan('[info] Creating a repository at the following path:')))
   console.log(`  > ${repoDir}`)
-  fse.copySync(resolve(TEMPLATES_PATH, 'monorepo'), repoDir)
+
+  //TODO: make reusable with code inside add command
+  walk.sync(templatePath, { filter: filterPathsToInclude }, (file, stat) => {
+    if (!stat.isFile()) {
+      return
+    }
+
+    const destFilePath = resolve(repoDir, file.slice(templatePath.length))
+
+    mkdirSync(dirname(destFilePath), {
+      recursive: true,
+    })
+
+    if (file === resolve(templatePath, 'gitignore')) {
+      const destGitIgnore = resolve(repoDir, `.gitignore`)
+      copyFileSync(file, destGitIgnore)
+      return
+    }
+    copyFileSync(file, destFilePath)
+  })
 
   console.log(bold(cyan('[info] Running `yarn install`...')))
   await runCommand(`yarn install`, { cwd: repoDir })
