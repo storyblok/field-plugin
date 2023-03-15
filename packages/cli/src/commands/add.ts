@@ -10,7 +10,7 @@ import {
 } from 'fs'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
-import { getIncludedPathsFilter, promptName, runCommand } from '../utils'
+import { filterPathsToInclude, promptName, runCommand } from '../utils'
 
 export type Template = 'vue2'
 
@@ -72,7 +72,7 @@ export const add: AddFunc = async (args) => {
     process.exit(1)
   }
 
-  walk.sync(templatePath, { filter: getIncludedPathsFilter }, (file, stat) => {
+  walk.sync(templatePath, { filter: filterPathsToInclude }, (file, stat) => {
     if (!stat.isFile()) {
       return
     }
@@ -88,8 +88,10 @@ export const add: AddFunc = async (args) => {
         unknown
       >
 
-      const updatedPackageJson = { ...packageJson, name: packageName }
-      writeFileSync(destFilePath, JSON.stringify(updatedPackageJson, null, 2))
+      // eslint-disable-next-line functional/immutable-data
+      packageJson['name'] = packageName
+
+      writeFileSync(destFilePath, JSON.stringify(packageJson, null, 2))
       return
     }
 

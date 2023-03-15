@@ -3,7 +3,7 @@ import { bold, cyan, red } from 'kleur/colors'
 import { dirname, resolve } from 'path'
 import { MONOREPO_FOLDER_NAME, TEMPLATES_PATH } from '../../../config'
 import {
-  getIncludedPathsFilter,
+  filterPathsToInclude,
   initializeNewRepo,
   runCommand,
 } from '../../utils'
@@ -47,12 +47,11 @@ export const createMonorepo: CreateMonorepoFunc = async ({
   console.log(`  > ${repoDir}`)
 
   //TODO: make reusable with code inside add command
-  walk.sync(templatePath, { filter: getIncludedPathsFilter }, (file, stat) => {
+  walk.sync(templatePath, { filter: filterPathsToInclude }, (file, stat) => {
     if (!stat.isFile()) {
       return
     }
 
-    //TODO: clarify why?
     const destFilePath = resolve(repoDir, file.slice(templatePath.length))
 
     mkdirSync(dirname(destFilePath), {

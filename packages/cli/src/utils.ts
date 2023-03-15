@@ -58,7 +58,7 @@ export const promptName = async ({
   return name
 }
 
-export const getIncludedPathsFilter = (
+export const filterPathsToInclude = (
   directory: string,
   files: string[],
 ): string[] | Promise<string[]> =>

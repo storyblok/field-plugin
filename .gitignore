@@ -37,5 +37,10 @@ packages/*/storybook-static/
 !.yarn/sdks
 !.yarn/versions
 
-#CLI
-packages/cli/templates/**/.yarn
+#CLI Templates
+packages/cli/templates/**/.yarn/*
+!packages/cli/templates/**/.yarn/patches
+!packages/cli/templates/**/.yarn/plugins
+!packages/cli/templates/**/.yarn/releases
+!packages/cli/templates/**/.yarn/sdks
+!packages/cli/templates/**/.yarn/versions
