@@ -5,7 +5,7 @@ With the `@storyblok/field-plugin` library, you can build custom fields that wil
 It's easy to get started! Simply use [Storyblok's field plugin CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli) to bootstrap your project:
 
 ```shell
-npx @storyblok/field-plugin-cli create
+npx @storyblok/field-plugin-cli@alpha
 ```
 
 The guide provides examples for integrating with various popular JavaScript frontend frameworks, including React and Vue
