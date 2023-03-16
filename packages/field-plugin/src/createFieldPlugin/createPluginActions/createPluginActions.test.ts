@@ -55,19 +55,17 @@ describe('createPluginActions', () => {
       } = createPluginActions(uid, postToContainer, onUpdateState)
       setModalOpen(false)
 
-      const statePattern1: Partial<PluginState> = {
-        isModalOpen: false,
-      }
       expect(onUpdateState).toHaveBeenLastCalledWith(
-        expect.objectContaining(statePattern1),
+        expect.objectContaining({
+          isModalOpen: false,
+        } satisfies Partial<PluginState>),
       )
 
       setModalOpen(true)
-      const statePattern2: Partial<PluginState> = {
-        isModalOpen: true,
-      }
       expect(onUpdateState).toHaveBeenLastCalledWith(
-        expect.objectContaining(statePattern2),
+        expect.objectContaining({
+          isModalOpen: true,
+        } satisfies Partial<PluginState>),
       )
     })
     it('sends a message to the container with the expected value', () => {
@@ -77,21 +75,19 @@ describe('createPluginActions', () => {
       } = createPluginActions(uid, postToContainer, onUpdateState)
       setModalOpen(false)
 
-      const messagePattern1: Partial<ModalChangeMessage> = {
-        event: 'toggleModal',
-        status: false,
-      }
       expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining(messagePattern1),
+        expect.objectContaining({
+          event: 'toggleModal',
+          status: false,
+        } satisfies Partial<ModalChangeMessage>),
       )
 
       setModalOpen(true)
-      const messagePattern2: Partial<ModalChangeMessage> = {
-        event: 'toggleModal',
-        status: true,
-      }
       expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining(messagePattern2),
+        expect.objectContaining({
+          event: 'toggleModal',
+          status: true,
+        } satisfies Partial<ModalChangeMessage>),
       )
     })
   })
@@ -103,11 +99,10 @@ describe('createPluginActions', () => {
       } = createPluginActions(uid, postToContainer, onUpdateState)
       const value = '409fjk340wo9jkc0954ij0943iu09c43*&(YT-0c43'
       setValue(value)
-      const statePattern: Partial<PluginState> = {
-        value,
-      }
       expect(onUpdateState).toHaveBeenLastCalledWith(
-        expect.objectContaining(statePattern),
+        expect.objectContaining({
+          value,
+        } satisfies Partial<PluginState>),
       )
     })
     it('send a message to the container with the expected value', () => {
@@ -117,12 +112,11 @@ describe('createPluginActions', () => {
       } = createPluginActions(uid, postToContainer, onUpdateState)
       const value = '0932ui2foiuerhjv98453jeh09c34jwk-0c43'
       setValue(value)
-      const messagePattern: Partial<ValueChangeMessage> = {
-        event: 'update',
-        model: value,
-      }
       expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining(messagePattern),
+        expect.objectContaining({
+          event: 'update',
+          model: value,
+        } satisfies Partial<ValueChangeMessage>),
       )
     })
   })
@@ -134,11 +128,10 @@ describe('createPluginActions', () => {
       } = createPluginActions(uid, postToContainer, onUpdateState)
       const height = 2403984
       setHeight(height)
-      const statePattern: Partial<PluginState> = {
-        height,
-      }
       expect(onUpdateState).toHaveBeenLastCalledWith(
-        expect.objectContaining(statePattern),
+        expect.objectContaining({
+          height,
+        } satisfies Partial<PluginState>),
       )
     })
     it('send a message to the container with the expected value', () => {
@@ -148,12 +141,11 @@ describe('createPluginActions', () => {
       } = createPluginActions(uid, postToContainer, onUpdateState)
       const height = 289437
       setHeight(height)
-      const messagePattern: Partial<HeightChangeMessage> = {
-        event: 'heightChange',
-        height,
-      }
       expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining(messagePattern),
+        expect.objectContaining({
+          event: 'heightChange',
+          height,
+        } satisfies Partial<HeightChangeMessage>),
       )
     })
   })
@@ -164,11 +156,10 @@ describe('createPluginActions', () => {
         actions: { setPluginReady },
       } = createPluginActions(uid, postToContainer, onUpdateState)
       setPluginReady()
-      const messagePattern: Partial<PluginLoadedMessage> = {
-        event: 'loaded',
-      }
       expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining(messagePattern),
+        expect.objectContaining({
+          event: 'loaded',
+        } satisfies Partial<PluginLoadedMessage>),
       )
     })
   })
@@ -179,11 +170,10 @@ describe('createPluginActions', () => {
         actions: { requestContext },
       } = createPluginActions(uid, postToContainer, onUpdateState)
       requestContext()
-      const messagePattern: Partial<GetContextMessage> = {
-        event: 'getContext',
-      }
       expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining(messagePattern),
+        expect.objectContaining({
+          event: 'getContext',
+        } satisfies Partial<GetContextMessage>),
       )
     })
   })
@@ -195,11 +185,10 @@ describe('createPluginActions', () => {
       } = createPluginActions(uid, postToContainer, onUpdateState)
       const onAssetSelected = jest.fn()
       selectAsset(onAssetSelected)
-      const messagePattern: Partial<AssetModalChangeMessage> = {
-        event: 'showAssetModal',
-      }
       expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining(messagePattern),
+        expect.objectContaining({
+          event: 'showAssetModal',
+        } satisfies Partial<AssetModalChangeMessage>),
       )
     })
     it('calls the callback function when an asset has been selected by the user', () => {
