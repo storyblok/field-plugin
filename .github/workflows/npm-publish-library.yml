@@ -17,8 +17,10 @@ jobs:
           node-version: 16.18.1
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install --immutable
-      - name: Build the CLI
+      - name: Build the library
         run: yarn workspace @storyblok/field-plugin build
+      - name: Copy the root's readme file
+        run: cp README.md packages/field-plugin/
       - name: Publish the package to NPM
         run: cd packages/field-plugin && npm publish --access public --tag alpha
         env:
