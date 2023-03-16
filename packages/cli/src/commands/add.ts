@@ -10,7 +10,7 @@ import {
 } from 'fs'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
-import { promptName, runCommand } from '../utils'
+import { filterPathsToInclude, promptName, runCommand } from '../utils'
 
 export type Template = 'vue2'
 
@@ -72,7 +72,7 @@ export const add: AddFunc = async (args) => {
     process.exit(1)
   }
 
-  walk.sync(templatePath, (file, stat) => {
+  walk.sync(templatePath, { filter: filterPathsToInclude }, (file, stat) => {
     if (!stat.isFile()) {
       return
     }
@@ -81,17 +81,27 @@ export const add: AddFunc = async (args) => {
     mkdirSync(dirname(destFilePath), {
       recursive: true,
     })
+
     if (file === resolve(templatePath, 'package.json')) {
       const packageJson = JSON.parse(readFileSync(file).toString()) as Record<
         string,
         unknown
       >
+
       // eslint-disable-next-line functional/immutable-data
       packageJson['name'] = packageName
+
       writeFileSync(destFilePath, JSON.stringify(packageJson, null, 2))
-    } else {
-      copyFileSync(file, destFilePath)
+      return
     }
+
+    if (file === resolve(templatePath, 'gitignore')) {
+      const destGitIgnore = resolve(destPath, `.gitignore`)
+      copyFileSync(file, destGitIgnore)
+      return
+    }
+
+    copyFileSync(file, destFilePath)
   })
 
   console.log(`\nRunning \`yarn install\`..\n`)
