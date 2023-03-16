@@ -6,10 +6,10 @@ The Storyblok Field Plugin Command Line Interface provides functionality to crea
 ## Usage
 In case no command is present the CLI will default to the `create` command.
 
+[//]: # (TBD: add yarn create as soon as it is implemented)
+
 ```bash
-npx @storyblok/field-plugin-cli@latest [command] [options]
-# or
-yarn @storyblok/field-plugin-cli [command] [options] 
+npx @storyblok/field-plugin-cli@alpha [command] [options]
 ```
 Available options and commands:
 ```bash
@@ -139,14 +139,14 @@ npx @storyblok/field-plugin-cli deploy --token=<TOKEN> --dir=<PATH_TO_DIR>
 ## :electric_plug: Installation
 You can add the CLI to an existing field plugin project by running:
 ```bash
-yarn add --dev @storyblok/field-plugin-cli
+yarn add --dev @storyblok/field-plugin-cli@alpha
 ```
 
 In case you want to access the dependency globally use:
 ```bash
-yarn global add @storyblok/field-plugin-cli 
+yarn global add @storyblok/field-plugin-cli@alpha 
 # or
-npm install @storyblok/field-plugin-cli --global
+npm install @storyblok/field-plugin-cli@alpha --global
 ```
 
 [//]: # (TBD Add GIF with interactive mode)
@@ -167,6 +167,13 @@ Now that everything is set up you can go ahead and checkout Storyblok's resource
 
 ## :seedling: Contributing
 Please see our [contributing guidelines](https://github.com/storyblok/.github/blob/master/contributing.md). We are always looking for feedback to create a better developer experience. If you happen to find a bug or simply would like to suggest a new feature, you can do so by [submitting an issue](https://github.com/storyblok/field-plugin/issues).
+
+## :1st_place_medal: Credits
+Special thanks goes to all the people that contribute to this library!
+
+<a href="https://github.com/storyblok/field-plugin/graphs/contributors">
+  <img alt='contributors' src="https://contrib.rocks/image?repo=storyblok/field-plugin"/>
+</a>
 
 [//]: # (TBD provide information on semantic naming conventions for brnaches?)
 
