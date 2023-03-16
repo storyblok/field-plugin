@@ -1,30 +1,24 @@
 # `@storyblok/field-plugin`
 
-Create your own field plugins for storyblok with the `@storyblok/field-plugin` library.
+With the `@storyblok/field-plugin` library, you can build custom fields that will enhance your editing experience.
 
-To bootstrap a field plugin project, please refer
-to  [@storyblok/field-plugin-cli](https://www.npmjs.com/package/@storyblok/field-plugin-cli).
+It's easy to get started! Simply use [Storyblok's field plugin CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli) to bootstrap your project:
 
 ```shell
 npx @storyblok/field-plugin-cli create
 ```
 
-## How to Integrate with your application.
+The guide provides examples for integrating with various popular JavaScript frontend frameworks, including React and Vue
 
-By invoking `createFieldPlugin()` as an effect, your application will start listening to events from Storyblok's visual
-editor (or the field plugin editor). The return value is a function that cleans up all created side effects.
+## Integrating with any framework
 
-As an argument to `createFieldPlugin()`, pass a callback function. This function will be invoked whenever the state of
-the field plugin changes, for example
+To integrate with your application, invoke `createFieldPlugin()` as an effect. This will allow your application to start listening to events from Storyblok's visual editor or field plugin editor. 
 
-- when the user change the value in the Visual Editor.
-- when the user opens the modal
-- when the user selects an asset
+`createFieldPlugin()` returns a cleanup function that removes all created side effects. Call this function when your component unmounts.
 
-Use the callback function to update the state of your application via your JavaScript frontend framework of choice.
+Pass a callback function as an argument to `createFieldPlugin()`. This function will be called whenever the state of the field plugin changes, such as when the user changes the value in the visual editor, opens the modal, or selects an asset. Use this callback function to update the state of your application using your preferred JavaScript frontend framework.
 
-In the following subsections, you will find examples for how to integrate `@storyblok/field-plugin` with various popular
-JavaScript frontend frameworks.
+Below are examples of how to integrate `@storyblok/field-plugin` with popular JavaScript frontend frameworks.
 
 ### React
 
@@ -37,9 +31,7 @@ import {useEffect, useState} from 'react'
 type UseFieldPlugin = () => FieldPluginResponse
 
 export const useFieldPlugin: UseFieldPlugin = () => {
-  const [state, setState] = useState<FieldPluginResponse>(() => ({
-    type: 'loading',
-  }))
+  const [state, setState] = useState<FieldPluginResponse>({ type: 'loading' })
 
   useEffect(() => {
     return createFieldPlugin(setState)
@@ -53,7 +45,7 @@ And render your component:
 
 ```tsx
 export const App = () => {
-  const {isLoading, error, data, actions} = useFieldPlugin()
+  const {type, data, actions} = useFieldPlugin()
 
   if (type !== 'loaded') {
     return <></>
@@ -65,9 +57,7 @@ export const App = () => {
           typeof data.value === 'undefined' ? 'undefined' : JSON.stringify(data.value)
   
   return (
-    <button
-      onClick={handleClickIncrement}
-    >
+    <button onClick={handleClickIncrement}>
       {label}
     </button>
   )
@@ -96,34 +86,47 @@ TODO
 
 ## API Reference
 
-`createFieldPlugin()` accepts a callback function as an argument. When the state of the plugin chages, this callback function is invoked with a `FieldPluginResponse` object as argument. This object has the following properties:
+`createFieldPlugin()` is a function that connects the field plugin to the Storyblok Visual Editor. It accepts a callback function that is invoked with a `FieldPluginResponse` object whenever the state of the field plugin changes.
 
-- `isLoaded`: a boolean value that indicates whether your application has received data from Storyblok's Visual
-  Editor.
-- `isLoading`: a boolean value that indicates whether your application has received data from Storyblok's Visual
-  Editor.
-- `error`: If `createFieldPlugin()` failed to connect to the Visual Editor, this propery will contain an `Error`,
-  otherwise `undefined`.
-- `data`: If `createFieldPlugin()` successfully connected to the Visual Editor, this property will contain the state
+The function returns another function that can be used to clean up the event listeners that `createFieldPlugin()` added.
+
+Parameters:
+
+- `callback`: A function that is called whenever the state of the field plugin changes. The function is passed a `FieldPluginResponse` object as its only argument. 
+
+Return Value:
+
+- `() => void`: A function that removes the event listeners added by `createFieldPlugin()`.
+
+### `FieldPluginResponse`
+
+`FieldPluginResponse` is an object that represents the current state of a field plugin.
+
+Properties:
+
+- `type`: A string that indicates which overall state your field plugin is in. It can assume three values:
+  - `loading`: When the state is initially loaded and has not yet establish communication with the Visual Editor.
+  - `error`: The plugin failed to load. This can happen, for example, if the field plugin URL is opened outside the Visual Editor. This is typically nothing to worry about.
+  - `loaded`: The plugin successfully loaded and is ready-to-use.
+- `error`: If `request.type` is `error`, the `error` property will contain an `Error` object instance.
+  Otherwise, it is `undefined`.
+- `data`: If `request.type` is `loaded`, this property will contain the state
   of the application that the Visual Editor has shared with the field plugin. It has the following properties:
-    - `value`:
-    - `options`:
-    - `isModalOpen`:
-    - `language`:
-    - `spaceId`:
-    - `story`:
-    - `storyId`:
-    - `blockUid`:
-    - `token`:
-    - `uid`:
-    - `story`: Note: does not update when the story changes. If you need to refresh the story after the field plugin
-      was initially set up, call `actions.getContext()`.
-    - `height`
-- `actions`: If `createFieldPlugin()` successfully connected to the Visual Editor, this property will contain an
+    - `value`: The value of the field plugin that is part of the content.
+    - `options`: A dictionary/record of `string` key-value pairs, containing the options that were set up for this field plugin in the block schema.
+    - `isModalOpen`: A boolean value that indicates whether the field plugin is embedded in a modal window.
+    - `language`: The current language. Can be an empty string (`""`). 
+    - `spaceId`: The ID of the space.
+    - `story`: The story how it was when the plugin was _initially_ loaded. To update this after the initial load, please refer to `response.actions.requestContext()`.
+    - `storyId`: The ID of the story.
+    - `blockUid`: The UID of the block that the field plugin is part of.
+    - `token`: A draft access token to the [Content Delivery API](https://www.storyblok.com/docs/api/content-delivery/v2#topics/authentication).
+    - `uid`:  The UID of the field plugin.
+    - `height`: the height of the window.
+- `actions`: When `createFieldPlugin()` has connected to the Visual Editor, this property will contain an
   object whose properties are functions that enables the field plugin application to interact with the Visual Editor.
-    - `setValue`
-    - `setModalOpen`
-    - `selectAsset`
-    - `setPluginReady`
-    - `setHeight`
-    - `requestContext()`
+    - `setValue`: Updates the value of the field plugin. For example, `setValue(3.14159)`
+    - `setModalOpen`: Opens/Closes the modal window. For example, `setModalOpen(true)`.
+    - `selectAsset`: Opens the asset selector. Accepts a callback function as argument which will be called when the user has selected an asset. For example, `selectAsset((fileName) => setValue(filename))`
+    - `requestContext()`: Updates the `request.data.story` property to the version of the story that is currently opened in the Visual Editor. That is, the unsaved version of the story that exists in the user's browser memory.
+
