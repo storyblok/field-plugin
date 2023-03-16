@@ -33,17 +33,6 @@ export const FieldPluginDemo: FunctionComponent = () => {
     )
   }
 
-  const { value } = data
-
-  if (typeof value !== 'undefined' && typeof value !== 'number') {
-    actions.setValue(0)
-    return (
-      <Box>
-        Hey, why is number not number or undefined? Got: {JSON.stringify(value)}
-      </Box>
-    )
-  }
-
   const props = {
     data,
     actions,
