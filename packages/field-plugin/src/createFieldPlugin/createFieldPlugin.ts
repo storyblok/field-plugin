@@ -17,8 +17,8 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   if (!isEmbedded) {
     onUpdateState({
+      type: 'error',
       error: new Error(`The window is not embedded within another window`),
-      isLoading: false,
     })
     return () => undefined
   }
@@ -27,10 +27,10 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   if (!params) {
     onUpdateState({
+      type: 'error',
       error: new Error(
         `The URL parameters does not match the expected format.`,
       ),
-      isLoading: false,
     })
     return () => undefined
   }
@@ -54,7 +54,7 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
     postToContainer,
     (data) => {
       onUpdateState({
-        isLoading: false,
+        type: 'loaded',
         data,
         actions,
       })

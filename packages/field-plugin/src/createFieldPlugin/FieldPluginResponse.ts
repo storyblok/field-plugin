@@ -3,19 +3,19 @@ import { PluginActions } from './PluginActions'
 
 export type FieldPluginResponse =
   | {
-      isLoading: true
+      type: 'loading'
       error?: never
       data?: never
       actions?: never
     }
   | {
-      isLoading: false
+      type: 'error'
       error: Error
       data?: never
       actions?: never
     }
   | {
-      isLoading: false
+      type: 'loaded'
       error?: never
       data: PluginState
       actions: PluginActions
