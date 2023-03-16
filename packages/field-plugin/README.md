@@ -66,23 +66,38 @@ export const App = () => {
 
 ### Vue 3
 
-With the composition api, create a hook:
+Coming soon...
 
-```markdown
-TODO:
-Something like
-1. create a reactive value
-2. call useFieldPlugin
-3. in useFieldPlugin's argument, update the state
-4. Note that we cannot send reactive objects via `Window.postMessage()`, so we have to proxy all calls to setValue in a function that wraps the value in `JSON.parse(JSON.stringify(value))`
-5. return the reactive value from the hook
-```
+[//]: # (With the composition api, create a hook:)
 
-With the options api, create a mixin:
+[//]: # ()
+[//]: # (```markdown)
 
-```vue
-TODO
-```
+[//]: # (TODO:)
+
+[//]: # (Something like)
+
+[//]: # (1. create a reactive value)
+
+[//]: # (2. call useFieldPlugin)
+
+[//]: # (3. in useFieldPlugin's argument, update the state)
+
+[//]: # (4. Note that we cannot send reactive objects via `Window.postMessage&#40;&#41;`, so we have to proxy all calls to setValue in a function that wraps the value in `JSON.parse&#40;JSON.stringify&#40;value&#41;&#41;`)
+
+[//]: # (5. return the reactive value from the hook)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (With the options api, create a mixin:)
+
+[//]: # ()
+[//]: # (```vue)
+
+[//]: # (TODO)
+
+[//]: # (```)
 
 ## API Reference
 
