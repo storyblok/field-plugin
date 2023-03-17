@@ -3,12 +3,20 @@ import { createMonorepo } from './monorepo'
 import { createPolyrepo } from './polyrepo'
 import { Structure, Template } from '../add'
 
-export type CreateArgs = {
-  dir: string
-  structure?: Structure
-  name?: string
-  template?: Template
-}
+export type CreateArgs =
+  | {
+      structure: 'monorepo'
+      dir: string
+      repoName?: string
+      packageName?: string
+      template?: Template
+    }
+  | {
+      structure: 'polyrepo'
+      dir: string
+      name?: string
+      template?: Template
+    }
 
 export type CreateFunc = (args: CreateArgs) => Promise<void>
 
@@ -44,13 +52,11 @@ const selectRepositoryStructure = async () => {
 }
 
 export const create: CreateFunc = async (opts) => {
-  const { dir, name, template } = opts
-
   const structure = opts.structure || (await selectRepositoryStructure())
 
   if (structure === 'polyrepo') {
-    await createPolyrepo({ dir, name, template })
+    await createPolyrepo(opts)
   } else if (structure === 'monorepo') {
-    await createMonorepo({ dir, name, template })
+    await createMonorepo(opts)
   }
 }

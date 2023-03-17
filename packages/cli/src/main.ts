@@ -21,10 +21,6 @@ export const main = () => {
     .command('create', { isDefault: true })
     .description('creates a new repository to start developing field plugins')
     .option('--dir <value>', 'directory to create a repository into', '.')
-    .option(
-      '--name <value>',
-      'name of plugin (Lowercase alphanumeric and dash)',
-    )
     .addOption(
       new Option('--template <value>', 'name of template to use').choices(
         templateOptions,
@@ -35,10 +31,21 @@ export const main = () => {
         structureOptions,
       ),
     )
+    .option(
+      '--name <value>',
+      '[Polyrepo] name of plugin (Lowercase alphanumeric and dash)',
+    )
+    .option(
+      '--repoName <value>',
+      '[Monorepo] name of repository (Lowercase alphanumeric and dash)',
+    )
+    .option(
+      '--packageName <value>',
+      '[Monorepo] name of package (Lowercase alphanumeric and dash)',
+    )
     .action(async function (this: Command) {
-      const { dir, structure, template, name } = this.opts<CreateArgs>()
-
-      await create({ dir, structure, template, name })
+      const opts = this.opts<CreateArgs>()
+      await create(opts)
     })
 
   program
