@@ -7,10 +7,6 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "yarn workspace ${0} dev",
-    "build": "yarn workspace ${0} build",
-    "test": "yarn workspace ${0} test",
-    "test:watch": "yarn workspace ${0} test:watch",
     "new": "npx @storyblok/field-plugin-cli@alpha add --dir \"./packages\" --structure monorepo",
     "lint": "eslint --ext .js,.vue .",
     "format": "prettier . --write"

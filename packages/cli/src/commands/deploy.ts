@@ -16,6 +16,7 @@ export type DeployArgs = {
   name?: string
   token?: string
   output?: string
+  dotEnvPath?: string
 }
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
@@ -42,11 +43,12 @@ export const deploy: DeployFunc = async ({
   name,
   dir,
   output,
+  dotEnvPath,
 }) => {
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's deploy a field-plugin.\n")
 
-  loadEnvironmentVariables()
+  loadEnvironmentVariables(dotEnvPath)
 
   const validatedToken = validateToken(token)
 
@@ -103,6 +105,12 @@ export const deploy: DeployFunc = async ({
   console.log(
     bold(green('[SUCCESS]')),
     'The field plugin is deployed successfully.',
+  )
+
+  console.log('You can find the deployed plugin at the following URL:')
+  console.log(`  > https://app.storyblok.com/#/me/plugins`)
+  console.log(
+    'You can also find it at "My account > My Plugins" at the bottom of the sidebar.',
   )
 }
 

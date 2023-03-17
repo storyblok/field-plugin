@@ -8,7 +8,8 @@
     "build": "vite build",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "deploy": "npm run build && npx @storyblok/field-plugin-cli@alpha deploy"
+    "predeploy": "npm run build",
+    "deploy": "npx @storyblok/field-plugin-cli@alpha deploy"
   },
   "dependencies": {
     "@storyblok/field-plugin": "0.0.1-alpha.0",
