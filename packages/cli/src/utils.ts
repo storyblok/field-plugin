@@ -1,10 +1,13 @@
 import dotenv from 'dotenv'
 import prompts from 'prompts'
-import { resolve } from 'path'
 
-export const loadEnvironmentVariables = (dir = '.') => {
-  dotenv.config({ path: resolve(dir, '.env') })
-  dotenv.config({ path: resolve(dir, '.env.local') })
+export const loadEnvironmentVariables = (dotEnvPath: string | undefined) => {
+  if (typeof dotEnvPath === 'string') {
+    dotenv.config({ path: dotEnvPath })
+  } else {
+    dotenv.config({ path: '.env' })
+    dotenv.config({ path: '.env.local' })
+  }
 }
 
 type RunCommandFunc = (
