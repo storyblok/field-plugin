@@ -110,7 +110,7 @@ export const deploy: DeployFunc = async ({
   console.log('You can find the deployed plugin at the following URL:')
   console.log(`  > https://app.storyblok.com/#/me/plugins`)
   console.log(
-    'You can also find it at "My account > My Plugins" at the bottom of the sidebar.',
+    'You can also find it in "My account > My Plugins" at the bottom of the sidebar.',
   )
 }
 

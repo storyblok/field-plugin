@@ -65,7 +65,7 @@ export const main = () => {
     .addOption(
       new Option(
         '--dotEnvPath <value>',
-        'path to .env file which stores STORYBLOK_PERSONAL_ACCESS_TOKEN',
+        'path to the `.env` file which stores the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`',
       ).default('.'),
     )
     .action(async function (this: Command) {
