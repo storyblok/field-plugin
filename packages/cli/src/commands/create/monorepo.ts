@@ -1,8 +1,8 @@
 import prompts from 'prompts'
 import { copyFileSync, existsSync, mkdirSync, unlinkSync } from 'fs'
-import { bold, cyan, red } from 'kleur/colors'
+import { bold, cyan } from 'kleur/colors'
 import { dirname, resolve } from 'path'
-import { MONOREPO_FOLDER_NAME, TEMPLATES_PATH } from '../../../config'
+import { TEMPLATES_PATH } from '../../../config'
 import {
   filterPathsToInclude,
   initializeNewRepo,
