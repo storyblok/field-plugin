@@ -14,9 +14,9 @@ export type PluginComponent = FunctionComponent<{
 }>
 
 export const FieldPluginDemo: FunctionComponent = () => {
-  const { isLoading, error, data, actions } = useFieldPlugin()
+  const { type, data, actions } = useFieldPlugin()
 
-  if (isLoading) {
+  if (type === 'loading') {
     return (
       <Box>
         <LoadingIcon />
@@ -24,22 +24,11 @@ export const FieldPluginDemo: FunctionComponent = () => {
       </Box>
     )
   }
-  if (error) {
+  if (type === 'error') {
     return (
       <Box>
         <SquareErrorIcon />
         <Typography>Error</Typography>
-      </Box>
-    )
-  }
-
-  const { value } = data
-
-  if (typeof value !== 'undefined' && typeof value !== 'number') {
-    actions.setValue(0)
-    return (
-      <Box>
-        Hey, why is number not number or undefined? Got: {JSON.stringify(value)}
       </Box>
     )
   }

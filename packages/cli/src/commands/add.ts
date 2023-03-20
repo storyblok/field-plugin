@@ -1,27 +1,33 @@
 import { bold, cyan, red, green } from 'kleur/colors'
 import prompts from 'prompts'
-import { resolve, dirname, basename } from 'path'
+import { resolve, dirname } from 'path'
 import {
   existsSync,
   mkdirSync,
   copyFileSync,
   readFileSync,
   writeFileSync,
-  unlinkSync,
 } from 'fs'
 import walk from 'walkdir'
 import { TEMPLATES, TEMPLATES_PATH } from '../../config'
-import { promptName, runCommand } from '../utils'
+import { filterPathsToInclude, promptName, runCommand } from '../utils'
 
 export type Template = 'vue2'
 
-export type Structure = 'single' | 'multiple'
+export type Structure = 'polyrepo' | 'monorepo'
 
 export type AddArgs = {
   dir: string
   name?: string
   template?: Template
   structure?: Structure
+}
+
+export type PackageJson = {
+  name: string
+  scripts: {
+    deploy: string
+  }
 }
 
 export type AddFunc = (args: AddArgs) => Promise<{ destPath: string }>
@@ -73,7 +79,7 @@ export const add: AddFunc = async (args) => {
     process.exit(1)
   }
 
-  walk.sync(templatePath, (file, stat) => {
+  walk.sync(templatePath, { filter: filterPathsToInclude }, (file, stat) => {
     if (!stat.isFile()) {
       return
     }
@@ -82,17 +88,31 @@ export const add: AddFunc = async (args) => {
     mkdirSync(dirname(destFilePath), {
       recursive: true,
     })
+
     if (file === resolve(templatePath, 'package.json')) {
-      const packageJson = JSON.parse(readFileSync(file).toString()) as Record<
-        string,
-        unknown
-      >
+      const packageJson = JSON.parse(
+        readFileSync(file).toString(),
+      ) as PackageJson
+
       // eslint-disable-next-line functional/immutable-data
       packageJson['name'] = packageName
+
+      if (args.structure === 'monorepo') {
+        // eslint-disable-next-line functional/immutable-data, @typescript-eslint/no-unsafe-member-access
+        packageJson['scripts']['deploy'] += " --dotEnvPath '../../.env'"
+      }
+
       writeFileSync(destFilePath, JSON.stringify(packageJson, null, 2))
-    } else {
-      copyFileSync(file, destFilePath)
+      return
     }
+
+    if (file === resolve(templatePath, 'gitignore')) {
+      const destGitIgnore = resolve(destPath, `.gitignore`)
+      copyFileSync(file, destGitIgnore)
+      return
+    }
+
+    copyFileSync(file, destFilePath)
   })
 
   console.log(`\nRunning \`yarn install\`..\n`)
@@ -105,17 +125,17 @@ export const add: AddFunc = async (args) => {
   )
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-  const structure = args.structure || 'single'
+  const structure = args.structure || 'polyrepo'
 
   console.log(`- To run development mode run the following commands:`)
 
-  if (structure === 'single') {
+  if (structure === 'polyrepo') {
     console.log(`    >`, green(`cd ${destPath}`))
     console.log(`    >`, green(`yarn dev`))
-  } else {
+  } else if (structure === 'monorepo') {
     const parentPath = resolve(rootPath, '..')
     console.log(`    >`, green(`cd ${parentPath}`))
-    console.log(`    >`, green(`yarn dev ${packageName}`))
+    console.log(`    >`, green(`yarn workspace ${packageName} dev`))
   }
 
   return { destPath }

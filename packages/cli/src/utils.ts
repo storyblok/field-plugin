@@ -1,10 +1,13 @@
 import dotenv from 'dotenv'
-import { red } from 'kleur/colors'
 import prompts from 'prompts'
 
-export const loadEnvironmentVariables = () => {
-  dotenv.config({ path: '.env' })
-  dotenv.config({ path: '.env.local' })
+export const loadEnvironmentVariables = (dotEnvPath: string | undefined) => {
+  if (typeof dotEnvPath === 'string') {
+    dotenv.config({ path: dotEnvPath })
+  } else {
+    dotenv.config({ path: '.env' })
+    dotenv.config({ path: '.env.local' })
+  }
 }
 
 type RunCommandFunc = (
@@ -58,6 +61,12 @@ export const promptName = async ({
   )) as { name: string }
   return name
 }
+
+export const filterPathsToInclude = (
+  directory: string,
+  files: string[],
+): string[] | Promise<string[]> =>
+  files.filter((file) => file !== 'node_modules' && file !== 'cache')
 
 export const initializeNewRepo = async ({ dir }: { dir: string }) => {
   await runCommand('git init', { cwd: dir })

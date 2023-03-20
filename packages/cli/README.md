@@ -6,10 +6,10 @@ The Storyblok Field Plugin Command Line Interface provides functionality to crea
 ## Usage
 In case no command is present the CLI will default to the `create` command.
 
+[//]: # (TBD: add yarn create as soon as it is implemented)
+
 ```bash
-npx @storyblok/field-plugin-cli@latest [command] [options]
-# or
-yarn @storyblok/field-plugin-cli [command] [options] 
+npx @storyblok/field-plugin-cli@alpha [command] [options]
 ```
 Available options and commands:
 ```bash
@@ -30,9 +30,10 @@ The `create` command allows a set of **optional** options for customization.
 
 ```bash
 --dir <value>         directory to create a repository into (default: `.`)
---name <value>        name of plugin (Lowercase alphanumeric and dash)
+--pluginName <value>        name of plugin (Lowercase alphanumeric and dash)
+--repoName <value>        name of repository, for monorepo (Lowercase alphanumeric and dash)
 --template <value>    name of template to use (choices: "vue2")
---structure <value>   setup structure (choices: "single", "multiple")
+--structure <value>   setup structure (choices: "polyrepo", "monorepo")
 -h, --help            display help for command
 ```
 
@@ -42,17 +43,17 @@ The `create` command allows a set of **optional** options for customization.
 npx @storyblok/field-plugin-cli
 
 # Create a single field plugin with Vue 2 template inside a specific directory with a specific named
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --name=<FIELD_PLUGIN_NAME> --template=vue2 --structure=single
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue2 --structure=polyrepo
 
 # Create a monorepo with field plugin with a specific named inside a specific directory with Vue 2 template
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --name=<FIELD_PLUGIN_NAME> --template=vue2 --structure=monorepo
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue2 --structure=monorepo
 ```
 
 #### Structure
-Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a single package and a monorepo setup.
+Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a polyrepo and a monorepo setup.
 
-##### single
-Here is a simplified folder structure of a single package mode:
+##### polyrepo (one package in one repo)
+Here is a simplified folder structure of a polyrepo mode:
 ```bash
 ├── field-plugin
 │   ├── src
@@ -63,8 +64,8 @@ Here is a simplified folder structure of a single package mode:
 └──
 ```
 
-#### multiple (Monorepo)
-For a multiple package setup, we are using the following project structure:
+#### monorepo (multiple packages in one repo)
+For a monorepo setup, we are using the following project structure:
 ```bash
 ├── field-plugins
 │   ├── packages
@@ -139,14 +140,14 @@ npx @storyblok/field-plugin-cli deploy --token=<TOKEN> --dir=<PATH_TO_DIR>
 ## :electric_plug: Installation
 You can add the CLI to an existing field plugin project by running:
 ```bash
-yarn add --dev @storyblok/field-plugin-cli
+yarn add --dev @storyblok/field-plugin-cli@alpha
 ```
 
 In case you want to access the dependency globally use:
 ```bash
-yarn global add @storyblok/field-plugin-cli 
+yarn global add @storyblok/field-plugin-cli@alpha 
 # or
-npm install @storyblok/field-plugin-cli --global
+npm install @storyblok/field-plugin-cli@alpha --global
 ```
 
 [//]: # (TBD Add GIF with interactive mode)
@@ -167,6 +168,13 @@ Now that everything is set up you can go ahead and checkout Storyblok's resource
 
 ## :seedling: Contributing
 Please see our [contributing guidelines](https://github.com/storyblok/.github/blob/master/contributing.md). We are always looking for feedback to create a better developer experience. If you happen to find a bug or simply would like to suggest a new feature, you can do so by [submitting an issue](https://github.com/storyblok/field-plugin/issues).
+
+## :1st_place_medal: Credits
+Special thanks goes to all the people that contribute to this library!
+
+<a href="https://github.com/storyblok/field-plugin/graphs/contributors">
+  <img alt='contributors' src="https://contrib.rocks/image?repo=storyblok/field-plugin"/>
+</a>
 
 [//]: # (TBD provide information on semantic naming conventions for brnaches?)
 

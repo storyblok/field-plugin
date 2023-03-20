@@ -13,7 +13,7 @@ import packageJson from './../package.json'
 
 const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
-const structureOptions = ['single', 'multiple']
+const structureOptions = ['polyrepo', 'monorepo']
 
 export const main = () => {
   program
@@ -21,10 +21,6 @@ export const main = () => {
     .command('create', { isDefault: true })
     .description('creates a new repository to start developing field plugins')
     .option('--dir <value>', 'directory to create a repository into', '.')
-    .option(
-      '--name <value>',
-      'name of plugin (Lowercase alphanumeric and dash)',
-    )
     .addOption(
       new Option('--template <value>', 'name of template to use').choices(
         templateOptions,
@@ -35,10 +31,17 @@ export const main = () => {
         structureOptions,
       ),
     )
+    .option(
+      '--pluginName <value>',
+      'name of plugin (Lowercase alphanumeric and dash)',
+    )
+    .option(
+      '--repoName <value>',
+      '[Monorepo] name of repository (Lowercase alphanumeric and dash)',
+    )
     .action(async function (this: Command) {
-      const { dir, structure, template, name } = this.opts<CreateArgs>()
-
-      await create({ dir, structure, template, name })
+      const opts = this.opts<CreateArgs>()
+      await create(opts)
     })
 
   program
@@ -62,14 +65,22 @@ export const main = () => {
         'path to field plugin to be deployed',
       ).default('.'),
     )
+    .addOption(
+      new Option(
+        '--dotEnvPath <value>',
+        'path to the `.env` file which stores the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`',
+      ).default('.'),
+    )
     .action(async function (this: Command) {
-      const { dir, skipPrompts, token, output } = this.opts<DeployArgs>()
+      const { dir, skipPrompts, token, output, dotEnvPath } =
+        this.opts<DeployArgs>()
 
       await deploy({
         skipPrompts,
         token,
         dir,
         output,
+        dotEnvPath,
       })
     })
 
