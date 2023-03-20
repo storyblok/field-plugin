@@ -30,3 +30,18 @@ jobs:
       - run: yarn workspace @storyblok/field-plugin-cli build
       - run: npx field-plugin --dir=${{runner.temp}} --pluginName=temp-single-field-plugin --template=vue2 --structure=polyrepo
       - run: cd ${{runner.temp}}/temp-single-field-plugin && yarn build
+  monorepo-cli-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.18.1
+      - run: git config --global user.email "you@example.com"
+      - run: git config --global user.name "Your Name"
+      - run: yarn install
+      - run: yarn workspace @storyblok/field-plugin-cli build
+      - run: npx field-plugin --dir=${{runner.temp}} --repoName=temp-monorepo-field-plugin --pluginName=test-plugin --template=vue2 --structure=monorepo
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
+      - run: cd ${{runner.temp}}/temp-monorepo-field-plugin && yarn workspace test-plugin build
