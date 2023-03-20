@@ -1,5 +1,5 @@
 # Storyblok React Field Plugin
-This project was created using React and Typescript. It consists of a set of base functionalities, such as value updating, modal toggling and asset selection. This starter is intended to help developers when creating their own Storyblok Field Plugin. 
+This project was created using React and Typescript. It consists of a set of base functionalities, such as value updating, modal toggling and asset selection. This starter is intended to help developers when creating their own Storyblok Field Plugins. 
 
 
 ## Local Development
