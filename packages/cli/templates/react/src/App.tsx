@@ -1,22 +1,17 @@
 import {useFieldPlugin} from "./useFieldPlugin";
-import {useState} from "react";
+import {FunctionComponent} from "react";
+import Increment from "./components/Increment";
+import ModalToggle from "./components/ModalToggle";
+import AssetSelector from "./components/AssetSelector";
+import {PluginActions, PluginState} from "@storyblok/field-plugin";
+
+export type FieldPluginFun = FunctionComponent<{
+    data: PluginState
+    actions: PluginActions
+}>
 
 function App() {
     const {type, data, actions} = useFieldPlugin()
-    const [imageUrl, setImageUrl] = useState<string>('');
-
-    const handleIncrement = () => {
-        actions?.setValue((typeof data.value === 'number' ? data.value : 0) + 1)
-    }
-
-    const handleToggleModal = (isOpen: boolean) => {
-        actions?.setModalOpen(isOpen)
-    }
-
-    const handleSelectAsset = () => {
-        actions?.selectAsset((filename) => setImageUrl(filename))
-    }
-
 
     if (type === 'loading') {
         return (
@@ -30,26 +25,16 @@ function App() {
         )
     }
 
-    const label =
-        typeof data.value !== 'number' ? 0 : JSON.stringify(data.value)
+    const props = {
+        data,
+        actions,
+    }
 
     return (
-        <div>
-            <div>
-                <span>Value: {label}</span>
-                <button onClick={handleIncrement}>
-                    Increment
-                </button>
-            </div>
-            <div>
-                <button
-                    onClick={() => handleToggleModal(!data.isModalOpen)}>{data.isModalOpen ? 'Close' : 'Open'} modal
-                </button>
-            </div>
-            <div>
-                <button onClick={handleSelectAsset}>Select Asset</button>
-                <span>Image Url: {imageUrl}</span>
-            </div>
+        <div className='field-plugin'>
+            <ModalToggle {...props}/>
+            <Increment {...props} />
+            <AssetSelector {...props}/>
         </div>
 
     )
