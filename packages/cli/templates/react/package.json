@@ -1,0 +1,28 @@
+{
+  "name": "field-plugin-react-template",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@storyblok/field-plugin": "0.0.1-alpha.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "5.55.0",
+    "@vitejs/plugin-react": "^3.1.0",
+    "eslint": "latest",
+    "eslint-plugin-react": "7.30.0",
+    "prettier": "latest",
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0"
+  }
+}
