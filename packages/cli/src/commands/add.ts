@@ -23,6 +23,13 @@ export type AddArgs = {
   structure?: Structure
 }
 
+export type PackageJson = {
+  name: string
+  scripts: {
+    deploy: string
+  }
+}
+
 export type AddFunc = (args: AddArgs) => Promise<{ destPath: string }>
 
 const selectTemplate = async () => {
@@ -83,13 +90,17 @@ export const add: AddFunc = async (args) => {
     })
 
     if (file === resolve(templatePath, 'package.json')) {
-      const packageJson = JSON.parse(readFileSync(file).toString()) as Record<
-        string,
-        unknown
-      >
+      const packageJson = JSON.parse(
+        readFileSync(file).toString(),
+      ) as PackageJson
 
       // eslint-disable-next-line functional/immutable-data
       packageJson['name'] = packageName
+
+      if (args.structure === 'monorepo') {
+        // eslint-disable-next-line functional/immutable-data, @typescript-eslint/no-unsafe-member-access
+        packageJson['scripts']['deploy'] += " --dotEnvPath '../../.env'"
+      }
 
       writeFileSync(destFilePath, JSON.stringify(packageJson, null, 2))
       return
@@ -121,10 +132,10 @@ export const add: AddFunc = async (args) => {
   if (structure === 'polyrepo') {
     console.log(`    >`, green(`cd ${destPath}`))
     console.log(`    >`, green(`yarn dev`))
-  } else {
+  } else if (structure === 'monorepo') {
     const parentPath = resolve(rootPath, '..')
     console.log(`    >`, green(`cd ${parentPath}`))
-    console.log(`    >`, green(`yarn dev ${packageName}`))
+    console.log(`    >`, green(`yarn workspace ${packageName} dev`))
   }
 
   return { destPath }
