@@ -20,5 +20,3 @@ export const TEMPLATES = [
   If we move this file to another folder, then we need to put correct value conditionally to `TEMPLATES_PATH`.
 */
 export const TEMPLATES_PATH = resolve(__dirname, 'templates')
-
-export const MONOREPO_FOLDER_NAME = 'field-plugins'

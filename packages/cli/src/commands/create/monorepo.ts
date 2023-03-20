@@ -1,7 +1,8 @@
+import prompts from 'prompts'
 import { copyFileSync, existsSync, mkdirSync, unlinkSync } from 'fs'
-import { bold, cyan, red } from 'kleur/colors'
+import { bold, cyan } from 'kleur/colors'
 import { dirname, resolve } from 'path'
-import { MONOREPO_FOLDER_NAME, TEMPLATES_PATH } from '../../../config'
+import { TEMPLATES_PATH } from '../../../config'
 import {
   filterPathsToInclude,
   initializeNewRepo,
@@ -10,36 +11,59 @@ import {
 import { add, Template } from '../add'
 import walk from 'walkdir'
 
-type CreateMonorepoFunc = (args: {
+export type CreateMonorepoArgs = {
   dir: string
-  name?: string
+  repoName?: string
+  pluginName?: string
   template?: Template
-}) => Promise<void>
+}
 
-const getPossibleFolderName = (dir: string) => {
-  if (!existsSync(resolve(dir, MONOREPO_FOLDER_NAME))) {
-    return MONOREPO_FOLDER_NAME
-  }
-  // eslint-disable-next-line functional/no-loop-statement, functional/no-let
-  for (let count = 2; count < 100; count++) {
-    const postfix = `-${count}`
-    if (!existsSync(resolve(dir, `${MONOREPO_FOLDER_NAME}${postfix}`))) {
-      return `${MONOREPO_FOLDER_NAME}${postfix}`
-    }
-  }
-  console.log(
-    bold(red('[ERROR]')),
-    `The folder \`${MONOREPO_FOLDER_NAME}\` already exists.`,
+type CreateMonorepoFunc = (args: CreateMonorepoArgs) => Promise<void>
+
+const isValidRepoName = ({
+  name,
+  dir,
+}: {
+  name: string | undefined
+  dir: string
+}) => {
+  return (
+    typeof name === 'string' &&
+    new RegExp(/^[a-z0-9\\-]+$/).test(name) &&
+    !existsSync(resolve(dir, name))
   )
-  process.exit(1)
+}
+
+const promptRepoName = async (dir: string) => {
+  const { name } = (await prompts(
+    [
+      {
+        type: 'text',
+        name: 'name',
+        message:
+          'What is your repository name?\n  (Lowercase alphanumeric and dash are allowed.)',
+        validate: (name: string) => isValidRepoName({ dir, name }),
+      },
+    ],
+    {
+      onCancel: () => {
+        process.exit(1)
+      },
+    },
+  )) as { name: string }
+  return name
 }
 
 export const createMonorepo: CreateMonorepoFunc = async ({
   dir,
-  name,
+  repoName,
+  pluginName,
   template,
 }) => {
-  const folderName = getPossibleFolderName(dir)
+  const folderName =
+    repoName !== undefined && isValidRepoName({ dir, name: repoName })
+      ? repoName
+      : await promptRepoName(dir)
   const repoDir = resolve(dir, folderName)
   const templatePath = resolve(TEMPLATES_PATH, 'monorepo') + '/'
 
@@ -73,7 +97,7 @@ export const createMonorepo: CreateMonorepoFunc = async ({
   await add({
     dir: `${repoDir}/packages`,
     structure: 'monorepo',
-    name,
+    name: pluginName,
     template,
   })
   unlinkSync(`${repoDir}/packages/.gitkeep`)

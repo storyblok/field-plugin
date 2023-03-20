@@ -1,14 +1,15 @@
 import prompts from 'prompts'
-import { createMonorepo } from './monorepo'
-import { createPolyrepo } from './polyrepo'
-import { Structure, Template } from '../add'
+import { createMonorepo, type CreateMonorepoArgs } from './monorepo'
+import { createPolyrepo, type CreatePolyrepoArgs } from './polyrepo'
+import { Structure } from '../add'
 
-export type CreateArgs = {
-  dir: string
-  structure?: Structure
-  name?: string
-  template?: Template
-}
+export type CreateArgs =
+  | ({
+      structure: 'monorepo'
+    } & CreateMonorepoArgs)
+  | ({
+      structure: 'polyrepo'
+    } & CreatePolyrepoArgs)
 
 export type CreateFunc = (args: CreateArgs) => Promise<void>
 
@@ -22,12 +23,12 @@ const selectRepositoryStructure = async () => {
           'How many field plugins potentially do you want in this repository?',
         choices: [
           {
-            title: 'Monorepo (multiple packages in one repo)',
+            title: 'Monorepo (multiple plugins in one repo)',
             // description: 'some description if exists',
             value: 'monorepo',
           },
           {
-            title: 'Polyrepo (one package in one repo)',
+            title: 'Polyrepo (one plugin in one repo)',
             // description: 'some description if exists',
             value: 'polyrepo',
           },
@@ -43,14 +44,19 @@ const selectRepositoryStructure = async () => {
   return structure
 }
 
-export const create: CreateFunc = async (opts) => {
-  const { dir, name, template } = opts
+const isValidStructure = (structure: string): structure is Structure => {
+  return structure === 'monorepo' || structure === 'polyrepo'
+}
 
-  const structure = opts.structure || (await selectRepositoryStructure())
+export const create: CreateFunc = async (opts) => {
+  const { structure: structureParam, ...rest } = opts
+  const structure = isValidStructure(structureParam)
+    ? structureParam
+    : await selectRepositoryStructure()
 
   if (structure === 'polyrepo') {
-    await createPolyrepo({ dir, name, template })
+    await createPolyrepo(rest)
   } else if (structure === 'monorepo') {
-    await createMonorepo({ dir, name, template })
+    await createMonorepo(rest)
   }
 }
