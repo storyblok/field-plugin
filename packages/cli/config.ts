@@ -6,6 +6,11 @@ export const TEMPLATES = [
     // description: 'some description if exists',
     value: 'vue2',
   },
+  {
+    title: 'React',
+    description: 'Field Plugin template created with React and Typescript.',
+    value: 'react',
+  },
 ]
 
 /* 
