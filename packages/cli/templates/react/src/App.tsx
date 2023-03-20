@@ -1,19 +1,33 @@
 import {useFieldPlugin} from "./useFieldPlugin";
 
 function App() {
-    const {data, actions} = useFieldPlugin()
+    const {type, data, actions} = useFieldPlugin()
 
-    if (!actions && !data) {
-        return <div>not found</div>
+    const handleIncrement = () => {
+        actions?.setValue((typeof data.value === 'number' ? data.value : 0) + 1)
+    }
+
+
+    if (type === 'loading') {
+        return (
+            <span>Loading...</span>
+        )
+    }
+
+    if (type === 'error') {
+        return (
+            <span>Error</span>
+        )
     }
 
     const label =
-        typeof data.value !== 'number' ? 'undefined' : JSON.stringify(data.value)
+        typeof data.value !== 'number' ? 0 : JSON.stringify(data.value)
 
     return (
         <div>
-            <button onClick={() => actions.setValue((typeof data.value === 'number' ? data.value : 0) + 1)}>
-                increment {label}
+            <span>Value: {label}</span>
+            <button onClick={handleIncrement}>
+                Increment
             </button>
         </div>
     )
