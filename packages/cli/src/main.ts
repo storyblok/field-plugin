@@ -69,14 +69,22 @@ export const main = () => {
         'path to field plugin to be deployed',
       ).default('.'),
     )
+    .addOption(
+      new Option(
+        '--dotEnvPath <value>',
+        'path to the `.env` file which stores the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`',
+      ).default('.'),
+    )
     .action(async function (this: Command) {
-      const { dir, skipPrompts, token, output } = this.opts<DeployArgs>()
+      const { dir, skipPrompts, token, output, dotEnvPath } =
+        this.opts<DeployArgs>()
 
       await deploy({
         skipPrompts,
         token,
         dir,
         output,
+        dotEnvPath,
       })
     })
 
