@@ -11,12 +11,14 @@ import {
 import { add, Template } from '../add'
 import walk from 'walkdir'
 
-type CreateMonorepoFunc = (args: {
+export type CreateMonorepoArgs = {
   dir: string
   repoName?: string
-  packageName?: string
+  pluginName?: string
   template?: Template
-}) => Promise<void>
+}
+
+type CreateMonorepoFunc = (args: CreateMonorepoArgs) => Promise<void>
 
 const isValidRepoName = ({
   name,
@@ -55,7 +57,7 @@ const promptRepoName = async (dir: string) => {
 export const createMonorepo: CreateMonorepoFunc = async ({
   dir,
   repoName,
-  packageName,
+  pluginName,
   template,
 }) => {
   const folderName =
@@ -95,7 +97,7 @@ export const createMonorepo: CreateMonorepoFunc = async ({
   await add({
     dir: `${repoDir}/packages`,
     structure: 'monorepo',
-    name: packageName,
+    name: pluginName,
     template,
   })
   unlinkSync(`${repoDir}/packages/.gitkeep`)

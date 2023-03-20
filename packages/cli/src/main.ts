@@ -32,16 +32,12 @@ export const main = () => {
       ),
     )
     .option(
-      '--name <value>',
-      '[Polyrepo] name of plugin (Lowercase alphanumeric and dash)',
+      '--pluginName <value>',
+      'name of plugin (Lowercase alphanumeric and dash)',
     )
     .option(
       '--repoName <value>',
       '[Monorepo] name of repository (Lowercase alphanumeric and dash)',
-    )
-    .option(
-      '--packageName <value>',
-      '[Monorepo] name of package (Lowercase alphanumeric and dash)',
     )
     .action(async function (this: Command) {
       const opts = this.opts<CreateArgs>()
