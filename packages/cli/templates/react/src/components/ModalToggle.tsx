@@ -1,16 +1,22 @@
-import { FieldPluginFunc } from '../App'
+import {FunctionComponent} from "react";
+import {SetModalOpen} from "@storyblok/field-plugin";
+import Button from "./button/Button";
 
-const ModalToggle: FieldPluginFunc = ({ actions, data }) => {
-  const handleToggleModal = (isOpen: boolean) => {
-    actions?.setModalOpen(isOpen)
-  }
-  return (
-    <div className="modal-toggle">
-      <button onClick={() => handleToggleModal(!data.isModalOpen)}>
-        {data.isModalOpen ? 'Close' : 'Open'} modal
-      </button>
-    </div>
-  )
+type ModalToggleFunc = FunctionComponent<{
+    setModalOpen: SetModalOpen,
+    isModalOpen: boolean
+}>
+const ModalToggle: ModalToggleFunc = ({setModalOpen, isModalOpen}) => {
+    const handleToggleModal = (isOpen: boolean) => {
+        setModalOpen(isOpen)
+    }
+    return (
+        <div className="modal-toggle">
+            <Button onClick={() => handleToggleModal(!isModalOpen)}>
+                {isModalOpen ? 'Close' : 'Open'} Modal
+            </Button>
+        </div>
+    )
 }
 
 export default ModalToggle

@@ -1,38 +1,26 @@
-import { useFieldPlugin } from './useFieldPlugin'
-import { FunctionComponent } from 'react'
+import {useFieldPlugin} from './useFieldPlugin'
 import Counter from './components/Counter'
 import ModalToggle from './components/ModalToggle'
 import AssetSelector from './components/AssetSelector'
-import { PluginActions, PluginState } from '@storyblok/field-plugin'
-
-export type FieldPluginFunc = FunctionComponent<{
-  data: PluginState
-  actions: PluginActions
-}>
 
 function App() {
-  const { type, data, actions } = useFieldPlugin()
+    const {type, data, actions} = useFieldPlugin()
 
-  if (type === 'loading') {
-    return <span>Loading...</span>
-  }
+    if (type === 'loading') {
+        return <span>Loading...</span>
+    }
 
-  if (type === 'error') {
-    return <span>Error</span>
-  }
+    if (type === 'error' || typeof data === 'undefined' && typeof actions === 'undefined') {
+        return <span>Error</span>
+    }
 
-  const props = {
-    data,
-    actions,
-  }
-
-  return (
-    <div className="field-plugin">
-      <ModalToggle {...props} />
-      <Counter {...props} />
-      <AssetSelector {...props} />
-    </div>
-  )
+    return (
+        <div className="field-plugin">
+            <ModalToggle isModalOpen={data.isModalOpen} setModalOpen={actions.setModalOpen}/>
+            <Counter setValue={actions.setValue} value={data.value}/>
+            <AssetSelector selectAsset={actions.selectAsset}/>
+        </div>
+    )
 }
 
 export default App

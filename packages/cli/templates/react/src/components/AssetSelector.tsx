@@ -1,19 +1,23 @@
-import { useState } from 'react'
-import { FieldPluginFunc } from '../App'
+import {FunctionComponent, useState} from 'react'
+import {SelectAsset} from "@storyblok/field-plugin";
+import Button from "./button/Button";
 
-const AssetSelector: FieldPluginFunc = ({ actions }) => {
-  const [imageUrl, setImageUrl] = useState<string>('')
+type AssetSelectorFunc = FunctionComponent<{
+    selectAsset: SelectAsset
+}>
+const AssetSelector: AssetSelectorFunc = ({selectAsset}) => {
+    const [imageUrl, setImageUrl] = useState<string>('')
 
-  const handleSelectAsset = () => {
-    actions?.selectAsset((filename: string) => setImageUrl(filename))
-  }
+    const handleSelectAsset = () => {
+        selectAsset((filename: string) => setImageUrl(filename))
+    }
 
-  return (
-    <div className="asset-selector">
-      <button onClick={handleSelectAsset}>Select Asset</button>
-      <span>Image Url: {imageUrl}</span>
-    </div>
-  )
+    return (
+        <div className="asset-selector">
+            <Button onClick={handleSelectAsset}>Select Asset</Button>
+            <span>Image Url: {imageUrl}</span>
+        </div>
+    )
 }
 
 export default AssetSelector
