@@ -8,6 +8,7 @@ html, body {
 }
 
 :root {
+  --sb_green--hover: #009F9C;
   --sb_green: #00b3b0;
   --sb_green_75: #40c6c4;
   --sb_green_50: #7fd9d7;
@@ -65,5 +66,5 @@ html, body {
 }
 
 .sb-button--primary:hover:not([disabled]) {
-  background-color: rgb(0, 159, 156);
+  background-color: var(--sb_green--hover);
 }
