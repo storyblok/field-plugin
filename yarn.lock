@@ -4815,6 +4815,7 @@ __metadata:
     "@vitejs/plugin-vue": ^4.1.0
     typescript: ^4.9.3
     vite: ^4.2.0
+    vite-plugin-css-injected-by-js: 3.1.0
     vue: ^3.2.47
     vue-tsc: ^1.2.0
   languageName: unknown
@@ -8623,6 +8624,15 @@ __metadata:
   peerDependencies:
     vite: ">2.0.0-0"
   checksum: f4cd84e9b552c2525e2f374371b3dd57c896bbea77c4e55bf136fbafa561543684c690c9c0bb74bc496f694b092e2229293cd2b9cde438f3bc9e33bab8f810b2
+  languageName: node
+  linkType: hard
+
+"vite-plugin-css-injected-by-js@npm:3.1.0":
+  version: 3.1.0
+  resolution: "vite-plugin-css-injected-by-js@npm:3.1.0"
+  peerDependencies:
+    vite: ">2.0.0-0"
+  checksum: 2f48b23a52d2c7e4d4a172107406e788bac5132c7b9650ab6e8f1906ed8c60fd4ff82b49f7e073233c348590d3a390173d482000faec8d2fee60e2bc915c5388
   languageName: node
   linkType: hard
 
