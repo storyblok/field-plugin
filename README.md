@@ -1,35 +1,74 @@
 # `@storyblok/field-plugin`
 
-With the `@storyblok/field-plugin` library, you can build custom fields that will enhance your editing experience.
+With the `@storyblok/field-plugin` library, you can build custom fields that will enhance the editing experience.
 
 It's easy to get started! Simply
-use [Storyblok's field plugin CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli) to bootstrap your project:
+use [Storyblok's field plugin CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli) to bootstrap your project with your favorite frontend framework:
 
 ```shell
 npx @storyblok/field-plugin-cli@alpha
 ```
 
-The guide provides examples for integrating with various popular JavaScript frontend frameworks, including React and
-Vue.
+Storyblok provides the following starter projects:
 
-## Integrating with any framework
+- React
 
-To integrate with your application, invoke `createFieldPlugin()` as an effect. This will allow your application to start
-listening to events from Storyblok's visual editor or field plugin editor.
+[//]: # (- Vue 3 &#40;Composition API&#41;)
+[//]: # (- Vue 2 &#40;Options API&#41;)
+[//]: # (- Vanilla JavaScript)
+[//]: # (- Solid)
 
-`createFieldPlugin()` returns a cleanup function that removes all created side effects. Call this function when your
-component unmounts.
+## Integrating @storyblok/field-plugin 
+
+To integrate `@storyblok/field-plugin` into a frontend framework, bootstrap your application with the `--template js` flag.
+
+```shell
+npx @storyblok/field-plugin-cli@alpha --template js
+```
+
+The entry point of the application is in `src/main.js`. Replace this code with the following:
+
+```js
+const rootElement = document.createElement('div')
+rootElement.id = 'app'
+document.body.appendChild(rootElement)
+```
+
+This adds a new node to the `body`. Mount your application to this node, and in the  root component, run  `createFieldPlugin()` as an effect. This will make your application start listening to events from Storyblok's Visual Editor.
 
 Pass a callback function as an argument to `createFieldPlugin()`. This function will be called whenever the state of the
-field plugin changes, such as when the user changes the value in the visual editor, opens the modal, or selects an
-asset. Use this callback function to update the state of your application using your preferred JavaScript frontend
-framework.
+field plugin changes; such as when the user changes the value in the visual editor, opens the modal, selects an
+asset, etc. This callback function receives a `FieldPluginResponse` object as argument (see the API reference below). Use this callback function to re-render your application.
 
-Below are examples of how to integrate `@storyblok/field-plugin` with popular JavaScript frontend frameworks.
+`createFieldPlugin()` returns a cleanup function that removes all created side effects. Call this function when your
+application unmounts.
+
+Below are examples of how to integrate `@storyblok/field-plugin` with various JavaScript frontend frameworks, as well one example with _vanilla_ JavaScript.
+
+### Vanilla JavaScript
+
+If you choose to not use a frontend framework, an integration with `@storyblok/field-plugin` may look like
+
+```js
+import { createFieldPlugin } from '@storyblok/field-plugin'
+
+// This button is the only element in this application
+const buttonEl = document.createElement('button')
+document.body.appendChild(buttonEl)
+
+// Establish communication with the Visual Editor
+createFieldPlugin((response) => {
+  // Handle events from the Visual Editor by re-rendering the button element
+  const { data, actions } = response
+  buttonEl.textContent = `Increment: ${data.value ?? 0}`
+  buttonEl.onclick = () => actions.setValue((data.value ?? 0) + 1)
+})
+
+```
 
 ### React
 
-Create a React hook:
+With React, create a hook:
 
 ```typescript
 import {createFieldPlugin, FieldPluginResponse} from '@storyblok/field-plugin'
@@ -48,7 +87,7 @@ export const useFieldPlugin: UseFieldPlugin = () => {
 }
 ```
 
-And render your component:
+And render your component as such:
 
 ```tsx
 export const App = () => {
@@ -59,7 +98,7 @@ export const App = () => {
   }
 
   const handleClickIncrement = () =>
-    actions?.setValue((typeof data.value === 'number' ? data.value : 0) + 1)
+    actions.setValue((typeof data.value === 'number' ? data.value : 0) + 1)
   const label =
     typeof data.value === 'undefined' ? 'undefined' : JSON.stringify(data.value)
 
@@ -71,9 +110,10 @@ export const App = () => {
 }
 ```
 
-### Vue 3
+[//]: # (### Vue 3)
 
-Coming soon...
+[//]: # ()
+[//]: # (Coming soon...)
 
 [//]: # (With the composition api, create a hook:)
 
@@ -118,12 +158,10 @@ The function returns another function that can be used to clean up the event lis
 
 Parameters:
 
-- `callback`: A function that is called whenever the state of the field plugin changes. The function is passed
+- `callback`: `(response: FieldPluginResponse) => void`: A callback function that is called whenever the state of the field plugin changes. The function is passed
   a `FieldPluginResponse` object as its only argument.
 
-Return Value:
-
-- `() => void`: A function that removes the event listeners added by `createFieldPlugin()`.
+Return Value: `() => void`: A function that removes the event listeners added by `createFieldPlugin()`.
 
 ### FieldPluginResponse
 
@@ -177,3 +215,17 @@ Properties:
 | `selectAsset`      | Opens the asset selector. Accepts a callback function as argument which will be called when the user has selected an asset. For example, `selectAsset((fileName) => setValue(filename))`                 |
 | `requestContext()` | Updates the `request.data.story` property to the version of the story that is currently opened in the Visual Editor. That is, the unsaved version of the story that exists in the user's browser memory. |
 
+## Caveats
+
+Field plugins for Storyblok have some unique feature that one should be aware of. It can be tricky to set up a new project from scratch, and it is therefore recommended to bootstrap new projects with `npx @storyblok/field-plugin-cli@alpha`.
+
+### Single JavaScript Bundle
+
+Field plugins must be bundled in a _single_ JavaScript file (`dist/index.js`), which is deployed to Storyblok. This means that all assets — including CSS files — must be either be encoded within this JavaScript file or served separately.
+
+This has the following implications:
+
+- CSS must be embedded within the JavaScript code. All starters uses Vite and [vite-plugin-css-injected-by-js](https://www.npmjs.com/package/vite-plugin-css-injected-by-js) to automatically bundle the CSS within; so you can keep using CSS, Sass, Css modules, etc. as you normally would. Another option is to use a css-in-js solution, such as [Emotion](https://emotion.sh/docs/introduction) or [JSS](https://cssinjs.org/).
+- Image assets must be served externally (or Base64-encoded in the source code), as they cannot be uploaded to Storyblok via the field plugin editor.
+- The `index.html` file is only used in local development to simulate the production environment. Any changes to `index.html` will _not_ be reflected in the production environment.
+- Code splitting is not available, as all code must be loaded from the same endpoint.
