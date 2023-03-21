@@ -1,19 +1,19 @@
-import { useState } from "react";
-import { FieldPluginFun } from "../App";
+import { useState } from 'react'
+import { FieldPluginFunc } from '../App'
 
-const AssetSelector: FieldPluginFun = ({ actions }) => {
-  const [imageUrl, setImageUrl] = useState<string>("");
+const AssetSelector: FieldPluginFunc = ({ actions }) => {
+  const [imageUrl, setImageUrl] = useState<string>('')
 
   const handleSelectAsset = () => {
-    actions?.selectAsset((filename: string) => setImageUrl(filename));
-  };
+    actions?.selectAsset((filename: string) => setImageUrl(filename))
+  }
 
   return (
     <div className="asset-selector">
       <button onClick={handleSelectAsset}>Select Asset</button>
       <span>Image Url: {imageUrl}</span>
     </div>
-  );
-};
+  )
+}
 
-export default AssetSelector;
+export default AssetSelector
