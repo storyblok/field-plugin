@@ -32,7 +32,7 @@ The `create` command allows a set of **optional** options for customization.
 --dir <value>         directory to create a repository into (default: `.`)
 --pluginName <value>        name of plugin (Lowercase alphanumeric and dash)
 --repoName <value>        name of repository, for monorepo (Lowercase alphanumeric and dash)
---template <value>    name of template to use (choices: "vue2")
+--template <value>    name of template to use (choices: "vue2", "js")
 --structure <value>   setup structure (choices: "polyrepo", "monorepo")
 -h, --help            display help for command
 ```
@@ -86,7 +86,7 @@ For a monorepo setup, we are using the following project structure:
 The options for the `add` command are the following:
 
 ```bash
---template <value>  name of template to use (choices: "vue2")
+--template <value>  name of template to use (choices: "vue2", "js")
 --name <value>      name of plugin (Lowercase alphanumeric and dash)
 --dir <value>       directory to create a field-plugin into (default: `.`)
 -h, --help          display help for command

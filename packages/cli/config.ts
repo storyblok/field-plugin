@@ -6,6 +6,12 @@ export const TEMPLATES = [
     // description: 'some description if exists',
     value: 'vue2',
   },
+  {
+    title: 'JavaScript (without a framework)',
+    description:
+      'Create a field plugin without a JavaScript frontend framework.',
+    value: 'js',
+  },
 ]
 
 /* 
