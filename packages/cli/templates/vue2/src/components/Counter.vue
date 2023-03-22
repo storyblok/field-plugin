@@ -1,6 +1,11 @@
 <template>
   <div class="increment">
-    <button @click="handleIncrement">Increment {{ label }}</button>
+    <button
+      class="btn"
+      @click="handleIncrement"
+    >
+      Increment {{ label }}
+    </button>
   </div>
 </template>
 

@@ -1,6 +1,11 @@
 <template>
   <div class="asset-selector">
-    <button @click="handleSelectAsset">Select Asset</button>
+    <button
+      class="btn"
+      @click="handleSelectAsset"
+    >
+      Select Asset
+    </button>
     <span>Image Url: {{ imageUrl }}</span>
   </div>
 </template>

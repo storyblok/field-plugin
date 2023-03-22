@@ -1,6 +1,7 @@
 <template>
   <div class="modal-toggle">
     <button
+      class="btn"
       type="button"
       @click="handleToggleModal"
     >
