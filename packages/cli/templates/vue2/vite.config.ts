@@ -1,13 +1,13 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue2";
-import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
-import { name } from "./package.json";
-
-console.log("💡 Field-Type name:", name);
-console.log("");
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue2'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    port: 8080,
+    host: true,
+  },
   build: {
     // minify: false,
     rollupOptions: {
@@ -22,6 +22,6 @@ export default defineConfig({
   // @ts-expect-error this is coming from vitest
   test: {
     globals: true,
-    environment: "jsdom",
+    environment: 'jsdom',
   },
-});
+})
