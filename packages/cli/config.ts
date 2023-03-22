@@ -7,6 +7,11 @@ export const TEMPLATES = [
     value: 'vue2',
   },
   {
+    title: 'Vue 3',
+    description: 'Storyblok Field Plugin template created with Vue 3.',
+    value: 'vue3',
+  },
+  {
     title: 'React',
     description:
       'Storyblok Field Plugin template created with React and Typescript.',
