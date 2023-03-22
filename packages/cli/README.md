@@ -91,7 +91,7 @@ The options for the `add` command are the following:
 ```bash
 --template <value>  name of template to use (choices: "vue2", "react", "js")
 --name <value>      name of plugin (Lowercase alphanumeric and dash)
---dir <value>       directory to create a field-plugin into (default: `.`)
+--dir <value>       directory to create a field plugin into (default: `.`)
 -h, --help          display help for command
 ```
 #### Examples
