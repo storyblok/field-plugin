@@ -3,12 +3,12 @@ import { defineProps, computed } from 'vue'
 import { PluginActions, PluginState } from '@storyblok/field-plugin'
 
 const props = defineProps<{
-  actions: PluginActions
+  setValue: PluginActions['setValue']
   data: PluginState
 }>()
 
 const handleIncrement = () => {
-  props.actions.setValue(
+  props.setValue(
     (typeof props.data.value === 'number' ? props.data.value : 0) + 1,
   )
 }

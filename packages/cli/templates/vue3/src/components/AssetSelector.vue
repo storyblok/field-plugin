@@ -3,14 +3,14 @@ import { defineProps, ref } from 'vue'
 import { PluginActions, PluginState } from '@storyblok/field-plugin'
 
 const props = defineProps<{
-  actions: PluginActions
+  selectAsset: PluginActions['selectAsset']
   data: PluginState
 }>()
 
 const imageUrl = ref('')
 
 const handleSelectAsset = () => {
-  props.actions.selectAsset((filename) => (imageUrl.value = filename))
+  props.selectAsset((filename) => (imageUrl.value = filename))
 }
 </script>
 

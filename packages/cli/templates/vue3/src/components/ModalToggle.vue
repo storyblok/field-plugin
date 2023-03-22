@@ -3,8 +3,8 @@ import { defineProps } from 'vue'
 import { PluginActions, PluginState } from '@storyblok/field-plugin'
 
 defineProps<{
-  actions: PluginActions
-  data: PluginState
+  setModalOpen: PluginActions['setModalOpen']
+  isModalOpen: PluginState['isModalOpen']
 }>()
 </script>
 
@@ -12,9 +12,9 @@ defineProps<{
   <div class="modal-toggle">
     <button
       type="button"
-      @click="() => actions.setModalOpen(!data.isModalOpen)"
+      @click="() => setModalOpen(!isModalOpen)"
     >
-      {{ data.isModalOpen ? 'Close' : 'Open' }} modal
+      {{ isModalOpen ? 'Close' : 'Open' }} modal
     </button>
   </div>
 </template>

@@ -16,16 +16,16 @@ const plugin = useFieldPlugin()
       class="field-plugin"
     >
       <ModalToggle
-        :data="plugin.data"
-        :actions="plugin.actions"
+        :is-modal-open="plugin.data.isModalOpen"
+        :set-modal-open="plugin.actions.setModalOpen"
       />
       <Counter
         :data="plugin.data"
-        :actions="plugin.actions"
+        :set-value="plugin.actions.setValue"
       />
       <AssetSelector
         :data="plugin.data"
-        :actions="plugin.actions"
+        :select-asset="plugin.actions.selectAsset"
       />
     </div>
   </div>
