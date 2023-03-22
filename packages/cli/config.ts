@@ -3,13 +3,18 @@ import { resolve } from 'path'
 export const TEMPLATES = [
   {
     title: 'Vue 2',
-    // description: 'some description if exists',
+    description: 'Storyblok Field Plugin template created with Vue 2.',
     value: 'vue2',
   },
   {
-    title: 'JavaScript (without a framework)',
+    title: 'React',
     description:
-      'Create a field plugin without a JavaScript frontend framework.',
+      'Storyblok Field Plugin template created with React and Typescript.',
+    value: 'react',
+  },
+  {
+    title: 'JavaScript (without a framework)',
+    description: 'Field plugin without a JavaScript frontend framework.',
     value: 'js',
   },
 ]

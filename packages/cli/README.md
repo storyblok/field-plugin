@@ -30,9 +30,9 @@ The `create` command allows a set of **optional** options for customization.
 
 ```bash
 --dir <value>         directory to create a repository into (default: `.`)
---pluginName <value>        name of plugin (Lowercase alphanumeric and dash)
---repoName <value>        name of repository, for monorepo (Lowercase alphanumeric and dash)
---template <value>    name of template to use (choices: "vue2", "js")
+--pluginName <value>  name of plugin (Lowercase alphanumeric and dash)
+--repoName <value>    name of repository, for monorepo (Lowercase alphanumeric and dash)
+--template <value>    name of template to use (choices: "vue2", "react", "js")
 --structure <value>   setup structure (choices: "polyrepo", "monorepo")
 -h, --help            display help for command
 ```
@@ -44,6 +44,9 @@ npx @storyblok/field-plugin-cli
 
 # Create a single field plugin with Vue 2 template inside a specific directory with a specific named
 npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue2 --structure=polyrepo
+
+# Create a single field plugin with React template inside a specific directory with a specific named
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=react --structure=polyrepo
 
 # Create a monorepo with field plugin with a specific named inside a specific directory with Vue 2 template
 npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue2 --structure=monorepo
@@ -86,7 +89,7 @@ For a monorepo setup, we are using the following project structure:
 The options for the `add` command are the following:
 
 ```bash
---template <value>  name of template to use (choices: "vue2", "js")
+--template <value>  name of template to use (choices: "vue2", "react", "js")
 --name <value>      name of plugin (Lowercase alphanumeric and dash)
 --dir <value>       directory to create a field-plugin into (default: `.`)
 -h, --help          display help for command
@@ -98,6 +101,9 @@ npx @storyblok/field-plugin-cli add
 
 # Add field plugin with Vue 2 template to a project outside of the current directory
 npx @storyblok/field-plugin-cli add --name=<FIELD_PLUGIN_NAME> --template=vue2 --dir=<PATH_TO_DIR>
+
+# Add field plugin with React template to a project outside of the current directory
+npx @storyblok/field-plugin-cli add --name=<FIELD_PLUGIN_NAME> --template=react --dir=<PATH_TO_DIR>
 ```
 [//]: # (TBD Add GIF with interactive mode)
 
