@@ -183,22 +183,21 @@ describe('createPluginActions', () => {
       const {
         actions: { selectAsset },
       } = createPluginActions(uid, postToContainer, onUpdateState)
-      const onAssetSelected = jest.fn()
-      selectAsset(onAssetSelected)
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      selectAsset()
       expect(postToContainer).toHaveBeenLastCalledWith(
         expect.objectContaining({
           event: 'showAssetModal',
         } satisfies Partial<AssetModalChangeMessage>),
       )
     })
-    it('calls the callback function when an asset has been selected by the user', () => {
+    it('calls the callback function when an asset has been selected by the user', async () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         actions: { selectAsset },
         messageCallbacks: { onAssetSelect },
       } = createPluginActions(uid, postToContainer, onUpdateState)
-      const onAssetSelected = jest.fn()
-      selectAsset(onAssetSelected)
+      const promise = selectAsset()
       const filename = 'hello.jpg'
       onAssetSelect({
         uid,
@@ -206,7 +205,8 @@ describe('createPluginActions', () => {
         field: 'dummy',
         filename,
       })
-      expect(onAssetSelected).toHaveBeenCalledWith(filename)
+      const result = await promise
+      expect(result).toEqual(filename)
     })
   })
 })
