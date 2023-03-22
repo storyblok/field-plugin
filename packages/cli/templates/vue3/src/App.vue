@@ -9,8 +9,8 @@ const plugin = useFieldPlugin()
 
 <template>
   <div>
-    <div v-if="plugin.type === 'loading'">Loading...</div>
-    <div v-else-if="plugin.type === 'error'">Error</div>
+    <span v-if="plugin.type === 'loading'">Loading...</span>
+    <span v-else-if="plugin.type === 'error'">Error</span>
     <div
       v-else-if="plugin.type === 'loaded'"
       class="field-plugin"

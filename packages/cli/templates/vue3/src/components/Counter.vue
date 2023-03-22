@@ -20,7 +20,6 @@ const label = computed(() =>
 
 <template>
   <div className="increment">
-    <button @click="handleIncrement">Increment</button>
-    <span>Value: {{ label }}</span>
+    <button @click="handleIncrement">Increment {{ label }}</button>
   </div>
 </template>
