@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import { useFieldPlugin } from './useFieldPlugin'
+import ModalToggle from './components/ModalToggle.vue'
+import Counter from './components/Counter.vue'
+import AssetSelector from './components/AssetSelector.vue'
+
+const plugin = useFieldPlugin()
+</script>
+
 <template>
   <div>
     <span v-if="plugin.type === 'loading'">Loading...</span>
@@ -21,27 +30,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import './style.css'
-import { createFieldPlugin } from '@storyblok/field-plugin'
-import AssetSelector from './components/AssetSelector.vue'
-import Counter from './components/Counter.vue'
-import ModalToggle from './components/ModalToggle.vue'
-
-export default {
-  components: {
-    AssetSelector,
-    Counter,
-    ModalToggle,
-  },
-  data() {
-    return {
-      plugin: { type: 'loading' },
-    }
-  },
-  created() {
-    createFieldPlugin((newState) => (this.plugin = newState))
-  },
-}
-</script>
