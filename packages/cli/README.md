@@ -175,6 +175,10 @@ Now that everything is set up you can go ahead and checkout Storyblok's resource
 ## :seedling: Contributing
 Please see our [contributing guidelines](https://github.com/storyblok/.github/blob/master/contributing.md). We are always looking for feedback to create a better developer experience. If you happen to find a bug or simply would like to suggest a new feature, you can do so by [submitting an issue](https://github.com/storyblok/field-plugin/issues).
 
+When adding a new template to this repository, think of the following:
+
+- `.gitignore` files must be named `gitignore`. Otherwise, NPM will exclude the file from the release. The `@storyblok/field-plugin-cli` will automatically rename the file to `.gitignore`.  
+
 ## :1st_place_medal: Credits
 Special thanks goes to all the people that contribute to this library!
 
