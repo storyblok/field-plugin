@@ -32,7 +32,7 @@ The `create` command allows a set of **optional** options for customization.
 --dir <value>         directory to create a repository into (default: `.`)
 --pluginName <value>  name of plugin (Lowercase alphanumeric and dash)
 --repoName <value>    name of repository, for monorepo (Lowercase alphanumeric and dash)
---template <value>    name of template to use (choices: "vue2", "vue3", "react")
+--template <value>    name of template to use (choices: "vue2", "vue3", "react", "js")
 --structure <value>   setup structure (choices: "polyrepo", "monorepo")
 -h, --help            display help for command
 ```
@@ -89,7 +89,7 @@ For a monorepo setup, we are using the following project structure:
 The options for the `add` command are the following:
 
 ```bash
---template <value>  name of template to use (choices: "vue2", "vue3", "react")
+--template <value>  name of template to use (choices: "vue2", "vue3", "react", "js")
 --name <value>      name of plugin (Lowercase alphanumeric and dash)
 --dir <value>       directory to create a field plugin into (default: `.`)
 -h, --help          display help for command
@@ -174,6 +174,10 @@ Now that everything is set up you can go ahead and checkout Storyblok's resource
 
 ## :seedling: Contributing
 Please see our [contributing guidelines](https://github.com/storyblok/.github/blob/master/contributing.md). We are always looking for feedback to create a better developer experience. If you happen to find a bug or simply would like to suggest a new feature, you can do so by [submitting an issue](https://github.com/storyblok/field-plugin/issues).
+
+When adding a new template to this repository, think of the following:
+
+- `.gitignore` files must be named `gitignore`. Otherwise, NPM will exclude the file from the release. The `@storyblok/field-plugin-cli` will automatically rename the file to `.gitignore`.  
 
 ## :1st_place_medal: Credits
 Special thanks goes to all the people that contribute to this library!

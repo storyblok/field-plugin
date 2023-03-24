@@ -17,6 +17,11 @@ export const TEMPLATES = [
       'Storyblok Field Plugin template created with React and Typescript.',
     value: 'react',
   },
+  {
+    title: 'JavaScript (without a framework)',
+    description: 'Field plugin without a JavaScript frontend framework.',
+    value: 'js',
+  },
 ]
 
 /* 
