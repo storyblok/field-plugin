@@ -9,8 +9,8 @@ const props = defineProps<{
 
 const imageUrl = ref('')
 
-const handleSelectAsset = () => {
-  props.selectAsset((filename) => (imageUrl.value = filename))
+const handleSelectAsset = async () => {
+  imageUrl.value = await props.selectAsset()
 }
 </script>
 

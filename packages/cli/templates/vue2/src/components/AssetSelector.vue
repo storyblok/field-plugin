@@ -28,10 +28,8 @@ export default {
     }
   },
   methods: {
-    handleSelectAsset() {
-      this.selectAsset((filename) => {
-        this.imageUrl = filename
-      })
+    async handleSelectAsset() {
+      this.imageUrl = await this.selectAsset()
     },
   },
 }

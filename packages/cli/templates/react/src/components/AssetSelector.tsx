@@ -8,8 +8,8 @@ type AssetSelectorFunc = FunctionComponent<{
 const AssetSelector: AssetSelectorFunc = ({selectAsset}) => {
     const [imageUrl, setImageUrl] = useState<string>('')
 
-    const handleSelectAsset = () => {
-        selectAsset((filename: string) => setImageUrl(filename))
+    const handleSelectAsset = async () => {
+        setImageUrl(await selectAsset())
     }
 
     return (
