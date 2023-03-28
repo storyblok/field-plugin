@@ -10,7 +10,7 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "workspace:*"
+    "@storyblok/field-plugin": "0.0.1-alpha.2"
   },
   "devDependencies": {
     "eslint": "latest",

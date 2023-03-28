@@ -43,9 +43,7 @@ export const AssetSelector: PluginComponent = (props) => {
       ) : (
         <Button
           startIcon={<AssetIcon />}
-          onClick={() =>
-            actions.selectAsset((filename) => setImageUrl(filename))
-          }
+          onClick={async () => setImageUrl(await actions.selectAsset())}
         >
           Select Asset
         </Button>
