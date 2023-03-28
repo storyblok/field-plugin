@@ -1,27 +1,26 @@
 button {
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: 500;
-    line-height: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  line-height: inherit;
 
-    width: 100%;
-    background-color: var(--sb_green);
-    color: var(--white);
+  width: 100%;
+  background-color: var(--sb_green);
+  color: var(--white);
 
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
-    cursor: pointer;
-    transition: all .1s ease-in-out;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
 
-    padding: 9px 21px;
-    border-radius: 5px;
-    border: 1px solid transparent;
+  padding: 9px 21px;
+  border-radius: 5px;
+  border: 1px solid transparent;
 }
 
 button:hover {
-    background-color: var(--sb_green_75);
+  background-color: var(--sb_green_75);
 }
-
