@@ -208,11 +208,11 @@ Properties:
 
 `FieldPluginResponse.actions` has the following properties:
 
-| Key                | Description                                                                                                                                                                                              |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `setValue`         | Updates the value of the field plugin. For example, `setValue(3.14159)`                                                                                                                                  |
-| `setModalOpen`     | Opens/Closes the modal window. For example, `setModalOpen(true)`.                                                                                                                                        |
-| `selectAsset`      | Opens the asset selector. Accepts a callback function as argument which will be called when the user has selected an asset. For example, `selectAsset((fileName) => setValue(filename))`                 |
+| Key                | Description                                                                                                                                                                                           |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `setValue`         | Updates the value of the field plugin. For example, `setValue(3.14159)`                                                                                                                               |
+| `setModalOpen`     | Opens/Closes the modal window. For example, `setModalOpen(true)`.                                                                                                                                     |
+| `selectAsset`      | Opens the asset selector. Returns a promise that gets resolved when the user selects an asset. For example, `selectAsset().then((filename) => console.log(filename))`                    |
 | `requestContext()` | Updates the `request.data.story` property to the version of the story that is currently opened in the Visual Editor. That is, the unsaved version of the story that exists in the user's browser memory. |
 
 ## Caveats
