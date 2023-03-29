@@ -1,11 +1,13 @@
 import './button.css'
-import {FunctionComponent, ReactNode} from "react";
+import { FunctionComponent, ReactNode } from 'react'
 
 type ButtonFunc = FunctionComponent<{
-    children: ReactNode,
-    onClick: () => void
+  children: ReactNode
+  onClick: () => void
 }>
 
-const Button: ButtonFunc = ({children, onClick}) => (<button onClick={onClick}>{children}</button>)
+const Button: ButtonFunc = ({ children, onClick }) => (
+  <button onClick={onClick}>{children}</button>
+)
 
-export default Button;
+export default Button

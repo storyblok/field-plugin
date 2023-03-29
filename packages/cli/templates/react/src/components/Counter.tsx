@@ -1,23 +1,22 @@
-import {FunctionComponent} from "react";
-import {SetValue} from "@storyblok/field-plugin";
-import Button from "./button/Button";
+import { FunctionComponent } from 'react'
+import { SetValue } from '@storyblok/field-plugin'
+import Button from './button/Button'
 
 type CounterFunc = FunctionComponent<{
-    setValue: SetValue,
-    value: unknown
+  setValue: SetValue
+  value: unknown
 }>
-const Counter: CounterFunc = ({setValue, value}) => {
+const Counter: CounterFunc = ({ setValue, value }) => {
+  const label = typeof value !== 'number' ? 0 : JSON.stringify(value)
+  const handleIncrement = () => {
+    setValue((typeof value === 'number' ? value : 0) + 1)
+  }
 
-    const label = typeof value !== 'number' ? 0 : JSON.stringify(value)
-    const handleIncrement = () => {
-        setValue((typeof value === 'number' ? value : 0) + 1)
-    }
-
-    return (
-        <div className="increment">
-            <Button onClick={handleIncrement}>Increment {label}</Button>
-        </div>
-    )
+  return (
+    <div className="increment">
+      <Button onClick={handleIncrement}>Increment {label}</Button>
+    </div>
+  )
 }
 
 export default Counter
