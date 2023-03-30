@@ -12,10 +12,10 @@ npx @storyblok/field-plugin-cli@alpha
 Storyblok provides the following starter projects:
 
 - React
+- Vue 3 (Composition API)
+- Vue 2 (Options API)
+- Vanilla JavaScript
 
-[//]: # (- Vue 3 &#40;Composition API&#41;)
-[//]: # (- Vue 2 &#40;Options API&#41;)
-[//]: # (- Vanilla JavaScript)
 [//]: # (- Solid)
 
 ## Integrating @storyblok/field-plugin 
