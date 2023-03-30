@@ -10,7 +10,6 @@ export default defineConfig({
     host: true,
   },
   build: {
-    minify: false,
     rollupOptions: {
       output: {
         entryFileNames: `[name].js`,

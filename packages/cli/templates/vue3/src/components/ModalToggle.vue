@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { PluginActions, PluginState } from '@storyblok/field-plugin'
 
 defineProps<{

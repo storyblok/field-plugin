@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { computed } from 'vue'
 import { PluginActions, PluginState } from '@storyblok/field-plugin'
 
 const props = defineProps<{
@@ -19,7 +19,7 @@ const label = computed(() =>
 </script>
 
 <template>
-  <div className="increment">
+  <div class="increment">
     <button
       class="btn"
       @click="handleIncrement"
