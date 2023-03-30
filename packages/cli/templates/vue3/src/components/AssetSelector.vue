@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue'
+import { ref } from 'vue'
 import { PluginActions, PluginState } from '@storyblok/field-plugin'
 
 const props = defineProps<{
@@ -15,7 +15,7 @@ const handleSelectAsset = async () => {
 </script>
 
 <template>
-  <div className="asset-selector">
+  <div class="asset-selector">
     <button
       class="btn"
       @click="handleSelectAsset"
