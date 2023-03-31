@@ -9,6 +9,11 @@
     "bin.js",
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storyblok/field-plugin.git",
+    "directory": "packages/field-plugin-cli"
+  },
   "scripts": {
     "prepare": "yarn build",
     "create": "vite build:quiet && node bin.js",
