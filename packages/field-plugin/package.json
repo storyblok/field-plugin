@@ -6,6 +6,11 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storyblok/field-plugin.git",
+    "directory": "packages/field-plugin"
+  },
   "type": "module",
   "module": "./dist/field-plugin.js",
   "main": "./dist/field-plugin.umd.cjs",
