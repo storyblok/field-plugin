@@ -20,6 +20,7 @@ const Iframe = forwardRef<
         border: 'none',
       }}
       src={props.src}
+      referrerPolicy="unsafe-url"
     />
   )
 })
