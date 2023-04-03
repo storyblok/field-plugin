@@ -33,6 +33,7 @@
   "type": "module",
   "scripts": {
     "build": "yarn workspaces foreach run build",
+    "build:container": " yarn workspace @storyblok/field-plugin run build && yarn workspace container run build",
     "test": "jest",
     "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
@@ -44,6 +45,7 @@
     "@emotion/styled": "11.10.5",
     "@fontsource/roboto": "4.5.8",
     "@mui/material": "5.11.0",
+    "@storyblok/field-plugin": "workspace:*",
     "@storyblok/field-plugin-cli": "workspace:*",
     "@storyblok/mui": "0.0.19-alpha",
     "@types/jest": "29.0.3",
