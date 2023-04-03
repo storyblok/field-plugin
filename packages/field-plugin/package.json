@@ -16,6 +16,11 @@
       "require": "./dist/field-plugin.umd.cjs"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storyblok/field-plugin.git",
+    "directory": "packages/field-plugin"
+  },
   "scripts": {
     "check:types": "tsc --noEmit",
     "dev": "vite build --watch",
