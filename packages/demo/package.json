@@ -15,6 +15,7 @@
     "@emotion/styled": "*",
     "@fontsource/roboto": "*",
     "@mui/material": "*",
+    "@storyblok/field-plugin": "workspace:*",
     "@storyblok/mui": "0.0.19-alpha",
     "react": "*",
     "react-dom": "*"
