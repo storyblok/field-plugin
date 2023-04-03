@@ -23,7 +23,9 @@
   "devDependencies": {
     "@types/react-dom": "*",
     "@vitejs/plugin-react": "*",
+    "eslint": "*",
     "eslint-plugin-react": "*",
-    "eslint-plugin-react-hooks": "*"
+    "eslint-plugin-react-hooks": "*",
+    "vite": "*"
   }
 }

@@ -3654,13 +3654,16 @@ __metadata:
     "@emotion/styled": "*"
     "@fontsource/roboto": "*"
     "@mui/material": "*"
+    "@storyblok/field-plugin": "workspace:*"
     "@storyblok/mui": 0.0.19-alpha
     "@types/react-dom": "*"
     "@vitejs/plugin-react": "*"
+    eslint: "*"
     eslint-plugin-react: "*"
     eslint-plugin-react-hooks: "*"
     react: "*"
     react-dom: "*"
+    vite: "*"
   languageName: unknown
   linkType: soft
 
@@ -4938,7 +4941,6 @@ __metadata:
     "@emotion/styled": 11.10.5
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
-    "@storyblok/field-plugin": 0.0.1-alpha.2
     "@storyblok/field-plugin-cli": "workspace:*"
     "@storyblok/mui": 0.0.19-alpha
     "@types/jest": 29.0.3
