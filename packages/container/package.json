@@ -15,7 +15,7 @@
     "@emotion/styled": "*",
     "@fontsource/roboto": "*",
     "@mui/material": "*",
-    "@storyblok/field-plugin": "workspace:*",
+    "@storyblok/field-plugin": "0.0.1-alpha.2",
     "@storyblok/mui": "0.0.20",
     "highlight.js": "11.7.0",
     "react": "*",
