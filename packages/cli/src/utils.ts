@@ -1,14 +1,7 @@
 import dotenv from 'dotenv'
 import prompts from 'prompts'
-
-export const loadEnvironmentVariables = (dotEnvPath: string | undefined) => {
-  if (typeof dotEnvPath === 'string') {
-    dotenv.config({ path: dotEnvPath })
-  } else {
-    dotenv.config({ path: '.env' })
-    dotenv.config({ path: '.env.local' })
-  }
-}
+import { resolve } from 'path'
+import { existsSync } from 'fs'
 
 type RunCommandFunc = (
   command: string,
@@ -20,20 +13,50 @@ export const runCommand: RunCommandFunc = async (command, options) => {
   return execa.execaCommandSync(command, options)
 }
 
-//TODO testing
-export const validateToken = (token?: string): string | null => {
+type GetPersonalAccessTokenFunc = (params: {
+  token?: string
+  dotEnvPath: string | undefined
+}) => { error?: false; token: string } | { error: true; message: string }
+
+export const getPersonalAccessToken: GetPersonalAccessTokenFunc = ({
+  token,
+  dotEnvPath,
+}) => {
   if (typeof token !== 'undefined' && token !== '') {
-    return token
+    return {
+      token,
+    }
   }
 
-  if (
-    typeof process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN !== 'undefined' &&
-    process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN !== ''
-  ) {
-    return process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
+  const pathsToLoad =
+    typeof dotEnvPath === 'string' ? [dotEnvPath] : ['.env', '.env.local']
+
+  if (pathsToLoad.every((path: string) => !existsSync(path))) {
+    return {
+      error: true,
+      message: [
+        `Environment variable file doesn't exist at the following path:`,
+        ...pathsToLoad.map((path) => `  > ${resolve(path)}`),
+      ].join('\n'),
+    }
   }
 
-  return null
+  pathsToLoad.forEach((path) => dotenv.config({ path }))
+
+  const tokenFromEnvFiles = process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
+  if (typeof tokenFromEnvFiles !== 'undefined' && tokenFromEnvFiles !== '') {
+    return {
+      token: tokenFromEnvFiles,
+    }
+  } else {
+    return {
+      error: true,
+      message: [
+        `Could't find the environment variable \`STORYBLOK_PERSONAL_ACCESS_TOKEN\` at the following paths:`,
+        ...pathsToLoad.map((path) => `  > ${resolve(path)}`),
+      ].join('\n'),
+    }
+  }
 }
 
 export const promptName = async ({
