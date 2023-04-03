@@ -31,7 +31,10 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = ({
   const pathsToLoad =
     typeof dotEnvPath === 'string' ? [dotEnvPath] : ['.env', '.env.local']
 
-  if (pathsToLoad.every((path: string) => !existsSync(path))) {
+  const noneOfThemExists = pathsToLoad.every(
+    (path: string) => !existsSync(path),
+  )
+  if (noneOfThemExists) {
     return {
       error: true,
       message: [
