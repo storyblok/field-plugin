@@ -3655,7 +3655,7 @@ __metadata:
     "@fontsource/roboto": "*"
     "@mui/material": "*"
     "@storyblok/field-plugin": "workspace:*"
-    "@storyblok/mui": 0.0.19-alpha
+    "@storyblok/mui": 0.0.20
     "@types/react-dom": "*"
     "@vitejs/plugin-react": "*"
     eslint: "*"
