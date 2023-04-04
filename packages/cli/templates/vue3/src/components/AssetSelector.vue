@@ -7,10 +7,7 @@ const props = defineProps<{
   data: PluginState
 }>()
 
-const imageUrl = ref(
-  '',
-  // 'https://images.unsplash.com/photo-1680435438016-bd477f1f3ca2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-)
+const imageUrl = ref('')
 
 const handleSelectAsset = async () => {
   imageUrl.value = await props.selectAsset()
