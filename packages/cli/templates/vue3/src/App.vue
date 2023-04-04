@@ -15,7 +15,7 @@ const plugin = useFieldPlugin()
   />
 </template>
 
-<style>
+<style scoped>
 hr {
   border-top: 1px dashed var(--light);
   border-bottom: 0;
