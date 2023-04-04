@@ -19,7 +19,7 @@ const removeAsset = async () => {
 </script>
 
 <template>
-  <div>
+  <div class="asset-selector">
     <h2>Asset Selector</h2>
     <img
       :src="imageUrl"
@@ -41,11 +41,3 @@ const removeAsset = async () => {
     </button>
   </div>
 </template>
-
-<style scoped>
-img {
-  width: 100%;
-  display: block;
-  margin-bottom: 1rem;
-}
-</style>

@@ -68,11 +68,24 @@ body {
 
 /*Layout Styles*/
 
+.container {
+  max-width: 22rem;
+  margin: 0 auto;
+}
+
 h2 {
   font-size: 0.875rem;
   line-height: 1.125rem;
   font-weight: 500;
   margin: 1rem 0;
+}
+
+hr {
+  border-top: 1px dashed var(--light);
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+  margin: 1.25rem 0;
 }
 
 .counter-value {
@@ -100,4 +113,21 @@ h2 {
 
 .btn:hover {
   background-color: var(--light_75);
+}
+
+.btn-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+}
+
+.btn-close:hover {
+  background-color: var(--light_75);
+}
+
+.asset-selector img {
+  width: 100%;
+  display: block;
+  margin-bottom: 1rem;
 }

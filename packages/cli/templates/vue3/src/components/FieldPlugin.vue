@@ -16,7 +16,7 @@ function closeModal() {
 </script>
 
 <template>
-  <div class="container">
+  <div>
     <button
       v-if="props.data.isModalOpen"
       type="button"
@@ -38,7 +38,7 @@ function closeModal() {
         />
       </svg>
     </button>
-    <div class="inner-container">
+    <div class="container">
       <Counter
         :data="data"
         :set-value="actions.setValue"
@@ -56,21 +56,3 @@ function closeModal() {
     </div>
   </div>
 </template>
-
-<style scoped>
-.inner-container {
-  max-width: 22rem;
-  margin: 0 auto;
-  position: relative;
-}
-.btn-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: 0;
-}
-
-.btn-close:hover {
-  background-color: var(--light_75);
-}
-</style>

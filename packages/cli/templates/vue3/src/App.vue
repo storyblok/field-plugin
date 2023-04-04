@@ -14,13 +14,3 @@ const plugin = useFieldPlugin()
     :actions="plugin.actions"
   />
 </template>
-
-<style scoped>
-hr {
-  border-top: 1px dashed var(--light);
-  border-bottom: 0;
-  border-left: 0;
-  border-right: 0;
-  margin: 1.25rem 0;
-}
-</style>
