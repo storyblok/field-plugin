@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 :root {
   /*Storyblok colors*/
@@ -64,11 +64,45 @@ body {
 
 /*Layout Styles*/
 
-.field-plugin {
+h2 {
+  font-size: 0.875rem;
+  line-height: 1.125rem;
+  font-weight: 500;
+  margin: 1rem 0;
+}
+
+.counter-value {
+  margin-top: 1.25rem;
+  margin-bottom: 1rem;
+  font-size: 1.625rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.btn {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.8125rem 1rem;
+  background: transparent;
+  border: 1px solid var(--light);
+  border-radius: 0.3125rem;
+  cursor: pointer;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: var(--light_75);
+}
+
+/* .field-plugin {
   display: flex;
   gap: 10px;
   flex-direction: column;
 }
+
 
 .increment,
 .asset-selector,
@@ -104,4 +138,4 @@ button.btn {
 
 button.btn:hover {
   background-color: var(--sb_green_75);
-}
+} */

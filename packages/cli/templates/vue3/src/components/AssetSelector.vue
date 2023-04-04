@@ -7,21 +7,48 @@ const props = defineProps<{
   data: PluginState
 }>()
 
-const imageUrl = ref('')
+const imageUrl = ref(
+  '',
+  // 'https://images.unsplash.com/photo-1680435438016-bd477f1f3ca2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+)
 
 const handleSelectAsset = async () => {
   imageUrl.value = await props.selectAsset()
 }
+
+const removeAsset = async () => {
+  imageUrl.value = ''
+}
 </script>
 
 <template>
-  <div class="asset-selector">
+  <div>
+    <h2>Asset Selector</h2>
+    <img
+      :src="imageUrl"
+      v-if="imageUrl"
+    />
     <button
-      class="btn"
+      v-if="imageUrl"
+      class="btn w-full"
+      @click="removeAsset"
+    >
+      Remove Asset
+    </button>
+    <button
+      v-else
+      class="btn w-full"
       @click="handleSelectAsset"
     >
       Select Asset
     </button>
-    <span>Image Url: {{ imageUrl }}</span>
   </div>
 </template>
+
+<style>
+img {
+  width: 100%;
+  display: block;
+  margin-bottom: 1rem;
+}
+</style>
