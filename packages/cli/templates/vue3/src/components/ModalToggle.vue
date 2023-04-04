@@ -8,9 +8,10 @@ defineProps<{
 </script>
 
 <template>
-  <div class="modal-toggle">
+  <div>
+    <h2>Modal</h2>
     <button
-      class="btn"
+      class="btn w-full"
       type="button"
       @click="() => setModalOpen(!isModalOpen)"
     >

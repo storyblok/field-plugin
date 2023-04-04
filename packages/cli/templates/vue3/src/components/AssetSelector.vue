@@ -12,16 +12,32 @@ const imageUrl = ref('')
 const handleSelectAsset = async () => {
   imageUrl.value = await props.selectAsset()
 }
+
+const removeAsset = async () => {
+  imageUrl.value = ''
+}
 </script>
 
 <template>
   <div class="asset-selector">
+    <h2>Asset Selector</h2>
+    <img
+      :src="imageUrl"
+      v-if="imageUrl"
+    />
     <button
-      class="btn"
+      v-if="imageUrl"
+      class="btn w-full"
+      @click="removeAsset"
+    >
+      Remove Asset
+    </button>
+    <button
+      v-else
+      class="btn w-full"
       @click="handleSelectAsset"
     >
       Select Asset
     </button>
-    <span>Image Url: {{ imageUrl }}</span>
   </div>
 </template>
