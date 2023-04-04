@@ -57,7 +57,7 @@ function closeModal() {
   </div>
 </template>
 
-<style>
+<style scoped>
 .inner-container {
   max-width: 22rem;
   margin: 0 auto;

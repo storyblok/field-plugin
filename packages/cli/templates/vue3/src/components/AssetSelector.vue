@@ -42,7 +42,7 @@ const removeAsset = async () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 img {
   width: 100%;
   display: block;
