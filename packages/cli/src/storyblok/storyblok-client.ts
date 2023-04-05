@@ -106,15 +106,12 @@ export const StoryblokClient: StoryblokClientFunc = (token) => {
   }
 }
 
-const handleError = (error?: string) => {
+const handleError = (error: string | undefined) => {
   if (typeof error !== 'undefined' && error !== null) {
     if (error === 'Unauthorized') {
       console.log(
         red('[ERROR]'),
-        'Token to access Storyblok is undefined or invalid.',
-      )
-      console.log(
-        'Please provide a valid --token option value or STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable',
+        'Unauthorized: The personal access token is invalid.',
       )
     } else {
       console.log(red('[ERROR]'), 'Failed to fetch field types.')
