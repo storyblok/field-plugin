@@ -16,7 +16,7 @@
   },
   "scripts": {
     "prepare": "yarn build",
-    "create": "yarn build && node bin.js",
+    "create": "yarn build && node bin.js create",
     "deploy": "yarn build && node bin.js deploy",
     "build": "vite build && cp -r templates dist/",
     "build:quiet": "vite build --logLevel error",
