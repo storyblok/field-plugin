@@ -131,5 +131,4 @@ await $`git add .`
 const commitMessage = `chore: release ${packageFolder}@${nextVersion}`
 await $`git commit -m ${commitMessage}`
 await $`git push -u origin ${branchName}`
-await $`gh pr create --fill`
-await $`gh pr view --web`
+await $`gh pr create --title ${commitMessage} --web`
