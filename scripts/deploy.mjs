@@ -16,7 +16,7 @@ const exit = (code) => {
   process.exit(code)
 }
 
-const TARGETS = [
+const PACKAGE_FOLDERS = [
   {
     title: 'Library',
     value: 'field-plugin',
@@ -26,6 +26,11 @@ const TARGETS = [
     value: 'cli',
   },
 ]
+
+const FULL_PACKAGE_NAMES = {
+  'field-plugin': '@storyblok/field-plugin',
+  cli: '@storyblok/field-plugin-cli',
+}
 
 // Check if `gh` exists
 if (!(await which('gh', { nothrow: true }))) {
@@ -78,7 +83,7 @@ const { packageFolder } = await prompts({
   type: 'select',
   name: 'packageFolder',
   message: 'What to deploy?',
-  choices: TARGETS,
+  choices: PACKAGE_FOLDERS,
 })
 
 // Get the current version
@@ -128,7 +133,7 @@ await $`yarn install`
 
 // Create a pull-request
 await $`git add .`
-const commitMessage = `chore: release ${packageFolder}@${nextVersion}`
+const commitMessage = `chore: release ${FULL_PACKAGE_NAMES[packageFolder]}@${nextVersion}`
 await $`git commit -m ${commitMessage}`
 await $`git push -u origin ${branchName}`
 await $`gh pr create --title ${commitMessage} --web`
