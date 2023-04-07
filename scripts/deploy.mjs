@@ -41,7 +41,7 @@ if (!(await which('gh', { nothrow: true }))) {
 
 // Check if authenticated with `gh`
 try {
-  await $`gh auth status`
+  await $`gh auth status`.quiet()
 } catch (processOutput) {
   if (processOutput.exitCode === 1) {
     print(
