@@ -117,9 +117,15 @@ if (prerelease) {
   nextVersion = result.nextVersion
 }
 
-// Check out to a release branch and create a pull-request
+// Check out to a release branch
 const branchName = `chore/release-${packageFolder}-${nextVersion}`
 await $`git checkout -b ${branchName}`
+
+// Update the version
+await $`cd packages/${packageFolder} && npm version ${nextVersion} --no-git-tag-version`
+await $`yarn install`
+
+// Create a pull-request
 await $`git add .`
 const commitMessage = `chore: release ${packageFolder}@${nextVersion}`
 await $`git commit -m ${commitMessage}`
