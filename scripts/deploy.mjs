@@ -54,24 +54,24 @@ try {
 }
 
 // Check if the current branch is `main`
-const currentBranch = await $`git branch --show-current`
-if (currentBranch.toString().trim() !== 'main') {
-  print(bold(red('[Error]')), 'This command runs only from `main` branch.')
-  exit(1)
-}
+// const currentBranch = await $`git branch --show-current`
+// if (currentBranch.toString().trim() !== 'main') {
+//   print(bold(red('[Error]')), 'This command runs only from `main` branch.')
+//   exit(1)
+// }
 
-// Check if the working directory is clean
-try {
-  await $`git diff-index --quiet HEAD --`
-} catch (processOutput) {
-  if (processOutput.exitCode === 1) {
-    print(
-      bold(red('[Error]')),
-      'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
-    )
-    exit(1)
-  }
-}
+// // Check if the working directory is clean
+// try {
+//   await $`git diff-index --quiet HEAD --`
+// } catch (processOutput) {
+//   if (processOutput.exitCode === 1) {
+//     print(
+//       bold(red('[Error]')),
+//       'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
+//     )
+//     exit(1)
+//   }
+// }
 
 // Select which package to deploy ('field-plugin' | 'cli')
 const { packageFolder } = await prompts({
