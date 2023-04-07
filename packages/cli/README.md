@@ -178,6 +178,7 @@ Please see our [contributing guidelines](https://github.com/storyblok/.github/bl
 When adding a new template to this repository, think of the following:
 
 - `.gitignore` files must be named `gitignore`. Otherwise, NPM will exclude the file from the release. The `@storyblok/field-plugin-cli` will automatically rename the file to `.gitignore`.  
+- Add `"deploy": "npm run build && npx @storyblok/field-plugin-cli@alpha deploy"` to the `package.json`
 
 ## :1st_place_medal: Credits
 Special thanks goes to all the people that contribute to this library!
