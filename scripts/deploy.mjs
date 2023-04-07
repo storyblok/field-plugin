@@ -41,7 +41,7 @@ if (!(await which('gh', { nothrow: true }))) {
 
 // Check if authenticated with `gh`
 try {
-  $`gh auth status`
+  await $`gh auth status`
 } catch (processOutput) {
   if (processOutput.exitCode === 1) {
     print(
@@ -49,6 +49,7 @@ try {
       'You need to authenticate with `gh`. Run the following command:',
     )
     print('  > gh auth login')
+    exit(1)
   }
 }
 
