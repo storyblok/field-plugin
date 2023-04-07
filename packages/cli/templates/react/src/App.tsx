@@ -1,7 +1,5 @@
 import { useFieldPlugin } from './useFieldPlugin'
-import Counter from './components/Counter'
-import ModalToggle from './components/ModalToggle'
-import AssetSelector from './components/AssetSelector'
+import FieldPlugin from './components/FieldPlugin'
 
 function App() {
   const { type, data, actions } = useFieldPlugin()
@@ -10,26 +8,16 @@ function App() {
     return <span>Loading...</span>
   }
 
-  if (
-    type === 'error' ||
-    (typeof data === 'undefined' && typeof actions === 'undefined')
-  ) {
+  if (type === 'error') {
     return <span>Error</span>
   }
 
-  return (
-    <div className="field-plugin">
-      <ModalToggle
-        isModalOpen={data.isModalOpen}
-        setModalOpen={actions.setModalOpen}
-      />
-      <Counter
-        setValue={actions.setValue}
-        value={data.value}
-      />
-      <AssetSelector selectAsset={actions.selectAsset} />
-    </div>
-  )
+  return type === 'loaded' ? (
+    <FieldPlugin
+      data={data}
+      actions={actions}
+    />
+  ) : null
 }
 
 export default App

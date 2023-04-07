@@ -1,20 +1,26 @@
-import { FunctionComponent } from 'react'
-import { SetValue } from '@storyblok/field-plugin'
-import Button from './button/Button'
+import { PluginActions, PluginState } from '@storyblok/field-plugin'
 
-type CounterFunc = FunctionComponent<{
-  setValue: SetValue
-  value: unknown
-}>
-const Counter: CounterFunc = ({ setValue, value }) => {
-  const label = typeof value !== 'number' ? 0 : JSON.stringify(value)
+type Props = {
+  setValue: PluginActions['setValue']
+  data: PluginState
+}
+
+const Counter = ({ setValue, data }: Props) => {
+  const label = typeof data.value !== 'number' ? 0 : JSON.stringify(data.value)
   const handleIncrement = () => {
-    setValue((typeof value === 'number' ? value : 0) + 1)
+    setValue((typeof data.value === 'number' ? data.value : 0) + 1)
   }
 
   return (
-    <div className="increment">
-      <Button onClick={handleIncrement}>Increment {label}</Button>
+    <div>
+      <h2>Field Value</h2>
+      <div className="counter-value">{label}</div>
+      <button
+        className="btn w-full"
+        onClick={handleIncrement}
+      >
+        Increment
+      </button>
     </div>
   )
 }

@@ -37,6 +37,7 @@ function closeModal() {
           fill="#1B243F"
         />
       </svg>
+      <span className="sr-only">Close Modal</span>
     </button>
     <div class="container">
       <Counter
@@ -49,10 +50,7 @@ function closeModal() {
         :set-modal-open="actions.setModalOpen"
       />
       <hr />
-      <AssetSelector
-        :data="data"
-        :select-asset="actions.selectAsset"
-      />
+      <AssetSelector :select-asset="actions.selectAsset" />
     </div>
   </div>
 </template>
