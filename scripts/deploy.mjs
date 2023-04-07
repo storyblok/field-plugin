@@ -27,11 +27,6 @@ const PACKAGE_FOLDERS = [
   },
 ]
 
-const FULL_PACKAGE_NAMES = {
-  'field-plugin': '@storyblok/field-plugin',
-  cli: '@storyblok/field-plugin-cli',
-}
-
 // Check if `gh` exists
 if (!(await which('gh', { nothrow: true }))) {
   print(
@@ -87,7 +82,7 @@ const { packageFolder } = await prompts({
 })
 
 // Get the current version
-const { version: currentVersion } = JSON.parse(
+const { version: currentVersion, name: packageName } = JSON.parse(
   readFileSync(`packages/${packageFolder}/package.json`).toString(),
 )
 print(bold(green('✔')), bold('Current version ›'), currentVersion)
@@ -133,7 +128,7 @@ await $`yarn install`
 
 // Create a pull-request
 await $`git add .`
-const commitMessage = `chore: release ${FULL_PACKAGE_NAMES[packageFolder]}@${nextVersion}`
+const commitMessage = `chore: release ${packageName}@${nextVersion}`
 await $`git commit -m ${commitMessage}`
 await $`git push -u origin ${branchName}`
 await $`gh pr create --title ${commitMessage} --web`
