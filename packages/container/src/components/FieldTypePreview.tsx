@@ -64,7 +64,7 @@ const FieldTypeContainer: FunctionComponent<
             p: 6,
             borderRadius: 1,
             height: '80%',
-            overflowY: 'scroll',
+            overflowY: 'auto',
           }
         : {
             overflow: 'auto',
