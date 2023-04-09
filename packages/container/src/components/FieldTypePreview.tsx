@@ -63,7 +63,7 @@ const FieldTypeContainer: FunctionComponent<
             bgcolor: 'background.paper',
             p: 6,
             borderRadius: 1,
-            maxHeight: '80%',
+            height: '80%',
             overflowY: 'scroll',
           }
         : {
