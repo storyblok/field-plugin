@@ -18,7 +18,7 @@ export const DisableShieldsNotification = () => {
         <AlertTitle>Disable Shields</AlertTitle>
         <Typography>
           Shields and ad-blockers may block the iframe in the preview section.
-          Please disable them.
+          Alternatively, serve the plugin over a secure tunnel.
         </Typography>
       </Alert>
     </Snackbar>
