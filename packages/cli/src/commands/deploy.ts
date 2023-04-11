@@ -2,12 +2,7 @@ import { existsSync, readFileSync, lstatSync } from 'fs'
 import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
 import prompts from 'prompts'
-import {
-  getPersonalAccessToken,
-  loadEnvironmentVariables,
-  promptName,
-  validateToken,
-} from '../utils'
+import { getPersonalAccessToken, promptName } from '../utils'
 import { StoryblokClient } from '../storyblok/storyblok-client'
 
 const packageNameMessage =
@@ -18,10 +13,10 @@ export type FieldType = { id: number; name: string; body: string }
 export type DeployArgs = {
   skipPrompts: boolean
   dir: string
-  name?: string
-  token?: string
-  output?: string
-  dotEnvPath?: string
+  name: undefined | string
+  token: undefined | string
+  output: undefined | string
+  dotEnvPath: undefined | string
 }
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
