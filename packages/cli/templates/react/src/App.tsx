@@ -1,7 +1,8 @@
 import { useFieldPlugin } from './useFieldPlugin'
 import FieldPlugin from './components/FieldPlugin'
+import { FunctionComponent } from 'react'
 
-function App() {
+const App: FunctionComponent = () => {
   const { type, data, actions } = useFieldPlugin()
 
   if (type === 'loading') {

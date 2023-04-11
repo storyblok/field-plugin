@@ -1,11 +1,12 @@
 import { PluginActions, PluginState } from '@storyblok/field-plugin'
+import { FunctionComponent } from 'react'
 
 type Props = {
   setValue: PluginActions['setValue']
   data: PluginState
 }
 
-const Counter = ({ setValue, data }: Props) => {
+const Counter: FunctionComponent<Props> = ({ setValue, data }) => {
   const label = typeof data.value !== 'number' ? 0 : JSON.stringify(data.value)
   const handleIncrement = () => {
     setValue((typeof data.value === 'number' ? data.value : 0) + 1)

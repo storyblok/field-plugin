@@ -1,11 +1,15 @@
 import { PluginActions, PluginState } from '@storyblok/field-plugin'
+import { FunctionComponent } from 'react'
 
 type Props = {
   setModalOpen: PluginActions['setModalOpen']
   isModalOpen: PluginState['isModalOpen']
 }
 
-const ModalToggle = ({ setModalOpen, isModalOpen }: Props) => {
+const ModalToggle: FunctionComponent<Props> = ({
+  setModalOpen,
+  isModalOpen,
+}) => {
   return (
     <div>
       <h2>Modal</h2>
