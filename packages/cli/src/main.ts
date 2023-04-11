@@ -72,12 +72,13 @@ export const main = () => {
       ),
     )
     .action(async function (this: Command) {
-      const { dir, skipPrompts, token, output, dotEnvPath } =
+      const { dir, skipPrompts, name, token, output, dotEnvPath } =
         this.opts<DeployArgs>()
 
       await deploy({
         skipPrompts,
         token,
+        name,
         dir,
         output,
         dotEnvPath,
