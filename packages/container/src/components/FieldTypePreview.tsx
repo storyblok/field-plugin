@@ -82,6 +82,7 @@ export const FieldTypePreview = forwardRef<
             ref={ref}
             key={props.uid}
             component="iframe"
+            title="Field Plugin Preview"
             style={{
               height: props.height,
               width: '100%',
