@@ -13,7 +13,7 @@ const printPlugin = (): PluginOption => ({
     console.log(`
     Partner Portal plugins:
       - https://app.storyblok.com/#/partner/fields
-    Personal plugins:
+    My plugins:
       - https://app.storyblok.com/#/me/plugins
     
     Try out the app with the Field Plugin Sandbox:
