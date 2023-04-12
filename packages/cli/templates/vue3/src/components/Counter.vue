@@ -5,18 +5,14 @@ import { useFieldPluginLoaded } from '../useFieldPlugin'
 const plugin = useFieldPluginLoaded()
 
 const handleIncrement = () => {
-  plugin.value.actions.setValue(
-    (typeof plugin.value.data.value === 'number'
-      ? plugin.value.data.value
-      : 0) + 1,
-  )
+  const value = plugin.value.data.value
+  plugin.value.actions.setValue((typeof value === 'number' ? value : 0) + 1)
 }
 
-const label = computed(() =>
-  typeof plugin.value.data.value !== 'number'
-    ? 0
-    : JSON.stringify(plugin.value.data.value),
-)
+const label = computed(() => {
+  const value = plugin.value.data.value
+  return typeof value !== 'number' ? 0 : JSON.stringify(value)
+})
 </script>
 
 <template>
