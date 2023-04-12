@@ -10,7 +10,7 @@ const handleSelectAsset = async () => {
   imageUrl.value = await plugin.value.actions.selectAsset()
 }
 
-const removeAsset = async () => {
+const removeAsset = () => {
   imageUrl.value = ''
 }
 </script>
@@ -19,8 +19,9 @@ const removeAsset = async () => {
   <div class="asset-selector">
     <h2>Asset Selector</h2>
     <img
-      :src="imageUrl"
       v-if="imageUrl"
+      :src="imageUrl"
+      title="Selected Asset"
     />
     <button
       v-if="imageUrl"
