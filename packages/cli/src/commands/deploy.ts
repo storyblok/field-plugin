@@ -2,7 +2,7 @@ import { existsSync, readFileSync, lstatSync } from 'fs'
 import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
 import prompts from 'prompts'
-import { loadEnvironmentVariables, promptName, validateToken } from '../utils'
+import { getPersonalAccessToken, promptName } from '../utils'
 import { StoryblokClient } from '../storyblok/storyblok-client'
 
 const packageNameMessage =
@@ -13,10 +13,10 @@ export type FieldType = { id: number; name: string; body: string }
 export type DeployArgs = {
   skipPrompts: boolean
   dir: string
-  name?: string
-  token?: string
-  output?: string
-  dotEnvPath?: string
+  name: undefined | string
+  token: undefined | string
+  output: undefined | string
+  dotEnvPath: undefined | string
 }
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
@@ -48,13 +48,10 @@ export const deploy: DeployFunc = async ({
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's deploy a field-plugin.\n")
 
-  loadEnvironmentVariables(dotEnvPath)
-
-  const validatedToken = validateToken(token)
-
-  if (validatedToken === null) {
-    console.log(red('[ERROR]'), 'Token to access Storyblok is undefined.')
-    console.log(
+  const result = getPersonalAccessToken({ token, dotEnvPath })
+  if (result.error === true) {
+    console.error(red('[ERROR]'), result.message)
+    console.error(
       'Please provide a valid --token option value or STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable',
     )
     process.exit(1)
@@ -98,7 +95,7 @@ export const deploy: DeployFunc = async ({
     path: dir,
     packageName,
     skipPrompts,
-    token: validatedToken,
+    token: result.token,
     output: outputFile,
   })
 

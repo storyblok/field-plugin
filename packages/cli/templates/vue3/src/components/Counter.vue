@@ -19,12 +19,16 @@ const label = computed(() =>
 </script>
 
 <template>
-  <div class="increment">
+  <div>
+    <h2>Field Value</h2>
+    <div class="counter-value">
+      {{ label }}
+    </div>
     <button
-      class="btn"
+      class="btn w-full"
       @click="handleIncrement"
     >
-      Increment {{ label }}
+      Increment
     </button>
   </div>
 </template>

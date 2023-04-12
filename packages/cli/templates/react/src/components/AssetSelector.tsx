@@ -1,21 +1,46 @@
 import { FunctionComponent, useState } from 'react'
-import { SelectAsset } from '@storyblok/field-plugin'
-import Button from './button/Button'
+import { PluginActions } from '@storyblok/field-plugin'
 
-type AssetSelectorFunc = FunctionComponent<{
-  selectAsset: SelectAsset
-}>
-const AssetSelector: AssetSelectorFunc = ({ selectAsset }) => {
+type Props = {
+  selectAsset: PluginActions['selectAsset']
+}
+
+const AssetSelector: FunctionComponent<Props> = ({ selectAsset }) => {
   const [imageUrl, setImageUrl] = useState<string>('')
 
   const handleSelectAsset = async () => {
     setImageUrl(await selectAsset())
   }
 
+  const removeAsset = async () => {
+    setImageUrl('')
+  }
+
   return (
     <div className="asset-selector">
-      <Button onClick={handleSelectAsset}>Select Asset</Button>
-      <span>Image Url: {imageUrl}</span>
+      <h2>Asset Selector</h2>
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          title="Selected Asset"
+        />
+      )}
+      {imageUrl && (
+        <button
+          className="btn w-full"
+          onClick={removeAsset}
+        >
+          Remove Asset
+        </button>
+      )}
+      {!imageUrl && (
+        <button
+          className="btn w-full"
+          onClick={handleSelectAsset}
+        >
+          Select Asset
+        </button>
+      )}
     </div>
   )
 }

@@ -2,30 +2,6 @@ import { forwardRef, FunctionComponent, PropsWithChildren } from 'react'
 import { Backdrop, Box } from '@mui/material'
 import { DisableShieldsNotification } from './DisableShieldsNotification'
 
-const Iframe = forwardRef<
-  HTMLIFrameElement,
-  {
-    src: string
-    height: string
-    isModal: boolean
-  }
->(function Iframe(props, ref) {
-  return (
-    <Box
-      component="iframe"
-      ref={ref}
-      style={{
-        height: props.height,
-        width: '100%',
-        flex: 1,
-        border: 'none',
-      }}
-      src={props.src}
-      referrerPolicy="unsafe-url"
-    />
-  )
-})
-
 const FieldTypeModal: FunctionComponent<
   PropsWithChildren<{
     isModal: boolean
@@ -65,8 +41,8 @@ const FieldTypeContainer: FunctionComponent<
             bgcolor: 'background.paper',
             p: 6,
             borderRadius: 1,
-            maxHeight: '80%',
-            overflowY: 'scroll',
+            height: '80%',
+            overflowY: 'auto',
           }
         : {
             overflow: 'auto',
@@ -104,10 +80,18 @@ export const FieldTypePreview = forwardRef<
       />
       <FieldTypeModal isModal={props.isModal}>
         <FieldTypeContainer isModal={props.isModal}>
-          <Iframe
-            {...props}
+          <Box
             ref={ref}
             key={props.uid}
+            component="iframe"
+            title="Field Plugin Preview"
+            style={{
+              height: props.height,
+              width: '100%',
+              flex: 1,
+              border: 'none',
+            }}
+            {...props}
           />
         </FieldTypeContainer>
       </FieldTypeModal>

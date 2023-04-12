@@ -1,20 +1,25 @@
+import { PluginActions, PluginState } from '@storyblok/field-plugin'
 import { FunctionComponent } from 'react'
-import { SetModalOpen } from '@storyblok/field-plugin'
-import Button from './button/Button'
 
-type ModalToggleFunc = FunctionComponent<{
-  setModalOpen: SetModalOpen
-  isModalOpen: boolean
-}>
-const ModalToggle: ModalToggleFunc = ({ setModalOpen, isModalOpen }) => {
-  const handleToggleModal = (isOpen: boolean) => {
-    setModalOpen(isOpen)
-  }
+type Props = {
+  setModalOpen: PluginActions['setModalOpen']
+  isModalOpen: PluginState['isModalOpen']
+}
+
+const ModalToggle: FunctionComponent<Props> = ({
+  setModalOpen,
+  isModalOpen,
+}) => {
   return (
-    <div className="modal-toggle">
-      <Button onClick={() => handleToggleModal(!isModalOpen)}>
-        {isModalOpen ? 'Close' : 'Open'} Modal
-      </Button>
+    <div>
+      <h2>Modal</h2>
+      <button
+        className="btn w-full"
+        type="button"
+        onClick={() => setModalOpen(!isModalOpen)}
+      >
+        {isModalOpen ? 'Close' : 'Open'} modal
+      </button>
     </div>
   )
 }
