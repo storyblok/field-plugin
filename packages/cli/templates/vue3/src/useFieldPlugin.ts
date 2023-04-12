@@ -1,16 +1,25 @@
-import { createFieldPlugin, FieldPluginResponse } from '@storyblok/field-plugin'
-import { onMounted, ref } from 'vue'
+import { FieldPluginResponse } from '@storyblok/field-plugin'
+import { inject, Ref } from 'vue'
 
 export function useFieldPlugin() {
-  const state = ref<FieldPluginResponse>({
-    type: 'loading',
-  })
+  return inject<Ref<FieldPluginResponse>>(
+    'field-plugin',
+    () => {
+      throw new Error(
+        `You need to call \`provideFieldPlugin()\` at the root of your app.`,
+      )
+    },
+    true,
+  )
+}
 
-  onMounted(() => {
-    createFieldPlugin((newState) => {
-      state.value = newState
-    })
-  })
-
-  return state
+export function useFieldPluginLoaded() {
+  const plugin = useFieldPlugin()
+  if (plugin.value.type === 'loaded') {
+    return plugin as Ref<Extract<FieldPluginResponse, { type: 'loaded' }>>
+  } else {
+    throw new Error(
+      '`useFieldPlugn()` must be used only after `plugin.type` becomes `loaded`.',
+    )
+  }
 }

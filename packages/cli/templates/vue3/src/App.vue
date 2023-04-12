@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useFieldPlugin } from './useFieldPlugin'
 import FieldPlugin from './components/FieldPlugin.vue'
-
-const plugin = useFieldPlugin()
+import { provideFieldPlugin } from './provideFieldPlugin'
+const plugin = provideFieldPlugin()
 </script>
 
 <template>

@@ -3,22 +3,19 @@ import ModalToggle from './ModalToggle.vue'
 import Counter from './Counter.vue'
 import AssetSelector from './AssetSelector.vue'
 
-import { PluginActions, PluginState } from '@storyblok/field-plugin'
+import { useFieldPluginLoaded } from '../useFieldPlugin'
 
-const props = defineProps<{
-  actions: PluginActions
-  data: PluginState
-}>()
+const plugin = useFieldPluginLoaded()
 
 function closeModal() {
-  props.actions.setModalOpen(false)
+  plugin.value.actions.setModalOpen(false)
 }
 </script>
 
 <template>
   <div>
     <button
-      v-if="props.data.isModalOpen"
+      v-if="plugin.data.isModalOpen"
       type="button"
       class="btn btn-close"
       @click="closeModal"
@@ -39,20 +36,11 @@ function closeModal() {
       </svg>
     </button>
     <div class="container">
-      <Counter
-        :data="data"
-        :set-value="actions.setValue"
-      />
+      <Counter />
       <hr />
-      <ModalToggle
-        :is-modal-open="data.isModalOpen"
-        :set-modal-open="actions.setModalOpen"
-      />
+      <ModalToggle />
       <hr />
-      <AssetSelector
-        :data="data"
-        :select-asset="actions.selectAsset"
-      />
+      <AssetSelector />
     </div>
   </div>
 </template>

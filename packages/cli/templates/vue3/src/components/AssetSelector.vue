@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { PluginActions, PluginState } from '@storyblok/field-plugin'
+import { useFieldPluginLoaded } from '../useFieldPlugin'
 
-const props = defineProps<{
-  selectAsset: PluginActions['selectAsset']
-  data: PluginState
-}>()
+const plugin = useFieldPluginLoaded()
 
 const imageUrl = ref('')
 
 const handleSelectAsset = async () => {
-  imageUrl.value = await props.selectAsset()
+  imageUrl.value = await plugin.value.actions.selectAsset()
 }
 
 const removeAsset = async () => {
