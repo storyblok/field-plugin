@@ -1,5 +1,6 @@
 import { forwardRef, FunctionComponent, PropsWithChildren } from 'react'
 import { Backdrop, Box } from '@mui/material'
+import { DisableShieldsNotification } from './DisableShieldsNotification'
 
 const FieldTypeModal: FunctionComponent<
   PropsWithChildren<{
@@ -72,6 +73,7 @@ export const FieldTypePreview = forwardRef<
 >(function FieldTypePreview(props, ref) {
   return (
     <>
+      <DisableShieldsNotification />
       <Backdrop
         open={props.isModal}
         sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
