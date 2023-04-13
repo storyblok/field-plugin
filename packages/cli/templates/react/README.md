@@ -30,7 +30,7 @@ yarn deploy
 
 ## Next Steps
 
-Set up continuous integration with the [CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli). Use the `--name` and `--skipPrompts` options as such:
+Set up continuous integration with the [CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli). Define an environmental variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`, and use the `--name` and `--skipPrompts` options as such:
 
 ```shell
 yarn deploy --name $NAME --skipPrompts
