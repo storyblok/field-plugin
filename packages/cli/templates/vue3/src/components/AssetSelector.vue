@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useFieldPluginLoaded } from '../useFieldPlugin'
+import { useFieldPlugin } from '../useFieldPlugin'
 
-const plugin = useFieldPluginLoaded()
+const plugin = useFieldPlugin()
 
 const imageUrl = ref('')
 
 const handleSelectAsset = async () => {
-  imageUrl.value = await plugin.value.actions.selectAsset()
+  imageUrl.value = await plugin.actions.selectAsset()
 }
 
 const removeAsset = () => {

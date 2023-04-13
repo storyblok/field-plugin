@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useFieldPluginLoaded } from '../useFieldPlugin'
+import { useFieldPlugin } from '../useFieldPlugin'
 
-const plugin = useFieldPluginLoaded()
+const plugin = useFieldPlugin()
 </script>
 
 <template>

@@ -2,13 +2,12 @@
 import ModalToggle from './ModalToggle.vue'
 import Counter from './Counter.vue'
 import AssetSelector from './AssetSelector.vue'
+import { useFieldPlugin } from '../useFieldPlugin'
 
-import { useFieldPluginLoaded } from '../useFieldPlugin'
-
-const plugin = useFieldPluginLoaded()
+const plugin = useFieldPlugin()
 
 function closeModal() {
-  plugin.value.actions.setModalOpen(false)
+  plugin.actions.setModalOpen(false)
 }
 </script>
 

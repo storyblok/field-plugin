@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useFieldPluginLoaded } from '../useFieldPlugin'
+import { useFieldPlugin } from '../useFieldPlugin'
 
-const plugin = useFieldPluginLoaded()
+const plugin = useFieldPlugin()
 
 const handleIncrement = () => {
-  const value = plugin.value.data.value
-  plugin.value.actions.setValue((typeof value === 'number' ? value : 0) + 1)
+  const value = plugin.data.value
+  plugin.actions.setValue((typeof value === 'number' ? value : 0) + 1)
 }
 
 const label = computed(() => {
-  const value = plugin.value.data.value
+  const value = plugin.data.value
   return typeof value !== 'number' ? 0 : JSON.stringify(value)
 })
 </script>
