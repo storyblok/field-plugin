@@ -1,15 +1,12 @@
-import { PluginActions, PluginState } from '@storyblok/field-plugin'
 import { FunctionComponent } from 'react'
+import { useFieldPlugin } from '../useFieldPlugin'
 
-type Props = {
-  setValue: PluginActions['setValue']
-  data: PluginState
-}
+const Counter: FunctionComponent = () => {
+  const { data, actions } = useFieldPlugin()
 
-const Counter: FunctionComponent<Props> = ({ setValue, data }) => {
   const label = typeof data.value !== 'number' ? 0 : JSON.stringify(data.value)
   const handleIncrement = () => {
-    setValue((typeof data.value === 'number' ? data.value : 0) + 1)
+    actions.setValue((typeof data.value === 'number' ? data.value : 0) + 1)
   }
 
   return (

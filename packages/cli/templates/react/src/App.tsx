@@ -1,24 +1,16 @@
-import { useFieldPlugin } from './useFieldPlugin'
 import FieldPlugin from './components/FieldPlugin'
 import { FunctionComponent } from 'react'
+import { FieldPluginProvider } from './FieldPluginProvider'
 
 const App: FunctionComponent = () => {
-  const { type, data, actions } = useFieldPlugin()
-
-  if (type === 'loading') {
-    return <span>Loading...</span>
-  }
-
-  if (type === 'error') {
-    return <span>Error</span>
-  }
-
-  return type === 'loaded' ? (
-    <FieldPlugin
-      data={data}
-      actions={actions}
-    />
-  ) : null
+  return (
+    <FieldPluginProvider
+      loading={() => <span>Loading...</span>}
+      error={() => <span>Error</span>}
+    >
+      <FieldPlugin />
+    </FieldPluginProvider>
+  )
 }
 
 export default App
