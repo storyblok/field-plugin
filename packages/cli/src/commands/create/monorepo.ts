@@ -2,7 +2,7 @@ import prompts from 'prompts'
 import { copyFileSync, existsSync, mkdirSync, unlinkSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
 import { dirname, resolve } from 'path'
-import { TEMPLATES_PATH } from '../../../config'
+import { MONOREPO_TEMPLATE_PATH, TEMPLATES_PATH } from '../../../config'
 import {
   filterPathsToInclude,
   initializeNewRepo,
@@ -65,7 +65,7 @@ export const createMonorepo: CreateMonorepoFunc = async ({
       ? repoName
       : await promptRepoName(dir)
   const repoDir = resolve(dir, folderName)
-  const templatePath = resolve(TEMPLATES_PATH, 'monorepo') + '/'
+  const templatePath = MONOREPO_TEMPLATE_PATH + '/'
 
   console.log(bold(cyan('[info] Creating a repository at the following path:')))
   console.log(`  > ${repoDir}`)

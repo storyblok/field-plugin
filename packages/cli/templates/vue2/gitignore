@@ -2,10 +2,10 @@ dist
 .DS_Store
 node_modules
 
-# env files except for .env.example
+# env files except for .env.local.example
 .env
 .env.*
-!.env.example
+!.env.local.example
 
 # Logs
 npm-debug.log*
