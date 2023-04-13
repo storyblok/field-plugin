@@ -1,13 +1,11 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue2'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import printPlugin from './print-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server: {
-    port: 8080,
-    host: true,
-  },
+  plugins: [vue(), cssInjectedByJsPlugin(), printPlugin()],
   build: {
     // minify: false,
     rollupOptions: {
@@ -18,10 +16,13 @@ export default defineConfig({
       },
     },
   },
-  plugins: [vue(), cssInjectedByJsPlugin()],
   // @ts-expect-error this is coming from vitest
   test: {
     globals: true,
     environment: 'jsdom',
+  },
+  server: {
+    port: 8080,
+    host: true,
   },
 })
