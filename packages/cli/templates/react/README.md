@@ -30,10 +30,12 @@ yarn deploy
 
 ## Next Steps
 
+Read more about field plugins [on GitHub](https://github.com/storyblok/field-plugin).
+
 Set up continuous integration with the [CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli). Define an environmental variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`, and use the `--name` and `--skipPrompts` options as such:
 
 ```shell
 yarn deploy --name $NAME --skipPrompts
 ```
 
-[@storyblok/mui](https://www.npmjs.com/package/@storyblok/field-plugin) contains a component library and theme for [MUI](https://mui.com/). To add it to this project, follow the instructions in the [readme](https://github.com/storyblok/mui).
+[@storyblok/mui](https://www.npmjs.com/package/@storyblok/mui) contains a component library and theme for [MUI](https://mui.com/). To add it to this project, follow the instructions in the [readme](https://github.com/storyblok/mui).
