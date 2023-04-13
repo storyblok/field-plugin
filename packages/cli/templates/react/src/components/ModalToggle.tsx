@@ -2,7 +2,10 @@ import { FunctionComponent } from 'react'
 import { useFieldPlugin } from '../useFieldPlugin'
 
 const ModalToggle: FunctionComponent = () => {
-  const { data, actions } = useFieldPlugin()
+  const {
+    data: { isModalOpen },
+    actions: { setModalOpen },
+  } = useFieldPlugin()
 
   return (
     <div>
@@ -10,9 +13,9 @@ const ModalToggle: FunctionComponent = () => {
       <button
         className="btn w-full"
         type="button"
-        onClick={() => actions.setModalOpen(!data.isModalOpen)}
+        onClick={() => setModalOpen(!isModalOpen)}
       >
-        {data.isModalOpen ? 'Close' : 'Open'} modal
+        {isModalOpen ? 'Close' : 'Open'} modal
       </button>
     </div>
   )

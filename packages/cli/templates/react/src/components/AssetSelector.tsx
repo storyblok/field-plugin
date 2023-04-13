@@ -2,12 +2,14 @@ import { FunctionComponent, useState } from 'react'
 import { useFieldPlugin } from '../useFieldPlugin'
 
 const AssetSelector: FunctionComponent = () => {
-  const { actions } = useFieldPlugin()
+  const {
+    actions: { selectAsset },
+  } = useFieldPlugin()
 
   const [imageUrl, setImageUrl] = useState<string>('')
 
   const handleSelectAsset = async () => {
-    setImageUrl(await actions.selectAsset())
+    setImageUrl(await selectAsset())
   }
 
   const removeAsset = async () => {
