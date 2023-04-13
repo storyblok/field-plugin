@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { PluginActions, PluginState } from '@storyblok/field-plugin'
+import { useFieldPlugin } from '../useFieldPlugin'
 
-defineProps<{
-  setModalOpen: PluginActions['setModalOpen']
-  isModalOpen: PluginState['isModalOpen']
-}>()
+const plugin = useFieldPlugin()
 </script>
 
 <template>
@@ -13,9 +10,9 @@ defineProps<{
     <button
       class="btn w-full"
       type="button"
-      @click="() => setModalOpen(!isModalOpen)"
+      @click="() => plugin.actions.setModalOpen(!plugin.data.isModalOpen)"
     >
-      {{ isModalOpen ? 'Close' : 'Open' }} modal
+      {{ plugin.data.isModalOpen ? 'Close' : 'Open' }} modal
     </button>
   </div>
 </template>

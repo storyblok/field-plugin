@@ -1,21 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PluginActions, PluginState } from '@storyblok/field-plugin'
+import { useFieldPlugin } from '../useFieldPlugin'
 
-const props = defineProps<{
-  setValue: PluginActions['setValue']
-  data: PluginState
-}>()
+const plugin = useFieldPlugin()
 
 const handleIncrement = () => {
-  props.setValue(
-    (typeof props.data.value === 'number' ? props.data.value : 0) + 1,
-  )
+  const value = plugin.data.value
+  plugin.actions.setValue((typeof value === 'number' ? value : 0) + 1)
 }
 
-const label = computed(() =>
-  typeof props.data.value !== 'number' ? 0 : JSON.stringify(props.data.value),
-)
+const label = computed(() => {
+  const value = plugin.data.value
+  return typeof value !== 'number' ? 0 : JSON.stringify(value)
+})
 </script>
 
 <template>
