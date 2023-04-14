@@ -54,24 +54,24 @@ try {
 }
 
 // Check if the current branch is `main`
-// const currentBranch = await $`git branch --show-current`
-// if (currentBranch.toString().trim() !== 'main') {
-//   print(bold(red('[Error]')), 'This command runs only from `main` branch.')
-//   exit(1)
-// }
+const currentBranch = await $`git branch --show-current`
+if (currentBranch.toString().trim() !== 'main') {
+  print(bold(red('[Error]')), 'This command runs only from `main` branch.')
+  exit(1)
+}
 
-// // Check if the working directory is clean
-// try {
-//   await $`git diff-index --quiet HEAD --`
-// } catch (processOutput) {
-//   if (processOutput.exitCode === 1) {
-//     print(
-//       bold(red('[Error]')),
-//       'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
-//     )
-//     exit(1)
-//   }
-// }
+// Check if the working directory is clean
+try {
+  await $`git diff-index --quiet HEAD --`
+} catch (processOutput) {
+  if (processOutput.exitCode === 1) {
+    print(
+      bold(red('[Error]')),
+      'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
+    )
+    exit(1)
+  }
+}
 
 // Select which package to deploy ('field-plugin' | 'cli')
 const { packageFolder } = await prompts({
@@ -127,16 +127,16 @@ if (prerelease) {
 }
 
 // Check out to a release branch
-// const branchName = `chore/release-${packageFolder}-${nextVersion}`
-// await $`git checkout -b ${branchName}`
+const branchName = `chore/release-${packageFolder}-${nextVersion}`
+await $`git checkout -b ${branchName}`
 
-// // Update the version
-// await $`cd packages/${packageFolder} && npm version ${nextVersion} --no-git-tag-version`
-// await $`yarn install`
+// Update the version
+await $`cd packages/${packageFolder} && npm version ${nextVersion} --no-git-tag-version`
+await $`yarn install`
 
-// // Create a pull-request
-// await $`git add .`
-// const commitMessage = `chore: release ${packageName}@${nextVersion}`
-// await $`git commit -m ${commitMessage}`
-// await $`git push -u origin ${branchName}`
-// await $`gh pr create --title ${commitMessage} --web`
+// Create a pull-request
+await $`git add .`
+const commitMessage = `chore: release ${packageName}@${nextVersion}`
+await $`git commit -m ${commitMessage}`
+await $`git push -u origin ${branchName}`
+await $`gh pr create --title ${commitMessage} --web`
