@@ -57,13 +57,7 @@ export const deploy: DeployFunc = async ({
     process.exit(1)
   }
 
-  const packageName =
-    typeof name === 'string' && name.length > 0
-      ? name
-      : await promptName({
-          message: packageNameMessage,
-          initialValue: getPackageName(dir),
-        })
+  const packageName = await decidePackageName({ name, skipPrompts, dir })
 
   if (typeof packageName !== 'string' || packageName === '') {
     console.log(red('[ERROR]'), 'Package name is missing.')
@@ -109,6 +103,29 @@ export const deploy: DeployFunc = async ({
   console.log(
     'You can also find it in "My account > My Plugins" at the bottom of the sidebar.',
   )
+}
+
+const decidePackageName = async ({
+  name,
+  skipPrompts,
+  dir,
+}: {
+  name?: string
+  skipPrompts: boolean
+  dir: string
+}) => {
+  if (typeof name === 'string' && name.length > 0) {
+    return name
+  }
+
+  if (skipPrompts) {
+    return getPackageName(dir)
+  }
+
+  return await promptName({
+    message: packageNameMessage,
+    initialValue: getPackageName(dir),
+  })
 }
 
 const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
