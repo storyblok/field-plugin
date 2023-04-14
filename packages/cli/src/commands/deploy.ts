@@ -67,10 +67,10 @@ export const deploy: DeployFunc = async ({
     process.exit(1)
   }
 
+  console.log(bold(cyan(`[info] Plugin name: \`${packageName}\``)))
+
   // path of the specific field-plugin package
-
   const defaultOutputPath = resolve(dir, 'dist', 'index.js')
-
   const outputPath =
     typeof output !== 'undefined' ? resolve(output) : defaultOutputPath
 
