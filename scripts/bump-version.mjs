@@ -4,7 +4,7 @@ import { $, which } from 'zx'
 import prompts from 'prompts'
 import semver from 'semver'
 import { readFileSync } from 'fs'
-import { bold, green, red } from 'kleur/colors'
+import { bold, cyan, green, red } from 'kleur/colors'
 
 const print = (...args) => {
   // eslint-disable-next-line no-undef, no-console
@@ -85,8 +85,16 @@ const { packageFolder } = await prompts({
 const { version: currentVersion, name: packageName } = JSON.parse(
   readFileSync(`packages/${packageFolder}/package.json`).toString(),
 )
-print(bold(green('✔')), bold('Current version ›'), currentVersion)
 
+print('')
+print(bold(cyan('💡 Commits since last release')))
+print('')
+const commits = (
+  await $`git log ${packageName}@${currentVersion}..HEAD --oneline -- packages/${packageFolder}/`.quiet()
+).toString()
+commits.split('\n').forEach((line) => print('  ', line))
+
+print(bold(green('✔')), bold('Current version ›'), currentVersion)
 const prerelease = semver.prerelease(currentVersion)
 
 // Get the next version
