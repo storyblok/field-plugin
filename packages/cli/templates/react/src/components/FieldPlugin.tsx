@@ -1,15 +1,12 @@
-import { PluginActions, PluginState } from '@storyblok/field-plugin'
 import Counter from './Counter'
 import ModalToggle from './ModalToggle'
 import AssetSelector from './AssetSelector'
 import { FunctionComponent } from 'react'
+import { useFieldPlugin } from '../useFieldPlugin'
 
-type Props = {
-  actions: PluginActions
-  data: PluginState
-}
+const FieldPlugin: FunctionComponent = () => {
+  const { data, actions } = useFieldPlugin()
 
-const FieldPlugin: FunctionComponent<Props> = ({ actions, data }) => {
   const closeModal = () => {
     actions.setModalOpen(false)
   }
@@ -40,17 +37,11 @@ const FieldPlugin: FunctionComponent<Props> = ({ actions, data }) => {
         </button>
       )}
       <div className="container">
-        <Counter
-          data={data}
-          setValue={actions.setValue}
-        />
+        <Counter />
         <hr />
-        <ModalToggle
-          isModalOpen={data.isModalOpen}
-          setModalOpen={actions.setModalOpen}
-        />
+        <ModalToggle />
         <hr />
-        <AssetSelector selectAsset={actions.selectAsset} />
+        <AssetSelector />
       </div>
     </div>
   )

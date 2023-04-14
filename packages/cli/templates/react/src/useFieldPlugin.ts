@@ -1,16 +1,17 @@
-import { createFieldPlugin, FieldPluginResponse } from '@storyblok/field-plugin'
-import { useEffect, useState } from 'react'
+import { FieldPluginResponse } from '@storyblok/field-plugin'
+import { useContext } from 'react'
+import { FieldPluginContext } from './FieldPluginProvider'
 
-type UseFieldPlugin = () => FieldPluginResponse
+export const useFieldPlugin = (): Extract<
+  FieldPluginResponse,
+  { type: 'loaded' }
+> => {
+  const plugin = useContext(FieldPluginContext)
+  if (!plugin) {
+    throw new Error(
+      'The plugin is not loaded, yet `useFieldPlugin()` was invoked. Ensure that the component that invoked `useFieldPlugin()` is wrapped within `<FieldPluginProvider>`.',
+    )
+  }
 
-export const useFieldPlugin: UseFieldPlugin = () => {
-  const [state, setState] = useState<FieldPluginResponse>({
-    type: 'loading',
-  })
-
-  useEffect(() => {
-    return createFieldPlugin(setState)
-  }, [])
-
-  return state
+  return plugin
 }

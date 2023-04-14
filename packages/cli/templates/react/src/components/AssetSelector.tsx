@@ -1,11 +1,11 @@
 import { FunctionComponent, useState } from 'react'
-import { PluginActions } from '@storyblok/field-plugin'
+import { useFieldPlugin } from '../useFieldPlugin'
 
-type Props = {
-  selectAsset: PluginActions['selectAsset']
-}
+const AssetSelector: FunctionComponent = () => {
+  const {
+    actions: { selectAsset },
+  } = useFieldPlugin()
 
-const AssetSelector: FunctionComponent<Props> = ({ selectAsset }) => {
   const [imageUrl, setImageUrl] = useState<string>('')
 
   const handleSelectAsset = async () => {
