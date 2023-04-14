@@ -71,8 +71,14 @@ export const main = () => {
         'path to the `.env` file which stores the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`',
       ),
     )
+    .addOption(
+      new Option(
+        '--scope <value>',
+        `where to deploy the field plugin ('my-space' | 'partner-portal')`,
+      ),
+    )
     .action(async function (this: Command) {
-      const { dir, skipPrompts, name, token, output, dotEnvPath } =
+      const { dir, skipPrompts, name, token, output, dotEnvPath, scope } =
         this.opts<DeployArgs>()
 
       await deploy({
@@ -82,6 +88,7 @@ export const main = () => {
         dir,
         output,
         dotEnvPath,
+        scope,
       })
     })
 

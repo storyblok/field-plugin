@@ -1,9 +1,9 @@
 import { existsSync, readFileSync, lstatSync } from 'fs'
 import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
-import prompts from 'prompts'
+import prompts, { type Choice } from 'prompts'
 import { getPersonalAccessToken, promptName } from '../utils'
-import { StoryblokClient } from '../storyblok/storyblok-client'
+import { Scope, StoryblokClient } from '../storyblok/storyblok-client'
 
 const packageNameMessage =
   'How would you like to call the deployed field-plugin?\n  (Lowercase alphanumeric and dash are allowed.)'
@@ -17,6 +17,7 @@ export type DeployArgs = {
   token: undefined | string
   output: undefined | string
   dotEnvPath: undefined | string
+  scope: undefined | Scope
 }
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
@@ -35,7 +36,8 @@ type UpsertFieldPluginFunc = (args: {
   skipPrompts?: boolean
   token: string
   output: string
-}) => Promise<void>
+  scope: Scope
+}) => Promise<number>
 
 export const deploy: DeployFunc = async ({
   skipPrompts,
@@ -44,6 +46,7 @@ export const deploy: DeployFunc = async ({
   dir,
   output,
   dotEnvPath,
+  scope,
 }) => {
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's deploy a field-plugin.\n")
@@ -67,6 +70,15 @@ export const deploy: DeployFunc = async ({
     process.exit(1)
   }
 
+  if (!scope && skipPrompts) {
+    console.error(
+      red('[ERROR]'),
+      '--scope is missing while --skipPrompts is given.',
+    )
+    process.exit(1)
+  }
+  const apiScope = scope || (await selectApiScope(result.token))
+
   console.log(bold(cyan(`[info] Plugin name: \`${packageName}\``)))
 
   // path of the specific field-plugin package
@@ -85,12 +97,13 @@ export const deploy: DeployFunc = async ({
 
   const outputFile = readFileSync(outputPath).toString()
 
-  await upsertFieldPlugin({
+  const fieldPluginId = await upsertFieldPlugin({
     path: dir,
     packageName,
     skipPrompts,
     token: result.token,
     output: outputFile,
+    scope: apiScope,
   })
 
   console.log(
@@ -99,7 +112,13 @@ export const deploy: DeployFunc = async ({
   )
 
   console.log('You can find the deployed plugin at the following URL:')
-  console.log(`  > https://app.storyblok.com/#/me/plugins`)
+  if (apiScope === 'partner-portal') {
+    console.log(
+      `  > https://app.storyblok.com/#/partner/fields/${fieldPluginId}`,
+    )
+  } else {
+    console.log(`  > https://app.storyblok.com/#/me/plugins/${fieldPluginId}`)
+  }
   console.log(
     'You can also find it in "My account > My Plugins" at the bottom of the sidebar.',
   )
@@ -129,9 +148,9 @@ const decidePackageName = async ({
 }
 
 const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
-  const { packageName, skipPrompts, token, output, path } = args
+  const { packageName, skipPrompts, token, output, path, scope } = args
 
-  const storyblokClient = StoryblokClient(token)
+  const storyblokClient = StoryblokClient({ token, scope })
 
   console.log(bold(cyan('[info] Fetching field plugins...')))
 
@@ -150,7 +169,7 @@ const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
       output,
     })
     await storyblokClient.updateFieldType(fieldPlugin)
-    return
+    return fieldPlugin.id
   }
 
   console.log(
@@ -161,10 +180,11 @@ const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
     ),
   )
 
-  await storyblokClient.createFieldType({
+  const createdFieldPlugin = await storyblokClient.createFieldType({
     name: packageName,
     body: output,
   })
+  return createdFieldPlugin.id
 }
 
 const getFieldPluginToUpdate: GetFieldPluginToUpdateFunc = async (args) => {
@@ -215,23 +235,30 @@ const getPackageName = (path: string): string | undefined => {
 }
 
 const selectUpsertMode = async () => {
-  const { mode } = (await prompts([
+  const { mode } = (await prompts(
+    [
+      {
+        type: 'select',
+        name: 'mode',
+        message: 'Update the existing field plugin?',
+        choices: [
+          {
+            title: 'Yes, update it.',
+            value: 'update',
+          },
+          {
+            title: 'No, create a new one.',
+            value: 'create',
+          },
+        ],
+      },
+    ],
     {
-      type: 'select',
-      name: 'mode',
-      message: 'Update the existing field plugin?',
-      choices: [
-        {
-          title: 'Yes, update it.',
-          value: 'update',
-        },
-        {
-          title: 'No, create a new one.',
-          value: 'create',
-        },
-      ],
+      onCancel: () => {
+        process.exit(1)
+      },
     },
-  ])) as { mode: 'update' | 'create' }
+  )) as { mode: 'update' | 'create' }
 
   return mode
 }
@@ -260,4 +287,51 @@ const isBuildable = (path: string) => {
   }
 
   return true
+}
+
+const selectApiScope = async (token: string): Promise<Scope> => {
+  const accessibleToMySpace = await StoryblokClient({
+    token,
+    scope: 'my-space',
+  }).isAuthenticated()
+
+  const accessibleToPartnerPortal = await StoryblokClient({
+    token,
+    scope: 'partner-portal',
+  }).isAuthenticated()
+
+  if (!accessibleToMySpace && !accessibleToPartnerPortal) {
+    console.error(
+      red('[ERROR]'),
+      `The given token(\`${token}\`) seems to be invalid.`,
+    )
+    process.exit(1)
+  }
+
+  const { scope } = (await prompts(
+    [
+      {
+        type: 'select',
+        name: 'scope',
+        message: 'Where to deploy the plugin?',
+        choices: [
+          accessibleToMySpace && {
+            title: 'My Space',
+            value: 'my-space',
+          },
+          accessibleToPartnerPortal && {
+            title: 'Partner Portal',
+            value: 'partner-portal',
+          },
+        ].filter(Boolean) as Choice[],
+      },
+    ],
+    {
+      onCancel: () => {
+        process.exit(1)
+      },
+    },
+  )) as { scope: Scope }
+
+  return scope
 }
