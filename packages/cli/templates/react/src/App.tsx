@@ -5,8 +5,8 @@ import { FieldPluginProvider } from './FieldPluginProvider'
 const App: FunctionComponent = () => {
   return (
     <FieldPluginProvider
-      loading={() => <span>Loading...</span>}
-      error={() => <span>Error</span>}
+      Loading={() => <p>Loading...</p>}
+      Error={({ error }) => <p>Error: {error.message}</p>}
     >
       <FieldPlugin />
     </FieldPluginProvider>

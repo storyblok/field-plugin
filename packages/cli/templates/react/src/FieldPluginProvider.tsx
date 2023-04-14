@@ -1,4 +1,10 @@
-import { FunctionComponent, createContext, useEffect, useState } from 'react'
+import {
+  FunctionComponent,
+  createContext,
+  useEffect,
+  useState,
+  ComponentType,
+} from 'react'
 import {
   type FieldPluginResponse,
   createFieldPlugin,
@@ -10,14 +16,14 @@ export const FieldPluginContext = createContext<FieldPluginResponse | null>(
 )
 
 type Props = {
-  error?: FunctionComponent<{ error: Error }>
-  loading?: FunctionComponent
-  children: ReactNode
+  Error?: ComponentType<{ error: Error }>
+  Loading?: ComponentType
+  children?: ReactNode
 }
 
 export const FieldPluginProvider: FunctionComponent<Props> = ({
-  error,
-  loading,
+  Error,
+  Loading,
   children,
 }) => {
   const [state, setState] = useState<FieldPluginResponse>({
@@ -29,9 +35,9 @@ export const FieldPluginProvider: FunctionComponent<Props> = ({
   }, [])
 
   if (state.type === 'loading') {
-    return loading ? loading({}) : null
+    return Loading ? <Loading /> : null
   } else if (state.type === 'error') {
-    return error ? error({ error: state.error }) : null
+    return Error ? <Error error={state.error} /> : null
   } else {
     return (
       <FieldPluginContext.Provider value={state}>
