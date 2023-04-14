@@ -9,7 +9,7 @@ import {
   writeFileSync,
 } from 'fs'
 import walk from 'walkdir'
-import { TEMPLATES, TEMPLATES_PATH } from '../../config'
+import { MONOREPO_TEMPLATE_PATH, TEMPLATES, TEMPLATES_PATH } from '../../config'
 import { filterPathsToInclude, promptName, runCommand } from '../utils'
 
 export type Template = 'vue2'
@@ -52,6 +52,8 @@ const selectTemplate = async () => {
 }
 
 export const add: AddFunc = async (args) => {
+  const structure = args.structure || 'polyrepo'
+
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's create a field-type extension.\n")
 
@@ -115,6 +117,14 @@ export const add: AddFunc = async (args) => {
     copyFileSync(file, destFilePath)
   })
 
+  if (structure === 'polyrepo') {
+    // Polyrepo gets .env.local.example copied from the monorepo template.
+    copyFileSync(
+      resolve(MONOREPO_TEMPLATE_PATH, '.env.local.example'),
+      resolve(destPath, '.env.local.example'),
+    )
+  }
+
   console.log(`\nRunning \`yarn install\`..\n`)
   console.log(
     (
@@ -125,7 +135,6 @@ export const add: AddFunc = async (args) => {
   )
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-  const structure = args.structure || 'polyrepo'
 
   console.log(`- To run development mode run the following commands:`)
 

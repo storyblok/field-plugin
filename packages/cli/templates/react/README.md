@@ -6,16 +6,36 @@ To remove the example code, simply delete the `src/components/` directory and al
 
 For those who prefer to work with JavaScript instead of TypeScript, they can rename src/App.tsx to src/App.jsx.
 
-## Local Development
+## Usage
 
-To start the project locally, run:
+For development, run the application locally with
 
-```bash
+```shell
 yarn dev
 ```
 
-## What's next?
+and open the [Sandbox](https://storyblok-field-plugin-sandbox.vercel.app/).
 
-If you want to deploy your field plugin to Storyblok, you can do so by using our [CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli).
+To build the project, run
 
+```shell
+yarn build
+```
 
+Deploy the field plugin with the CLI. Issue a [personal access token](https://app.storyblok.com/#/me/account?tab=token), rename `.env.local.example` to `.env.example`, open the file, set the value `STORYBLOK_PERSONAL_ACCESS_TOKEN`, and run
+
+```shell
+yarn deploy
+```
+
+## Next Steps
+
+Read more about field plugins [on GitHub](https://github.com/storyblok/field-plugin).
+
+Set up continuous integration with the [CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli). Define an environmental variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`, and use the `--name` and `--skipPrompts` options as such:
+
+```shell
+yarn deploy --name $NAME --skipPrompts
+```
+
+[@storyblok/mui](https://www.npmjs.com/package/@storyblok/mui) contains a component library and theme for [MUI](https://mui.com/). To add it to this project, follow the instructions in the [readme](https://github.com/storyblok/mui).
