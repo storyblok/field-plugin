@@ -76,8 +76,8 @@ export const StoryblokClient: StoryblokClientFunc = (token) => {
         field_type,
       }),
     })
-    const json = (await response.json()) as FieldPluginResponse
-    handleErrorIfExists(response, json)
+    // The Update API returns an empty string as response body
+    handleErrorIfExists(response, {})
   }
 
   const createFieldType: CreateFieldTypeFunc = async (body) => {
