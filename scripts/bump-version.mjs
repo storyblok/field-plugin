@@ -4,7 +4,7 @@ import { $, which } from 'zx'
 import prompts from 'prompts'
 import semver from 'semver'
 import { readFileSync } from 'fs'
-import { bold, green, red } from 'kleur/colors'
+import { bold, cyan, green, red } from 'kleur/colors'
 
 const print = (...args) => {
   // eslint-disable-next-line no-undef, no-console
@@ -54,24 +54,24 @@ try {
 }
 
 // Check if the current branch is `main`
-const currentBranch = await $`git branch --show-current`
-if (currentBranch.toString().trim() !== 'main') {
-  print(bold(red('[Error]')), 'This command runs only from `main` branch.')
-  exit(1)
-}
+// const currentBranch = await $`git branch --show-current`
+// if (currentBranch.toString().trim() !== 'main') {
+//   print(bold(red('[Error]')), 'This command runs only from `main` branch.')
+//   exit(1)
+// }
 
-// Check if the working directory is clean
-try {
-  await $`git diff-index --quiet HEAD --`
-} catch (processOutput) {
-  if (processOutput.exitCode === 1) {
-    print(
-      bold(red('[Error]')),
-      'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
-    )
-    exit(1)
-  }
-}
+// // Check if the working directory is clean
+// try {
+//   await $`git diff-index --quiet HEAD --`
+// } catch (processOutput) {
+//   if (processOutput.exitCode === 1) {
+//     print(
+//       bold(red('[Error]')),
+//       'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
+//     )
+//     exit(1)
+//   }
+// }
 
 // Select which package to deploy ('field-plugin' | 'cli')
 const { packageFolder } = await prompts({
@@ -85,8 +85,16 @@ const { packageFolder } = await prompts({
 const { version: currentVersion, name: packageName } = JSON.parse(
   readFileSync(`packages/${packageFolder}/package.json`).toString(),
 )
-print(bold(green('✔')), bold('Current version ›'), currentVersion)
 
+print('')
+print(bold(cyan('💡 Commits since last release')))
+print('')
+const commits = (
+  await $`git log ${packageName}@${currentVersion}..HEAD --oneline -- packages/${packageFolder}/`.quiet()
+).toString()
+commits.split('\n').forEach((line) => print('  ', line))
+
+print(bold(green('✔')), bold('Current version ›'), currentVersion)
 const prerelease = semver.prerelease(currentVersion)
 
 // Get the next version
@@ -119,16 +127,16 @@ if (prerelease) {
 }
 
 // Check out to a release branch
-const branchName = `chore/release-${packageFolder}-${nextVersion}`
-await $`git checkout -b ${branchName}`
+// const branchName = `chore/release-${packageFolder}-${nextVersion}`
+// await $`git checkout -b ${branchName}`
 
-// Update the version
-await $`cd packages/${packageFolder} && npm version ${nextVersion} --no-git-tag-version`
-await $`yarn install`
+// // Update the version
+// await $`cd packages/${packageFolder} && npm version ${nextVersion} --no-git-tag-version`
+// await $`yarn install`
 
-// Create a pull-request
-await $`git add .`
-const commitMessage = `chore: release ${packageName}@${nextVersion}`
-await $`git commit -m ${commitMessage}`
-await $`git push -u origin ${branchName}`
-await $`gh pr create --title ${commitMessage} --web`
+// // Create a pull-request
+// await $`git add .`
+// const commitMessage = `chore: release ${packageName}@${nextVersion}`
+// await $`git commit -m ${commitMessage}`
+// await $`git push -u origin ${branchName}`
+// await $`gh pr create --title ${commitMessage} --web`
