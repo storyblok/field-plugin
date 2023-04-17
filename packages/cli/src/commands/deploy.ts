@@ -296,7 +296,7 @@ const selectApiScope = async (token: string): Promise<Scope> => {
   if (!accessibleToMySpace && !accessibleToPartnerPortal) {
     console.error(
       red('[ERROR]'),
-      `The given token(\`${token}\`) seems to be invalid.`,
+      `The token appears to be invalid as it does not have access to either My Plugins or the plugins on the Partner Portal.`,
     )
     process.exit(1)
   }
