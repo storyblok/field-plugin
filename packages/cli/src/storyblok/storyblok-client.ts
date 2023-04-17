@@ -3,7 +3,7 @@ import type { Response } from 'node-fetch'
 
 export type FieldType = { id: number; name: string; body: string }
 
-export type Scope = 'my-space' | 'partner-portal'
+export type Scope = 'my-plugins' | 'partner-portal'
 
 type IsAuthenticatedFunc = () => Promise<boolean>
 

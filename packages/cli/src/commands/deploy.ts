@@ -285,7 +285,7 @@ const isBuildable = (path: string) => {
 const selectApiScope = async (token: string): Promise<Scope> => {
   const accessibleToMySpace = await StoryblokClient({
     token,
-    scope: 'my-space',
+    scope: 'my-plugins',
   }).isAuthenticated()
 
   const accessibleToPartnerPortal = await StoryblokClient({
@@ -308,8 +308,8 @@ const selectApiScope = async (token: string): Promise<Scope> => {
       message: 'Where to deploy the plugin?',
       choices: [
         accessibleToMySpace && {
-          title: 'My Space',
-          value: 'my-space',
+          title: 'My Plugins',
+          value: 'my-plugins',
         },
         accessibleToPartnerPortal && {
           title: 'Partner Portal',

@@ -74,7 +74,7 @@ export const main = () => {
     .addOption(
       new Option(
         '--scope <value>',
-        `where to deploy the field plugin ('my-space' | 'partner-portal')`,
+        `where to deploy the field plugin ('my-plugins' | 'partner-portal')`,
       ),
     )
     .action(async function (this: Command) {
