@@ -1,26 +1,22 @@
 import { toRaw, isProxy, isRef, unref } from 'vue'
 
-export function convertToRaw(object: any) {
-  if (!isObject(object)) {
-    return object
+export function convertToRaw(value: any) {
+  let rawValue = value
+  if (isProxy(rawValue)) {
+    rawValue = toRaw(rawValue)
+  }
+  if (isRef(rawValue)) {
+    rawValue = unref(rawValue)
   }
 
-  let rawObject = object
-  if (isProxy(rawObject)) {
-    rawObject = toRaw(rawObject)
-  }
-  if (isRef(rawObject)) {
-    rawObject = unref(rawObject)
+  if (!isObject(rawValue)) {
+    return rawValue
   }
 
-  if (!isObject(rawObject)) {
-    return rawObject
-  }
-
-  return Object.keys(rawObject).reduce((result, key) => {
-    result[key] = convertToRaw(rawObject[key])
+  return Object.keys(rawValue).reduce((result, key) => {
+    result[key] = convertToRaw(rawValue[key])
     return result
-  }, rawObject)
+  }, rawValue)
 }
 
 function isObject(value: unknown) {
