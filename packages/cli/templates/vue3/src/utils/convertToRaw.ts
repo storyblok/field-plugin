@@ -9,14 +9,16 @@ export function convertToRaw(value: any) {
     rawValue = unref(rawValue)
   }
 
-  if (!isObject(rawValue)) {
+  if (isObject(rawValue)) {
+    return Object.keys(rawValue).reduce((result, key) => {
+      result[key] = convertToRaw(rawValue[key])
+      return result
+    }, rawValue)
+  } else if (Array.isArray(rawValue)) {
+    return rawValue.map(convertToRaw)
+  } else {
     return rawValue
   }
-
-  return Object.keys(rawValue).reduce((result, key) => {
-    result[key] = convertToRaw(rawValue[key])
-    return result
-  }, rawValue)
 }
 
 function isObject(value: unknown) {
