@@ -1,8 +1,8 @@
 import { existsSync, readFileSync, lstatSync } from 'fs'
 import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
-import prompts, { type Choice } from 'prompts'
-import { getPersonalAccessToken, promptName } from '../utils'
+import { type Choice } from 'prompts'
+import { betterPrompts, getPersonalAccessToken, promptName } from '../utils'
 import { Scope, StoryblokClient } from '../storyblok/storyblok-client'
 
 const packageNameMessage =
@@ -37,7 +37,7 @@ type UpsertFieldPluginFunc = (args: {
   token: string
   output: string
   scope: Scope
-}) => Promise<number>
+}) => Promise<{ id: number }>
 
 export const deploy: DeployFunc = async ({
   skipPrompts,
@@ -73,7 +73,7 @@ export const deploy: DeployFunc = async ({
   if (!scope && skipPrompts) {
     console.error(
       red('[ERROR]'),
-      '--scope is missing while --skipPrompts is given.',
+      'Please provide a value for the --scope flag when using --skipPrompts.',
     )
     process.exit(1)
   }
@@ -97,7 +97,7 @@ export const deploy: DeployFunc = async ({
 
   const outputFile = readFileSync(outputPath).toString()
 
-  const fieldPluginId = await upsertFieldPlugin({
+  const { id: fieldPluginId } = await upsertFieldPlugin({
     path: dir,
     packageName,
     skipPrompts,
@@ -169,7 +169,7 @@ const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
       output,
     })
     await storyblokClient.updateFieldType(fieldPlugin)
-    return fieldPlugin.id
+    return { id: fieldPlugin.id }
   }
 
   console.log(
@@ -184,7 +184,7 @@ const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
     name: packageName,
     body: output,
   })
-  return createdFieldPlugin.id
+  return { id: createdFieldPlugin.id }
 }
 
 const getFieldPluginToUpdate: GetFieldPluginToUpdateFunc = async (args) => {
@@ -235,30 +235,23 @@ const getPackageName = (path: string): string | undefined => {
 }
 
 const selectUpsertMode = async () => {
-  const { mode } = (await prompts(
-    [
-      {
-        type: 'select',
-        name: 'mode',
-        message: 'Update the existing field plugin?',
-        choices: [
-          {
-            title: 'Yes, update it.',
-            value: 'update',
-          },
-          {
-            title: 'No, create a new one.',
-            value: 'create',
-          },
-        ],
-      },
-    ],
+  const { mode } = await betterPrompts<{ mode: 'update' | 'create' }>([
     {
-      onCancel: () => {
-        process.exit(1)
-      },
+      type: 'select',
+      name: 'mode',
+      message: 'Update the existing field plugin?',
+      choices: [
+        {
+          title: 'Yes, update it.',
+          value: 'update',
+        },
+        {
+          title: 'No, create a new one.',
+          value: 'create',
+        },
+      ],
     },
-  )) as { mode: 'update' | 'create' }
+  ])
 
   return mode
 }
@@ -308,30 +301,23 @@ const selectApiScope = async (token: string): Promise<Scope> => {
     process.exit(1)
   }
 
-  const { scope } = (await prompts(
-    [
-      {
-        type: 'select',
-        name: 'scope',
-        message: 'Where to deploy the plugin?',
-        choices: [
-          accessibleToMySpace && {
-            title: 'My Space',
-            value: 'my-space',
-          },
-          accessibleToPartnerPortal && {
-            title: 'Partner Portal',
-            value: 'partner-portal',
-          },
-        ].filter(Boolean) as Choice[],
-      },
-    ],
+  const { scope } = await betterPrompts<{ scope: Scope }>([
     {
-      onCancel: () => {
-        process.exit(1)
-      },
+      type: 'select',
+      name: 'scope',
+      message: 'Where to deploy the plugin?',
+      choices: [
+        accessibleToMySpace && {
+          title: 'My Space',
+          value: 'my-space',
+        },
+        accessibleToPartnerPortal && {
+          title: 'Partner Portal',
+          value: 'partner-portal',
+        },
+      ].filter(Boolean) as Choice[],
     },
-  )) as { scope: Scope }
+  ])
 
   return scope
 }

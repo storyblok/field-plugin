@@ -10,7 +10,12 @@ import {
 } from 'fs'
 import walk from 'walkdir'
 import { MONOREPO_TEMPLATE_PATH, TEMPLATES, TEMPLATES_PATH } from '../../config'
-import { filterPathsToInclude, promptName, runCommand } from '../utils'
+import {
+  betterPrompts,
+  filterPathsToInclude,
+  promptName,
+  runCommand,
+} from '../utils'
 
 export type Template = 'vue2'
 
@@ -33,21 +38,14 @@ export type PackageJson = {
 export type AddFunc = (args: AddArgs) => Promise<{ destPath: string }>
 
 const selectTemplate = async () => {
-  const { template } = (await prompts(
-    [
-      {
-        type: 'select',
-        name: 'template',
-        message: 'Which template?',
-        choices: TEMPLATES,
-      },
-    ],
+  const { template } = await betterPrompts<{ template: string }>([
     {
-      onCancel: () => {
-        process.exit(1)
-      },
+      type: 'select',
+      name: 'template',
+      message: 'Which template?',
+      choices: TEMPLATES,
     },
-  )) as { template: string }
+  ])
   return template
 }
 
