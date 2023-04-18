@@ -1,6 +1,6 @@
 import { toRaw, isProxy, isRef, unref } from 'vue'
 
-export function convertToRaw(value: any) {
+export function convertToRaw(value: any): any {
   let rawValue = value
   if (isProxy(rawValue)) {
     rawValue = toRaw(rawValue)
