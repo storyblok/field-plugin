@@ -1,5 +1,5 @@
 name: 'ci-vue3-template'
-
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest
