@@ -1,7 +1,8 @@
 import dotenv from 'dotenv'
 import prompts from 'prompts'
 import { resolve } from 'path'
-import { existsSync } from 'fs'
+import { existsSync, appendFileSync } from 'fs'
+import { bold, cyan } from 'kleur/colors'
 
 type RunCommandFunc = (
   command: string,
@@ -16,11 +17,15 @@ export const runCommand: RunCommandFunc = async (command, options) => {
 type GetPersonalAccessTokenFunc = (params: {
   token?: string
   dotEnvPath: string | undefined
-}) => { error?: false; token: string } | { error: true; message: string }
+  skipPrompts?: boolean
+}) => Promise<
+  { error?: false; token: string } | { error: true; message: string }
+>
 
-export const getPersonalAccessToken: GetPersonalAccessTokenFunc = ({
+export const getPersonalAccessToken: GetPersonalAccessTokenFunc = async ({
   token,
   dotEnvPath,
+  skipPrompts,
 }) => {
   if (typeof token !== 'undefined' && token !== '') {
     return {
@@ -34,7 +39,7 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = ({
   const noneOfThemExists = pathsToLoad.every(
     (path: string) => !existsSync(path),
   )
-  if (noneOfThemExists) {
+  if (skipPrompts && noneOfThemExists) {
     return {
       error: true,
       message: [
@@ -51,7 +56,9 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = ({
     return {
       token: tokenFromEnvFiles,
     }
-  } else {
+  }
+
+  if (skipPrompts) {
     return {
       error: true,
       message: [
@@ -59,6 +66,45 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = ({
         ...pathsToLoad.map((path) => `  > ${resolve(path)}`),
       ].join('\n'),
     }
+  } else {
+    console.log(
+      cyan(bold('[info]')),
+      'Please enter your personal access token to deploy the field plugin.',
+    )
+    console.log('  > https://app.storyblok.com/#/me/account?tab=token')
+    console.log('')
+    const { token } = (await prompts(
+      {
+        type: 'text',
+        name: 'token',
+        message: 'Personal access token:',
+      },
+      {
+        onCancel: () => {
+          process.exit(1)
+        },
+      },
+    )) as { token: string }
+
+    console.log(
+      cyan(`Do you want to save this token in this file for future use?`),
+    )
+    console.log(`  > ${resolve(dotEnvPath ?? '.env.local')}`)
+    const { save } = (await prompts({
+      type: 'confirm',
+      name: 'save',
+      message: 'Save?',
+      initial: true,
+    })) as { save: boolean }
+
+    if (save) {
+      appendFileSync(
+        dotEnvPath ?? '.env.local',
+        `\nSTORYBLOK_PERSONAL_ACCESS_TOKEN=${token}\n`,
+      )
+    }
+
+    return { token }
   }
 }
 

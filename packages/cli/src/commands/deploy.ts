@@ -48,7 +48,7 @@ export const deploy: DeployFunc = async ({
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's deploy a field-plugin.\n")
 
-  const result = getPersonalAccessToken({ token, dotEnvPath })
+  const result = await getPersonalAccessToken({ token, dotEnvPath })
   if (result.error === true) {
     console.error(red('[ERROR]'), result.message)
     console.error(
