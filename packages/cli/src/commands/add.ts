@@ -1,5 +1,4 @@
 import { bold, cyan, red, green } from 'kleur/colors'
-import prompts from 'prompts'
 import { resolve, dirname } from 'path'
 import {
   existsSync,
@@ -134,33 +133,21 @@ export const add: AddFunc = async (args) => {
     ).stdout,
   )
 
-  console.log('\n\n')
-  const { deploy } = await betterPrompts<{ deploy: boolean }>({
-    type: 'confirm',
-    initial: true,
-    name: 'deploy',
-    message: 'Do you want to deploy the initial version to Storyblok now?',
-  })
-  if (deploy) {
-    if (structure === 'polyrepo') {
-      await runCommand('yarn deploy', { cwd: repoRootPath })
-    } else if (structure === 'monorepo') {
-      await runCommand(`yarn workspace ${packageName} deploy`, {
-        cwd: repoRootPath,
-      })
-    }
-  }
-
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
   console.log(`- To run development mode run the following commands:`)
-
+  console.log(`    >`, green(`cd ${repoRootPath}`))
   if (structure === 'polyrepo') {
-    console.log(`    >`, green(`cd ${repoRootPath}`))
     console.log(`    >`, green(`yarn dev`))
   } else if (structure === 'monorepo') {
-    console.log(`    >`, green(`cd ${repoRootPath}`))
     console.log(`    >`, green(`yarn workspace ${packageName} dev`))
   }
 
+  console.log(`\n\n- To deploy the initial version to Storyblok:`)
+  console.log(`    >`, green(`cd ${repoRootPath}`))
+  if (structure === 'polyrepo') {
+    console.log(`    >`, green(`yarn deploy`))
+  } else if (structure === 'monorepo') {
+    console.log(`    >`, green(`yarn workspace ${packageName} deploy`))
+  }
   return { destPath }
 }
