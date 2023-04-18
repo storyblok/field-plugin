@@ -13,6 +13,19 @@ export const runCommand: RunCommandFunc = async (command, options) => {
   return execa.execaCommandSync(command, options)
 }
 
+export const betterPrompts = async <Model>(
+  questions: prompts.PromptObject | Array<prompts.PromptObject>,
+  options?: prompts.Options,
+): Promise<Model> => {
+  // This fixes the wrong typing from `prompts` and adds `onCancel` by default.
+  return (await prompts(questions, {
+    onCancel: () => {
+      process.exit(1)
+    },
+    ...options,
+  })) as Promise<Model>
+}
+
 type GetPersonalAccessTokenFunc = (params: {
   token?: string
   dotEnvPath: string | undefined
@@ -69,22 +82,15 @@ export const promptName = async ({
   message: string
   initialValue?: string
 }): Promise<string | never> => {
-  const { name } = (await prompts(
-    [
-      {
-        type: 'text',
-        name: 'name',
-        message,
-        initial: initialValue,
-        validate: (name: string) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
-      },
-    ],
+  const { name } = await betterPrompts<{ name: string }>([
     {
-      onCancel: () => {
-        process.exit(1)
-      },
+      type: 'text',
+      name: 'name',
+      message,
+      initial: initialValue,
+      validate: (name: string) => new RegExp(/^[a-z0-9\\-]+$/).test(name),
     },
-  )) as { name: string }
+  ])
   return name
 }
 

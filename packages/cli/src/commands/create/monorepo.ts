@@ -4,6 +4,7 @@ import { bold, cyan } from 'kleur/colors'
 import { dirname, resolve } from 'path'
 import { MONOREPO_TEMPLATE_PATH, TEMPLATES_PATH } from '../../../config'
 import {
+  betterPrompts,
   filterPathsToInclude,
   initializeNewRepo,
   runCommand,
@@ -35,22 +36,15 @@ const isValidRepoName = ({
 }
 
 const promptRepoName = async (dir: string) => {
-  const { name } = (await prompts(
-    [
-      {
-        type: 'text',
-        name: 'name',
-        message:
-          'What is your repository name?\n  (Lowercase alphanumeric and dash are allowed.)',
-        validate: (name: string) => isValidRepoName({ dir, name }),
-      },
-    ],
+  const { name } = await betterPrompts<{ name: string }>([
     {
-      onCancel: () => {
-        process.exit(1)
-      },
+      type: 'text',
+      name: 'name',
+      message:
+        'What is your repository name?\n  (Lowercase alphanumeric and dash are allowed.)',
+      validate: (name: string) => isValidRepoName({ dir, name }),
     },
-  )) as { name: string }
+  ])
   return name
 }
 
