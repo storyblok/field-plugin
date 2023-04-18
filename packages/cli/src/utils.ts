@@ -86,29 +86,22 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = async ({
     )
     console.log('  > https://app.storyblok.com/#/me/account?tab=token')
     console.log('')
-    const { token } = (await prompts(
-      {
-        type: 'text',
-        name: 'token',
-        message: 'Personal access token:',
-      },
-      {
-        onCancel: () => {
-          process.exit(1)
-        },
-      },
-    )) as { token: string }
+    const { token } = await betterPrompts<{ token: string }>({
+      type: 'text',
+      name: 'token',
+      message: 'Personal access token:',
+    })
 
     console.log(
       cyan(`Do you want to save this token in this file for future use?`),
     )
     console.log(`  > ${resolve(dotEnvPath ?? '.env.local')}`)
-    const { save } = (await prompts({
+    const { save } = await betterPrompts<{ save: boolean }>({
       type: 'confirm',
       name: 'save',
       message: 'Save?',
       initial: true,
-    })) as { save: boolean }
+    })
 
     if (save) {
       appendFileSync(
