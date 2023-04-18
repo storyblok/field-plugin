@@ -2,6 +2,7 @@ import prompts from 'prompts'
 import { createMonorepo, type CreateMonorepoArgs } from './monorepo'
 import { createPolyrepo, type CreatePolyrepoArgs } from './polyrepo'
 import { Structure } from '../add'
+import { betterPrompts } from '../../utils'
 
 export type CreateArgs =
   | ({
@@ -14,33 +15,26 @@ export type CreateArgs =
 export type CreateFunc = (args: CreateArgs) => Promise<void>
 
 const selectRepositoryStructure = async () => {
-  const { structure } = (await prompts(
-    [
-      {
-        type: 'select',
-        name: 'structure',
-        message:
-          'How many field plugins potentially do you want in this repository?',
-        choices: [
-          {
-            title: 'Monorepo (multiple plugins in one repo)',
-            // description: 'some description if exists',
-            value: 'monorepo',
-          },
-          {
-            title: 'Polyrepo (one plugin in one repo)',
-            // description: 'some description if exists',
-            value: 'polyrepo',
-          },
-        ],
-      },
-    ],
+  const { structure } = await betterPrompts<{ structure: Structure }>([
     {
-      onCancel: () => {
-        process.exit(1)
-      },
+      type: 'select',
+      name: 'structure',
+      message:
+        'How many field plugins potentially do you want in this repository?',
+      choices: [
+        {
+          title: 'Monorepo (multiple plugins in one repo)',
+          // description: 'some description if exists',
+          value: 'monorepo',
+        },
+        {
+          title: 'Polyrepo (one plugin in one repo)',
+          // description: 'some description if exists',
+          value: 'polyrepo',
+        },
+      ],
     },
-  )) as { structure: Structure }
+  ])
   return structure
 }
 

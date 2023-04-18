@@ -1,4 +1,5 @@
 #!/usr/bin/env zx
+/* eslint-disable no-undef */
 
 import { $, which } from 'zx'
 import prompts from 'prompts'
@@ -74,12 +75,19 @@ try {
 }
 
 // Select which package to deploy ('field-plugin' | 'cli')
-const { packageFolder } = await prompts({
-  type: 'select',
-  name: 'packageFolder',
-  message: 'What to deploy?',
-  choices: PACKAGE_FOLDERS,
-})
+const { packageFolder } = await prompts(
+  {
+    type: 'select',
+    name: 'packageFolder',
+    message: 'What to deploy?',
+    choices: PACKAGE_FOLDERS,
+  },
+  {
+    onCancel: () => {
+      process.exit(1)
+    },
+  },
+)
 
 // Get the current version
 const { version: currentVersion, name: packageName } = JSON.parse(
@@ -102,27 +110,48 @@ const prerelease = semver.prerelease(currentVersion)
 let nextVersion
 if (prerelease) {
   // e.g. prerelease === ['alpha', 8]
-  const result = await prompts({
-    type: 'text',
-    name: 'nextVersion',
-    message: 'Next version?',
-    initial: semver.inc(currentVersion, 'prerelease', prerelease[0]),
-  })
+  const result = await prompts(
+    {
+      type: 'text',
+      name: 'nextVersion',
+      message: 'Next version?',
+      initial: semver.inc(currentVersion, 'prerelease', prerelease[0]),
+    },
+    {
+      onCancel: () => {
+        process.exit(1)
+      },
+    },
+  )
   nextVersion = result.nextVersion
 } else {
-  const { incrementLevel } = await prompts({
-    type: 'select',
-    name: 'incrementLevel',
-    message: 'Increment Level?',
-    choices: [{ value: 'patch' }, { value: 'minor' }, { value: 'major' }],
-  })
+  const { incrementLevel } = await prompts(
+    {
+      type: 'select',
+      name: 'incrementLevel',
+      message: 'Increment Level?',
+      choices: [{ value: 'patch' }, { value: 'minor' }, { value: 'major' }],
+    },
+    {
+      onCancel: () => {
+        process.exit(1)
+      },
+    },
+  )
 
-  const result = await prompts({
-    type: 'text',
-    name: 'nextVersion',
-    message: 'Next version?',
-    initial: semver.inc(currentVersion, incrementLevel),
-  })
+  const result = await prompts(
+    {
+      type: 'text',
+      name: 'nextVersion',
+      message: 'Next version?',
+      initial: semver.inc(currentVersion, incrementLevel),
+    },
+    {
+      onCancel: () => {
+        process.exit(1)
+      },
+    },
+  )
   nextVersion = result.nextVersion
 }
 
