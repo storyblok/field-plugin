@@ -19,20 +19,25 @@ describe('utils', () => {
     expect(true).toBe(true)
   })
 
-  describe('getPersonalAccessToken', () => {
-    it('returns token if given', () => {
+  describe('getPersonalAccessToken (skipPrompts: true)', () => {
+    it('returns token if given', async () => {
       expect(
-        getPersonalAccessToken({ token: 'abc', dotEnvPath: undefined }),
+        await getPersonalAccessToken({
+          token: 'abc',
+          dotEnvPath: undefined,
+          skipPrompts: true,
+        }),
       ).toEqual({
         token: 'abc',
       })
     })
 
-    it('return error if the given dotEnvPath does not exist', () => {
+    it('return error if the given dotEnvPath does not exist', async () => {
       vi.mocked(existsSync).mockImplementation(() => false)
-      const result = getPersonalAccessToken({
+      const result = await getPersonalAccessToken({
         token: undefined,
         dotEnvPath: '.env.local',
+        skipPrompts: true,
       })
       expect(existsSync).toHaveBeenCalledWith('.env.local')
       expect(existsSync).toHaveBeenCalledTimes(1)
@@ -46,13 +51,14 @@ describe('utils', () => {
     })
 
     describe('dotEnvPath is given', () => {
-      it('returns error if env file does not have token', () => {
+      it('returns error if env file does not have token', async () => {
         vi.mocked(existsSync).mockImplementation(() => true)
         // eslint-disable-next-line functional/immutable-data
         delete process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
-        const result = getPersonalAccessToken({
+        const result = await getPersonalAccessToken({
           token: undefined,
           dotEnvPath: '.env.local',
+          skipPrompts: true,
         })
         expect(result).toEqual({
           error: true,
@@ -62,13 +68,14 @@ describe('utils', () => {
         })
       })
 
-      it('returns token if env file has token', () => {
+      it('returns token if env file has token', async () => {
         vi.mocked(existsSync).mockImplementation(() => true)
         // eslint-disable-next-line functional/immutable-data
         process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN = 'my-token'
-        const result = getPersonalAccessToken({
+        const result = await getPersonalAccessToken({
           token: undefined,
           dotEnvPath: '.env.local',
+          skipPrompts: true,
         })
         expect(result).toEqual({
           token: 'my-token',
@@ -77,13 +84,14 @@ describe('utils', () => {
     })
 
     describe('dotEnvPath is not given', () => {
-      it('returns error if env files do not have token', () => {
+      it('returns error if env files do not have token', async () => {
         vi.mocked(existsSync).mockImplementation(() => true)
         // eslint-disable-next-line functional/immutable-data
         delete process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
-        const result = getPersonalAccessToken({
+        const result = await getPersonalAccessToken({
           token: undefined,
           dotEnvPath: undefined,
+          skipPrompts: true,
         })
         expect(result).toEqual({
           error: true,
@@ -94,13 +102,14 @@ describe('utils', () => {
         })
       })
 
-      it('returns token if env files have token', () => {
+      it('returns token if env files have token', async () => {
         vi.mocked(existsSync).mockImplementation(() => true)
         // eslint-disable-next-line functional/immutable-data
         process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN = 'my-token'
-        const result = getPersonalAccessToken({
+        const result = await getPersonalAccessToken({
           token: undefined,
           dotEnvPath: undefined,
+          skipPrompts: true,
         })
         expect(result).toEqual({
           token: 'my-token',
