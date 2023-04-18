@@ -1,10 +1,10 @@
-name: 'ci-vue3-template'
+name: 'ci-monorepo-template'
 on:
   push:
     paths:
-      - 'packages/cli/templates/vue3/**'
+      - 'packages/cli/templates/monorepo/**'
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,4 +14,4 @@ jobs:
           node-version: 16.18.1
           cache: 'yarn'
       - run: yarn install
-      - run: yarn workspace field-plugin-vue3-template build
+      - run: yarn workspace field-plugin-monorepo-template lint

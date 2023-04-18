@@ -1,5 +1,5 @@
 {
-  "name": "field-plugins",
+  "name": "field-plugin-monorepo-template",
   "private": true,
   "version": "0.0.0",
   "type": "module",
