@@ -283,7 +283,7 @@ const isBuildable = (path: string) => {
 }
 
 const selectApiScope = async (token: string): Promise<Scope> => {
-  const accessibleToMySpace = await StoryblokClient({
+  const accessibleToMyPlugins = await StoryblokClient({
     token,
     scope: 'my-plugins',
   }).isAuthenticated()
@@ -293,7 +293,7 @@ const selectApiScope = async (token: string): Promise<Scope> => {
     scope: 'partner-portal',
   }).isAuthenticated()
 
-  if (!accessibleToMySpace && !accessibleToPartnerPortal) {
+  if (!accessibleToMyPlugins && !accessibleToPartnerPortal) {
     console.error(
       red('[ERROR]'),
       `The token appears to be invalid as it does not have access to either My Plugins or the plugins on the Partner Portal.`,
@@ -307,7 +307,7 @@ const selectApiScope = async (token: string): Promise<Scope> => {
       name: 'scope',
       message: 'Where to deploy the plugin?',
       choices: [
-        accessibleToMySpace && {
+        accessibleToMyPlugins && {
           title: 'My Plugins',
           value: 'my-plugins',
         },
