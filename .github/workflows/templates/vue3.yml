@@ -1,8 +1,5 @@
 name: 'ci-vue3-template'
-on:
-  push:
-    paths:
-      - 'packages/cli/templates/vue3/**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
