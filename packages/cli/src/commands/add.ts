@@ -70,6 +70,8 @@ export const add: AddFunc = async (args) => {
   const rootPath = resolve(args.dir)
   const destPath = resolve(rootPath, packageName)
   const templatePath = resolve(TEMPLATES_PATH, template) + '/'
+  const repoRootPath =
+    structure === 'monorepo' ? resolve(rootPath, '..') : destPath
 
   if (!existsSync(templatePath)) {
     console.log(
@@ -132,16 +134,31 @@ export const add: AddFunc = async (args) => {
     ).stdout,
   )
 
-  console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
+  console.log('\n\n')
+  const { deploy } = await betterPrompts<{ deploy: boolean }>({
+    type: 'confirm',
+    initial: true,
+    name: 'deploy',
+    message: 'Do you want to deploy the initial version to Storyblok now?',
+  })
+  if (deploy) {
+    if (structure === 'polyrepo') {
+      await runCommand('yarn deploy', { cwd: repoRootPath })
+    } else if (structure === 'monorepo') {
+      await runCommand(`yarn workspace ${packageName} deploy`, {
+        cwd: repoRootPath,
+      })
+    }
+  }
 
+  console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
   console.log(`- To run development mode run the following commands:`)
 
   if (structure === 'polyrepo') {
-    console.log(`    >`, green(`cd ${destPath}`))
+    console.log(`    >`, green(`cd ${repoRootPath}`))
     console.log(`    >`, green(`yarn dev`))
   } else if (structure === 'monorepo') {
-    const parentPath = resolve(rootPath, '..')
-    console.log(`    >`, green(`cd ${parentPath}`))
+    console.log(`    >`, green(`cd ${repoRootPath}`))
     console.log(`    >`, green(`yarn workspace ${packageName} dev`))
   }
 
