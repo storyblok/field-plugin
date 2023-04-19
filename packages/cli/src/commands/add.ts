@@ -142,7 +142,7 @@ export const add: AddFunc = async (args) => {
     console.log(`    >`, green(`yarn workspace ${packageName} dev`))
   }
 
-  console.log(`\n\n- To deploy the initial version to Storyblok:`)
+  console.log(`\n\n- To deploy the newly created field plugin to Storyblok:`)
   console.log(`    >`, green(`cd ${repoRootPath}`))
   if (structure === 'polyrepo') {
     console.log(`    >`, green(`yarn deploy`))
