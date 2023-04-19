@@ -32,9 +32,10 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build:lib": "yarn workspace @storyblok/field-plugin run build",
     "build": "yarn build:lib && yarn workspaces foreach --exclude @storyblok/field-plugin run build",
-    "build:container": "yarn build:lib && yarn workspace container run build",
+    "build:lib": "yarn workspace @storyblok/field-plugin build",
+    "build:cli": "yarn workspace @storyblok/field-plugin-cli build",
+    "build:container": "yarn build:lib && yarn workspace container build",
     "test": "jest",
     "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
