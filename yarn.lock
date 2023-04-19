@@ -1587,13 +1587,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@file:./storyblok-field-plugin-0.0.1-alpha.2.tgz::locator=field-plugin-js-template%40workspace%3Apackages%2Fcli%2Ftemplates%2Fjs":
-  version: 0.0.1-alpha.2
-  resolution: "@storyblok/field-plugin@file:./storyblok-field-plugin-0.0.1-alpha.2.tgz::locator=field-plugin-js-template%40workspace%3Apackages%2Fcli%2Ftemplates%2Fjs"
-  checksum: 71bf4c3cb487bb28c8e77cc31262021cb3b206953760480f065a6988df9e49374ed18ccf8383c24bff1102891dc95a5937e3cce183c96866237734f044f1d66d
-  languageName: node
-  linkType: hard
-
 "@storyblok/mui@npm:0.0.19-alpha":
   version: 0.0.19-alpha
   resolution: "@storyblok/mui@npm:0.0.19-alpha"
@@ -4500,7 +4493,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-js-template@workspace:packages/cli/templates/js"
   dependencies:
-    "@storyblok/field-plugin": "file:./storyblok-field-plugin-0.0.1-alpha.2.tgz"
+    "@storyblok/field-plugin": 0.0.1-alpha.2
     eslint: latest
     vite: ^4.2.2
     vite-plugin-css-injected-by-js: 2.4.0

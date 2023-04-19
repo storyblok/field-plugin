@@ -11,7 +11,7 @@
     "deploy": "npm run build && npx @storyblok/field-plugin-cli@alpha deploy"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "file:./storyblok-field-plugin-0.0.1-alpha.2.tgz"
+    "@storyblok/field-plugin": "0.0.1-alpha.2"
   },
   "devDependencies": {
     "eslint": "latest",
