@@ -32,6 +32,7 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
+    "postinstall": "yarn build:lib",
     "build": "yarn build:lib && yarn workspaces foreach --exclude @storyblok/field-plugin run build",
     "build:lib": "yarn workspace @storyblok/field-plugin build",
     "build:cli": "yarn workspace @storyblok/field-plugin-cli build",
