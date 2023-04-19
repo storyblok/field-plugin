@@ -1,5 +1,4 @@
 import { bold, cyan, red, green } from 'kleur/colors'
-import prompts from 'prompts'
 import { resolve, dirname } from 'path'
 import {
   existsSync,
@@ -70,6 +69,8 @@ export const add: AddFunc = async (args) => {
   const rootPath = resolve(args.dir)
   const destPath = resolve(rootPath, packageName)
   const templatePath = resolve(TEMPLATES_PATH, template) + '/'
+  const repoRootPath =
+    structure === 'monorepo' ? resolve(rootPath, '..') : destPath
 
   if (!existsSync(templatePath)) {
     console.log(
@@ -133,17 +134,20 @@ export const add: AddFunc = async (args) => {
   )
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
-
   console.log(`- To run development mode run the following commands:`)
-
+  console.log(`    >`, green(`cd ${repoRootPath}`))
   if (structure === 'polyrepo') {
-    console.log(`    >`, green(`cd ${destPath}`))
     console.log(`    >`, green(`yarn dev`))
   } else if (structure === 'monorepo') {
-    const parentPath = resolve(rootPath, '..')
-    console.log(`    >`, green(`cd ${parentPath}`))
     console.log(`    >`, green(`yarn workspace ${packageName} dev`))
   }
 
+  console.log(`\n\n- To deploy the newly created field plugin to Storyblok:`)
+  console.log(`    >`, green(`cd ${repoRootPath}`))
+  if (structure === 'polyrepo') {
+    console.log(`    >`, green(`yarn deploy`))
+  } else if (structure === 'monorepo') {
+    console.log(`    >`, green(`yarn workspace ${packageName} deploy`))
+  }
   return { destPath }
 }
