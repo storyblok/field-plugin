@@ -1,8 +1,5 @@
 name: 'ci-js-template'
-on:
-  push:
-    paths:
-      - 'packages/cli/templates/js/**'
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest
