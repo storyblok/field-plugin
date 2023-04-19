@@ -1,8 +1,5 @@
 name: 'ci-js-template'
-on:
-  push:
-    paths:
-      - 'packages/cli/templates/js/**'
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,6 +8,6 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 14.19.1
+          node-version: 16.18.1
       - run: yarn install
       - run: yarn workspace field-plugin-js-template build
