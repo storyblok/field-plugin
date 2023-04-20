@@ -33,7 +33,7 @@ function closeModal() {
           fill="#1B243F"
         />
       </svg>
-      <span className="sr-only">Close Modal</span>
+      <span class="sr-only">Close Modal</span>
     </button>
     <div class="container">
       <Counter />

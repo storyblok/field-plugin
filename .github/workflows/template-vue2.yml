@@ -1,0 +1,17 @@
+name: 'ci-vue2-template'
+on:
+  push:
+    paths:
+      - 'packages/cli/templates/vue2/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.18.1
+          cache: 'yarn'
+      - run: yarn install
+      - run: yarn workspace field-plugin-vue2-template build
