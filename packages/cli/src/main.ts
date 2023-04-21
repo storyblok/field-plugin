@@ -62,7 +62,7 @@ export const main = () => {
     .addOption(
       new Option(
         '--dir <value>',
-        `the path to your field plugin's \`package.json\` directory`,
+        `path to the field plugin's \`package.json\` directory`,
       ).default('.'),
     )
     .addOption(
