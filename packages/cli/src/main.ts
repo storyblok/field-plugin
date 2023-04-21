@@ -56,13 +56,13 @@ export const main = () => {
     .addOption(
       new Option(
         '--output <value>',
-        'defines location of the built output file',
+        'location of the built output file (default: `./dist/index.js`)',
       ),
     )
     .addOption(
       new Option(
         '--dir <value>',
-        'path to field plugin to be deployed',
+        `the path to your field plugin's \`package.json\` directory`,
       ).default('.'),
     )
     .addOption(

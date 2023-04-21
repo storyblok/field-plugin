@@ -1,4 +1,3 @@
-import prompts from 'prompts'
 import { createMonorepo, type CreateMonorepoArgs } from './monorepo'
 import { createPolyrepo, type CreatePolyrepoArgs } from './polyrepo'
 import { Structure } from '../add'
