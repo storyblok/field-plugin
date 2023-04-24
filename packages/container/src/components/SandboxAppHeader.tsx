@@ -1,15 +1,14 @@
 import { FunctionComponent } from 'react'
 import { AppBar, ListItemButton, Toolbar, Typography } from '@mui/material'
 import { StoryblokLogo } from './StoryblokLogo'
-import { AppHeader, DropMenu, RescueIcon } from '@storyblok/mui'
+import { AppHeader, DropMenu, RescueIcon, StoryblokIcon } from '@storyblok/mui'
 
 export const SandboxAppHeader: FunctionComponent = () => (
   <AppHeader
     icon={
-      <StoryblokLogo
-        sx={{
-          width: 'auto',
-        }}
+      <StoryblokIcon
+        fontSize="inherit"
+        color="primary"
       />
     }
     title="Field Plugin Sandbox"
