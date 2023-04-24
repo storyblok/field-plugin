@@ -1,20 +1,26 @@
 import { FunctionComponent } from 'react'
-import { lightTheme, NotificationProvider } from '@storyblok/mui'
+import {
+  AppContainer,
+  lightTheme,
+  NotificationProvider,
+  AppContent,
+} from '@storyblok/mui'
 import { Container, CssBaseline, ThemeProvider } from '@mui/material'
-import { FieldPluginContainerAppBar } from './FieldPluginContainerAppBar'
 import { FieldPluginContainer } from './FieldPluginContainer'
+import { SandboxAppHeader } from './SandboxAppHeader'
 
 export const App: FunctionComponent = () => (
   <ThemeProvider theme={lightTheme}>
     <CssBaseline />
-    <FieldPluginContainerAppBar />
     <NotificationProvider>
-      <Container
-        maxWidth="md"
-        sx={{ py: 10 }}
-      >
-        <FieldPluginContainer />
-      </Container>
+      <AppContainer>
+        <SandboxAppHeader />
+        <AppContent>
+          <Container maxWidth="md">
+            <FieldPluginContainer />
+          </Container>
+        </AppContent>
+      </AppContainer>
     </NotificationProvider>
   </ThemeProvider>
 )
