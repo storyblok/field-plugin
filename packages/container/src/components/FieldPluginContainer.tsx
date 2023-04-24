@@ -72,8 +72,9 @@ export const FieldPluginContainer: FunctionComponent = () => {
 
   // Fall back to defaultOrigin when origin is an empty string; otherwise, the iframe will embedd the same origin, which will look strange.
   const [debouncedOrigin] = useDebounce(origin || defaultOrigin, 1000)
-  const urlSearchParams = urlSearchParamsFromPluginUrlParams(pluginParams)
-  const iframeSrc = `${debouncedOrigin}?${urlSearchParams}`
+  const iframeSrc = `${debouncedOrigin}?${urlSearchParamsFromPluginUrlParams(
+    pluginParams,
+  )}`
   const [iframeUid, setIframeUid] = useState(uid)
 
   const [story, setStory] = useState<TestStory>({
