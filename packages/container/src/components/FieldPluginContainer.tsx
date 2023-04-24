@@ -25,6 +25,7 @@ import {
   AccordionSummary,
   Alert,
   AlertTitle,
+  Box,
   Button,
   FormControl,
   IconButton,
@@ -37,6 +38,7 @@ import {
 import {
   ChevronDownIcon,
   ContentIcon,
+  DeleteIcon,
   RefreshIcon,
   SchemaIcon,
   useNotifications,
@@ -275,7 +277,25 @@ export const FieldPluginContainer: FunctionComponent = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Stack gap={1}>
-            <Typography variant="h3">Value</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
+              <Typography variant="h3">Value</Typography>
+              <Tooltip title="Reset value">
+                <IconButton
+                  aria-label="Reset value"
+                  color="secondary"
+                  size="small"
+                  onClick={() => setValue(undefined)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
             <ObjectDisplay output={value} />
             <Typography variant="h3">Height (px)</Typography>
             <ObjectDisplay output={height} />
