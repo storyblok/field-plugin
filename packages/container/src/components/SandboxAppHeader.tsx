@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react'
-import { AppBar, ListItemButton, Toolbar, Typography } from '@mui/material'
-import { StoryblokLogo } from './StoryblokLogo'
+import { ListItemButton } from '@mui/material'
 import { AppHeader, DropMenu, RescueIcon, StoryblokIcon } from '@storyblok/mui'
 
 export const SandboxAppHeader: FunctionComponent = () => (
