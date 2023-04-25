@@ -1,13 +1,12 @@
-import { Box } from '@mui/material'
+import { SvgIcon, SvgIconProps } from '@mui/material'
+import { FunctionComponent } from 'react'
 
-export const StoryblokLogo = () => (
-  <Box
-    component="svg"
-    height="26px"
+export const StoryblokLogo: FunctionComponent<SvgIconProps> = (props) => (
+  <SvgIcon
     role="img"
     aria-label="Storyblok Official Logo"
     viewBox="0 0 158 33"
-    className="sb-sidebar-logo sb-sidebar-logo--white"
+    {...props}
   >
     <g
       fill="none"
@@ -28,5 +27,5 @@ export const StoryblokLogo = () => (
         </g>
       </g>
     </g>
-  </Box>
+  </SvgIcon>
 )
