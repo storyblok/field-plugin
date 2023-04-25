@@ -1447,6 +1447,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remix-run/router@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@remix-run/router@npm:1.5.0"
+  checksum: 9c510c174af1553edd1f039ba16e7e3d34e04d53b3bac18814660e31cd0c48297ea4291ff86d0736b560123ebc63ecb62fa525829181d16a8dad15270d6672d7
+  languageName: node
+  linkType: hard
+
 "@rollup/pluginutils@npm:^5.0.2":
   version: 5.0.2
   resolution: "@rollup/pluginutils@npm:5.0.2"
@@ -3211,7 +3218,9 @@ __metadata:
     highlight.js: 11.7.0
     react: 18.2.0
     react-dom: 18.2.0
+    react-router-dom: ^6.10.0
     use-debounce: ^9.0.3
+    use-query-params: ^2.2.1
     usehooks-ts: 2.9.1
     vite: ^3.2.3
   languageName: unknown
@@ -7267,6 +7276,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router-dom@npm:^6.10.0":
+  version: 6.10.0
+  resolution: "react-router-dom@npm:6.10.0"
+  dependencies:
+    "@remix-run/router": 1.5.0
+    react-router: 6.10.0
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: d048d8cc66e5aec782bd675097d6bf0e5f867f3f0539bff9acdc4a314b5e0e34093944762960ca0977a54c6255272edd262231242b18c4e260d68df6b5288464
+  languageName: node
+  linkType: hard
+
+"react-router@npm:6.10.0":
+  version: 6.10.0
+  resolution: "react-router@npm:6.10.0"
+  dependencies:
+    "@remix-run/router": 1.5.0
+  peerDependencies:
+    react: ">=16.8"
+  checksum: c9fce46147c04257d7d6fa1f5bbfac96c5fdd0b15f26918bd12b2e5fe9143977c5a4452272f9b85795a22e29ec105a60d0bbe036118efc52b383d163cd8829ab
+  languageName: node
+  linkType: hard
+
 "react-transition-group@npm:^4.4.5":
   version: 4.4.5
   resolution: "react-transition-group@npm:4.4.5"
@@ -7576,6 +7609,13 @@ __metadata:
   bin:
     semver: ./bin/semver.js
   checksum: 1b26ecf6db9e8292dd90df4e781d91875c0dcc1b1909e70f5d12959a23c7eebb8f01ea581c00783bbee72ceeaad9505797c381756326073850dc36ed284b21b9
+  languageName: node
+  linkType: hard
+
+"serialize-query-params@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "serialize-query-params@npm:2.0.2"
+  checksum: 6dccdbd68cbec44c99599c4f77968e8685a74cc597f473ed93b15a8d03c3a67f50c958af9af3d186e64aabd7f98b59d674a05aa4e69d997ed86a5478cf133b27
   languageName: node
   linkType: hard
 
@@ -8345,6 +8385,25 @@ __metadata:
   peerDependencies:
     react: ">=16.8.0"
   checksum: 37da4ecbe4e10a6230580cac03a8cae1788ea3e417dfdd92fcf654325458cf1b4567fd57bebf888edab62701a6abe47059a585008fd04228784f223f94d66ce4
+  languageName: node
+  linkType: hard
+
+"use-query-params@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "use-query-params@npm:2.2.1"
+  dependencies:
+    serialize-query-params: ^2.0.2
+  peerDependencies:
+    "@reach/router": ^1.2.1
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+    react-router-dom: ">=5"
+  peerDependenciesMeta:
+    "@reach/router":
+      optional: true
+    react-router-dom:
+      optional: true
+  checksum: 5bf16511a561cf09902c3526950c6c88999767a1990619a322685448abbd09f5d71a17289d0f727bb3e68d5baced36b3fc0bbf855664b3dd5046d5d553204d28
   languageName: node
   linkType: hard
 
