@@ -26,7 +26,7 @@ export type CreateContainerListener = (
   eventHandlers: ContainerActions,
   options: {
     window: Window
-    iframeOrigin: string
+    iframeOrigin: string | undefined
     uid: string
   },
 ) => () => void
@@ -56,7 +56,7 @@ export const createContainerMessageListener: CreateContainerListener = (
     } else if (isHeightChangeMessage(message)) {
       eventHandlers.setHeight(message.height)
     } else if (isAssetModalChangeMessage(message)) {
-      eventHandlers.selectAsset(message.field)
+      eventHandlers.selectAsset(message.field ?? '')
     } else if (isGetContextMessage(message)) {
       eventHandlers.requestContext()
     } else {
