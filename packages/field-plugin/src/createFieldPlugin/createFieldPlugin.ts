@@ -4,6 +4,7 @@ import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
 import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
+import { sandboxUrl } from './sandboxUrl'
 
 export type CreateFieldPlugin = (
   onUpdate: (state: FieldPluginResponse) => void,
@@ -18,7 +19,9 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
   if (!isEmbedded) {
     onUpdateState({
       type: 'error',
-      error: new Error(`The window is not embedded within another window`),
+      error: new Error(
+        `The window is not embedded within another window. Did you mean to open the field plugin in the sandbox? ${sandboxUrl()}`,
+      ),
     })
     return () => undefined
   }
