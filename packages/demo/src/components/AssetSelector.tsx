@@ -34,7 +34,8 @@ export const AssetSelector: PluginComponent = (props) => {
       </Box>
       {typeof imageUrl !== 'undefined' ? (
         <Button
-          color="error"
+          variant="outlined"
+          color="secondary"
           startIcon={<DeleteIcon />}
           onClick={() => setImageUrl(undefined)}
         >
@@ -42,6 +43,8 @@ export const AssetSelector: PluginComponent = (props) => {
         </Button>
       ) : (
         <Button
+          variant="outlined"
+          color="secondary"
           startIcon={<AssetIcon />}
           onClick={async () => setImageUrl(await actions.selectAsset())}
         >
