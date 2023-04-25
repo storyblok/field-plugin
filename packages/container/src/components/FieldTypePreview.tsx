@@ -84,6 +84,7 @@ export const FieldTypePreview = forwardRef<
             ref={ref}
             key={props.uid}
             component="iframe"
+            src={props.src}
             title="Field Plugin Preview"
             style={{
               height: props.height,
@@ -91,7 +92,6 @@ export const FieldTypePreview = forwardRef<
               flex: 1,
               border: 'none',
             }}
-            {...props}
           />
         </FieldTypeContainer>
       </FieldTypeModal>
