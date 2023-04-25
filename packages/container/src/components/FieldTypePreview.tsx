@@ -103,7 +103,6 @@ export const FieldTypePreview = forwardRef<
             <Alert
               severity="error"
               sx={{
-                height: props.height,
                 width: '100%',
               }}
             >
