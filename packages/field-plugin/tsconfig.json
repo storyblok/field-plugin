@@ -2,10 +2,15 @@
   "extends": "../../tsconfig.base.json",
   // vite-plugin-dts will output at the root level unless specified here
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
   ]
 }
