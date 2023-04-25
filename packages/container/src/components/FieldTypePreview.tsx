@@ -1,5 +1,5 @@
 import { forwardRef, FunctionComponent, PropsWithChildren } from 'react'
-import { Backdrop, Box } from '@mui/material'
+import { Alert, AlertTitle, Backdrop, Box, Typography } from '@mui/material'
 import { DisableShieldsNotification } from './DisableShieldsNotification'
 
 const FieldTypeModal: FunctionComponent<
@@ -32,6 +32,7 @@ const FieldTypeModal: FunctionComponent<
 const FieldTypeContainer: FunctionComponent<
   PropsWithChildren<{
     isModal: boolean
+    initialWidth: string
   }>
 > = (props) => (
   <Box
@@ -54,7 +55,7 @@ const FieldTypeContainer: FunctionComponent<
     }
     style={{
       margin: 'auto',
-      width: props.isModal ? '90%' : '300px',
+      width: props.isModal ? '90%' : props.initialWidth,
     }}
   >
     {props.children}
@@ -64,8 +65,9 @@ const FieldTypeContainer: FunctionComponent<
 export const FieldTypePreview = forwardRef<
   HTMLIFrameElement,
   {
-    src: string
+    src: string | undefined
     height: string
+    initialWidth: string
     isModal: boolean
     // Allows the iframe to be refreshed
     uid?: string
@@ -79,20 +81,36 @@ export const FieldTypePreview = forwardRef<
         sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
       />
       <FieldTypeModal isModal={props.isModal}>
-        <FieldTypeContainer isModal={props.isModal}>
-          <Box
-            ref={ref}
-            key={props.uid}
-            component="iframe"
-            src={props.src}
-            title="Field Plugin Preview"
-            style={{
-              height: props.height,
-              width: '100%',
-              flex: 1,
-              border: 'none',
-            }}
-          />
+        <FieldTypeContainer
+          isModal={props.isModal}
+          initialWidth={props.initialWidth}
+        >
+          {typeof props.src !== 'undefined' ? (
+            <Box
+              ref={ref}
+              key={props.uid}
+              component="iframe"
+              src={props.src}
+              title="Field Plugin Preview"
+              style={{
+                height: props.height,
+                width: '100%',
+                flex: 1,
+                border: 'none',
+              }}
+            />
+          ) : (
+            <Alert
+              severity="error"
+              sx={{
+                height: props.height,
+                width: '100%',
+              }}
+            >
+              <AlertTitle>Unable to Load Field Plugin</AlertTitle>
+              <Typography>Please enter a valid URL.</Typography>
+            </Alert>
+          )}
         </FieldTypeContainer>
       </FieldTypeModal>
     </>

@@ -56,6 +56,8 @@ const uid = () => Math.random().toString(32).slice(2)
 
 const wrapperHost = 'localhost:7070'
 const defaultUrl = 'http://localhost:8080'
+const initialHeight = 300
+const initialWidth = 300
 
 const pluginParams: PluginUrlParams = {
   uid: uid(),
@@ -74,16 +76,27 @@ export const FieldPluginContainer: FunctionComponent = () => {
 
   // Fall back to defaultUrl when the url is an empty string; otherwise, the iframe will embed the same origin, which will look strange.
   const [debouncedUrl] = useDebounce(url, 1000)
-  const fieldPluginOrigin = useMemo<string | undefined>(() => {
+  const fieldPluginURL = useMemo<URL | undefined>(() => {
     try {
-      return new URL(debouncedUrl).origin
+      const url = new URL(debouncedUrl)
+      // When the origin is invalid `URL()` will parse it as `"null"`... yes as a string with content "null"
+      if (url.origin === 'null') {
+        return undefined
+      }
+      return url
     } catch {
       return undefined
     }
   }, [debouncedUrl])
-  const iframeSrc = `${debouncedUrl}?${urlSearchParamsFromPluginUrlParams(
-    pluginParams,
-  )}`
+  const iframeSrc = useMemo(() => {
+    if (!fieldPluginURL) {
+      return undefined
+    }
+    // Omitting query parameters from the user-provided URL in a safe way
+    return `${fieldPluginURL.origin}${
+      fieldPluginURL.pathname
+    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+  }, [fieldPluginURL])
   const [iframeUid, setIframeUid] = useState(uid)
 
   const [story, setStory] = useState<TestStory>({
@@ -105,7 +118,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
   // State
   // TODO replace with useReducer
   const [isModal, setModal] = useState(false)
-  const [height, setHeight] = useState(300)
+  const [height, setHeight] = useState(initialHeight)
   const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
     options: [],
@@ -135,10 +148,10 @@ export const FieldPluginContainer: FunctionComponent = () => {
   const postToPlugin = useCallback(
     (message: unknown) => {
       try {
-        typeof fieldPluginOrigin !== 'undefined' &&
+        typeof fieldPluginURL !== 'undefined' &&
           fieldTypeIframe.current?.contentWindow?.postMessage(
             message,
-            fieldPluginOrigin,
+            fieldPluginURL.origin,
           )
       } catch (e) {
         error({
@@ -147,7 +160,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
         })
       }
     },
-    [error, fieldPluginOrigin],
+    [error, fieldPluginURL],
   )
 
   const dispatchStateChanged = useCallback(
@@ -206,7 +219,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
           selectAsset: onAssetSelected,
         },
         {
-          iframeOrigin: fieldPluginOrigin,
+          iframeOrigin: fieldPluginURL?.origin,
           uid: pluginParams.uid,
           window,
         },
@@ -218,7 +231,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
       setModal,
       onAssetSelected,
       onContextRequested,
-      fieldPluginOrigin,
+      fieldPluginURL,
     ],
   )
 
@@ -231,18 +244,17 @@ export const FieldPluginContainer: FunctionComponent = () => {
           </FlexTypography>
         </AccordionSummary>
         <AccordionDetails>
-          {typeof fieldPluginOrigin !== 'undefined' && (
-            <FieldTypePreview
-              src={iframeSrc}
-              height={`${height}px`}
-              isModal={isModal}
-              ref={fieldTypeIframe}
-              uid={iframeUid}
-            />
-          )}
+          <FieldTypePreview
+            src={iframeSrc}
+            height={`${height}px`}
+            initialWidth={`${initialWidth}px`}
+            isModal={isModal}
+            ref={fieldTypeIframe}
+            uid={iframeUid}
+          />
         </AccordionDetails>
         <AccordionActions sx={{ py: 8 }}>
-          <FormControl error={typeof fieldPluginOrigin === 'undefined'}>
+          <FormControl error={typeof fieldPluginURL === 'undefined'}>
             <InputLabel
               htmlFor="field-plugin-url"
               shrink
@@ -254,7 +266,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
               aria-describedby="field-plugin-url-description"
               size="small"
               label="Field Plugin URL"
-              value={url || undefined}
+              value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder={defaultUrl}
               endAdornment={
