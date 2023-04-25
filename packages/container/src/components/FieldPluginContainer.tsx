@@ -54,6 +54,7 @@ import { ValueView } from './ValueView'
 const uid = () => Math.random().toString(32).slice(2)
 
 const wrapperHost = 'localhost:7070'
+
 const defaultPluginOrigin = 'http://localhost:8080'
 
 const pluginParams: PluginUrlParams = {
