@@ -26,7 +26,6 @@ import {
   Alert,
   AlertTitle,
   Button,
-  FormControl,
   IconButton,
   InputLabel,
   OutlinedInput,
@@ -49,11 +48,12 @@ import { FlexTypography } from './FlexTypography'
 import { FieldPluginSchema } from '@storyblok/field-plugin'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
 import { useDebounce } from 'use-debounce'
+import { useQueryParam, StringParam, withDefault } from 'use-query-params'
 
 const uid = () => Math.random().toString(32).slice(2)
 
 const wrapperHost = 'localhost:7070'
-const defaultPluginOrigin = 'http://localhost:8080'
+const defaultOrigin = 'http://localhost:8080'
 
 const pluginParams: PluginUrlParams = {
   uid: uid(),
@@ -64,13 +64,17 @@ const pluginParams: PluginUrlParams = {
 
 type TestStory = { content: { count: number } }
 
+const OriginQueryParam = withDefault(StringParam, defaultOrigin)
+
 export const FieldPluginContainer: FunctionComponent = () => {
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
-  const [iframeOriginInputValue, setIframeOriginInputValue] =
-    useState(defaultPluginOrigin)
-  const [iframeOrigin] = useDebounce(iframeOriginInputValue, 1000)
-  const urlSearchParams = urlSearchParamsFromPluginUrlParams(pluginParams)
-  const iframeSrc = `${iframeOrigin}?${urlSearchParams}`
+  const [origin, setOrigin] = useQueryParam('origin', OriginQueryParam)
+
+  // Fall back to defaultOrigin when origin is an empty string; otherwise, the iframe will embedd the same origin, which will look strange.
+  const [debouncedOrigin] = useDebounce(origin || defaultOrigin, 1000)
+  const iframeSrc = `${debouncedOrigin}?${urlSearchParamsFromPluginUrlParams(
+    pluginParams,
+  )}`
   const [iframeUid, setIframeUid] = useState(uid)
 
   const [story, setStory] = useState<TestStory>({
@@ -124,7 +128,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
       try {
         fieldTypeIframe.current?.contentWindow?.postMessage(
           message,
-          iframeOrigin,
+          debouncedOrigin,
         )
       } catch (e) {
         error({
@@ -133,7 +137,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
         })
       }
     },
-    [error, iframeOrigin],
+    [error, debouncedOrigin],
   )
 
   const dispatchStateChanged = useCallback(
@@ -192,13 +196,13 @@ export const FieldPluginContainer: FunctionComponent = () => {
           selectAsset: onAssetSelected,
         },
         {
-          iframeOrigin,
+          iframeOrigin: debouncedOrigin,
           uid: pluginParams.uid,
           window,
         },
       ),
     [
-      iframeOrigin,
+      debouncedOrigin,
       onLoaded,
       setValue,
       setHeight,
@@ -226,15 +230,15 @@ export const FieldPluginContainer: FunctionComponent = () => {
           />
         </AccordionDetails>
         <AccordionActions sx={{ py: 8 }}>
-          <FormControl>
+          <Stack>
             <InputLabel htmlFor="plugin-origin">Plugin Origin</InputLabel>
             <OutlinedInput
               id="plugin-origin"
               size="small"
               label="Plugin Origin"
-              value={iframeOriginInputValue}
-              onChange={(e) => setIframeOriginInputValue(e.target.value)}
-              placeholder={defaultPluginOrigin}
+              value={origin}
+              onChange={(e) => setOrigin(e.target.value)}
+              placeholder={defaultOrigin}
               sx={{
                 width: '20em',
               }}
@@ -249,7 +253,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
                 </Tooltip>
               }
             />
-          </FormControl>
+          </Stack>
         </AccordionActions>
       </Accordion>
       <Accordion>
