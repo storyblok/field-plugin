@@ -5,7 +5,7 @@ export type SetPluginReady = () => void
 export type RequestContext = () => void
 export type SelectAsset = () => Promise<string>
 
-export type PluginActions = {
+export type FieldPluginActions = {
   setHeight: SetHeight
   setValue: SetValue
   setModalOpen: SetModalOpen
