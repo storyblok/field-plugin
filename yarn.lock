@@ -1607,19 +1607,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storyblok/mui@npm:0.0.20":
-  version: 0.0.20
-  resolution: "@storyblok/mui@npm:0.0.20"
-  peerDependencies:
-    "@emotion/react": ">=11.9.3"
-    "@emotion/styled": ">=11.9.3"
-    "@mui/material": ">=5.6.1"
-    react: ">=15.3.2"
-    react-dom: ">=15.3.2"
-  checksum: bd2c1f1fe4b762bc69ab38d56b309bd9d4f3c63e49694fc731c324fbdcd3cc1abebaa3b65e1bd257ba14028b79b8acf6c8ee2efcc8ec767b16261abd0c5f8bf0
-  languageName: node
-  linkType: hard
-
 "@storyblok/mui@npm:0.0.22":
   version: 0.0.22
   resolution: "@storyblok/mui@npm:0.0.22"
@@ -3431,7 +3418,7 @@ __metadata:
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
     "@storyblok/field-plugin": "workspace:*"
-    "@storyblok/mui": 0.0.20
+    "@storyblok/mui": 0.0.22
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.0.0
     eslint: ^8.20.0

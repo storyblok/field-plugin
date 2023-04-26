@@ -15,7 +15,13 @@ export const ValueMutator: PluginComponent = (props) => {
         <Typography variant="subtitle1">Field Value</Typography>
       </Divider>
       <Typography textAlign="center">{label}</Typography>
-      <Button onClick={handleClickIncrement}>Increment</Button>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={handleClickIncrement}
+      >
+        Increment
+      </Button>
     </Stack>
   )
 }
