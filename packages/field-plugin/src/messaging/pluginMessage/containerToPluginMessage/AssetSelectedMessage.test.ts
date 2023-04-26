@@ -2,6 +2,7 @@ import {
   AssetSelectedMessage,
   isAssetSelectedMessage,
 } from './AssetSelectedMessage'
+import { isAsset } from './Asset'
 
 const stub: AssetSelectedMessage = {
   action: 'asset-selected',
@@ -13,6 +14,17 @@ const stub: AssetSelectedMessage = {
 describe('AssetSelectedMessage', function () {
   it('is a message to plugin', () => {
     expect(isAssetSelectedMessage(stub)).toBeTruthy()
+  })
+  it('is an Asset', () => {
+    expect(isAsset(stub)).toBeTruthy()
+  })
+  it('allows unknown properties', () => {
+    expect(
+      isAssetSelectedMessage({
+        ...stub,
+        anUnknownProperty: 'something',
+      }),
+    ).toBe(true)
   })
   describe('the action property', () => {
     it('equals "asset-selected"', () => {
@@ -83,66 +95,6 @@ describe('AssetSelectedMessage', function () {
         isAssetSelectedMessage({
           ...stub,
           field: false,
-        }),
-      ).toBeFalsy()
-    })
-  })
-  describe('the filename property', () => {
-    it('is required', () => {
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: 'any-string',
-        }),
-      ).toBeTruthy()
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: undefined,
-        }),
-      ).toBeFalsy()
-    })
-    it('is a string', () => {
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: 'any-string',
-        }),
-      ).toBeTruthy()
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: 123,
-        }),
-      ).toBeFalsy()
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: null,
-        }),
-      ).toBeFalsy()
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: undefined,
-        }),
-      ).toBeFalsy()
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: [],
-        }),
-      ).toBeFalsy()
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: {},
-        }),
-      ).toBeFalsy()
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: false,
         }),
       ).toBeFalsy()
     })
