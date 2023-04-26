@@ -17,5 +17,5 @@ jobs:
       - run: yarn install
       - run: yarn eslint packages/field-plugin
       - run: yarn prettier packages/field-plugin --check
-      - run: yarn workspace @storyblok/field-plugin-lib test
-      - run: yarn workspace @storyblok/field-plugin-lib build
+      - run: yarn workspace @storyblok/field-plugin test
+      - run: yarn workspace @storyblok/field-plugin build
