@@ -26,6 +26,8 @@ import {
   Alert,
   AlertTitle,
   Button,
+  FormControl,
+  FormHelperText,
   IconButton,
   InputLabel,
   OutlinedInput,
@@ -53,7 +55,9 @@ import { useQueryParam, StringParam, withDefault } from 'use-query-params'
 const uid = () => Math.random().toString(32).slice(2)
 
 const wrapperHost = 'localhost:7070'
-const defaultOrigin = 'http://localhost:8080'
+const defaultUrl = 'http://localhost:8080'
+const initialHeight = 300
+const initialWidth = 300
 
 const pluginParams: PluginUrlParams = {
   uid: uid(),
@@ -64,17 +68,35 @@ const pluginParams: PluginUrlParams = {
 
 type TestStory = { content: { count: number } }
 
-const OriginQueryParam = withDefault(StringParam, defaultOrigin)
+const UrlQueryParam = withDefault(StringParam, defaultUrl)
 
 export const FieldPluginContainer: FunctionComponent = () => {
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
-  const [origin, setOrigin] = useQueryParam('origin', OriginQueryParam)
+  const [url, setUrl] = useQueryParam('url', UrlQueryParam)
 
-  // Fall back to defaultOrigin when origin is an empty string; otherwise, the iframe will embedd the same origin, which will look strange.
-  const [debouncedOrigin] = useDebounce(origin || defaultOrigin, 1000)
-  const iframeSrc = `${debouncedOrigin}?${urlSearchParamsFromPluginUrlParams(
-    pluginParams,
-  )}`
+  // Fall back to defaultUrl when the url is an empty string; otherwise, the iframe will embed the same origin, which will look strange.
+  const [debouncedUrl] = useDebounce(url, 1000)
+  const fieldPluginURL = useMemo<URL | undefined>(() => {
+    try {
+      const url = new URL(debouncedUrl)
+      // When the origin is invalid `URL()` will parse it as `"null"`... yes as a string with content "null"
+      if (url.origin === 'null') {
+        return undefined
+      }
+      return url
+    } catch {
+      return undefined
+    }
+  }, [debouncedUrl])
+  const iframeSrc = useMemo(() => {
+    if (!fieldPluginURL) {
+      return undefined
+    }
+    // Omitting query parameters from the user-provided URL in a safe way
+    return `${fieldPluginURL.origin}${
+      fieldPluginURL.pathname
+    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+  }, [fieldPluginURL])
   const [iframeUid, setIframeUid] = useState(uid)
 
   const [story, setStory] = useState<TestStory>({
@@ -96,7 +118,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
   // State
   // TODO replace with useReducer
   const [isModal, setModal] = useState(false)
-  const [height, setHeight] = useState(300)
+  const [height, setHeight] = useState(initialHeight)
   const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
     options: [],
@@ -126,10 +148,11 @@ export const FieldPluginContainer: FunctionComponent = () => {
   const postToPlugin = useCallback(
     (message: unknown) => {
       try {
-        fieldTypeIframe.current?.contentWindow?.postMessage(
-          message,
-          debouncedOrigin,
-        )
+        typeof fieldPluginURL !== 'undefined' &&
+          fieldTypeIframe.current?.contentWindow?.postMessage(
+            message,
+            fieldPluginURL.origin,
+          )
       } catch (e) {
         error({
           title: 'Failed to post message to plugin',
@@ -137,7 +160,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
         })
       }
     },
-    [error, debouncedOrigin],
+    [error, fieldPluginURL],
   )
 
   const dispatchStateChanged = useCallback(
@@ -196,19 +219,19 @@ export const FieldPluginContainer: FunctionComponent = () => {
           selectAsset: onAssetSelected,
         },
         {
-          iframeOrigin: debouncedOrigin,
+          iframeOrigin: fieldPluginURL?.origin,
           uid: pluginParams.uid,
           window,
         },
       ),
     [
-      debouncedOrigin,
       onLoaded,
       setValue,
       setHeight,
       setModal,
       onAssetSelected,
       onContextRequested,
+      fieldPluginURL,
     ],
   )
 
@@ -224,24 +247,28 @@ export const FieldPluginContainer: FunctionComponent = () => {
           <FieldTypePreview
             src={iframeSrc}
             height={`${height}px`}
+            initialWidth={`${initialWidth}px`}
             isModal={isModal}
             ref={fieldTypeIframe}
             uid={iframeUid}
           />
         </AccordionDetails>
         <AccordionActions sx={{ py: 8 }}>
-          <Stack>
-            <InputLabel htmlFor="plugin-origin">Plugin Origin</InputLabel>
+          <FormControl error={typeof fieldPluginURL === 'undefined'}>
+            <InputLabel
+              htmlFor="field-plugin-url"
+              shrink
+            >
+              Field Plugin URL
+            </InputLabel>
             <OutlinedInput
-              id="plugin-origin"
+              id="field-plugin-url"
+              aria-describedby="field-plugin-url-description"
               size="small"
-              label="Plugin Origin"
-              value={origin}
-              onChange={(e) => setOrigin(e.target.value)}
-              placeholder={defaultOrigin}
-              sx={{
-                width: '20em',
-              }}
+              label="Field Plugin URL"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder={defaultUrl}
               endAdornment={
                 <Tooltip title="Reload plugin">
                   <IconButton
@@ -253,7 +280,10 @@ export const FieldPluginContainer: FunctionComponent = () => {
                 </Tooltip>
               }
             />
-          </Stack>
+            <FormHelperText id="my-helper-text">
+              Please enter a valid URL from where a field plugin is served.
+            </FormHelperText>
+          </FormControl>
         </AccordionActions>
       </Accordion>
       <Accordion>
