@@ -1,21 +1,29 @@
-name: 'ci-cli'
+name: Library
 on:
   push:
     paths:
       - 'packages/field-plugin/**'
       - '.github/**'
 jobs:
-  basic-checks:
+  build:
     runs-on: ubuntu-latest
+    name: Build
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out
+        uses: actions/checkout@v3
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 18.16.0
           cache: 'yarn'
-      - run: yarn install
-      - run: yarn eslint packages/field-plugin
-      - run: yarn prettier packages/field-plugin --check
-      - run: yarn workspace @storyblok/field-plugin test
-      - run: yarn workspace @storyblok/field-plugin build
+      - name: Install
+        run: yarn install
+      - name: Check Code Formatting
+        run: yarn prettier packages/field-plugin --check
+      - name: Lint
+        run: yarn eslint packages/field-plugin
+      - name: Test
+        run: yarn workspace @storyblok/field-plugin test
+      - name: Build
+        run: yarn workspace @storyblok/field-plugin build
+
