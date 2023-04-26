@@ -2,6 +2,8 @@
 import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { PluginState } from '../PluginState'
 import {
+  Asset,
+  assetFromAssetSelectedMessage,
   assetModalChangeMessage,
   getContextMessage,
   heightChangeMessage,
@@ -56,7 +58,7 @@ export const createPluginActions: CreatePluginActions = (
   //  In future improved versions of the plugin API, this should not be needed.
   let state: PluginState = defaultState
 
-  let assetSelectedCallbackRef: undefined | ((filename: string) => void) =
+  let assetSelectedCallbackRef: undefined | ((filename: Asset) => void) =
     undefined
 
   const onStateChange: OnStateChangeMessage = (data) => {
@@ -74,7 +76,7 @@ export const createPluginActions: CreatePluginActions = (
     onUpdateState(state)
   }
   const onAssetSelect: OnAssetSelectMessage = (data) => {
-    assetSelectedCallbackRef?.(data.filename)
+    assetSelectedCallbackRef?.(assetFromAssetSelectedMessage(data))
   }
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
     // TODO remove side-effect, making functions in this file pure.
