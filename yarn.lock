@@ -1582,7 +1582,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@0.0.1-alpha.2, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@0.0.1-alpha.3, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
@@ -4505,7 +4505,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-js-template@workspace:packages/cli/templates/js"
   dependencies:
-    "@storyblok/field-plugin": 0.0.1-alpha.2
+    "@storyblok/field-plugin": 0.0.1-alpha.3
     eslint: latest
     vite: ^4.2.2
     vite-plugin-css-injected-by-js: 2.4.0
@@ -4533,7 +4533,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-react-template@workspace:packages/cli/templates/react"
   dependencies:
-    "@storyblok/field-plugin": 0.0.1-alpha.2
+    "@storyblok/field-plugin": 0.0.1-alpha.3
     "@types/react": ^18.0.28
     "@types/react-dom": ^18.0.11
     "@typescript-eslint/eslint-plugin": latest
@@ -4553,7 +4553,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-vue2-template@workspace:packages/cli/templates/vue2"
   dependencies:
-    "@storyblok/field-plugin": 0.0.1-alpha.2
+    "@storyblok/field-plugin": 0.0.1-alpha.3
     "@vitejs/plugin-vue2": 2.2.0
     joi: ^17.7.0
     vite: ^4.2.2
@@ -4566,7 +4566,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-vue3-template@workspace:packages/cli/templates/vue3"
   dependencies:
-    "@storyblok/field-plugin": 0.0.1-alpha.2
+    "@storyblok/field-plugin": 0.0.1-alpha.3
     "@vitejs/plugin-vue": ^4.1.0
     typescript: ^4.9.3
     vite: ^4.2.2
