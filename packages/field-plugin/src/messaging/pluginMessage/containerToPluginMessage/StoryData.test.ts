@@ -1,4 +1,4 @@
-import { isStoryData, StoryData } from './StoryData'
+import { isStoryData } from './StoryData'
 
 describe('StoryData', () => {
   describe('validation', () => {

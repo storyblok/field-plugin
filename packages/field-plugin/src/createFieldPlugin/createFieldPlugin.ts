@@ -41,7 +41,6 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
     window.parent.postMessage(message, origin)
   }
 
-  // TODO option to opt out from auto resizer
   const cleanupAutoResizeSideEffects = createAutoResizer(
     params.uid,
     postToContainer,
