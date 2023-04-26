@@ -20,6 +20,8 @@ jobs:
         run: yarn install
       - name: Check Code Formatting
         run: yarn prettier packages/field-plugin --check
+      - name: Check Types
+        run: yarn workspace @storyblok/field-plugin check:types
       - name: Lint
         run: yarn eslint packages/field-plugin
       - name: Test
