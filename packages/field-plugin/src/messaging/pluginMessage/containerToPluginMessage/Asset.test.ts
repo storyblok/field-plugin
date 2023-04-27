@@ -50,7 +50,7 @@ describe('Asset', function () {
           ...stub,
           anUnknownProperty: 'something',
         }),
-      ).toBe(true)
+      ).toEqual(true)
     })
     describe('the filename property', () => {
       it('is required', () => {
@@ -59,13 +59,13 @@ describe('Asset', function () {
             ...stub,
             filename: 'any-string',
           }),
-        ).toBeTruthy()
+        ).toEqual(true)
         expect(
           isAsset({
             ...stub,
             filename: undefined,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
       })
       it('is a string', () => {
         expect(
@@ -73,43 +73,43 @@ describe('Asset', function () {
             ...stub,
             filename: 'any-string',
           }),
-        ).toBeTruthy()
+        ).toEqual(true)
         expect(
           isAsset({
             ...stub,
             filename: 123,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isAsset({
             ...stub,
             filename: null,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isAsset({
             ...stub,
             filename: undefined,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isAsset({
             ...stub,
             filename: [],
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isAsset({
             ...stub,
             filename: {},
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isAsset({
             ...stub,
             filename: false,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
       })
     })
   })

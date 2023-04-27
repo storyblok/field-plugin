@@ -16,7 +16,7 @@ describe('AssetSelectedMessage', function () {
     expect(isAssetSelectedMessage(stub)).toEqual(true)
   })
   it('is an Asset', () => {
-    expect(isAsset(stub)).toBeTruthy()
+    expect(isAsset(stub)).toEqual(true)
   })
   it('allows unknown properties', () => {
     expect(
@@ -24,7 +24,7 @@ describe('AssetSelectedMessage', function () {
         ...stub,
         anUnknownProperty: 'something',
       }),
-    ).toBe(true)
+    ).toEqual(true)
   })
   describe('the action property', () => {
     it('equals "asset-selected"', () => {
