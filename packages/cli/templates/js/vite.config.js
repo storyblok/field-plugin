@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
-import printPlugin from './print-plugin'
+import { fieldPlugin } from './fieldPlugin'
 
 export default defineConfig({
-  plugins: [cssInjectedByJsPlugin(), printPlugin()],
+  plugins: [cssInjectedByJsPlugin(), fieldPlugin()],
   build: {
     rollupOptions: {
       output: {
