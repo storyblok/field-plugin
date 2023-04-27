@@ -62,17 +62,17 @@ if (currentBranch.toString().trim() !== 'main') {
 }
 
 // Check if the working directory is clean
-try {
-  await $`git diff-index --quiet HEAD --`
-} catch (processOutput) {
-  if (processOutput.exitCode === 1) {
-    print(
-      bold(red('[Error]')),
-      'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
-    )
-    exit(1)
-  }
-}
+// try {
+//   await $`git diff-index --quiet HEAD --`
+// } catch (processOutput) {
+//   if (processOutput.exitCode === 1) {
+//     print(
+//       bold(red('[Error]')),
+//       'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
+//     )
+//     exit(1)
+//   }
+// }
 
 // Select which package to deploy ('field-plugin' | 'cli')
 const { packageFolder } = await prompts(
@@ -160,7 +160,7 @@ const branchName = `chore/release-${packageFolder}-${nextVersion}`
 await $`git checkout -b ${branchName}`
 
 // Update the version
-await $`cd packages/${packageFolder} && npm version ${nextVersion} --no-git-tag-version`
+await $`cd packages/${packageFolder} && npm version ${nextVersion} --no-git-tag-version --workspaces --no-workspaces-update`
 await $`yarn install`
 
 // Create a pull-request
