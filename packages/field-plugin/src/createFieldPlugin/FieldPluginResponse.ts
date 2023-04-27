@@ -1,5 +1,5 @@
-import { PluginState } from './PluginState'
-import { PluginActions } from './PluginActions'
+import { FieldPluginData } from './FieldPluginData'
+import { FieldPluginActions } from './FieldPluginActions'
 
 export type FieldPluginResponse =
   | {
@@ -17,6 +17,6 @@ export type FieldPluginResponse =
   | {
       type: 'loaded'
       error?: never
-      data: PluginState
-      actions: PluginActions
+      data: FieldPluginData
+      actions: FieldPluginActions
     }

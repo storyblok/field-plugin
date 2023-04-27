@@ -3,7 +3,7 @@
  */
 import { StoryData } from '../messaging'
 
-export type PluginState = {
+export type FieldPluginData = {
   height: number
   isModalOpen: boolean
   value: unknown

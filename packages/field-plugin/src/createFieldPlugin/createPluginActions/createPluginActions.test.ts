@@ -7,7 +7,7 @@ import {
   PluginLoadedMessage,
   ValueChangeMessage,
 } from '../../messaging'
-import { PluginState } from '../PluginState'
+import { FieldPluginData } from '../FieldPluginData'
 
 const mock = () => ({
   uid: 'abc',
@@ -58,14 +58,14 @@ describe('createPluginActions', () => {
       expect(onUpdateState).toHaveBeenLastCalledWith(
         expect.objectContaining({
           isModalOpen: false,
-        } satisfies Partial<PluginState>),
+        } satisfies Partial<FieldPluginData>),
       )
 
       setModalOpen(true)
       expect(onUpdateState).toHaveBeenLastCalledWith(
         expect.objectContaining({
           isModalOpen: true,
-        } satisfies Partial<PluginState>),
+        } satisfies Partial<FieldPluginData>),
       )
     })
     it('sends a message to the container with the expected value', () => {
@@ -102,7 +102,7 @@ describe('createPluginActions', () => {
       expect(onUpdateState).toHaveBeenLastCalledWith(
         expect.objectContaining({
           value,
-        } satisfies Partial<PluginState>),
+        } satisfies Partial<FieldPluginData>),
       )
     })
     it('send a message to the container with the expected value', () => {
@@ -131,7 +131,7 @@ describe('createPluginActions', () => {
       expect(onUpdateState).toHaveBeenLastCalledWith(
         expect.objectContaining({
           height,
-        } satisfies Partial<PluginState>),
+        } satisfies Partial<FieldPluginData>),
       )
     })
     it('send a message to the container with the expected value', () => {

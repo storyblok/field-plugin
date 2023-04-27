@@ -3,7 +3,7 @@ import { provide, reactive } from 'vue'
 import {
   createFieldPlugin,
   FieldPluginResponse,
-  PluginState,
+  FieldPluginData,
 } from '@storyblok/field-plugin'
 import { convertToRaw } from '../utils'
 
@@ -18,7 +18,7 @@ createFieldPlugin((newState) => {
   // we're assigning each property into `plugin.data`.
   if (newState.type === 'loaded') {
     if (plugin.data) {
-      const keys = Object.keys(newState.data) as Array<keyof PluginState>
+      const keys = Object.keys(newState.data) as Array<keyof FieldPluginData>
       keys.forEach((key) => {
         if (typeof plugin.data[key] === 'object') {
           // @ts-ignore not sure how to solve this

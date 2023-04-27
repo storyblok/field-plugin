@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-let */
 import { PluginMessageCallbacks } from './createPluginMessageListener'
-import { PluginState } from '../PluginState'
+import { FieldPluginData } from '../FieldPluginData'
 import {
   Asset,
   assetFromAssetSelectedMessage,
@@ -15,14 +15,14 @@ import {
   pluginLoadedMessage,
   valueChangeMessage,
 } from '../../messaging'
-import { PluginActions } from '../PluginActions'
+import { FieldPluginActions } from '../FieldPluginActions'
 import {
   partialPluginStateFromContextRequestMessage,
   partialPluginStateFromStateChangeMessage,
 } from './partialPluginStateFromStateChangeMessage'
 
 // TODO get rid of this default state
-export const defaultState: PluginState = {
+export const defaultState: FieldPluginData = {
   height: 0,
   isModalOpen: false,
   value: undefined,
@@ -38,10 +38,10 @@ export const defaultState: PluginState = {
 export type CreatePluginActions = (
   uid: string,
   postToContainer: (message: unknown) => void,
-  onUpdateState: (state: PluginState) => void,
+  onUpdateState: (state: FieldPluginData) => void,
 ) => {
   // These functions are to be called by the field plugin when the user performs actions in the UI
-  actions: PluginActions
+  actions: FieldPluginActions
   // These functions are called when the plugin receives messages from the container
   messageCallbacks: PluginMessageCallbacks
 }
@@ -55,7 +55,7 @@ export const createPluginActions: CreatePluginActions = (
   //  Because the container doesn't send the full state in its messages, we need to track it ourselves.
   //  isModal and height is not included in the messages to the children and must thus be tracked here.
   //  In future improved versions of the plugin API, this should not be needed.
-  let state: PluginState = defaultState
+  let state: FieldPluginData = defaultState
 
   let assetSelectedCallbackRef: undefined | ((filename: Asset) => void) =
     undefined

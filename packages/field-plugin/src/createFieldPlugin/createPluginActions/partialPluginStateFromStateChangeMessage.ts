@@ -1,4 +1,4 @@
-import { PluginState } from '../PluginState'
+import { FieldPluginData } from '../FieldPluginData'
 import {
   ContextRequestMessage,
   recordFromFieldPluginOptions,
@@ -7,7 +7,7 @@ import {
 
 export const partialPluginStateFromStateChangeMessage = (
   message: StateChangedMessage,
-): Omit<PluginState, 'height' | 'isModalOpen'> => ({
+): Omit<FieldPluginData, 'height' | 'isModalOpen'> => ({
   spaceId: message.spaceId ?? undefined,
   story: message.story ?? undefined,
   storyId: message.storyId ?? undefined,
@@ -20,6 +20,6 @@ export const partialPluginStateFromStateChangeMessage = (
 
 export const partialPluginStateFromContextRequestMessage = (
   message: ContextRequestMessage,
-): Pick<PluginState, 'story'> => ({
+): Pick<FieldPluginData, 'story'> => ({
   story: message.story ?? undefined,
 })

@@ -2,15 +2,15 @@ import { FunctionComponent } from 'react'
 import { Box, Stack, Typography } from '@mui/material'
 import { useFieldPlugin } from '../useFieldPlugin'
 import { LoadingIcon, SquareErrorIcon } from '@storyblok/mui'
-import { PluginActions, PluginState } from '@storyblok/field-plugin'
+import { FieldPluginActions, FieldPluginData } from '@storyblok/field-plugin'
 import { ValueMutator } from './ValueMutator'
 import { ModalToggle } from './ModalToggle'
 import { AssetSelector } from './AssetSelector'
 import { ContextRequester } from './ContextRequester'
 
 export type PluginComponent = FunctionComponent<{
-  data: PluginState
-  actions: PluginActions
+  data: FieldPluginData
+  actions: FieldPluginActions
 }>
 
 export const FieldPluginDemo: FunctionComponent = () => {
