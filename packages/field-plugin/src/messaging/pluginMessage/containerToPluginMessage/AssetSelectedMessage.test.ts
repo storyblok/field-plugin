@@ -13,7 +13,7 @@ const stub: AssetSelectedMessage = {
 
 describe('AssetSelectedMessage', function () {
   it('is a message to plugin', () => {
-    expect(isAssetSelectedMessage(stub)).toBeTruthy()
+    expect(isAssetSelectedMessage(stub)).toEqual(true)
   })
   it('is an Asset', () => {
     expect(isAsset(stub)).toBeTruthy()
@@ -33,13 +33,13 @@ describe('AssetSelectedMessage', function () {
           ...stub,
           action: 'asset-selected',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isAssetSelectedMessage({
           ...stub,
           action: 'something-else',
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
   describe('the field property', () => {
@@ -50,7 +50,7 @@ describe('AssetSelectedMessage', function () {
           uid: '-preview',
           filename: 'https://somthing.com/myimage.jpg',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
     it('can be undefined', () => {
       expect(
@@ -58,7 +58,7 @@ describe('AssetSelectedMessage', function () {
           ...stub,
           field: undefined,
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
     it('is a string', () => {
       expect(
@@ -66,37 +66,37 @@ describe('AssetSelectedMessage', function () {
           ...stub,
           field: 'any-string',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isAssetSelectedMessage({
           ...stub,
           field: 123,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isAssetSelectedMessage({
           ...stub,
           field: null,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isAssetSelectedMessage({
           ...stub,
           field: [],
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isAssetSelectedMessage({
           ...stub,
           field: {},
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isAssetSelectedMessage({
           ...stub,
           field: false,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
 })

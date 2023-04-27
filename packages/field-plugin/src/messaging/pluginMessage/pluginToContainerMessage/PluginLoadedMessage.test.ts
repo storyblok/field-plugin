@@ -15,7 +15,7 @@ const stub: PluginLoadedMessage = {
 describe('PluginLoadedMessage', () => {
   describe('validator', () => {
     it('is a MessageToContainer', () => {
-      expect(isMessageToContainer(stub)).toBeTruthy()
+      expect(isMessageToContainer(stub)).toEqual(true)
     })
     it('requires event to be "loaded"', () => {
       expect(
@@ -23,13 +23,13 @@ describe('PluginLoadedMessage', () => {
           ...stub,
           event: 'loaded',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isPluginLoadedMessage({
           ...stub,
           event: 'somethingElse',
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
   describe('constructor', () => {

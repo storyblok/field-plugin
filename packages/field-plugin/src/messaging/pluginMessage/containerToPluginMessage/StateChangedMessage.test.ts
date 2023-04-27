@@ -19,7 +19,7 @@ const stub: StateChangedMessage = {
 
 describe('StateChangedMessage', () => {
   it('should validate', () => {
-    expect(isStateChangedMessage(stub)).toBeTruthy()
+    expect(isStateChangedMessage(stub)).toEqual(true)
   })
   describe('The "action" property', () => {
     it('equals "loaded"', () => {
@@ -28,7 +28,7 @@ describe('StateChangedMessage', () => {
           ...stub,
           action: 'anotherString',
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
   describe('the "uid" property', () => {
@@ -38,7 +38,7 @@ describe('StateChangedMessage', () => {
           ...stub,
           uid: 'anything',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
     it('is not undefined', () => {
       expect(
@@ -46,7 +46,7 @@ describe('StateChangedMessage', () => {
           ...stub,
           uid: undefined,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
     it('is not null', () => {
       expect(
@@ -54,7 +54,7 @@ describe('StateChangedMessage', () => {
           ...stub,
           uid: null,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
     it('is not a number', () => {
       expect(
@@ -62,7 +62,7 @@ describe('StateChangedMessage', () => {
           ...stub,
           uid: 123,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
   describe('The "schema" property', () => {
@@ -72,7 +72,7 @@ describe('StateChangedMessage', () => {
           ...stub,
           schema: undefined,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
     it('must be a schema', () => {
       expect(
@@ -88,7 +88,7 @@ describe('StateChangedMessage', () => {
             ],
           } as FieldPluginSchema,
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
   })
 })

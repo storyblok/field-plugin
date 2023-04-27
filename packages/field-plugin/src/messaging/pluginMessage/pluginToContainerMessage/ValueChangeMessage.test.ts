@@ -16,7 +16,7 @@ const stub: ValueChangeMessage = {
 describe('ValueChangeMessage', () => {
   describe('validator', () => {
     it('is a MessageToContainer', () => {
-      expect(isMessageToContainer(stub)).toBeTruthy()
+      expect(isMessageToContainer(stub)).toEqual(true)
     })
     it('requires event to be "update"', () => {
       expect(
@@ -24,17 +24,17 @@ describe('ValueChangeMessage', () => {
           ...stub,
           event: 'update',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isValueChangeMessage({
           ...stub,
           event: 'somethingElse',
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
     test('that the model property is present', () => {
       const { model: _, ...withoutModel } = stub
-      expect(isValueChangeMessage(withoutModel)).toBeFalsy()
+      expect(isValueChangeMessage(withoutModel)).toEqual(false)
     })
     test('that the model property can be any value', () => {
       expect(
@@ -42,43 +42,43 @@ describe('ValueChangeMessage', () => {
           ...stub,
           model: undefined,
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isValueChangeMessage({
           ...stub,
           model: null,
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isValueChangeMessage({
           ...stub,
           model: {},
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isValueChangeMessage({
           ...stub,
           model: 'a string',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isValueChangeMessage({
           ...stub,
           model: true,
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isValueChangeMessage({
           ...stub,
           model: 123.123,
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isValueChangeMessage({
           ...stub,
           model: [],
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
   })
   describe('constructor', () => {

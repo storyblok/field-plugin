@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue2'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
-import printPlugin from './print-plugin'
+import { fieldPlugin } from './fieldPlugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), cssInjectedByJsPlugin(), printPlugin()],
+  plugins: [vue(), cssInjectedByJsPlugin(), fieldPlugin()],
   build: {
     // minify: false,
     rollupOptions: {

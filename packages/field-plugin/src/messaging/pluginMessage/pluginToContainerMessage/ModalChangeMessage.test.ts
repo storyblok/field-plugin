@@ -16,7 +16,7 @@ const stub: ModalChangeMessage = {
 describe('ModalChangeMessage', () => {
   describe('validator', () => {
     it('is a MessageToContainer', () => {
-      expect(isMessageToContainer(stub)).toBeTruthy()
+      expect(isMessageToContainer(stub)).toEqual(true)
     })
     it('requires event to be "toggleModal"', () => {
       expect(
@@ -24,13 +24,13 @@ describe('ModalChangeMessage', () => {
           ...stub,
           event: 'toggleModal',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isModalChangeMessage({
           ...stub,
           event: 'somethingElse',
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
     it('has a status', () => {
       expect(
@@ -38,13 +38,13 @@ describe('ModalChangeMessage', () => {
           ...stub,
           status: true,
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isModalChangeMessage({
           ...stub,
           status: undefined,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
     test('that the status is a boolean', () => {
       expect(
@@ -52,37 +52,37 @@ describe('ModalChangeMessage', () => {
           ...stub,
           status: true,
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isModalChangeMessage({
           ...stub,
           status: false,
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isModalChangeMessage({
           ...stub,
           status: 'false',
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isModalChangeMessage({
           ...stub,
           status: 123,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isModalChangeMessage({
           ...stub,
           status: null,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isModalChangeMessage({
           ...stub,
           status: undefined,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
   describe('constructor', () => {

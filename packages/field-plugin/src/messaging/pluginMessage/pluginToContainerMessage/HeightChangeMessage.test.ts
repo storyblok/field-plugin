@@ -17,7 +17,7 @@ const stub: HeightChangeMessage = {
 describe('isHeightChangeMessage', () => {
   describe('validator', () => {
     it('is a MessageToContainer', () => {
-      expect(isMessageToContainer(stub)).toBeTruthy()
+      expect(isMessageToContainer(stub)).toEqual(true)
     })
     it('requires event to be "heightChange"', () => {
       expect(
@@ -25,28 +25,28 @@ describe('isHeightChangeMessage', () => {
           ...stub,
           event: 'heightChange',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isHeightChangeMessage({
           ...stub,
           event: 'somethingElse',
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
     test('that height is a number', () => {
-      expect(isHeightChangeMessage(stub)).toBeTruthy()
+      expect(isHeightChangeMessage(stub)).toEqual(true)
       expect(
         isHeightChangeMessage({
           ...stub,
           height: '100vw',
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isHeightChangeMessage({
           ...stub,
           height: undefined,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
   describe('constructor', () => {
