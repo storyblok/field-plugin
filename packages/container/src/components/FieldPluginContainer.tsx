@@ -187,6 +187,9 @@ export const FieldPluginContainer: FunctionComponent = () => {
   const onLoaded = useCallback(() => {
     dispatchStateChanged(loadedData)
   }, [dispatchStateChanged, loadedData])
+
+  useEffect(onLoaded, [onLoaded])
+
   const onContextRequested = useCallback(
     () =>
       dispatchContextRequest({
