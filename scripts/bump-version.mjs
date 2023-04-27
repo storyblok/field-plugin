@@ -160,7 +160,7 @@ const branchName = `chore/release-${packageFolder}-${nextVersion}`
 await $`git checkout -b ${branchName}`
 
 // Update the version
-await $`cd packages/${packageFolder} && npm version ${nextVersion} --no-git-tag-version`
+await $`cd packages/${packageFolder} && npm version ${nextVersion} --no-git-tag-version --workspaces --no-workspaces-update`
 await $`yarn install`
 
 // Create a pull-request

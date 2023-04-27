@@ -12,7 +12,6 @@ export const partialPluginStateFromStateChangeMessage = (
   story: message.story ?? undefined,
   storyId: message.storyId ?? undefined,
   blockUid: message.blockId ?? undefined,
-  language: message.language ?? undefined,
   token: message.token ?? undefined,
   options: recordFromFieldPluginOptions(message.schema.options),
   uid: message.uid ?? undefined,

@@ -2,7 +2,12 @@ import { existsSync, readFileSync, lstatSync } from 'fs'
 import { bold, cyan, red, yellow, green } from 'kleur/colors'
 import { basename, resolve } from 'path'
 import { type Choice } from 'prompts'
-import { betterPrompts, getPersonalAccessToken, promptName } from '../utils'
+import {
+  betterPrompts,
+  getPersonalAccessToken,
+  isValidPackageName,
+  promptName,
+} from '../utils'
 import { Scope, StoryblokClient } from '../storyblok/storyblok-client'
 
 const packageNameMessage =
@@ -137,13 +142,23 @@ const decidePackageName = async ({
     return name
   }
 
+  const packageNameFromPackageJson = getPackageName(dir)
+
   if (skipPrompts) {
-    return getPackageName(dir)
+    if (isValidPackageName(packageNameFromPackageJson)) {
+      return packageNameFromPackageJson
+    } else {
+      console.log(red('[ERROR]'), 'The package name is missing')
+      console.log(
+        'Use `--name <package-name>` or `--dir <path-to-package>` to specify the package name.',
+      )
+      process.exit(1)
+    }
   }
 
   return await promptName({
     message: packageNameMessage,
-    initialValue: getPackageName(dir),
+    initialValue: packageNameFromPackageJson,
   })
 }
 

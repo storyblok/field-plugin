@@ -206,7 +206,7 @@ describe('createPluginActions', () => {
         filename,
       })
       const result = await promise
-      expect(result).toEqual(filename)
+      expect(result).toEqual({ filename })
     })
   })
 })

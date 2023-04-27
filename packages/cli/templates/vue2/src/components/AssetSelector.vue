@@ -6,7 +6,7 @@
     >
       Select Asset
     </button>
-    <span>Image Url: {{ imageUrl }}</span>
+    <span>Image Url: {{ asset?.filename }}</span>
   </div>
 </template>
 
@@ -24,12 +24,12 @@ export default {
   },
   data() {
     return {
-      imageUrl: '',
+      asset: undefined,
     }
   },
   methods: {
     async handleSelectAsset() {
-      this.imageUrl = await this.selectAsset()
+      this.asset = await this.selectAsset()
     },
   },
 }

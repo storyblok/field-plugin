@@ -1,27 +1,45 @@
-import { isStoryData, StoryData } from './StoryData'
+import { isStoryData } from './StoryData'
 
 describe('StoryData', () => {
   describe('validation', () => {
     it('is an object', () => {
-      expect(isStoryData({ content: {} })).toBeTruthy()
-      expect(isStoryData([])).toBeFalsy()
-      expect(isStoryData('')).toBeFalsy()
-      expect(isStoryData(1)).toBeFalsy()
-      expect(isStoryData(undefined)).toBeFalsy()
-      expect(isStoryData(null)).toBeFalsy()
-      expect(isStoryData(() => undefined)).toBeFalsy()
+      expect(isStoryData({ content: {} })).toEqual(true)
+      expect(isStoryData([])).toEqual(false)
+      expect(isStoryData('')).toEqual(false)
+      expect(isStoryData(1)).toEqual(false)
+      expect(isStoryData(undefined)).toEqual(false)
+      expect(isStoryData(null)).toEqual(false)
+      expect(isStoryData(() => undefined)).toEqual(false)
     })
-    it('requires a content property', () => {
-      expect(isStoryData({ content: {} })).toBeTruthy()
-      expect(isStoryData({})).toBeFalsy()
+    describe('the "content" property', () => {
+      it('is required', () => {
+        expect(isStoryData({ content: {} })).toEqual(true)
+        expect(isStoryData({})).toEqual(false)
+      })
+      it('is an object', () => {
+        expect(isStoryData({ content: {} })).toEqual(true)
+        expect(isStoryData({ content: [] })).toEqual(false)
+        expect(isStoryData({ content: 1 })).toEqual(false)
+        expect(isStoryData({ content: '' })).toEqual(false)
+        expect(isStoryData({ content: undefined })).toEqual(false)
+        expect(isStoryData({ content: null })).toEqual(false)
+      })
     })
-    it('requires the content property to be an object', () => {
-      expect(isStoryData({ content: {} })).toBeTruthy()
-      expect(isStoryData({ content: [] })).toBeFalsy()
-      expect(isStoryData({ content: 1 })).toBeFalsy()
-      expect(isStoryData({ content: '' })).toBeFalsy()
-      expect(isStoryData({ content: undefined })).toBeFalsy()
-      expect(isStoryData({ content: null })).toBeFalsy()
+    describe('the "lang" property', () => {
+      it('is optional', () => {
+        expect(isStoryData({ content: {} })).toEqual(true)
+        expect(isStoryData({ content: {}, lang: 'default' })).toEqual(true)
+      })
+      it('is is a string', () => {
+        expect(isStoryData({ content: {}, lang: 'default' })).toEqual(true)
+        expect(isStoryData({ content: {}, lang: 'en' })).toEqual(true)
+        expect(isStoryData({ content: {}, lang: 'english' })).toEqual(true)
+
+        expect(isStoryData({ content: {}, lang: 123 })).toEqual(false)
+        expect(isStoryData({ content: {}, lang: ['en'] })).toEqual(false)
+        expect(isStoryData({ content: {}, lang: { s: 1 } })).toEqual(false)
+        expect(isStoryData({ content: {}, lang: null })).toEqual(false)
+      })
     })
     it('can have unknown properties', () => {
       expect(
@@ -29,7 +47,7 @@ describe('StoryData', () => {
           content: {},
           someProps: 'someValue',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
     test('that the content have unknown properties', () => {
       expect(
@@ -38,7 +56,7 @@ describe('StoryData', () => {
             someProps: 'someValue',
           },
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
   })
 })

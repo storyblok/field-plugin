@@ -15,7 +15,7 @@ const stub: GetContextMessage = {
 describe('ValueChangeMessage', () => {
   describe('validator', () => {
     it('is a MessageToContainer', () => {
-      expect(isMessageToContainer(stub)).toBeTruthy()
+      expect(isMessageToContainer(stub)).toEqual(true)
     })
     it('requires event to be "getContext"', () => {
       expect(
@@ -23,13 +23,13 @@ describe('ValueChangeMessage', () => {
           ...stub,
           event: 'getContext',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isGetContextMessage({
           ...stub,
           event: 'somethingElse',
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
   describe('constructor', () => {

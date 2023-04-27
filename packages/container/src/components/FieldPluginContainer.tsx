@@ -9,6 +9,7 @@ import {
 import {
   AssetSelectedMessage,
   ContextRequestMessage,
+  FieldPluginSchema,
   originFromPluginParams,
   PluginUrlParams,
   StateChangedMessage,
@@ -47,9 +48,9 @@ import { SchemaEditor } from './SchemaEditor'
 import { ObjectDisplay } from './ObjectDisplay'
 import { FieldTypePreview } from './FieldTypePreview'
 import { FlexTypography } from './FlexTypography'
-import { FieldPluginSchema } from '@storyblok/field-plugin'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
 import { useDebounce } from 'use-debounce'
+import { ValueView } from './ValueView'
 import { useQueryParam, StringParam, withDefault } from 'use-query-params'
 
 const uid = () => Math.random().toString(32).slice(2)
@@ -309,30 +310,40 @@ export const FieldPluginContainer: FunctionComponent = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Stack gap={1}>
-            <Typography variant="h3">Value</Typography>
-            <ObjectDisplay output={value} />
-            <Typography variant="h3">Height (px)</Typography>
-            <ObjectDisplay output={height} />
-            <Typography variant="h3">Schema</Typography>
-            <ObjectDisplay output={schema} />
-            <Typography variant="h3">Is Modal?</Typography>
-            <ObjectDisplay output={isModal} />
-            <Typography variant="h3">Story</Typography>
-            <ObjectDisplay output={story} />
-            <Alert severity="info">
-              <AlertTitle>Note</AlertTitle>
-              Mutating the story does not automatically update the field plugin.
-              You need to click on the Request Context button. Click on the
-              button below to mutate the story.
-            </Alert>
-            <Button
-              onClick={onMutateStory}
-              size="small"
-              color="secondary"
-              endIcon={'+1'}
-            >
-              Mutate Story
-            </Button>
+            <ValueView
+              value={value}
+              setValue={setValue}
+            />
+            <Stack>
+              <Typography variant="h3">Height (px)</Typography>
+              <ObjectDisplay output={height} />
+            </Stack>
+            <Stack>
+              <Typography variant="h3">Schema</Typography>
+              <ObjectDisplay output={schema} />
+            </Stack>
+            <Stack>
+              <Typography variant="h3">Is Modal?</Typography>
+              <ObjectDisplay output={isModal} />
+            </Stack>
+            <Stack>
+              <Typography variant="h3">Story</Typography>
+              <ObjectDisplay output={story} />
+              <Alert severity="info">
+                <AlertTitle>Note</AlertTitle>
+                Mutating the story does not automatically update the field
+                plugin. You need to click on the Request Context button. Click
+                on the button below to mutate the story.
+              </Alert>
+              <Button
+                onClick={onMutateStory}
+                size="small"
+                color="secondary"
+                endIcon={'+1'}
+              >
+                Mutate Story
+              </Button>
+            </Stack>
           </Stack>
         </AccordionDetails>
       </Accordion>
