@@ -3,25 +3,25 @@ import { isStoryData } from './StoryData'
 describe('StoryData', () => {
   describe('validation', () => {
     it('is an object', () => {
-      expect(isStoryData({ content: {} })).toBeTruthy()
-      expect(isStoryData([])).toBeFalsy()
-      expect(isStoryData('')).toBeFalsy()
-      expect(isStoryData(1)).toBeFalsy()
-      expect(isStoryData(undefined)).toBeFalsy()
-      expect(isStoryData(null)).toBeFalsy()
-      expect(isStoryData(() => undefined)).toBeFalsy()
+      expect(isStoryData({ content: {} })).toEqual(true)
+      expect(isStoryData([])).toEqual(false)
+      expect(isStoryData('')).toEqual(false)
+      expect(isStoryData(1)).toEqual(false)
+      expect(isStoryData(undefined)).toEqual(false)
+      expect(isStoryData(null)).toEqual(false)
+      expect(isStoryData(() => undefined)).toEqual(false)
     })
     it('requires a content property', () => {
-      expect(isStoryData({ content: {} })).toBeTruthy()
-      expect(isStoryData({})).toBeFalsy()
+      expect(isStoryData({ content: {} })).toEqual(true)
+      expect(isStoryData({})).toEqual(false)
     })
     it('requires the content property to be an object', () => {
-      expect(isStoryData({ content: {} })).toBeTruthy()
-      expect(isStoryData({ content: [] })).toBeFalsy()
-      expect(isStoryData({ content: 1 })).toBeFalsy()
-      expect(isStoryData({ content: '' })).toBeFalsy()
-      expect(isStoryData({ content: undefined })).toBeFalsy()
-      expect(isStoryData({ content: null })).toBeFalsy()
+      expect(isStoryData({ content: {} })).toEqual(true)
+      expect(isStoryData({ content: [] })).toEqual(false)
+      expect(isStoryData({ content: 1 })).toEqual(false)
+      expect(isStoryData({ content: '' })).toEqual(false)
+      expect(isStoryData({ content: undefined })).toEqual(false)
+      expect(isStoryData({ content: null })).toEqual(false)
     })
     it('can have unknown properties', () => {
       expect(
@@ -29,7 +29,7 @@ describe('StoryData', () => {
           content: {},
           someProps: 'someValue',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
     test('that the content have unknown properties', () => {
       expect(
@@ -38,7 +38,7 @@ describe('StoryData', () => {
             someProps: 'someValue',
           },
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
   })
 })

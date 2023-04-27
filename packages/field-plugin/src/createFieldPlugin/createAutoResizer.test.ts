@@ -48,7 +48,7 @@ describe('auto resizer', () => {
     })
     createAutoResizer(uid, postToContainer)
     mockResize()
-    expect(isHeightChangeMessage(message)).toBeTruthy()
+    expect(isHeightChangeMessage(message)).toEqual(true)
   })
   it('posts the right height to the container', () => {
     const { mockResize } = mockResizeObserver()

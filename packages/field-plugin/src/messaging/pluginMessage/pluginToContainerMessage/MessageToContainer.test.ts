@@ -17,25 +17,25 @@ describe('message from plugin to container', () => {
             ...stub,
             action: 'plugin-changed',
           }),
-        ).toBeTruthy()
+        ).toEqual(true)
         expect(
           isMessageToContainer({
             ...stub,
             action: 'something-different',
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isMessageToContainer({
             ...stub,
             action: undefined,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isMessageToContainer({
             ...stub,
             action: 123,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
       })
     })
     describe('the uid property', () => {
@@ -45,13 +45,13 @@ describe('message from plugin to container', () => {
             ...stub,
             uid: 'abc',
           }),
-        ).toBeTruthy()
+        ).toEqual(true)
         expect(
           isMessageToContainer({
             ...stub,
             uid: undefined,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
       })
       it('requires uid to be a string', () => {
         expect(
@@ -59,19 +59,19 @@ describe('message from plugin to container', () => {
             ...stub,
             uid: 'abc',
           }),
-        ).toBeTruthy()
+        ).toEqual(true)
         expect(
           isMessageToContainer({
             ...stub,
             uid: undefined,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isMessageToContainer({
             ...stub,
             uid: 123,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
       })
     })
     describe('the event property', () => {
@@ -81,37 +81,37 @@ describe('message from plugin to container', () => {
             ...stub,
             event: 'any-string',
           }),
-        ).toBeTruthy()
+        ).toEqual(true)
         expect(
           isMessageToContainer({
             ...stub,
             event: 123,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isMessageToContainer({
             ...stub,
             event: undefined,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isMessageToContainer({
             ...stub,
             event: true,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isMessageToContainer({
             ...stub,
             event: false,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
         expect(
           isMessageToContainer({
             ...stub,
             event: null,
           }),
-        ).toBeFalsy()
+        ).toEqual(false)
       })
     })
   })

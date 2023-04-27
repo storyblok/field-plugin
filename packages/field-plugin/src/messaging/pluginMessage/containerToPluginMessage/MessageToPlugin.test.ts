@@ -13,13 +13,13 @@ describe('message from plugin to container', () => {
           ...stub,
           uid: 'abc',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isMessageToPlugin({
           ...stub,
           uid: undefined,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
     it('is a string', () => {
       expect(
@@ -27,19 +27,19 @@ describe('message from plugin to container', () => {
           ...stub,
           uid: 'abc',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isMessageToPlugin({
           ...stub,
           uid: undefined,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isMessageToPlugin({
           ...stub,
           uid: 123,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
   describe('the action property', () => {
@@ -49,13 +49,13 @@ describe('message from plugin to container', () => {
           ...stub,
           action: 'any-string',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isMessageToPlugin({
           ...stub,
           action: undefined,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
     it('is a string', () => {
       expect(
@@ -63,37 +63,37 @@ describe('message from plugin to container', () => {
           ...stub,
           action: 'any-string',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
       expect(
         isMessageToPlugin({
           ...stub,
           action: 123,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isMessageToPlugin({
           ...stub,
           action: undefined,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isMessageToPlugin({
           ...stub,
           action: true,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isMessageToPlugin({
           ...stub,
           action: false,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
       expect(
         isMessageToPlugin({
           ...stub,
           action: null,
         }),
-      ).toBeFalsy()
+      ).toEqual(false)
     })
   })
 })

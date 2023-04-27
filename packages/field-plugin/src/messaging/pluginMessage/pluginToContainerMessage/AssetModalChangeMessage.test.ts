@@ -16,14 +16,14 @@ const stub: AssetModalChangeMessage = {
 describe('AssetModalChangeMessage', () => {
   describe('validator', () => {
     it('should be an event showAssetModal', () => {
-      expect(isAssetModalChangeMessage(stub)).toBeTruthy()
-      expect(
-        isAssetModalChangeMessage({ ...stub, event: 'wrong-event' }),
-      ).toBeFalsy()
-      expect(
-        isAssetModalChangeMessage({ ...stub, event: undefined }),
-      ).toBeFalsy()
-      expect(isAssetModalChangeMessage({ ...stub, event: null })).toBeFalsy()
+      expect(isAssetModalChangeMessage(stub)).toEqual(true)
+      expect(isAssetModalChangeMessage({ ...stub, event: 'wrong-event' })).toBe(
+        false,
+      )
+      expect(isAssetModalChangeMessage({ ...stub, event: undefined })).toBe(
+        false,
+      )
+      expect(isAssetModalChangeMessage({ ...stub, event: null })).toEqual(false)
     })
     describe('field property', () => {
       it('is optional', () => {
@@ -33,19 +33,21 @@ describe('AssetModalChangeMessage', () => {
             uid,
             event: 'showAssetModal',
           }),
-        ).toBeTruthy()
+        ).toEqual(true)
       })
       it('can be undefined', () => {
-        expect(
-          isAssetModalChangeMessage({ ...stub, field: undefined }),
-        ).toBeTruthy()
+        expect(isAssetModalChangeMessage({ ...stub, field: undefined })).toBe(
+          true,
+        )
       })
       it('is a string', () => {
         expect(
           isAssetModalChangeMessage({ ...stub, field: 'any-string' }),
-        ).toBeTruthy()
-        expect(isAssetModalChangeMessage({ ...stub, field: 1 })).toBeFalsy()
-        expect(isAssetModalChangeMessage({ ...stub, field: null })).toBeFalsy()
+        ).toEqual(true)
+        expect(isAssetModalChangeMessage({ ...stub, field: 1 })).toEqual(false)
+        expect(isAssetModalChangeMessage({ ...stub, field: null })).toEqual(
+          false,
+        )
       })
     })
   })
