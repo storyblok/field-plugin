@@ -8,8 +8,6 @@ export type PluginState = {
   isModalOpen: boolean
   value: unknown
   options: Record<string, string>
-  // If no language is available, for example via the field plugin editor, the language will be an empty string `""`
-  language: string | undefined
   spaceId: number | undefined
   story: StoryData
   storyId: number | undefined

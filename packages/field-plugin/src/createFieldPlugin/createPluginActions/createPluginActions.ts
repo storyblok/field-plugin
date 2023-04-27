@@ -25,7 +25,6 @@ export const defaultState: PluginState = {
   isModalOpen: false,
   value: undefined,
   options: {},
-  language: undefined,
   story: { content: {} },
   blockUid: undefined,
   storyId: undefined,
