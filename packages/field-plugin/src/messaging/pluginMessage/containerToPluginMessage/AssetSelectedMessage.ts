@@ -1,7 +1,6 @@
 import { isMessageToPlugin, MessageToPlugin } from './MessageToPlugin'
 import { hasKey } from '../../../utils'
 
-//TODO: tests
 export type AssetSelectedMessage = MessageToPlugin<'asset-selected'> & {
   field?: string
   filename: string

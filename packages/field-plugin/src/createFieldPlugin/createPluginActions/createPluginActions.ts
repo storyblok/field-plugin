@@ -112,7 +112,6 @@ export const createPluginActions: CreatePluginActions = (
           ...state,
           value,
         }
-        // TODO request new value from parent
         onUpdateState(state)
       },
       setModalOpen: (isModalOpen) => {

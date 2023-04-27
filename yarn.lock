@@ -1586,8 +1586,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
+    "@types/jest": 29.0.3
     "@types/node": "*"
-    jest-environment-jsdom: "*"
+    jest: 29.3.1
+    jest-environment-jsdom: 29.4.2
+    ts-jest: 29.0.1
     typescript: "*"
     vite: "*"
     vite-plugin-dts: "*"
@@ -5667,27 +5670,6 @@ __metadata:
     jest-util: ^29.5.0
     pretty-format: ^29.5.0
   checksum: b8b297534d25834c5d4e31e4c687359787b1e402519e42664eb704cc3a12a7a91a017565a75acb02e8cf9afd3f4eef3350bd785276bec0900184641b765ff7a5
-  languageName: node
-  linkType: hard
-
-"jest-environment-jsdom@npm:*":
-  version: 29.5.0
-  resolution: "jest-environment-jsdom@npm:29.5.0"
-  dependencies:
-    "@jest/environment": ^29.5.0
-    "@jest/fake-timers": ^29.5.0
-    "@jest/types": ^29.5.0
-    "@types/jsdom": ^20.0.0
-    "@types/node": "*"
-    jest-mock: ^29.5.0
-    jest-util: ^29.5.0
-    jsdom: ^20.0.0
-  peerDependencies:
-    canvas: ^2.5.0
-  peerDependenciesMeta:
-    canvas:
-      optional: true
-  checksum: 3df7fc85275711f20b483ac8cd8c04500704ed0f69791eb55c574b38f5a39470f03d775cf20c1025bc1884916ac0573aa2fa4db1bb74225bc7fdd95ba97ad0da
   languageName: node
   linkType: hard
 

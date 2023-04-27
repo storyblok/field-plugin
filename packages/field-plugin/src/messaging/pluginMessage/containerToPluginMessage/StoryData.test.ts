@@ -1,15 +1,15 @@
-import { isStoryData, StoryData } from './StoryData'
+import { isStoryData } from './StoryData'
 
 describe('StoryData', () => {
   describe('validation', () => {
     it('is an object', () => {
-      expect(isStoryData({ content: {} })).toBeTruthy()
-      expect(isStoryData([])).toBeFalsy()
-      expect(isStoryData('')).toBeFalsy()
-      expect(isStoryData(1)).toBeFalsy()
-      expect(isStoryData(undefined)).toBeFalsy()
-      expect(isStoryData(null)).toBeFalsy()
-      expect(isStoryData(() => undefined)).toBeFalsy()
+      expect(isStoryData({ content: {} })).toEqual(true)
+      expect(isStoryData([])).toEqual(false)
+      expect(isStoryData('')).toEqual(false)
+      expect(isStoryData(1)).toEqual(false)
+      expect(isStoryData(undefined)).toEqual(false)
+      expect(isStoryData(null)).toEqual(false)
+      expect(isStoryData(() => undefined)).toEqual(false)
     })
     describe('the "content" property', () => {
       it('is required', () => {
@@ -47,7 +47,7 @@ describe('StoryData', () => {
           content: {},
           someProps: 'someValue',
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
     test('that the content have unknown properties', () => {
       expect(
@@ -56,7 +56,7 @@ describe('StoryData', () => {
             someProps: 'someValue',
           },
         }),
-      ).toBeTruthy()
+      ).toEqual(true)
     })
   })
 })
