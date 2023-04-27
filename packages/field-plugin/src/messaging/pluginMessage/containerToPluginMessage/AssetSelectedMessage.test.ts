@@ -2,6 +2,7 @@ import {
   AssetSelectedMessage,
   isAssetSelectedMessage,
 } from './AssetSelectedMessage'
+import { isAsset } from './Asset'
 
 const stub: AssetSelectedMessage = {
   action: 'asset-selected',
@@ -13,6 +14,17 @@ const stub: AssetSelectedMessage = {
 describe('AssetSelectedMessage', function () {
   it('is a message to plugin', () => {
     expect(isAssetSelectedMessage(stub)).toEqual(true)
+  })
+  it('is an Asset', () => {
+    expect(isAsset(stub)).toEqual(true)
+  })
+  it('allows unknown properties', () => {
+    expect(
+      isAssetSelectedMessage({
+        ...stub,
+        anUnknownProperty: 'something',
+      }),
+    ).toEqual(true)
   })
   describe('the action property', () => {
     it('equals "asset-selected"', () => {
@@ -83,66 +95,6 @@ describe('AssetSelectedMessage', function () {
         isAssetSelectedMessage({
           ...stub,
           field: false,
-        }),
-      ).toEqual(false)
-    })
-  })
-  describe('the filename property', () => {
-    it('is required', () => {
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: 'any-string',
-        }),
-      ).toEqual(true)
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: undefined,
-        }),
-      ).toEqual(false)
-    })
-    it('is a string', () => {
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: 'any-string',
-        }),
-      ).toEqual(true)
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: 123,
-        }),
-      ).toEqual(false)
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: null,
-        }),
-      ).toEqual(false)
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: undefined,
-        }),
-      ).toEqual(false)
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: [],
-        }),
-      ).toEqual(false)
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: {},
-        }),
-      ).toEqual(false)
-      expect(
-        isAssetSelectedMessage({
-          ...stub,
-          filename: false,
         }),
       ).toEqual(false)
     })

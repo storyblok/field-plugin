@@ -1,24 +1,24 @@
 import { isMessageToPlugin, MessageToPlugin } from './MessageToPlugin'
 import { hasKey } from '../../../utils'
+import { Asset, isAsset } from './Asset'
 
 export type AssetSelectedMessage = MessageToPlugin<'asset-selected'> & {
   field?: string
-  filename: string
-}
+} & Asset &
+  Record<string, unknown>
 
 export const isAssetSelectedMessage = (
-  obj: unknown,
-): obj is AssetSelectedMessage =>
-  isMessageToPlugin(obj) &&
-  obj.action === 'asset-selected' &&
-  hasKey(obj, 'filename') &&
-  typeof obj.filename === 'string' &&
-  hasField(obj)
+  data: unknown,
+): data is AssetSelectedMessage =>
+  isMessageToPlugin(data) &&
+  data.action === 'asset-selected' &&
+  hasField(data) &&
+  isAsset(data)
 
-export const hasField = (obj: unknown) => {
-  if (!hasKey(obj, 'field') || typeof obj.field === 'undefined') {
+export const hasField = (data: unknown) => {
+  if (!hasKey(data, 'field') || typeof data.field === 'undefined') {
     // field is either omitted or set to undefined
     return true
   }
-  return typeof obj.field === 'string'
+  return typeof data.field === 'string'
 }

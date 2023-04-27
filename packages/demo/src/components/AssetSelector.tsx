@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { Box, Button, Divider, Stack, Typography } from '@mui/material'
 import { AssetIcon, DeleteIcon } from '@storyblok/mui'
 import { PluginComponent } from './FieldPluginDemo'
+import { Asset } from '@storyblok/field-plugin'
 
 export const AssetSelector: PluginComponent = (props) => {
   const { actions } = props
-  const [imageUrl, setImageUrl] = useState<string | undefined>()
+  const [asset, setAsset] = useState<Asset | undefined>()
   return (
     <Stack gap={2}>
       <Divider>
@@ -19,10 +20,10 @@ export const AssetSelector: PluginComponent = (props) => {
         justifyContent="center"
         color="text.secondary"
       >
-        {typeof imageUrl !== 'undefined' ? (
+        {typeof asset !== 'undefined' ? (
           <Box
             component="img"
-            src={imageUrl}
+            src={asset.filename}
             alt="Image selected with the plugin asset selctor"
             height="100%"
           />
@@ -32,12 +33,12 @@ export const AssetSelector: PluginComponent = (props) => {
           </>
         )}
       </Box>
-      {typeof imageUrl !== 'undefined' ? (
+      {typeof asset !== 'undefined' ? (
         <Button
           variant="outlined"
           color="secondary"
           startIcon={<DeleteIcon />}
-          onClick={() => setImageUrl(undefined)}
+          onClick={() => setAsset(undefined)}
         >
           Remove Asset
         </Button>
@@ -46,7 +47,7 @@ export const AssetSelector: PluginComponent = (props) => {
           variant="outlined"
           color="secondary"
           startIcon={<AssetIcon />}
-          onClick={async () => setImageUrl(await actions.selectAsset())}
+          onClick={async () => setAsset(await actions.selectAsset())}
         >
           Select Asset
         </Button>

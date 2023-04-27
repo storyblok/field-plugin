@@ -1,31 +1,32 @@
 import { FunctionComponent, useState } from 'react'
 import { useFieldPlugin } from '../useFieldPlugin'
+import { Asset } from '@storyblok/field-plugin'
 
 const AssetSelector: FunctionComponent = () => {
   const {
     actions: { selectAsset },
   } = useFieldPlugin()
 
-  const [imageUrl, setImageUrl] = useState<string>('')
+  const [asset, setAsset] = useState<Asset | undefined>()
 
   const handleSelectAsset = async () => {
-    setImageUrl(await selectAsset())
+    setAsset(await selectAsset())
   }
 
   const removeAsset = async () => {
-    setImageUrl('')
+    setAsset(undefined)
   }
 
   return (
     <div className="asset-selector">
       <h2>Asset Selector</h2>
-      {imageUrl && (
+      {asset && (
         <img
-          src={imageUrl}
+          src={asset.filename}
           title="Selected Asset"
         />
       )}
-      {imageUrl && (
+      {asset && (
         <button
           className="btn w-full"
           onClick={removeAsset}
@@ -33,7 +34,7 @@ const AssetSelector: FunctionComponent = () => {
           Remove Asset
         </button>
       )}
-      {!imageUrl && (
+      {!asset && (
         <button
           className="btn w-full"
           onClick={handleSelectAsset}

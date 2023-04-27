@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useFieldPlugin } from '../useFieldPlugin'
+import { Asset } from '@storyblok/field-plugin'
 
 const plugin = useFieldPlugin()
 
-const imageUrl = ref('')
+const asset = ref<Asset>()
 
 const handleSelectAsset = async () => {
-  imageUrl.value = await plugin.actions.selectAsset()
+  asset.value = await plugin.actions.selectAsset()
 }
 
 const removeAsset = () => {
-  imageUrl.value = ''
+  asset.value = undefined
 }
 </script>
 
@@ -19,12 +20,12 @@ const removeAsset = () => {
   <div class="asset-selector">
     <h2>Asset Selector</h2>
     <img
-      v-if="imageUrl"
-      :src="imageUrl"
+      v-if="asset"
+      :src="asset.filename"
       title="Selected Asset"
     />
     <button
-      v-if="imageUrl"
+      v-if="asset"
       class="btn w-full"
       @click="removeAsset"
     >
