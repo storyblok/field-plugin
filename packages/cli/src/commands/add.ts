@@ -1,5 +1,5 @@
 import { bold, cyan, red, green } from 'kleur/colors'
-import { resolve, dirname } from 'path'
+import { resolve, dirname, relative } from 'path'
 import {
   existsSync,
   mkdirSync,
@@ -11,6 +11,7 @@ import walk from 'walkdir'
 import { MONOREPO_TEMPLATE_PATH, TEMPLATES, TEMPLATES_PATH } from '../../config'
 import {
   betterPrompts,
+  checkIfSubDir,
   filterPathsToInclude,
   promptName,
   runCommand,
@@ -133,9 +134,11 @@ export const add: AddFunc = async (args) => {
     ).stdout,
   )
 
+  const relativePath = getRelativePath(repoRootPath)
+
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
   console.log(`- To run development mode run the following commands:`)
-  console.log(`    >`, green(`cd ${repoRootPath}`))
+  console.log(`    >`, green(`cd ${relativePath}`))
   if (structure === 'polyrepo') {
     console.log(`    >`, green(`yarn dev`))
   } else if (structure === 'monorepo') {
@@ -143,7 +146,7 @@ export const add: AddFunc = async (args) => {
   }
 
   console.log(`\n\n- To deploy the newly created field plugin to Storyblok:`)
-  console.log(`    >`, green(`cd ${repoRootPath}`))
+  console.log(`    >`, green(`cd ${relativePath}`))
   if (structure === 'polyrepo') {
     console.log(`    >`, green(`yarn deploy`))
   } else if (structure === 'monorepo') {
@@ -151,3 +154,8 @@ export const add: AddFunc = async (args) => {
   }
   return { destPath }
 }
+
+const getRelativePath = (rootPath: string) =>
+  checkIfSubDir(process.cwd(), rootPath)
+    ? relative(process.cwd(), rootPath)
+    : rootPath

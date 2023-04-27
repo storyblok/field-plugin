@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import prompts from 'prompts'
-import { resolve } from 'path'
+import { isAbsolute, relative, resolve } from 'path'
 import { existsSync, appendFileSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
 
@@ -149,4 +149,14 @@ export const initializeNewRepo = async ({ dir }: { dir: string }) => {
     shell: true,
     cwd: dir,
   })
+}
+
+export const checkIfSubDir = (parent: string, dir: string) => {
+  const relativePath = relative(parent, dir)
+
+  if (!relativePath) {
+    return false
+  }
+
+  return !relativePath.startsWith('..') && !isAbsolute(relativePath)
 }
