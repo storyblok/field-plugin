@@ -60,9 +60,12 @@ export const SchemaEditor: FunctionComponent<{
           subheader={
             <ListSubheader
               component="div"
-              sx={{ color: 'inherit', bgcolor: 'inherit' }}
+              sx={{
+                color: 'inherit',
+                bgcolor: 'inherit',
+              }}
             >
-              Add options
+              Options
             </ListSubheader>
           }
         >
@@ -80,6 +83,7 @@ export const SchemaEditor: FunctionComponent<{
           sx={{
             alignSelf: 'flex-start',
           }}
+          size="small"
           variant="text"
           startIcon={<PlusIcon />}
           onClick={handleAddOption}

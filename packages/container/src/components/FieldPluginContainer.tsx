@@ -20,13 +20,6 @@ import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import {
-  Accordion,
-  AccordionActions,
-  AccordionDetails,
-  AccordionSummary,
-  Alert,
-  AlertTitle,
-  Button,
   FormControl,
   FormHelperText,
   IconButton,
@@ -36,22 +29,16 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import {
-  ChevronDownIcon,
-  ContentIcon,
-  RefreshIcon,
-  SchemaIcon,
-  useNotifications,
-  ViewIcon,
-} from '@storyblok/mui'
+import { RefreshIcon, useNotifications } from '@storyblok/mui'
 import { SchemaEditor } from './SchemaEditor'
-import { ObjectDisplay } from './ObjectDisplay'
 import { FieldTypePreview } from './FieldTypePreview'
 import { FlexTypography } from './FlexTypography'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
 import { useDebounce } from 'use-debounce'
 import { ValueView } from './ValueView'
-import { useQueryParam, StringParam, withDefault } from 'use-query-params'
+import { StringParam, useQueryParam, withDefault } from 'use-query-params'
+import { CodeBlock } from './CodeBlock'
+import { ObjectView } from './ObjectView'
 
 const uid = () => Math.random().toString(32).slice(2)
 
@@ -240,116 +227,72 @@ export const FieldPluginContainer: FunctionComponent = () => {
   )
 
   return (
-    <Stack>
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ChevronDownIcon />}>
-          <FlexTypography variant="h2">
-            <ViewIcon /> Preview
-          </FlexTypography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <FieldTypePreview
-            src={iframeSrc}
-            height={`${height}px`}
-            initialWidth={`${initialWidth}px`}
-            isModal={isModal}
-            ref={fieldTypeIframe}
-            uid={iframeUid}
+    <Stack gap={5}>
+      <Stack gap={10}>
+        <FlexTypography variant="h2">Preview</FlexTypography>
+        <FieldTypePreview
+          src={iframeSrc}
+          height={`${height}px`}
+          initialWidth={`${initialWidth}px`}
+          isModal={isModal}
+          ref={fieldTypeIframe}
+          uid={iframeUid}
+        />
+        <FormControl
+          error={typeof fieldPluginURL === 'undefined'}
+          sx={{ alignSelf: 'self-end' }}
+        >
+          <InputLabel
+            htmlFor="field-plugin-url"
+            shrink
+          >
+            Field Plugin URL
+          </InputLabel>
+          <OutlinedInput
+            id="field-plugin-url"
+            aria-describedby="field-plugin-url-description"
+            size="small"
+            label="Field Plugin URL"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder={defaultUrl}
+            endAdornment={
+              <Tooltip title="Reload plugin">
+                <IconButton
+                  size="small"
+                  onClick={refreshIframe}
+                >
+                  <RefreshIcon />
+                </IconButton>
+              </Tooltip>
+            }
           />
-        </AccordionDetails>
-        <AccordionActions sx={{ py: 8 }}>
-          <FormControl error={typeof fieldPluginURL === 'undefined'}>
-            <InputLabel
-              htmlFor="field-plugin-url"
-              shrink
-            >
-              Field Plugin URL
-            </InputLabel>
-            <OutlinedInput
-              id="field-plugin-url"
-              aria-describedby="field-plugin-url-description"
-              size="small"
-              label="Field Plugin URL"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder={defaultUrl}
-              endAdornment={
-                <Tooltip title="Reload plugin">
-                  <IconButton
-                    size="small"
-                    onClick={refreshIframe}
-                  >
-                    <RefreshIcon />
-                  </IconButton>
-                </Tooltip>
-              }
-            />
-            <FormHelperText id="my-helper-text">
-              Please enter a valid URL from where a field plugin is served.
-            </FormHelperText>
-          </FormControl>
-        </AccordionActions>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ChevronDownIcon />}>
-          <FlexTypography variant="h2">
-            <SchemaIcon />
-            Schema
-          </FlexTypography>
-        </AccordionSummary>
-        <AccordionDetails>
+          <FormHelperText id="my-helper-text">
+            Please enter a valid URL from where a field plugin is served.
+          </FormHelperText>
+        </FormControl>
+      </Stack>
+      <FlexTypography variant="h2">Data</FlexTypography>
+      <Stack gap={5}>
+        <Stack gap={2}>
           <SchemaEditor
             schema={loadedData.schema}
             setSchema={setSchema}
           />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ChevronDownIcon />}>
-          <FlexTypography variant="h2">
-            <ContentIcon />
-            State
-          </FlexTypography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Stack gap={1}>
-            <ValueView
-              value={value}
-              setValue={setValue}
-            />
-            <Stack>
-              <Typography variant="h3">Height (px)</Typography>
-              <ObjectDisplay output={height} />
-            </Stack>
-            <Stack>
-              <Typography variant="h3">Schema</Typography>
-              <ObjectDisplay output={schema} />
-            </Stack>
-            <Stack>
-              <Typography variant="h3">Is Modal?</Typography>
-              <ObjectDisplay output={isModal} />
-            </Stack>
-            <Stack>
-              <Typography variant="h3">Story</Typography>
-              <ObjectDisplay output={story} />
-              <Alert severity="info">
-                <AlertTitle>Note</AlertTitle>
-                Mutating the story does not automatically update the field
-                plugin. You need to click on the Request Context button. Click
-                on the button below to mutate the story.
-              </Alert>
-              <Button
-                onClick={onMutateStory}
-                size="small"
-                color="secondary"
-                endIcon={'+1'}
-              >
-                Mutate Story
-              </Button>
-            </Stack>
-          </Stack>
-        </AccordionDetails>
-      </Accordion>
+        </Stack>
+        <ValueView
+          value={value}
+          setValue={setValue}
+        />
+        <Stack gap={2}>
+          <Typography variant="h3">Height</Typography>
+          <CodeBlock>{height}px</CodeBlock>
+        </Stack>
+        <Stack gap={2}>
+          <Typography variant="h3">Is Modal?</Typography>
+          <ObjectView output={isModal} />
+        </Stack>
+      </Stack>
     </Stack>
   )
 }
