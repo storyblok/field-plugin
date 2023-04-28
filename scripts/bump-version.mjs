@@ -28,6 +28,11 @@ const PACKAGE_FOLDERS = [
   },
 ]
 
+const COMMIT_SCOPE = {
+  '@storyblok/field-plugin': 'lib',
+  '@storyblok/field-plugin-cli': 'cli',
+}
+
 // Check if `gh` exists
 if (!(await which('gh', { nothrow: true }))) {
   print(
@@ -165,7 +170,8 @@ await $`yarn install`
 
 // Create a pull-request
 await $`git add .`
-const commitMessage = `chore: release ${packageName}@${nextVersion}`
+const scope = COMMIT_SCOPE[packageName]
+const commitMessage = `chore(${scope}): release ${packageName}@${nextVersion}`
 await $`git commit -m ${commitMessage}`
 await $`git push -u origin ${branchName}`
 await $`gh pr create --title ${commitMessage} --web`
