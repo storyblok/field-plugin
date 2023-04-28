@@ -143,12 +143,25 @@ export const filterPathsToInclude = (
   files.filter((file) => file !== 'node_modules' && file !== 'cache')
 
 export const initializeNewRepo = async ({ dir }: { dir: string }) => {
+  if (await checkIfInsideRepository({ dir })) {
+    return
+  }
+
   await runCommand('git init', { cwd: dir })
   await runCommand('git add .', { cwd: dir })
   await runCommand('git commit -m "chore: initial commit"', {
     shell: true,
     cwd: dir,
   })
+}
+
+export const checkIfInsideRepository = async ({ dir }: { dir: string }) => {
+  try {
+    await runCommand('git rev-parse --is-inside-work-tree', { cwd: dir })
+    return true
+  } catch (err) {
+    return false
+  }
 }
 
 export const checkIfSubDir = (parent: string, dir: string) => {
