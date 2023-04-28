@@ -10,5 +10,6 @@ module.exports = {
   },
   rules: {
     'react-hooks/exhaustive-deps': 'error',
+    'react/prop-types': 'off',
   }
 }

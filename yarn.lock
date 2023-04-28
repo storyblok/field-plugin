@@ -3228,7 +3228,6 @@ __metadata:
     eslint: ^8.20.0
     eslint-plugin-react: ^7.32.0
     eslint-plugin-react-hooks: ^4.6.0
-    highlight.js: 11.7.0
     react: 18.2.0
     react-dom: 18.2.0
     react-router-dom: ^6.10.0
@@ -5079,13 +5078,6 @@ __metadata:
   bin:
     he: bin/he
   checksum: 3d4d6babccccd79c5c5a3f929a68af33360d6445587d628087f39a965079d84f18ce9c3d3f917ee1e3978916fc833bb8b29377c3b403f919426f91bc6965e7a7
-  languageName: node
-  linkType: hard
-
-"highlight.js@npm:11.7.0":
-  version: 11.7.0
-  resolution: "highlight.js@npm:11.7.0"
-  checksum: 19e3fb8b56f4b361b057a8523b989dfeb6479bbd1e29cec3fac6fa5c78d09927d5fa61b7dba6631fdb57cfdca9b3084aa4da49405ceaf4a67f67beae2ed5b77d
   languageName: node
   linkType: hard
 
