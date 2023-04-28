@@ -63,6 +63,7 @@ if (currentBranch.toString().trim() !== 'main') {
 
 // Check if the working directory is clean
 try {
+  await $`git add .`
   await $`git diff-index --quiet HEAD --`
 } catch (processOutput) {
   if (processOutput.exitCode === 1) {
