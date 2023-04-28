@@ -1560,7 +1560,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storyblok/field-plugin-cli@workspace:*, @storyblok/field-plugin-cli@workspace:packages/cli":
+"@storyblok/field-plugin-cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin-cli@workspace:packages/cli"
   dependencies:
@@ -3214,7 +3214,7 @@ __metadata:
     "@emotion/styled": 11.10.5
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
-    "@storyblok/field-plugin": "workspace:*"
+    "@storyblok/field-plugin": 0.0.1-alpha.2
     "@storyblok/mui": 0.0.22
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.0.0
@@ -4583,8 +4583,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin@workspace:."
   dependencies:
-    "@storyblok/field-plugin": "workspace:*"
-    "@storyblok/field-plugin-cli": "workspace:*"
     "@storyblok/mui": 0.0.19-alpha
     "@types/jest": 29.0.3
     "@types/node": 18.11.18
