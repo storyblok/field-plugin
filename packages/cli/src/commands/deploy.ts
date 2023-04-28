@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, lstatSync } from 'fs'
-import { bold, cyan, red, yellow, green } from 'kleur/colors'
-import { basename, resolve } from 'path'
+import { bold, cyan, red, green } from 'kleur/colors'
+import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
   betterPrompts,
@@ -92,11 +92,12 @@ export const deploy: DeployFunc = async ({
     typeof output !== 'undefined' ? resolve(output) : defaultOutputPath
 
   if (!existsSync(outputPath)) {
-    console.log(
-      red('[ERROR]'),
-      'The build output is not found at the following path:',
-    )
+    console.log(red('[ERROR]'), 'Could not find a bundle at:')
     console.log(`  > ${outputPath}`)
+    console.log('')
+    console.log(
+      `Please build the project before running the deployment command. If the bundle is located somewhere else, please use the \`--output\` option.`,
+    )
     process.exit(1)
   }
 
@@ -233,10 +234,6 @@ const getPackageName = (path: string): string | undefined => {
     return
   }
 
-  if (!isBuildable(path)) {
-    return
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const json: { name: string } = JSON.parse(
     readFileSync(resolve(path, 'package.json')).toString(),
@@ -269,32 +266,6 @@ const selectUpsertMode = async () => {
   ])
 
   return mode
-}
-
-const isBuildable = (path: string) => {
-  if (!existsSync(resolve(path, 'package.json'))) {
-    console.log(
-      `[info] ${yellow(basename(path))} doesn't have \`package.json\`.`,
-    )
-    return false
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const packageJson = JSON.parse(
-    readFileSync(resolve(path, 'package.json')).toString(),
-  )
-
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions,@typescript-eslint/no-unsafe-member-access
-  if (!packageJson?.scripts?.build) {
-    console.log(
-      `[info] ${yellow(
-        basename(path),
-      )}/package.json doesn't have \`build\` script.`,
-    )
-    return false
-  }
-
-  return true
 }
 
 const selectApiScope = async (token: string): Promise<Scope> => {
