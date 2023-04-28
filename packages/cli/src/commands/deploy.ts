@@ -7,6 +7,7 @@ import {
   getPersonalAccessToken,
   isValidPackageName,
   promptName,
+  runCommand,
 } from '../utils'
 import { Scope, StoryblokClient } from '../storyblok/storyblok-client'
 
@@ -27,16 +28,8 @@ export type DeployArgs = {
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
 
-type GetFieldPluginToUpdateFunc = (args: {
-  fieldType: FieldType
-  skipPrompts?: boolean
-  packageName: string
-  output: string
-  path: string
-}) => Promise<{ id: number; field_type: { body: string } }>
-
 type UpsertFieldPluginFunc = (args: {
-  path: string
+  dir: string
   packageName: string
   skipPrompts?: boolean
   token: string
@@ -103,7 +96,7 @@ export const deploy: DeployFunc = async ({
   const outputFile = readFileSync(outputPath).toString()
 
   const { id: fieldPluginId } = await upsertFieldPlugin({
-    path: dir,
+    dir,
     packageName,
     skipPrompts,
     token: result.token,
@@ -163,69 +156,53 @@ const decidePackageName = async ({
 }
 
 const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
-  const { packageName, skipPrompts, token, output, path, scope } = args
+  const { packageName, skipPrompts, token, output, dir, scope } = args
 
   const storyblokClient = StoryblokClient({ token, scope })
 
   console.log(bold(cyan('[info] Fetching field plugins...')))
-
-  const fieldTypes = await storyblokClient.fetchAllFieldTypes()
-
-  const matchingFieldType = fieldTypes.find(
-    (fieldType) => fieldType.name === packageName,
+  const allFieldPlugins = await storyblokClient.fetchAllFieldTypes()
+  const fieldPlugin = allFieldPlugins.find(
+    (fieldPlugin) => fieldPlugin.name === packageName,
   )
 
-  if (matchingFieldType) {
-    const fieldPlugin = await getFieldPluginToUpdate({
-      fieldType: matchingFieldType,
-      path,
-      packageName,
-      skipPrompts,
-      output,
-    })
-    await storyblokClient.updateFieldType(fieldPlugin)
-    return { id: fieldPlugin.id }
+  if (fieldPlugin) {
+    // update flow
+    const mode = skipPrompts ? 'update' : await selectUpsertMode()
+    if (mode === 'update') {
+      await storyblokClient.updateFieldType({
+        id: fieldPlugin.id,
+        field_type: {
+          body: output,
+        },
+      })
+      return { id: fieldPlugin.id }
+    } else if (mode === 'create') {
+      const newName = await promptNewName(allFieldPlugins)
+      const newFieldPlugin = await storyblokClient.createFieldType({
+        name: newName,
+        body: output,
+      })
+      if (await confirmUpdatingName()) {
+        await runCommand(`npm pkg set name=${newName}`, { cwd: dir })
+      }
+      return { id: newFieldPlugin.id }
+    }
   }
 
-  console.log(
-    bold(
-      cyan(
-        '[info] A matching field type is not found. So, we are creating a new field plugin in Storyblok.',
-      ),
-    ),
-  )
-
-  const createdFieldPlugin = await storyblokClient.createFieldType({
+  // create flow
+  const create = skipPrompts
+    ? true
+    : await confirmCreatingFieldPlugin(packageName)
+  if (!create) {
+    console.log(cyan(bold('[info]')), 'Not creating a new field plugin.')
+    process.exit(1)
+  }
+  const newFieldPlugin = await storyblokClient.createFieldType({
     name: packageName,
     body: output,
   })
-  return { id: createdFieldPlugin.id }
-}
-
-const getFieldPluginToUpdate: GetFieldPluginToUpdateFunc = async (args) => {
-  const { fieldType, skipPrompts, packageName, output, path } = args
-
-  console.log(bold(cyan('[info] Found a matching field type.')))
-
-  const mode = skipPrompts ? 'update' : await selectUpsertMode()
-  if (mode === 'create') {
-    const packageJsonPath = resolve(path, packageName, 'package.json')
-    console.log(
-      bold(red('[ERROR]')),
-      'You cannot create a new field type because the same name already exists.',
-    )
-    console.log('You must rename the one in this repository first.')
-    console.log(`  Rename \`name\` value at the following file:`)
-    console.log(`  > ${packageJsonPath}`)
-    process.exit(1)
-  }
-
-  return {
-    id: fieldType.id,
-    field_type: {
-      body: output,
-    },
-  }
+  return { id: newFieldPlugin.id }
 }
 
 const getPackageName = (path: string): string | undefined => {
@@ -269,6 +246,41 @@ const selectUpsertMode = async () => {
   ])
 
   return mode
+}
+
+const confirmCreatingFieldPlugin = async (name: string) => {
+  const { create } = await betterPrompts<{ create: boolean }>({
+    type: 'confirm',
+    name: 'create',
+    message: `You want to create a new field plugin \`${name}\`?`,
+    initial: true,
+  })
+  return create
+}
+
+const confirmUpdatingName = async () => {
+  const { update } = await betterPrompts<{ update: boolean }>({
+    type: 'confirm',
+    name: 'update',
+    message: `Do you update the name in \`package.json\``,
+    initial: false,
+  })
+  return update
+}
+
+const promptNewName = async (allFieldPlugins: FieldType[]) => {
+  const { name } = await betterPrompts<{ name: string }>({
+    type: 'text',
+    name: 'name',
+    message: 'Enter the new name of the field plugin:',
+    validate: (name: string) => {
+      if (!isValidPackageName(name)) {
+        return false
+      }
+      return allFieldPlugins.every((plugin) => plugin.name !== name)
+    },
+  })
+  return name
 }
 
 const isBuildable = (path: string) => {
