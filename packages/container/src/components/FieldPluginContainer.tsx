@@ -26,9 +26,11 @@ import {
   AccordionSummary,
   Box,
   Container,
+  IconButton,
   Stack,
+  Tooltip,
 } from '@mui/material'
-import { ChevronDownIcon, useNotifications } from '@storyblok/mui'
+import { ChevronDownIcon, DeleteIcon, useNotifications } from '@storyblok/mui'
 import { SchemaEditor } from './SchemaEditor'
 import { FieldTypePreview } from './FieldTypePreview'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
@@ -237,46 +239,60 @@ export const FieldPluginContainer: FunctionComponent = () => {
         sx={{ my: 15 }}
       />
       <Container maxWidth="md">
-        <Stack gap={10}>
-          <UrlView
-            url={url}
-            setUrl={setUrl}
-            onRefresh={handleRefreshIframe}
-            error={typeof fieldPluginURL === 'undefined'}
-            placeholder={defaultUrl}
-          />
-          <Stack gap={2}>
+        <UrlView
+          url={url}
+          setUrl={setUrl}
+          onRefresh={handleRefreshIframe}
+          error={typeof fieldPluginURL === 'undefined'}
+          placeholder={defaultUrl}
+        />
+
+        <Accordion defaultExpanded>
+          <AccordionSummary
+            expandIcon={<ChevronDownIcon />}
+            sx={{ p: 0 }}
+          >
             <SectionHeader property="data.options">Options</SectionHeader>
+          </AccordionSummary>
+          <AccordionDetails>
             <SchemaEditor
               schema={loadedData.schema}
               setSchema={setSchema}
             />
-          </Stack>
-          <ValueView
-            value={value}
-            setValue={setValue}
-          />
-          <Box>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ChevronDownIcon />}
-                sx={{ p: 0 }}
-              >
-                <SectionHeader property="data">Data</SectionHeader>
-              </AccordionSummary>
-              <AccordionDetails sx={{ p: 0 }}>
-                <ObjectView
-                  output={{
-                    value,
-                    height,
-                    isModal,
-                    options: recordFromFieldPluginOptions(schema.options),
-                  }}
-                />
-              </AccordionDetails>
-            </Accordion>
-          </Box>
-        </Stack>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded>
+          <AccordionSummary
+            expandIcon={<ChevronDownIcon />}
+            sx={{ p: 0 }}
+          >
+            <SectionHeader property="data.value">Value</SectionHeader>
+          </AccordionSummary>
+          <AccordionDetails sx={{ position: 'relative' }}>
+            <ValueView
+              value={value}
+              setValue={setValue}
+            />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ChevronDownIcon />}
+            sx={{ p: 0 }}
+          >
+            <SectionHeader property="data">Data</SectionHeader>
+          </AccordionSummary>
+          <AccordionDetails sx={{ p: 0 }}>
+            <ObjectView
+              output={{
+                value,
+                height,
+                isModal,
+                options: recordFromFieldPluginOptions(schema.options),
+              }}
+            />
+          </AccordionDetails>
+        </Accordion>
       </Container>
     </Container>
   )

@@ -1,34 +1,56 @@
 import { FunctionComponent } from 'react'
-import { Box, IconButton, Stack, Tooltip } from '@mui/material'
+import { Box, Button, ButtonGroup, styled, Tooltip } from '@mui/material'
 import { DeleteIcon } from '@storyblok/mui'
 import { ObjectView } from './ObjectView'
-import { SectionHeader } from './SectionHeader'
+
+const Root = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'stretch',
+  gap: theme.spacing(4),
+  // padding: theme.spacing(3),
+  '& .ValueView-actions': {
+    transition: theme.transitions.create('opacity'),
+    opacity: 0,
+  },
+  '&:hover': {
+    '& .ValueView-actions': {
+      opacity: 1,
+    },
+  },
+}))
 
 export const ValueView: FunctionComponent<{
   value: unknown
   setValue: (value: unknown) => void
 }> = (props) => (
-  <Stack gap={2}>
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 1,
-      }}
-    >
-      <SectionHeader property="data.value">Value</SectionHeader>
-      <Tooltip title="Reset value">
-        <IconButton
-          aria-label="Reset value"
-          color="secondary"
-          size="small"
-          onClick={() => props.setValue(undefined)}
-        >
-          <DeleteIcon />
-        </IconButton>
-      </Tooltip>
-    </Box>
-    <ObjectView output={props.value} />
-  </Stack>
+  <ObjectView
+    output={props.value}
+    actions={<Actions onRemove={() => props.setValue(undefined)} />}
+  />
+)
+
+const Actions: FunctionComponent<{
+  onRemove?: () => void
+}> = (props) => (
+  <ButtonGroup
+    variant="outlined"
+    color="inherit"
+    size="small"
+    sx={{ bgcolor: 'background.paper' }}
+  >
+    <Tooltip title="Reset value">
+      <Button
+        sx={{
+          color: 'text.secondary',
+          p: 1,
+        }}
+        aria-label="Reset value"
+        onClick={props.onRemove}
+      >
+        <DeleteIcon />
+      </Button>
+    </Tooltip>
+  </ButtonGroup>
 )
