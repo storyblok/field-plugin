@@ -12,6 +12,7 @@ import {
   FieldPluginSchema,
   originFromPluginParams,
   PluginUrlParams,
+  recordFromFieldPluginOptions,
   StateChangedMessage,
   urlSearchParamsFromPluginUrlParams,
 } from '@storyblok/field-plugin'
@@ -20,25 +21,23 @@ import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import {
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputLabel,
-  OutlinedInput,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Container,
   Stack,
-  Tooltip,
-  Typography,
 } from '@mui/material'
-import { RefreshIcon, useNotifications } from '@storyblok/mui'
+import { ChevronDownIcon, useNotifications } from '@storyblok/mui'
 import { SchemaEditor } from './SchemaEditor'
 import { FieldTypePreview } from './FieldTypePreview'
-import { FlexTypography } from './FlexTypography'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
 import { useDebounce } from 'use-debounce'
 import { ValueView } from './ValueView'
 import { StringParam, useQueryParam, withDefault } from 'use-query-params'
-import { CodeBlock } from './CodeBlock'
 import { ObjectView } from './ObjectView'
+import { SectionHeader } from './SectionHeader'
+import { UrlView } from './UrlView'
 
 const uid = () => Math.random().toString(32).slice(2)
 
@@ -113,7 +112,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
   })
   const [value, setValue] = useState<unknown>(undefined)
 
-  const refreshIframe = () => {
+  const handleRefreshIframe = () => {
     setIframeUid(uid)
   }
 
@@ -227,72 +226,58 @@ export const FieldPluginContainer: FunctionComponent = () => {
   )
 
   return (
-    <Stack gap={5}>
-      <Stack gap={10}>
-        <FlexTypography variant="h2">Preview</FlexTypography>
-        <FieldTypePreview
-          src={iframeSrc}
-          height={`${height}px`}
-          initialWidth={`${initialWidth}px`}
-          isModal={isModal}
-          ref={fieldTypeIframe}
-          uid={iframeUid}
-        />
-        <FormControl
-          error={typeof fieldPluginURL === 'undefined'}
-          sx={{ alignSelf: 'self-end' }}
-        >
-          <InputLabel
-            htmlFor="field-plugin-url"
-            shrink
-          >
-            Field Plugin URL
-          </InputLabel>
-          <OutlinedInput
-            id="field-plugin-url"
-            aria-describedby="field-plugin-url-description"
-            size="small"
-            label="Field Plugin URL"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
+    <Container>
+      <FieldTypePreview
+        src={iframeSrc}
+        height={`${height}px`}
+        initialWidth={`${initialWidth}px`}
+        isModal={isModal}
+        ref={fieldTypeIframe}
+        uid={iframeUid}
+        sx={{ my: 15 }}
+      />
+      <Container maxWidth="md">
+        <Stack gap={10}>
+          <UrlView
+            url={url}
+            setUrl={setUrl}
+            onRefresh={handleRefreshIframe}
+            error={typeof fieldPluginURL === 'undefined'}
             placeholder={defaultUrl}
-            endAdornment={
-              <Tooltip title="Reload plugin">
-                <IconButton
-                  size="small"
-                  onClick={refreshIframe}
-                >
-                  <RefreshIcon />
-                </IconButton>
-              </Tooltip>
-            }
           />
-          <FormHelperText id="my-helper-text">
-            Please enter a valid URL from where a field plugin is served.
-          </FormHelperText>
-        </FormControl>
-      </Stack>
-      <FlexTypography variant="h2">Data</FlexTypography>
-      <Stack gap={5}>
-        <Stack gap={2}>
-          <SchemaEditor
-            schema={loadedData.schema}
-            setSchema={setSchema}
+          <Stack gap={2}>
+            <SectionHeader property="data.options">Options</SectionHeader>
+            <SchemaEditor
+              schema={loadedData.schema}
+              setSchema={setSchema}
+            />
+          </Stack>
+          <ValueView
+            value={value}
+            setValue={setValue}
           />
+          <Box>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ChevronDownIcon />}
+                sx={{ p: 0 }}
+              >
+                <SectionHeader property="data">Data</SectionHeader>
+              </AccordionSummary>
+              <AccordionDetails sx={{ p: 0 }}>
+                <ObjectView
+                  output={{
+                    value,
+                    height,
+                    isModal,
+                    options: recordFromFieldPluginOptions(schema.options),
+                  }}
+                />
+              </AccordionDetails>
+            </Accordion>
+          </Box>
         </Stack>
-        <ValueView
-          value={value}
-          setValue={setValue}
-        />
-        <Stack gap={2}>
-          <Typography variant="h3">Height</Typography>
-          <CodeBlock>{height}px</CodeBlock>
-        </Stack>
-        <Stack gap={2}>
-          <Typography variant="h3">Is Modal?</Typography>
-          <ObjectView output={isModal} />
-        </Stack>
-      </Stack>
-    </Stack>
+      </Container>
+    </Container>
   )
 }

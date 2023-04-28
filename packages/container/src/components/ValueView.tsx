@@ -1,7 +1,8 @@
 import { FunctionComponent } from 'react'
-import { Box, IconButton, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, IconButton, Stack, Tooltip } from '@mui/material'
 import { DeleteIcon } from '@storyblok/mui'
 import { ObjectView } from './ObjectView'
+import { SectionHeader } from './SectionHeader'
 
 export const ValueView: FunctionComponent<{
   value: unknown
@@ -16,7 +17,7 @@ export const ValueView: FunctionComponent<{
         gap: 1,
       }}
     >
-      <Typography variant="h3">Content</Typography>
+      <SectionHeader property="data.value">Value</SectionHeader>
       <Tooltip title="Reset value">
         <IconButton
           aria-label="Reset value"
