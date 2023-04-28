@@ -62,17 +62,12 @@ if (currentBranch.toString().trim() !== 'main') {
 }
 
 // Check if the working directory is clean
-try {
-  await $`git add .`
-  await $`git diff-index --quiet HEAD --`
-} catch (processOutput) {
-  if (processOutput.exitCode === 1) {
-    print(
-      bold(red('[Error]')),
-      'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
-    )
-    exit(1)
-  }
+if ((await $`git status --porcelain`.quiet()).toString().trim() !== '') {
+  print(
+    bold(red('[Error]')),
+    'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
+  )
+  exit(1)
 }
 
 // Select which package to deploy ('field-plugin' | 'cli')
