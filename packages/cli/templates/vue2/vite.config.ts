@@ -10,6 +10,7 @@ export default defineConfig({
     // minify: false,
     rollupOptions: {
       output: {
+        format: 'commonjs',
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
         assetFileNames: `[name].[ext]`,
