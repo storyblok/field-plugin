@@ -16,7 +16,5 @@ jobs:
             lib
             sandbox
             cli
-            cli-create
-            cli-add
-            cli-deploy
+            template
           requireScope: true
