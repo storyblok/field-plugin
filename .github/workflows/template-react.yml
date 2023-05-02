@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'packages/cli/templates/react/**'
+      - 'packages/field-plugin/**'
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -1560,7 +1560,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storyblok/field-plugin-cli@workspace:*, @storyblok/field-plugin-cli@workspace:packages/cli":
+"@storyblok/field-plugin-cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin-cli@workspace:packages/cli"
   dependencies:
@@ -1582,7 +1582,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@0.0.1-alpha.2, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@0.0.1-alpha.3, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
@@ -1596,6 +1596,13 @@ __metadata:
     vite-plugin-dts: "*"
   languageName: unknown
   linkType: soft
+
+"@storyblok/field-plugin@npm:0.0.1-alpha.2":
+  version: 0.0.1-alpha.2
+  resolution: "@storyblok/field-plugin@npm:0.0.1-alpha.2"
+  checksum: 70dae320a562b34524c8f377c2bfa892728bcf89f9f58679626bf3afa47b781e715988c0eaa4b82bc4376f58012036a3e81dd69b8fb7433851e0f346bceebee2
+  languageName: node
+  linkType: hard
 
 "@storyblok/mui@npm:0.0.19-alpha":
   version: 0.0.19-alpha
@@ -3214,14 +3221,13 @@ __metadata:
     "@emotion/styled": 11.10.5
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
-    "@storyblok/field-plugin": "workspace:*"
+    "@storyblok/field-plugin": 0.0.1-alpha.2
     "@storyblok/mui": 0.0.22
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.0.0
     eslint: ^8.20.0
     eslint-plugin-react: ^7.32.0
     eslint-plugin-react-hooks: ^4.6.0
-    highlight.js: 11.7.0
     react: 18.2.0
     react-dom: 18.2.0
     react-router-dom: ^6.10.0
@@ -4508,7 +4514,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-js-template@workspace:packages/cli/templates/js"
   dependencies:
-    "@storyblok/field-plugin": 0.0.1-alpha.2
+    "@storyblok/field-plugin": 0.0.1-alpha.3
     eslint: latest
     vite: ^4.2.2
     vite-plugin-css-injected-by-js: 2.4.0
@@ -4536,7 +4542,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-react-template@workspace:packages/cli/templates/react"
   dependencies:
-    "@storyblok/field-plugin": 0.0.1-alpha.2
+    "@storyblok/field-plugin": 0.0.1-alpha.3
     "@types/react": ^18.0.28
     "@types/react-dom": ^18.0.11
     "@typescript-eslint/eslint-plugin": latest
@@ -4556,7 +4562,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-vue2-template@workspace:packages/cli/templates/vue2"
   dependencies:
-    "@storyblok/field-plugin": 0.0.1-alpha.2
+    "@storyblok/field-plugin": 0.0.1-alpha.3
     "@vitejs/plugin-vue2": 2.2.0
     joi: ^17.7.0
     vite: ^4.2.2
@@ -4569,7 +4575,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-vue3-template@workspace:packages/cli/templates/vue3"
   dependencies:
-    "@storyblok/field-plugin": 0.0.1-alpha.2
+    "@storyblok/field-plugin": 0.0.1-alpha.3
     "@vitejs/plugin-vue": ^4.1.0
     typescript: ^4.9.3
     vite: ^4.2.2
@@ -4583,8 +4589,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin@workspace:."
   dependencies:
-    "@storyblok/field-plugin": "workspace:*"
-    "@storyblok/field-plugin-cli": "workspace:*"
     "@storyblok/mui": 0.0.19-alpha
     "@types/jest": 29.0.3
     "@types/node": 18.11.18
@@ -5074,13 +5078,6 @@ __metadata:
   bin:
     he: bin/he
   checksum: 3d4d6babccccd79c5c5a3f929a68af33360d6445587d628087f39a965079d84f18ce9c3d3f917ee1e3978916fc833bb8b29377c3b403f919426f91bc6965e7a7
-  languageName: node
-  linkType: hard
-
-"highlight.js@npm:11.7.0":
-  version: 11.7.0
-  resolution: "highlight.js@npm:11.7.0"
-  checksum: 19e3fb8b56f4b361b057a8523b989dfeb6479bbd1e29cec3fac6fa5c78d09927d5fa61b7dba6631fdb57cfdca9b3084aa4da49405ceaf4a67f67beae2ed5b77d
   languageName: node
   linkType: hard
 

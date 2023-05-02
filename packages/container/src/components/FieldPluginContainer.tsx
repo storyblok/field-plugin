@@ -12,6 +12,7 @@ import {
   FieldPluginSchema,
   originFromPluginParams,
   PluginUrlParams,
+  recordFromFieldPluginOptions,
   StateChangedMessage,
   urlSearchParamsFromPluginUrlParams,
 } from '@storyblok/field-plugin'
@@ -21,37 +22,24 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import {
   Accordion,
-  AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Alert,
-  AlertTitle,
-  Button,
-  FormControl,
-  FormHelperText,
+  Box,
+  Container,
   IconButton,
-  InputLabel,
-  OutlinedInput,
   Stack,
   Tooltip,
-  Typography,
 } from '@mui/material'
-import {
-  ChevronDownIcon,
-  ContentIcon,
-  RefreshIcon,
-  SchemaIcon,
-  useNotifications,
-  ViewIcon,
-} from '@storyblok/mui'
+import { ChevronDownIcon, DeleteIcon, useNotifications } from '@storyblok/mui'
 import { SchemaEditor } from './SchemaEditor'
-import { ObjectDisplay } from './ObjectDisplay'
 import { FieldTypePreview } from './FieldTypePreview'
-import { FlexTypography } from './FlexTypography'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
 import { useDebounce } from 'use-debounce'
 import { ValueView } from './ValueView'
-import { useQueryParam, StringParam, withDefault } from 'use-query-params'
+import { StringParam, useQueryParam, withDefault } from 'use-query-params'
+import { ObjectView } from './ObjectView'
+import { SectionHeader } from './SectionHeader'
+import { UrlView } from './UrlView'
 
 const uid = () => Math.random().toString(32).slice(2)
 
@@ -126,7 +114,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
   })
   const [value, setValue] = useState<unknown>(undefined)
 
-  const refreshIframe = () => {
+  const handleRefreshIframe = () => {
     setIframeUid(uid)
   }
 
@@ -240,116 +228,72 @@ export const FieldPluginContainer: FunctionComponent = () => {
   )
 
   return (
-    <Stack>
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ChevronDownIcon />}>
-          <FlexTypography variant="h2">
-            <ViewIcon /> Preview
-          </FlexTypography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <FieldTypePreview
-            src={iframeSrc}
-            height={`${height}px`}
-            initialWidth={`${initialWidth}px`}
-            isModal={isModal}
-            ref={fieldTypeIframe}
-            uid={iframeUid}
-          />
-        </AccordionDetails>
-        <AccordionActions sx={{ py: 8 }}>
-          <FormControl error={typeof fieldPluginURL === 'undefined'}>
-            <InputLabel
-              htmlFor="field-plugin-url"
-              shrink
-            >
-              Field Plugin URL
-            </InputLabel>
-            <OutlinedInput
-              id="field-plugin-url"
-              aria-describedby="field-plugin-url-description"
-              size="small"
-              label="Field Plugin URL"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder={defaultUrl}
-              endAdornment={
-                <Tooltip title="Reload plugin">
-                  <IconButton
-                    size="small"
-                    onClick={refreshIframe}
-                  >
-                    <RefreshIcon />
-                  </IconButton>
-                </Tooltip>
-              }
+    <Container>
+      <FieldTypePreview
+        src={iframeSrc}
+        height={`${height}px`}
+        initialWidth={`${initialWidth}px`}
+        isModal={isModal}
+        ref={fieldTypeIframe}
+        uid={iframeUid}
+        sx={{ my: 15 }}
+      />
+      <Container maxWidth="md">
+        <UrlView
+          url={url}
+          setUrl={setUrl}
+          onRefresh={handleRefreshIframe}
+          error={typeof fieldPluginURL === 'undefined'}
+          placeholder={defaultUrl}
+        />
+
+        <Accordion defaultExpanded>
+          <AccordionSummary
+            expandIcon={<ChevronDownIcon />}
+            sx={{ p: 0 }}
+          >
+            <SectionHeader property="data.options">Options</SectionHeader>
+          </AccordionSummary>
+          <AccordionDetails>
+            <SchemaEditor
+              schema={loadedData.schema}
+              setSchema={setSchema}
             />
-            <FormHelperText id="my-helper-text">
-              Please enter a valid URL from where a field plugin is served.
-            </FormHelperText>
-          </FormControl>
-        </AccordionActions>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ChevronDownIcon />}>
-          <FlexTypography variant="h2">
-            <SchemaIcon />
-            Schema
-          </FlexTypography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <SchemaEditor
-            schema={loadedData.schema}
-            setSchema={setSchema}
-          />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ChevronDownIcon />}>
-          <FlexTypography variant="h2">
-            <ContentIcon />
-            State
-          </FlexTypography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Stack gap={1}>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion defaultExpanded>
+          <AccordionSummary
+            expandIcon={<ChevronDownIcon />}
+            sx={{ p: 0 }}
+          >
+            <SectionHeader property="data.value">Value</SectionHeader>
+          </AccordionSummary>
+          <AccordionDetails sx={{ position: 'relative' }}>
             <ValueView
               value={value}
               setValue={setValue}
             />
-            <Stack>
-              <Typography variant="h3">Height (px)</Typography>
-              <ObjectDisplay output={height} />
-            </Stack>
-            <Stack>
-              <Typography variant="h3">Schema</Typography>
-              <ObjectDisplay output={schema} />
-            </Stack>
-            <Stack>
-              <Typography variant="h3">Is Modal?</Typography>
-              <ObjectDisplay output={isModal} />
-            </Stack>
-            <Stack>
-              <Typography variant="h3">Story</Typography>
-              <ObjectDisplay output={story} />
-              <Alert severity="info">
-                <AlertTitle>Note</AlertTitle>
-                Mutating the story does not automatically update the field
-                plugin. You need to click on the Request Context button. Click
-                on the button below to mutate the story.
-              </Alert>
-              <Button
-                onClick={onMutateStory}
-                size="small"
-                color="secondary"
-                endIcon={'+1'}
-              >
-                Mutate Story
-              </Button>
-            </Stack>
-          </Stack>
-        </AccordionDetails>
-      </Accordion>
-    </Stack>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ChevronDownIcon />}
+            sx={{ p: 0 }}
+          >
+            <SectionHeader property="data">Data</SectionHeader>
+          </AccordionSummary>
+          <AccordionDetails sx={{ p: 0 }}>
+            <ObjectView
+              output={{
+                value,
+                height,
+                isModal,
+                options: recordFromFieldPluginOptions(schema.options),
+              }}
+            />
+          </AccordionDetails>
+        </Accordion>
+      </Container>
+    </Container>
   )
 }

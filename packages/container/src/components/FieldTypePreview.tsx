@@ -1,5 +1,12 @@
 import { forwardRef, FunctionComponent, PropsWithChildren } from 'react'
-import { Alert, AlertTitle, Backdrop, Box, Typography } from '@mui/material'
+import {
+  Alert,
+  AlertTitle,
+  Backdrop,
+  Box,
+  SxProps,
+  Typography,
+} from '@mui/material'
 import { DisableShieldsNotification } from './DisableShieldsNotification'
 
 const FieldTypeModal: FunctionComponent<
@@ -71,10 +78,11 @@ export const FieldTypePreview = forwardRef<
     isModal: boolean
     // Allows the iframe to be refreshed
     uid?: string
+    sx?: SxProps
   }
 >(function FieldTypePreview(props, ref) {
   return (
-    <>
+    <Box sx={props.sx}>
       <DisableShieldsNotification />
       <Backdrop
         open={props.isModal}
@@ -112,6 +120,6 @@ export const FieldTypePreview = forwardRef<
           )}
         </FieldTypeContainer>
       </FieldTypeModal>
-    </>
+    </Box>
   )
 })

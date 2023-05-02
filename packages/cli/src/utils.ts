@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import prompts from 'prompts'
-import { resolve } from 'path'
+import { isAbsolute, relative, resolve } from 'path'
 import { existsSync, appendFileSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
 
@@ -143,10 +143,37 @@ export const filterPathsToInclude = (
   files.filter((file) => file !== 'node_modules' && file !== 'cache')
 
 export const initializeNewRepo = async ({ dir }: { dir: string }) => {
-  await runCommand('git init', { cwd: dir })
-  await runCommand('git add .', { cwd: dir })
-  await runCommand('git commit -m "chore: initial commit"', {
-    shell: true,
-    cwd: dir,
-  })
+  if (await checkIfInsideRepository({ dir })) {
+    return
+  }
+
+  try {
+    await runCommand('git init', { cwd: dir })
+    await runCommand('git add .', { cwd: dir })
+    await runCommand('git commit -m "chore: initial commit"', {
+      shell: true,
+      cwd: dir,
+    })
+  } catch (err) {
+    // ignore if git commands fail
+  }
+}
+
+export const checkIfInsideRepository = async ({ dir }: { dir: string }) => {
+  try {
+    await runCommand('git rev-parse --is-inside-work-tree', { cwd: dir })
+    return true
+  } catch (err) {
+    return false
+  }
+}
+
+export const checkIfSubDir = (parent: string, dir: string) => {
+  const relativePath = relative(parent, dir)
+
+  if (!relativePath) {
+    return false
+  }
+
+  return !relativePath.startsWith('..') && !isAbsolute(relativePath)
 }

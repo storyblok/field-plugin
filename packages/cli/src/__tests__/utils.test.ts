@@ -1,15 +1,19 @@
 import { existsSync } from 'fs'
 import { vi } from 'vitest'
-import { getPersonalAccessToken } from '../utils'
+import { getPersonalAccessToken, checkIfSubDir } from '../utils'
 
-vi.mock('node:fs', () => {
+vi.mock('node:fs', async () => {
+  const mod = await vi.importActual<typeof import('fs')>('fs')
   return {
+    ...mod,
     existsSync: vi.fn(),
   }
 })
 
-vi.mock('node:path', () => {
+vi.mock('node:path', async () => {
+  const mod = await vi.importActual<typeof import('path')>('path')
   return {
+    ...mod,
     resolve: (path: string) => `<current-directory>/${path}`,
   }
 })
@@ -115,6 +119,18 @@ describe('utils', () => {
           token: 'my-token',
         })
       })
+    })
+  })
+
+  describe('checkIfSubDir', () => {
+    it('returns true for sub dir', () => {
+      expect(checkIfSubDir('/abc', '/abc/def')).toBe(true)
+      expect(checkIfSubDir('/abc/', '/abc/def')).toBe(true)
+    })
+
+    it('returns false for non sub dir', () => {
+      expect(checkIfSubDir('/abc', '/def/ghi')).toBe(false)
+      expect(checkIfSubDir('/abc/', '/def/ghi')).toBe(false)
     })
   })
 })

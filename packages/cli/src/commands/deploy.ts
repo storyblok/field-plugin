@@ -85,11 +85,12 @@ export const deploy: DeployFunc = async ({
     typeof output !== 'undefined' ? resolve(output) : defaultOutputPath
 
   if (!existsSync(outputPath)) {
-    console.log(
-      red('[ERROR]'),
-      'The build output is not found at the following path:',
-    )
+    console.log(red('[ERROR]'), 'Could not find a bundle at:')
     console.log(`  > ${outputPath}`)
+    console.log('')
+    console.log(
+      `Please build the project before running the deployment command. If the bundle is located somewhere else, please use the \`--output\` option.`,
+    )
     process.exit(1)
   }
 

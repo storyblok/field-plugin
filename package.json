@@ -47,8 +47,6 @@
     "bump-version": "./scripts/bump-version.mjs"
   },
   "devDependencies": {
-    "@storyblok/field-plugin": "workspace:*",
-    "@storyblok/field-plugin-cli": "workspace:*",
     "@storyblok/mui": "0.0.19-alpha",
     "@types/jest": "29.0.3",
     "@types/node": "18.11.18",

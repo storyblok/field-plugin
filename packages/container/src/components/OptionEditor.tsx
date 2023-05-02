@@ -28,6 +28,8 @@ export const OptionEditor: FunctionComponent<{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        flex: 1,
+        gap: 2,
       }}
     >
       <HandleIcon />
@@ -39,9 +41,11 @@ export const OptionEditor: FunctionComponent<{
           borderStyle: 'solid',
           borderRadius: 1,
           p: 0,
+          m: 0,
           display: 'flex',
           flexDirection: 'row',
           overflow: 'hidden',
+          flex: 1,
         }}
       >
         <InputBase
@@ -54,6 +58,7 @@ export const OptionEditor: FunctionComponent<{
             pt: 2,
             pb: 2,
             bgcolor: 'background.paper',
+            flex: 1,
           }}
         />
         <Divider
@@ -65,17 +70,19 @@ export const OptionEditor: FunctionComponent<{
           value={props.option.value}
           onChange={handleChangeValue}
           sx={{
-            bgcolor: 'background.paper',
             pl: 3,
             pr: 3,
             pt: 2,
             pb: 2,
+            bgcolor: 'background.paper',
+            flex: 1,
           }}
         />
       </Box>
       <IconButton
         onClick={props.removeOption}
         color="inherit"
+        size="small"
         sx={{ borderRadius: 1 }}
       >
         <DeleteIcon />

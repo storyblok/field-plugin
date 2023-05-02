@@ -5,7 +5,7 @@ import {
   NotificationProvider,
   AppContent,
 } from '@storyblok/mui'
-import { Container, CssBaseline, ThemeProvider } from '@mui/material'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 import { FieldPluginContainer } from './FieldPluginContainer'
 import { SandboxAppHeader } from './SandboxAppHeader'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -25,9 +25,7 @@ export const App: FunctionComponent = () => (
                 <AppContainer>
                   <SandboxAppHeader />
                   <AppContent>
-                    <Container maxWidth="md">
-                      <FieldPluginContainer />
-                    </Container>
+                    <FieldPluginContainer />
                   </AppContent>
                 </AppContainer>
               }
