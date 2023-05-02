@@ -114,8 +114,8 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = async ({
   }
 }
 
-export const isValidPackageName = (name: string): boolean =>
-  new RegExp(/^[a-z0-9\\-]+$/).test(name)
+export const isValidPackageName = (name: string | undefined): boolean =>
+  name !== undefined && new RegExp(/^[a-z0-9\\-]+$/).test(name)
 
 export const promptName = async ({
   message,
