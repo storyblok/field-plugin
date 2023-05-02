@@ -147,12 +147,16 @@ export const initializeNewRepo = async ({ dir }: { dir: string }) => {
     return
   }
 
-  await runCommand('git init', { cwd: dir })
-  await runCommand('git add .', { cwd: dir })
-  await runCommand('git commit -m "chore: initial commit"', {
-    shell: true,
-    cwd: dir,
-  })
+  try {
+    await runCommand('git init', { cwd: dir })
+    await runCommand('git add .', { cwd: dir })
+    await runCommand('git commit -m "chore: initial commit"', {
+      shell: true,
+      cwd: dir,
+    })
+  } catch (err) {
+    // ignore if git commands fail
+  }
 }
 
 export const checkIfInsideRepository = async ({ dir }: { dir: string }) => {
