@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  inject: ['plugin'],
   props: {
     selectAsset: {
       type: Function,
