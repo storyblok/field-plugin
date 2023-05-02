@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, lstatSync } from 'fs'
-import { bold, cyan, red, yellow, green } from 'kleur/colors'
-import { basename, resolve } from 'path'
+import { bold, cyan, red, green } from 'kleur/colors'
+import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
   betterPrompts,
@@ -210,10 +210,6 @@ const getPackageName = (path: string): string | undefined => {
     return
   }
 
-  if (!isBuildable(path)) {
-    return
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const json: { name: string } = JSON.parse(
     readFileSync(resolve(path, 'package.json')).toString(),
@@ -281,32 +277,6 @@ const promptNewName = async (allFieldPlugins: FieldType[]) => {
     },
   })
   return name
-}
-
-const isBuildable = (path: string) => {
-  if (!existsSync(resolve(path, 'package.json'))) {
-    console.log(
-      `[info] ${yellow(basename(path))} doesn't have \`package.json\`.`,
-    )
-    return false
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const packageJson = JSON.parse(
-    readFileSync(resolve(path, 'package.json')).toString(),
-  )
-
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions,@typescript-eslint/no-unsafe-member-access
-  if (!packageJson?.scripts?.build) {
-    console.log(
-      `[info] ${yellow(
-        basename(path),
-      )}/package.json doesn't have \`build\` script.`,
-    )
-    return false
-  }
-
-  return true
 }
 
 const selectApiScope = async (token: string): Promise<Scope> => {
