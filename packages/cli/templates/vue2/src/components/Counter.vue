@@ -1,32 +1,31 @@
 <template>
-  <div class="increment">
+  <div>
+    <h2>Field Value</h2>
+    <div class="counter-value">
+      {{ label }}
+    </div>
     <button
-      class="btn"
+      class="btn w-full"
       @click="handleIncrement"
     >
-      Increment {{ label }}
+      Increment
     </button>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    setValue: Function,
-    data: Object,
-  },
+  inject: ['plugin'],
   computed: {
     label() {
-      return typeof this.data.value !== 'number'
-        ? 0
-        : JSON.stringify(this.data.value)
+      const value = this.plugin.data.value
+      return typeof value !== 'number' ? 0 : JSON.stringify(value)
     },
   },
   methods: {
     handleIncrement() {
-      this.setValue(
-        (typeof this.data.value === 'number' ? this.data.value : 0) + 1,
-      )
+      const value = this.plugin.data.value
+      this.plugin.actions.setValue((typeof value === 'number' ? value : 0) + 1)
     },
   },
 }

@@ -1,4 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+html {
+  overflow: hidden;
+}
 
 :root {
   /*Storyblok colors*/
@@ -64,44 +68,76 @@ body {
 
 /*Layout Styles*/
 
-.field-plugin {
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
+.container {
+  max-width: 22rem;
+  margin: 0 auto;
 }
 
-.increment,
-.asset-selector,
-.modal-toggle {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  align-items: center;
-}
-
-button.btn {
-  font-family: inherit;
-  font-size: inherit;
+h2 {
+  font-size: 0.875rem;
+  line-height: 1.125rem;
   font-weight: 500;
-  line-height: inherit;
-
-  width: 100%;
-  background-color: var(--sb_green);
-  color: var(--white);
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  cursor: pointer;
-  transition: all 0.1s ease-in-out;
-
-  padding: 9px 21px;
-  border-radius: 5px;
-  border: 1px solid transparent;
+  margin: 1rem 0;
 }
 
-button.btn:hover {
-  background-color: var(--sb_green_75);
+hr {
+  border-top: 1px dashed var(--light);
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+  margin: 1.25rem 0;
+}
+
+.counter-value {
+  margin-top: 1.25rem;
+  margin-bottom: 1rem;
+  font-size: 1.625rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.btn {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.8125rem 1rem;
+  background: transparent;
+  border: 1px solid var(--light);
+  border-radius: 0.3125rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: var(--light_75);
+}
+
+.btn-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+}
+
+.btn-close:hover {
+  background-color: var(--light_75);
+}
+
+.asset-selector img {
+  width: 100%;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.sr-only {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
 }

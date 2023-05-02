@@ -1,27 +1,31 @@
 <template>
   <div class="asset-selector">
+    <h2>Asset Selector</h2>
+    <img
+      v-if="asset"
+      :src="asset.filename"
+      title="Selected Asset"
+    />
     <button
-      class="btn"
+      v-if="asset"
+      class="btn w-full"
+      @click="removeAsset"
+    >
+      Remove Asset
+    </button>
+    <button
+      v-else
+      class="btn w-full"
       @click="handleSelectAsset"
     >
       Select Asset
     </button>
-    <span>Image Url: {{ asset?.filename }}</span>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    selectAsset: {
-      type: Function,
-      required: true,
-    },
-    data: {
-      type: Object,
-      required: true,
-    },
-  },
+  inject: ['plugin'],
   data() {
     return {
       asset: undefined,
@@ -29,7 +33,10 @@ export default {
   },
   methods: {
     async handleSelectAsset() {
-      this.asset = await this.selectAsset()
+      this.asset.value = await this.plugin.actions.selectAsset()
+    },
+    removeAsset() {
+      this.asset.value = undefined
     },
   },
 }

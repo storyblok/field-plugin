@@ -1,21 +1,19 @@
 <template>
-  <div class="modal-toggle">
+  <div>
+    <h2>Modal</h2>
     <button
-      class="btn"
+      class="btn w-full"
       type="button"
-      @click="handleToggleModal"
+      @click="() => plugin.actions.setModalOpen(!plugin.data.isModalOpen)"
     >
-      {{ isModalOpen ? 'Close' : 'Open' }} modal
+      {{ plugin.data.isModalOpen ? 'Close' : 'Open' }} modal
     </button>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    setModalOpen: Function,
-    isModalOpen: Boolean,
-  },
+  inject: ['plugin'],
   methods: {
     handleToggleModal() {
       this.setModalOpen(!this.isModalOpen)
