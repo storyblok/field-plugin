@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full">
     <slot
       name="loading"
       v-if="plugin.type === 'loading'"
@@ -21,10 +21,10 @@ const plugin = Vue.observable({
 })
 
 createFieldPlugin((newState) => {
-  plugin.type = newState.type
-  plugin.error = newState.error
-  plugin.data = newState.data
-  plugin.actions = newState.actions
+  Vue.set(plugin, 'type', newState.type)
+  Vue.set(plugin, 'error', newState.error)
+  Vue.set(plugin, 'data', newState.data)
+  Vue.set(plugin, 'actions', newState.actions)
 })
 
 export default {
