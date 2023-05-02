@@ -18,8 +18,8 @@
     "prepare": "yarn build",
     "create": "yarn build && node bin.js create",
     "deploy": "yarn build && node bin.js deploy",
-    "build": "vite build && cp -r templates dist/",
-    "build:quiet": "vite build --logLevel error",
+    "build": "vite build && cp -r templates dist/ && yarn clean:dist",
+    "clean:dist": "cd dist && find . \\( -name 'node_modules' -o -name 'dist' \\) -type d -prune -exec rm -rf '{}' \\;",
     "test": "vitest run",
     "test:watch": "vitest watch"
   },
