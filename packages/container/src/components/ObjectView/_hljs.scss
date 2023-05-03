@@ -2,10 +2,12 @@
   * Copied from: https://github.com/storyblok/storyblok-www/blob/main/src/css/below/tools/_hljs.css
  */
 
+$secondary-color: #1b243f;
+
 .hljs {
   display: block;
   overflow-x: auto;
-  background: #1b243f;
+  background: $secondary-color;
   color: #fff;
 }
 
