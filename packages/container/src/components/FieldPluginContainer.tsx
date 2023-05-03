@@ -45,6 +45,7 @@ const uid = () => Math.random().toString(32).slice(2)
 
 const wrapperHost = 'localhost:7070'
 const defaultUrl = 'http://localhost:8080'
+const initialContent = ''
 const initialHeight = 300
 const initialWidth = 300
 
@@ -112,7 +113,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
     field_type: 'preview',
     options: [],
   })
-  const [value, setValue] = useState<unknown>(undefined)
+  const [value, setValue] = useState<unknown>(initialContent)
 
   const handleRefreshIframe = () => {
     setIframeUid(uid)
