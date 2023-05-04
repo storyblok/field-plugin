@@ -1,11 +1,9 @@
 import { defineConfig, type PluginOption } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import * as querystring from 'querystring'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), cssInjectedByJsPlugin(), printProd(), printDev()],
+  plugins: [cssInjectedByJsPlugin(), printProd(), printDev()],
   build: {
     rollupOptions: {
       output: {
