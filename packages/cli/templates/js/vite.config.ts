@@ -1,13 +1,10 @@
 import { defineConfig, type PluginOption } from 'vite'
-import vue from '@vitejs/plugin-vue2'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import * as querystring from 'querystring'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), cssInjectedByJsPlugin(), printProd(), printDev()],
+  plugins: [cssInjectedByJsPlugin(), printProd(), printDev()],
   build: {
-    // minify: false,
     rollupOptions: {
       output: {
         format: 'commonjs',
@@ -16,11 +13,6 @@ export default defineConfig({
         assetFileNames: `[name].[ext]`,
       },
     },
-  },
-  // @ts-expect-error this is coming from vitest
-  test: {
-    globals: true,
-    environment: 'jsdom',
   },
   server: {
     port: 8080,
