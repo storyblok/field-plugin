@@ -9,6 +9,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        format: 'commonjs',
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
         assetFileNames: `[name].[ext]`,
