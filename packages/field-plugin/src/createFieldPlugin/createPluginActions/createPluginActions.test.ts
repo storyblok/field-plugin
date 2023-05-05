@@ -92,30 +92,30 @@ describe('createPluginActions', () => {
     })
   })
   describe('value state change', () => {
-    it('updates the value state when setValue is called', () => {
+    it('updates the value state when setContent is called', () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
-        actions: { setValue },
+        actions: { setContent },
       } = createPluginActions(uid, postToContainer, onUpdateState)
       const value = '409fjk340wo9jkc0954ij0943iu09c43*&(YT-0c43'
-      setValue(value)
+      setContent(value)
       expect(onUpdateState).toHaveBeenLastCalledWith(
         expect.objectContaining({
-          value,
+          content,
         } satisfies Partial<FieldPluginData>),
       )
     })
     it('send a message to the container with the expected value', () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
-        actions: { setValue },
+        actions: { setContent },
       } = createPluginActions(uid, postToContainer, onUpdateState)
-      const value = '0932ui2foiuerhjv98453jeh09c34jwk-0c43'
-      setValue(value)
+      const content = '0932ui2foiuerhjv98453jeh09c34jwk-0c43'
+      setContent(content)
       expect(postToContainer).toHaveBeenLastCalledWith(
         expect.objectContaining({
           event: 'update',
-          model: value,
+          model: content,
         } satisfies Partial<ValueChangeMessage>),
       )
     })

@@ -60,8 +60,8 @@ document.body.appendChild(buttonEl)
 createFieldPlugin((response) => {
   // Handle events from the Visual Editor by re-rendering the button element
   const { data, actions } = response
-  buttonEl.textContent = `Increment: ${data.value ?? 0}`
-  buttonEl.onclick = () => actions.setValue((data.value ?? 0) + 1)
+  buttonEl.textContent = `Increment: ${data.content ?? 0}`
+  buttonEl.onclick = () => actions.setContent((data.content ?? 0) + 1)
 })
 
 ```
@@ -98,9 +98,9 @@ export const App = () => {
   }
 
   const handleClickIncrement = () =>
-    actions.setValue((typeof data.value === 'number' ? data.value : 0) + 1)
+    actions.setContent((typeof data.content === 'number' ? data.content : 0) + 1)
   const label =
-    typeof data.value === 'undefined' ? 'undefined' : JSON.stringify(data.value)
+    typeof data.content === 'undefined' ? 'undefined' : JSON.stringify(data.content)
 
   return (
     <button onClick={handleClickIncrement}>
@@ -131,7 +131,7 @@ export const App = () => {
 
 [//]: # (3. in useFieldPlugin's argument, update the state)
 
-[//]: # (4. Note that we cannot send reactive objects via `Window.postMessage&#40;&#41;`, so we have to proxy all calls to setValue in a function that wraps the value in `JSON.parse&#40;JSON.stringify&#40;value&#41;&#41;`)
+[//]: # (4. Note that we cannot send reactive objects via `Window.postMessage&#40;&#41;`, so we have to proxy all calls to setContent in a function that wraps the value in `JSON.parse&#40;JSON.stringify&#40;value&#41;&#41;`)
 
 [//]: # (5. return the reactive value from the hook)
 
@@ -210,7 +210,7 @@ Properties:
 
 | Key                | Description                                                                                                                                                                                           |
 |--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `setValue`         | Updates the value of the field plugin. For example, `setValue(3.14159)`                                                                                                                               |
+| `setContent`         | Updates the value of the field plugin. For example, `setContent(3.14159)`                                                                                                                               |
 | `setModalOpen`     | Opens/Closes the modal window. For example, `setModalOpen(true)`.                                                                                                                                     |
 | `selectAsset`      | Opens the asset selector. Returns a promise that gets resolved when the user selects an asset. For example, `selectAsset().then((filename) => console.log(filename))`                    |
 | `requestContext()` | Updates the `request.data.story` property to the version of the story that is currently opened in the Visual Editor. That is, the unsaved version of the story that exists in the user's browser memory. |

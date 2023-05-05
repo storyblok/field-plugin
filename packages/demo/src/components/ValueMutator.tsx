@@ -5,9 +5,13 @@ export const ValueMutator: PluginComponent = (props) => {
   const { data, actions } = props
 
   const handleClickIncrement = () =>
-    actions?.setValue((typeof data.value === 'number' ? data.value : 0) + 1)
+    actions?.setContent(
+      (typeof data.content === 'number' ? data.content : 0) + 1,
+    )
   const label =
-    typeof data.value === 'undefined' ? 'undefined' : JSON.stringify(data.value)
+    typeof data.content === 'undefined'
+      ? 'undefined'
+      : JSON.stringify(data.content)
 
   return (
     <Stack gap={2}>
