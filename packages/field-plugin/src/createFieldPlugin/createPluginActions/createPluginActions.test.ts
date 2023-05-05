@@ -42,7 +42,7 @@ describe('createPluginActions', () => {
       })
       expect(onUpdateState).toHaveBeenCalledWith(
         expect.objectContaining({
-          value: randomString,
+          content: randomString,
         }),
       )
     })
