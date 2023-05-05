@@ -24,13 +24,10 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Container,
-  IconButton,
-  Stack,
-  Tooltip,
+  Typography,
 } from '@mui/material'
-import { ChevronDownIcon, DeleteIcon, useNotifications } from '@storyblok/mui'
+import { ChevronDownIcon, useNotifications } from '@storyblok/mui'
 import { SchemaEditor } from './SchemaEditor'
 import { FieldTypePreview } from './FieldTypePreview'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
@@ -38,7 +35,6 @@ import { useDebounce } from 'use-debounce'
 import { ValueView } from './ValueView'
 import { StringParam, useQueryParam, withDefault } from 'use-query-params'
 import { ObjectView } from './ObjectView'
-import { SectionHeader } from './SectionHeader'
 import { UrlView } from './UrlView'
 
 const uid = () => Math.random().toString(32).slice(2)
@@ -253,7 +249,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
             expandIcon={<ChevronDownIcon />}
             sx={{ p: 0 }}
           >
-            <SectionHeader property="data.options">Options</SectionHeader>
+            <Typography variant="h3">Options</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <SchemaEditor
@@ -267,7 +263,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
             expandIcon={<ChevronDownIcon />}
             sx={{ p: 0 }}
           >
-            <SectionHeader property="data.value">Value</SectionHeader>
+            <Typography variant="h3">Value</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ position: 'relative' }}>
             <ValueView
@@ -281,10 +277,15 @@ export const FieldPluginContainer: FunctionComponent = () => {
             expandIcon={<ChevronDownIcon />}
             sx={{ p: 0 }}
           >
-            <SectionHeader property="data">Data</SectionHeader>
+            <Typography variant="h3">Data</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ p: 0 }}>
             <ObjectView
+              title={
+                <Typography variant="caption">
+                  FieldPluginResponse.data
+                </Typography>
+              }
               output={{
                 value,
                 height,
