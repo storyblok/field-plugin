@@ -97,8 +97,8 @@ describe('createPluginActions', () => {
       const {
         actions: { setContent },
       } = createPluginActions(uid, postToContainer, onUpdateState)
-      const value = '409fjk340wo9jkc0954ij0943iu09c43*&(YT-0c43'
-      setContent(value)
+      const content = '409fjk340wo9jkc0954ij0943iu09c43*&(YT-0c43'
+      setContent(content)
       expect(onUpdateState).toHaveBeenLastCalledWith(
         expect.objectContaining({
           content,
