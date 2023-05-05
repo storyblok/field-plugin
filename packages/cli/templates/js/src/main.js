@@ -1,21 +1,16 @@
-import {
-  createFieldPlugin,
-  type FieldPluginResponse,
-  type FieldPluginData,
-  type FieldPluginActions,
-} from '@storyblok/field-plugin'
+import { createFieldPlugin } from '@storyblok/field-plugin'
 import './style.css'
 
-type Component = {
-  html: (props: { data: FieldPluginData }) => string
-  setup: (props: { actions: FieldPluginActions }) => void
-  update: (props: { data: FieldPluginData }) => void
+let rootElement = document.querySelector('#app')
+if (!rootElement) {
+  rootElement = document.createElement('div')
+  rootElement.id = 'app'
+  document.body.appendChild(rootElement)
 }
 
-const rootElement = document.querySelector('#app')!
 rootElement.innerHTML = `<span>Loading...</span>`
-let previousType: FieldPluginResponse['type'] = 'loading'
-let currentData: FieldPluginData
+let previousType = 'loading'
+let currentData
 
 const modalCloseButton = ModalCloseButton()
 const counter = Counter()
@@ -35,22 +30,16 @@ createFieldPlugin((response) => {
       renderFieldPlugin({ data, actions })
     }
   } else {
-    updateData(data!)
+    updateData(data)
   }
 })
 
-function updateData(data: FieldPluginData) {
+function updateData(data) {
   currentData = data
   components.forEach((component) => component.update({ data }))
 }
 
-function renderFieldPlugin({
-  data,
-  actions,
-}: {
-  data: FieldPluginData
-  actions: FieldPluginActions
-}) {
+function renderFieldPlugin({ data, actions }) {
   rootElement.innerHTML = `
     <div data-modal-open="false">
       ${modalCloseButton.html({ data })}
@@ -68,7 +57,7 @@ function renderFieldPlugin({
   components.forEach((component) => component.setup({ actions }))
 }
 
-function ModalCloseButton(): Component {
+function ModalCloseButton() {
   return {
     html() {
       return `
@@ -93,7 +82,7 @@ function ModalCloseButton(): Component {
       `
     },
     setup({ actions }) {
-      rootElement.querySelector('.btn-close')?.addEventListener('click', () => {
+      rootElement.querySelector('.btn-close').addEventListener('click', () => {
         actions.setModalOpen(!currentData.isModalOpen)
       })
     },
@@ -107,7 +96,7 @@ function ModalCloseButton(): Component {
   }
 }
 
-function Counter(): Component {
+function Counter() {
   return {
     html() {
       return `
@@ -121,7 +110,7 @@ function Counter(): Component {
     setup({ actions }) {
       rootElement
         .querySelector('.btn-increment')
-        ?.addEventListener('click', () => {
+        .addEventListener('click', () => {
           actions.setValue(
             (typeof currentData.value === 'number' ? currentData.value : 0) + 1,
           )
@@ -137,7 +126,7 @@ function Counter(): Component {
   }
 }
 
-function ModalToggle(): Component {
+function ModalToggle() {
   return {
     html() {
       return `
@@ -150,7 +139,7 @@ function ModalToggle(): Component {
     setup({ actions }) {
       rootElement
         .querySelector('.btn-modal-toggle')
-        ?.addEventListener('click', () => {
+        .addEventListener('click', () => {
           actions.setModalOpen(!currentData.isModalOpen)
         })
     },
@@ -164,7 +153,7 @@ function ModalToggle(): Component {
   }
 }
 
-function AssetSelector(): Component {
+function AssetSelector() {
   return {
     html() {
       return `
@@ -179,21 +168,19 @@ function AssetSelector(): Component {
     setup({ actions }) {
       rootElement
         .querySelector('.btn-select-asset')
-        ?.addEventListener('click', async () => {
+        .addEventListener('click', async () => {
           const asset = await actions.selectAsset()
-          document.querySelector('.asset-selector')?.classList.add('selected')
+          document.querySelector('.asset-selector').classList.add('selected')
           document
             .querySelector('.asset-selector img')
-            ?.setAttribute('src', asset.filename)
+            .setAttribute('src', asset.filename)
         })
 
       rootElement
         .querySelector('.btn-remove-asset')
-        ?.addEventListener('click', () => {
-          document
-            .querySelector('.asset-selector')
-            ?.classList.remove('selected')
-          document.querySelector('.asset-selector img')?.setAttribute('src', '')
+        .addEventListener('click', () => {
+          document.querySelector('.asset-selector').classList.remove('selected')
+          document.querySelector('.asset-selector img').setAttribute('src', '')
         })
     },
     update() {},
