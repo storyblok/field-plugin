@@ -192,7 +192,7 @@ Properties:
 
 | Key           | Description                                                                                                                                                                                |
 |---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `value`       | The value of the field plugin that is part of the content.                                                                                                                                 |
+| `content`       | The content of the field plugin that is part of the content.                                                                                                                                 |
 | `options`     | A dictionary/record of `string` key-value pairs, containing the options that were set up for this field plugin in the block schema.                                                        |
 | `isModalOpen` | A boolean value that indicates whether the field plugin is embedded in a modal window.                                                                                                     |
 | `language`    | The current language. Can be an empty string (`""`).                                                                                                                                       |
@@ -210,7 +210,7 @@ Properties:
 
 | Key                | Description                                                                                                                                                                                           |
 |--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `setContent`         | Updates the value of the field plugin. For example, `setContent(3.14159)`                                                                                                                               |
+| `setContent`         | Updates the content of the field plugin. For example, `setContent(3.14159)`                                                                                                                               |
 | `setModalOpen`     | Opens/Closes the modal window. For example, `setModalOpen(true)`.                                                                                                                                     |
 | `selectAsset`      | Opens the asset selector. Returns a promise that gets resolved when the user selects an asset. For example, `selectAsset().then((filename) => console.log(filename))`                    |
 | `requestContext()` | Updates the `request.data.story` property to the version of the story that is currently opened in the Visual Editor. That is, the unsaved version of the story that exists in the user's browser memory. |
