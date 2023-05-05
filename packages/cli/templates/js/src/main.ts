@@ -8,13 +8,14 @@ import './style.css'
 
 type Component = {
   html: (props: { data: FieldPluginData }) => string
-  setup: (props: { data: FieldPluginData; actions: FieldPluginActions }) => void
+  setup: (props: { actions: FieldPluginActions }) => void
   update: (props: { data: FieldPluginData }) => void
 }
 
 const rootElement = document.querySelector('#app')!
 rootElement.innerHTML = `<span>Loading...</span>`
 let previousType: FieldPluginResponse['type'] = 'loading'
+let currentData: FieldPluginData
 
 const modalCloseButton = ModalCloseButton()
 const counter = Counter()
@@ -39,6 +40,7 @@ createFieldPlugin((response) => {
 })
 
 function updateData(data: FieldPluginData) {
+  currentData = data
   components.forEach((component) => component.update({ data }))
 }
 
@@ -63,7 +65,7 @@ function renderFieldPlugin({
   `
 
   updateData(data)
-  components.forEach((component) => component.setup({ data, actions }))
+  components.forEach((component) => component.setup({ actions }))
 }
 
 function ModalCloseButton(): Component {
@@ -90,12 +92,10 @@ function ModalCloseButton(): Component {
       </button>
       `
     },
-    setup({ data, actions }) {
-      rootElement
-        .querySelector('.btn-modal-toggle')
-        ?.addEventListener('click', () => {
-          actions.setModalOpen(!data.isModalOpen)
-        })
+    setup({ actions }) {
+      rootElement.querySelector('.btn-close')?.addEventListener('click', () => {
+        actions.setModalOpen(!currentData.isModalOpen)
+      })
     },
     update({ data }) {
       Array.from(rootElement.querySelectorAll('[data-modal-open]')).forEach(
@@ -118,12 +118,12 @@ function Counter(): Component {
         </div>
       `
     },
-    setup({ data, actions }) {
+    setup({ actions }) {
       rootElement
         .querySelector('.btn-increment')
         ?.addEventListener('click', () => {
           actions.setValue(
-            (typeof data.value === 'number' ? data.value : 0) + 1,
+            (typeof currentData.value === 'number' ? currentData.value : 0) + 1,
           )
         })
     },
@@ -147,11 +147,11 @@ function ModalToggle(): Component {
         </div>
       `
     },
-    setup({ data, actions }) {
+    setup({ actions }) {
       rootElement
         .querySelector('.btn-modal-toggle')
         ?.addEventListener('click', () => {
-          actions.setModalOpen(!data.isModalOpen)
+          actions.setModalOpen(!currentData.isModalOpen)
         })
     },
     update({ data }) {
