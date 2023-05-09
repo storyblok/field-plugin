@@ -25,7 +25,7 @@ import {
 export const defaultState: FieldPluginData = {
   height: 0,
   isModalOpen: false,
-  value: undefined,
+  content: undefined,
   options: {},
   story: { content: {} },
   blockUid: undefined,
@@ -108,11 +108,11 @@ export const createPluginActions: CreatePluginActions = (
         }
         onUpdateState(state)
       },
-      setValue: (value) => {
-        postToContainer(valueChangeMessage(uid, value))
+      setContent: (content) => {
+        postToContainer(valueChangeMessage(uid, content))
         state = {
           ...state,
-          value,
+          content,
         }
         onUpdateState(state)
       },

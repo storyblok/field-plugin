@@ -1,0 +1,168 @@
+/**
+  * Copied from: https://github.com/storyblok/storyblok-www/blob/main/src/css/below/tools/_hljs.css
+ */
+
+$secondary-color: #1b243f;
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  background: $secondary-color;
+  color: #fff;
+}
+
+.hljs-keyword,
+.hljs-literal,
+.hljs-symbol,
+.hljs-name {
+  color: #37a5ff;
+}
+
+.hljs-link {
+  color: #37a5ff;
+  text-decoration: underline;
+}
+
+.hljs-built_in,
+.hljs-type {
+  color: rgb(27, 201, 166);
+}
+
+.hljs-number,
+.hljs-class {
+  color: rgb(134, 210, 84);
+}
+
+.hljs-string,
+.hljs-meta-string {
+  color: #ff9364;
+}
+
+.hljs-regexp,
+.hljs-template-tag {
+  color: rgb(176, 77, 34);
+}
+
+.hljs-subst,
+.hljs-function,
+.hljs-title,
+.hljs-params,
+.hljs-formula {
+  color: #dcdcdc;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: rgb(63, 165, 47);
+  font-style: italic;
+}
+
+.hljs-doctag {
+  color: rgb(63, 165, 47);
+}
+
+.hljs-meta,
+.hljs-meta-keyword,
+.hljs-tag {
+  color: rgb(181, 181, 181);
+}
+
+.hljs-variable,
+.hljs-template-variable {
+  color: rgb(191, 75, 201);
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-builtin-name {
+  color: #12fffe;
+}
+
+.hljs-section {
+  color: gold;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-bullet,
+.hljs-selector-tag,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: rgb(240, 188, 76);
+}
+
+.hljs-addition {
+  background-color: #2db47d;
+
+  .hljs-ln-code {
+    &:before {
+      content: "+";
+    }
+  }
+}
+
+.hljs-deletion {
+  background-color: #ff6159;
+
+  .hljs-ln-code {
+    &:before {
+      content: "-";
+    }
+  }
+}
+
+.hljs-addition,
+.hljs-deletion {
+  color: #ffffff;
+  padding: 3px 0;
+
+  * {
+    color: #ffffff;
+  }
+
+  .hljs-ln-code {
+    position: relative;
+
+    &:before {
+      left: -23px;
+      position: absolute;
+      top: 0;
+    }
+  }
+}
+
+/* for block of numbers */
+.hljs-ln td.hljs-ln-numbers {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  text-align: center;
+  color: #4c5776;
+  vertical-align: top;
+  padding-right: 30px;
+
+  /* your custom style here */
+}
+
+/* for tables with line numbers */
+.hljs-ln {
+  border-collapse: collapse;
+}
+.hljs-ln td {
+  padding: 0;
+}
+.hljs-ln-n:before {
+  content: attr(data-line-number);
+}
