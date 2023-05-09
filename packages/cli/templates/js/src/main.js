@@ -3,6 +3,7 @@ import './style.css'
 
 let rootElement = document.querySelector('#app')
 if (!rootElement) {
+  // In production, `#app` may or may not exist.
   rootElement = document.createElement('div')
   rootElement.id = 'app'
   document.body.appendChild(rootElement)
