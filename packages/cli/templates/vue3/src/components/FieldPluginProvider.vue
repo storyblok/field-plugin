@@ -38,8 +38,8 @@ createFieldPlugin((newState) => {
   if (newState.actions) {
     plugin.actions = {
       ...newState.actions,
-      setValue: (newValue: unknown) => {
-        newState.actions.setValue(convertToRaw(newValue))
+      setContent: (newContent: unknown) => {
+        newState.actions.setContent(convertToRaw(newContent))
       },
     }
   } else {

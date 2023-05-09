@@ -9,7 +9,9 @@ export const ValueView: FunctionComponent<{
 }> = (props) => (
   <ObjectView
     title={
-      <Typography variant="caption">FieldPluginResponse.data.value</Typography>
+      <Typography variant="caption">
+        FieldPluginResponse.data.content
+      </Typography>
     }
     output={props.value}
     actions={<Actions onRemove={() => props.setValue(undefined)} />}
