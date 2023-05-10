@@ -11,7 +11,6 @@ import {
   OnContextRequestMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
-  pluginLoadedMessage,
   valueChangeMessage,
 } from '../../messaging'
 import { FieldPluginActions } from '../FieldPluginActions'
@@ -94,8 +93,6 @@ export const createPluginActions: CreatePluginActions = (
     onUnknownMessage,
   }
 
-  // Receive the current value
-  const setPluginReady = () => postToContainer(pluginLoadedMessage(uid))
   return {
     actions: {
       setContent: (content) => {
@@ -120,7 +117,6 @@ export const createPluginActions: CreatePluginActions = (
           postToContainer(assetModalChangeMessage(uid))
         })
       },
-      setPluginReady,
       requestContext: () => postToContainer(getContextMessage(uid)),
     },
     messageCallbacks,

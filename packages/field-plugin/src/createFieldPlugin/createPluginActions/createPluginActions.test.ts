@@ -2,9 +2,7 @@ import { createPluginActions } from './createPluginActions'
 import {
   AssetModalChangeMessage,
   GetContextMessage,
-  HeightChangeMessage,
   ModalChangeMessage,
-  PluginLoadedMessage,
   ValueChangeMessage,
 } from '../../messaging'
 import { FieldPluginData } from '../FieldPluginData'
@@ -117,20 +115,6 @@ describe('createPluginActions', () => {
           event: 'update',
           model: content,
         } satisfies Partial<ValueChangeMessage>),
-      )
-    })
-  })
-  describe('setPluginReady()', () => {
-    it('send a message to the container to receive the initial state', () => {
-      const { uid, postToContainer, onUpdateState } = mock()
-      const {
-        actions: { setPluginReady },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
-      setPluginReady()
-      expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining({
-          event: 'loaded',
-        } satisfies Partial<PluginLoadedMessage>),
       )
     })
   })
