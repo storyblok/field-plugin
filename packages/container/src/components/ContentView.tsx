@@ -3,9 +3,9 @@ import { Button, ButtonGroup, Tooltip, Typography } from '@mui/material'
 import { DeleteIcon } from '@storyblok/mui'
 import { ObjectView } from './ObjectView'
 
-export const ValueView: FunctionComponent<{
-  value: unknown
-  setValue: (value: unknown) => void
+export const ContentView: FunctionComponent<{
+  content: unknown
+  setContent: (content: unknown) => void
 }> = (props) => (
   <ObjectView
     title={
@@ -13,8 +13,8 @@ export const ValueView: FunctionComponent<{
         FieldPluginResponse.data.content
       </Typography>
     }
-    output={props.value}
-    actions={<Actions onRemove={() => props.setValue(undefined)} />}
+    output={props.content}
+    actions={<Actions onRemove={() => props.setContent(undefined)} />}
   />
 )
 

@@ -33,7 +33,7 @@ import { SchemaEditor } from './SchemaEditor'
 import { FieldTypePreview } from './FieldTypePreview'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
 import { useDebounce } from 'use-debounce'
-import { ValueView } from './ValueView'
+import { ContentView } from './ContentView'
 import { StringParam, useQueryParam, withDefault } from 'use-query-params'
 import { ObjectView } from './ObjectView'
 import { UrlView } from './UrlView'
@@ -104,13 +104,13 @@ export const FieldPluginContainer: FunctionComponent = () => {
 
   // State
   // TODO replace with useReducer
-  const [isModal, setModal] = useState(false)
+  const [isModalOpen, setModalOpen] = useState(false)
   const [height, setHeight] = useState(initialHeight)
   const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
     options: [],
   })
-  const [value, setValue] = useState<unknown>(initialContent)
+  const [content, setContent] = useState<unknown>(initialContent)
 
   const handleRefreshIframe = () => {
     setIframeUid(uid)
@@ -118,7 +118,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
 
   const loadedData = useMemo<StateChangedMessage>(
     () => ({
-      model: value,
+      model: content,
       schema: schema,
       action: 'loaded',
       uid: pluginParams.uid,
@@ -129,7 +129,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
       storyId: undefined,
       token: null,
     }),
-    [value, schema, story],
+    [content, schema, story],
   )
 
   const postToPlugin = useCallback(
@@ -201,10 +201,10 @@ export const FieldPluginContainer: FunctionComponent = () => {
     () =>
       createContainerMessageListener(
         {
-          setValue,
+          setContent,
           setPluginReady: onLoaded,
           setHeight,
-          setModalOpen: setModal,
+          setModalOpen: setModalOpen,
           requestContext: onContextRequested,
           selectAsset: onAssetSelected,
         },
@@ -216,9 +216,9 @@ export const FieldPluginContainer: FunctionComponent = () => {
       ),
     [
       onLoaded,
-      setValue,
+      setContent,
       setHeight,
-      setModal,
+      setModalOpen,
       onAssetSelected,
       onContextRequested,
       fieldPluginURL,
@@ -231,7 +231,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
         src={iframeSrc}
         height={`${height}px`}
         initialWidth={`${initialWidth}px`}
-        isModal={isModal}
+        isModal={isModalOpen}
         ref={fieldTypeIframe}
         uid={iframeUid}
         sx={{ my: 15 }}
@@ -264,12 +264,12 @@ export const FieldPluginContainer: FunctionComponent = () => {
             expandIcon={<ChevronDownIcon />}
             sx={{ p: 0 }}
           >
-            <Typography variant="h3">Value</Typography>
+            <Typography variant="h3">Content</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ position: 'relative' }}>
-            <ValueView
-              value={value}
-              setValue={setValue}
+            <ContentView
+              content={content}
+              setContent={setContent}
             />
           </AccordionDetails>
         </Accordion>
@@ -289,10 +289,10 @@ export const FieldPluginContainer: FunctionComponent = () => {
               }
               output={
                 {
-                  value,
-                  isModal,
+                  content,
+                  isModalOpen,
                   options: recordFromFieldPluginOptions(schema.options),
-                } satisfies FieldPluginData
+                } satisfies Partial<FieldPluginData>
               }
             />
           </AccordionDetails>
