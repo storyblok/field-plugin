@@ -2,9 +2,7 @@ import { createPluginActions } from './createPluginActions'
 import {
   AssetModalChangeMessage,
   GetContextMessage,
-  HeightChangeMessage,
   ModalChangeMessage,
-  PluginLoadedMessage,
   ValueChangeMessage,
 } from '../../messaging'
 import { FieldPluginData } from '../FieldPluginData'
@@ -117,35 +115,6 @@ describe('createPluginActions', () => {
           event: 'update',
           model: content,
         } satisfies Partial<ValueChangeMessage>),
-      )
-    })
-  })
-  describe('height state change', () => {
-    it('updates the height state when setHeight is called', () => {
-      const { uid, postToContainer, onUpdateState } = mock()
-      const {
-        actions: { setHeight },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
-      const height = 2403984
-      setHeight(height)
-      expect(onUpdateState).toHaveBeenLastCalledWith(
-        expect.objectContaining({
-          height,
-        } satisfies Partial<FieldPluginData>),
-      )
-    })
-    it('send a message to the container with the expected value', () => {
-      const { uid, postToContainer, onUpdateState } = mock()
-      const {
-        actions: { setHeight },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
-      const height = 289437
-      setHeight(height)
-      expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining({
-          event: 'heightChange',
-          height,
-        } satisfies Partial<HeightChangeMessage>),
       )
     })
   })

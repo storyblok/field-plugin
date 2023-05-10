@@ -7,7 +7,7 @@ import {
 
 export const partialPluginStateFromStateChangeMessage = (
   message: StateChangedMessage,
-): Omit<FieldPluginData, 'height' | 'isModalOpen'> => ({
+): Omit<FieldPluginData, 'isModalOpen'> => ({
   spaceId: message.spaceId ?? undefined,
   story: message.story ?? undefined,
   storyId: message.storyId ?? undefined,
