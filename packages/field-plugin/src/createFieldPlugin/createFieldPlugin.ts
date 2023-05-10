@@ -1,7 +1,7 @@
 import { createPluginActions } from './createPluginActions'
 import { createAutoResizer } from './createAutoResizer'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
-import { pluginUrlParamsFromUrl } from '../messaging'
+import { pluginLoadedMessage, pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
 import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 
@@ -35,21 +35,20 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
     return () => undefined
   }
 
+  const { uid } = params
+
   const postToContainer = (message: unknown) => {
     // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
     const origin = '*'
     window.parent.postMessage(message, origin)
   }
 
-  const cleanupAutoResizeSideEffects = createAutoResizer(
-    params.uid,
-    postToContainer,
-  )
+  const cleanupAutoResizeSideEffects = createAutoResizer(uid, postToContainer)
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
   const { actions, messageCallbacks } = createPluginActions(
-    params.uid,
+    uid,
     postToContainer,
     (data) => {
       onUpdateState({
@@ -60,7 +59,8 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
     },
   )
 
-  actions.setPluginReady()
+  // Request the initial state from the Visual Editor.
+  postToContainer(pluginLoadedMessage(uid))
 
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
