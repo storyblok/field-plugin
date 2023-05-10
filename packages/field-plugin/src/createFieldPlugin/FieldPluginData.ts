@@ -5,7 +5,7 @@ import { StoryData } from '../messaging'
 
 export type FieldPluginData = {
   isModalOpen: boolean
-  value: unknown
+  content: unknown
   options: Record<string, string>
   spaceId: number | undefined
   story: StoryData

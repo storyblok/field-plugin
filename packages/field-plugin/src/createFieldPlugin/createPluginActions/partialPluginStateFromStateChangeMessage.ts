@@ -15,7 +15,7 @@ export const partialPluginStateFromStateChangeMessage = (
   token: message.token ?? undefined,
   options: recordFromFieldPluginOptions(message.schema.options),
   uid: message.uid ?? undefined,
-  value: message.model ?? undefined,
+  content: message.model ?? undefined,
 })
 
 export const partialPluginStateFromContextRequestMessage = (

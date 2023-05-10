@@ -2,6 +2,12 @@ import Vue from 'vue'
 import './style.css'
 import App from './App.vue'
 
+if (!document.querySelector('#app')) {
+  // In production, `#app` may or may not exist.
+  const rootElement = document.createElement('div')
+  rootElement.id = 'app'
+  document.body.appendChild(rootElement)
+}
 new Vue({
   render: (h) => h(App),
 }).$mount('#app')

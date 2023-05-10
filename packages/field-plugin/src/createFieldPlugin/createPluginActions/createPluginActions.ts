@@ -23,7 +23,7 @@ import {
 // TODO get rid of this default state
 export const defaultState: FieldPluginData = {
   isModalOpen: false,
-  value: undefined,
+  content: undefined,
   options: {},
   story: { content: {} },
   blockUid: undefined,
@@ -98,11 +98,11 @@ export const createPluginActions: CreatePluginActions = (
   const setPluginReady = () => postToContainer(pluginLoadedMessage(uid))
   return {
     actions: {
-      setValue: (value) => {
-        postToContainer(valueChangeMessage(uid, value))
+      setContent: (content) => {
+        postToContainer(valueChangeMessage(uid, content))
         state = {
           ...state,
-          value,
+          content,
         }
         onUpdateState(state)
       },

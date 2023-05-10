@@ -16,9 +16,9 @@ Storyblok provides the following starter projects:
 - Vue 2 (Options API)
 - Vanilla JavaScript
 
-[//]: # '- Solid'
+[//]: # (- Solid)
 
-## Integrating @storyblok/field-plugin
+## Integrating @storyblok/field-plugin 
 
 To integrate `@storyblok/field-plugin` into a frontend framework, bootstrap your application with the `--template js` flag.
 
@@ -34,7 +34,7 @@ rootElement.id = 'app'
 document.body.appendChild(rootElement)
 ```
 
-This adds a new node to the `body`. Mount your application to this node, and in the root component, run `createFieldPlugin()` as an effect. This will make your application start listening to events from Storyblok's Visual Editor.
+This adds a new node to the `body`. Mount your application to this node, and in the  root component, run  `createFieldPlugin()` as an effect. This will make your application start listening to events from Storyblok's Visual Editor.
 
 Pass a callback function as an argument to `createFieldPlugin()`. This function will be called whenever the state of the
 field plugin changes; such as when the user changes the value in the visual editor, opens the modal, selects an
@@ -60,9 +60,10 @@ document.body.appendChild(buttonEl)
 createFieldPlugin((response) => {
   // Handle events from the Visual Editor by re-rendering the button element
   const { data, actions } = response
-  buttonEl.textContent = `Increment: ${data.value ?? 0}`
-  buttonEl.onclick = () => actions.setValue((data.value ?? 0) + 1)
+  buttonEl.textContent = `Increment: ${data.content ?? 0}`
+  buttonEl.onclick = () => actions.setContent((data.content ?? 0) + 1)
 })
+
 ```
 
 ### React
@@ -70,13 +71,13 @@ createFieldPlugin((response) => {
 With React, create a hook:
 
 ```typescript
-import { createFieldPlugin, FieldPluginResponse } from '@storyblok/field-plugin'
-import { useEffect, useState } from 'react'
+import {createFieldPlugin, FieldPluginResponse} from '@storyblok/field-plugin'
+import {useEffect, useState} from 'react'
 
 type UseFieldPlugin = () => FieldPluginResponse
 
 export const useFieldPlugin: UseFieldPlugin = () => {
-  const [state, setState] = useState<FieldPluginResponse>({ type: 'loading' })
+  const [state, setState] = useState<FieldPluginResponse>({type: 'loading'})
 
   useEffect(() => {
     return createFieldPlugin(setState)
@@ -90,41 +91,63 @@ And render your component as such:
 
 ```tsx
 export const App = () => {
-  const { type, data, actions } = useFieldPlugin()
+  const {type, data, actions} = useFieldPlugin()
 
   if (type !== 'loaded') {
     return <></>
   }
 
   const handleClickIncrement = () =>
-    actions.setValue((typeof data.value === 'number' ? data.value : 0) + 1)
+    actions.setContent((typeof data.content === 'number' ? data.content : 0) + 1)
   const label =
-    typeof data.value === 'undefined' ? 'undefined' : JSON.stringify(data.value)
+    typeof data.content === 'undefined' ? 'undefined' : JSON.stringify(data.content)
 
-  return <button onClick={handleClickIncrement}>{label}</button>
+  return (
+    <button onClick={handleClickIncrement}>
+      {label}
+    </button>
+  )
 }
 ```
 
-[//]: # '### Vue 3'
-[//]: #
-[//]: # 'Coming soon...'
-[//]: # 'With the composition api, create a hook:'
-[//]: #
-[//]: # '```markdown'
-[//]: # 'TODO:'
-[//]: # 'Something like'
-[//]: # '1. create a reactive value'
-[//]: # '2. call useFieldPlugin'
-[//]: # "3. in useFieldPlugin's argument, update the state"
-[//]: # '4. Note that we cannot send reactive objects via `Window.postMessage()`, so we have to proxy all calls to setValue in a function that wraps the value in `JSON.parse(JSON.stringify(value))`'
-[//]: # '5. return the reactive value from the hook'
-[//]: # '```'
-[//]: #
-[//]: # 'With the options api, create a mixin:'
-[//]: #
-[//]: # '```vue'
-[//]: # 'TODO'
-[//]: # '```'
+[//]: # (### Vue 3)
+
+[//]: # ()
+[//]: # (Coming soon...)
+
+[//]: # (With the composition api, create a hook:)
+
+[//]: # ()
+
+[//]: # (```markdown)
+
+[//]: # (TODO:)
+
+[//]: # (Something like)
+
+[//]: # (1. create a reactive value)
+
+[//]: # (2. call useFieldPlugin)
+
+[//]: # (3. in useFieldPlugin's argument, update the state)
+
+[//]: # (4. Note that we cannot send reactive objects via `Window.postMessage&#40;&#41;`, so we have to proxy all calls to setContent in a function that wraps the value in `JSON.parse&#40;JSON.stringify&#40;value&#41;&#41;`)
+
+[//]: # (5. return the reactive value from the hook)
+
+[//]: # (```)
+
+[//]: # ()
+
+[//]: # (With the options api, create a mixin:)
+
+[//]: # ()
+
+[//]: # (```vue)
+
+[//]: # (TODO)
+
+[//]: # (```)
 
 ## API Reference
 
@@ -147,7 +170,7 @@ Return Value: `() => void`: A function that removes the event listeners added by
 Properties:
 
 | Key       | Defined when `FieldPluginResponse.type` is | Description                                                                                                                                                                                                                  |
-| --------- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-----------|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `type`    |                                            | A string that indicates which overall state your field plugin is in. It can assume three values `loading`, `error`, and `loaded`.                                                                                            |
 | `error`   | `"error"`                                  | If `FieldPluginResponse.type` is `error`, the `error` property will contain an `Error` object instance. Otherwise, it is `undefined`.                                                                                        |
 | `data`    | `"loaded"`                                 | When `FieldPluginResponse.type` is `loaded`, this property will contain the state of the application that the Visual Editor has shared with the field plugin. Otherwise, it is `undefined`.                                  |
@@ -158,7 +181,7 @@ Properties:
 `FieldPluginResponse.type` can assume three different values:
 
 | Value       | Description                                                                                                                                                                         |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `"loading"` | When the state is initially loaded and has not yet establish communication with the Visual Editor.                                                                                  |
 | `"error"`   | The plugin failed to load. This can happen, for example, if the field plugin URL is opened outside the Visual Editor. This is typically not a scenario that needs to be considered. |
 | `"loaded"`  | The plugin successfully loaded and is ready-to-use.                                                                                                                                 |
@@ -167,28 +190,29 @@ Properties:
 
 `FieldPluginResponse.data` has the following properties:
 
-| Key           | Description                                                                                                                                              |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`       | The value of the field plugin that is part of the content.                                                                                               |
-| `options`     | A dictionary/record of `string` key-value pairs, containing the options that were set up for this field plugin in the block schema.                      |
-| `isModalOpen` | A boolean value that indicates whether the field plugin is embedded in a modal window.                                                                   |
-| `language`    | The current language. Can be an empty string (`""`).                                                                                                     |
-| `spaceId`     | The ID of the space.                                                                                                                                     |
-| `story`       | The story how it was when the plugin was _initially_ loaded. To update this after the initial load, please refer to `response.actions.requestContext()`. |
-| `storyId`     | The ID of the story.                                                                                                                                     |
-| `blockUid`    | The UID of the block that the field plugin is part of.                                                                                                   |
-| `token`       | A draft access token to the [Content Delivery API](https://www.storyblok.com/docs/api/content-delivery/v2#topics/authentication).                        |
-| `uid`         | The UID of the field plugin.                                                                                                                             |
+| Key           | Description                                                                                                                                                                                |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `content`       | The content of the field plugin that is part of the content.                                                                                                                                 |
+| `options`     | A dictionary/record of `string` key-value pairs, containing the options that were set up for this field plugin in the block schema.                                                        |
+| `isModalOpen` | A boolean value that indicates whether the field plugin is embedded in a modal window.                                                                                                     |
+| `language`    | The current language. Can be an empty string (`""`).                                                                                                                                       |
+| `spaceId`     | The ID of the space.                                                                                                                                                                       |
+| `story`       | The story how it was when the plugin was _initially_ loaded. To update this after the initial load,                                   please refer to `response.actions.requestContext()`. |
+| `storyId`     | The ID of the story.                                                                                                                                                                       |
+| `blockUid`    | The UID of the block that the field plugin is part of.                                                                                                                                     |
+| `token`       | A draft access token to  the [Content Delivery API](https://www.storyblok.com/docs/api/content-delivery/v2#topics/authentication).                                                         |
+| `uid`         | The UID of the field plugin.                                                                                                                                                               |
+| `height`      | the height of the window.                                                                                                                                                                  |
 
 #### FieldPluginResponse.actions
 
 `FieldPluginResponse.actions` has the following properties:
 
-| Key                | Description                                                                                                                                                                                              |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `setValue`         | Updates the value of the field plugin. For example, `setValue(3.14159)`                                                                                                                                  |
-| `setModalOpen`     | Opens/Closes the modal window. For example, `setModalOpen(true)`.                                                                                                                                        |
-| `selectAsset`      | Opens the asset selector. Returns a promise that gets resolved when the user selects an asset. For example, `selectAsset().then((filename) => console.log(filename))`                                    |
+| Key                | Description                                                                                                                                                                                           |
+|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `setContent`         | Updates the content of the field plugin. For example, `setContent(3.14159)`                                                                                                                               |
+| `setModalOpen`     | Opens/Closes the modal window. For example, `setModalOpen(true)`.                                                                                                                                     |
+| `selectAsset`      | Opens the asset selector. Returns a promise that gets resolved when the user selects an asset. For example, `selectAsset().then((filename) => console.log(filename))`                    |
 | `requestContext()` | Updates the `request.data.story` property to the version of the story that is currently opened in the Visual Editor. That is, the unsaved version of the story that exists in the user's browser memory. |
 
 ## Caveats
