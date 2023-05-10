@@ -40,6 +40,10 @@ import { UrlView } from './UrlView'
 import { StoryData } from '@storyblok/field-plugin'
 
 const defaultUrl = 'http://localhost:8080'
+const initialStory: StoryData = {
+  content: {},
+  lang: 'default',
+}
 const initialContent = ''
 const initialHeight = 300
 const initialWidth = 300
@@ -92,9 +96,7 @@ const useSandbox = (
   }, [fieldPluginURL, pluginParams])
   const [iframeUid, setIframeUid] = useState(uid)
 
-  const [story, setStory] = useState<StoryData>({
-    content: {},
-  })
+  const [story] = useState<StoryData>(initialStory)
 
   // TODO replace with useReducer
   const [isModalOpen, setModalOpen] = useState(false)
