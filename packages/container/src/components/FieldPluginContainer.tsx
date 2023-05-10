@@ -103,7 +103,7 @@ const useSandbox = (
   })
   const [value, setValue] = useState<unknown>(initialContent)
 
-  const handleRefreshIframe = () => {
+  const refreshIframe = () => {
     setIframeUid(uid)
   }
 
@@ -219,21 +219,20 @@ const useSandbox = (
 
   return [
     {
-      height,
-      isModal,
-      fieldTypeIframe,
-      iframeUid,
-      fieldPluginURL,
       value,
+      isModal,
+      height,
       schema,
-      iframeSrc,
       url,
+      fieldTypeIframe,
+      iframeSrc,
+      iframeUid,
     },
     {
-      setUrl,
-      handleRefreshIframe,
-      setSchema,
       setValue,
+      setSchema,
+      setUrl,
+      refreshIframe,
     },
   ] as const
 }
@@ -242,17 +241,16 @@ export const FieldPluginContainer: FunctionComponent = () => {
   const { error } = useNotifications()
   const [
     {
-      height,
-      isModal,
-      fieldTypeIframe,
-      iframeUid,
-      fieldPluginURL,
       value,
+      isModal,
+      height,
       schema,
-      iframeSrc,
       url,
+      fieldTypeIframe,
+      iframeSrc,
+      iframeUid,
     },
-    { setUrl, handleRefreshIframe, setSchema, setValue },
+    { setValue, setSchema, setUrl, refreshIframe },
   ] = useSandbox(error)
 
   return (
@@ -270,11 +268,10 @@ export const FieldPluginContainer: FunctionComponent = () => {
         <UrlView
           url={url}
           setUrl={setUrl}
-          onRefresh={handleRefreshIframe}
-          error={typeof fieldPluginURL === 'undefined'}
+          onRefresh={refreshIframe}
+          error={typeof iframeSrc === 'undefined'}
           placeholder={defaultUrl}
         />
-
         <Accordion defaultExpanded>
           <AccordionSummary
             expandIcon={<ChevronDownIcon />}
