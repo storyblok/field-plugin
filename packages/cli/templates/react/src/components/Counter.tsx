@@ -4,12 +4,13 @@ import { useFieldPlugin } from '../useFieldPlugin'
 const Counter: FunctionComponent = () => {
   const {
     data,
-    actions: { setValue },
+    actions: { setContent },
   } = useFieldPlugin()
 
-  const label = typeof data.value !== 'number' ? 0 : JSON.stringify(data.value)
+  const label =
+    typeof data.content !== 'number' ? 0 : JSON.stringify(data.content)
   const handleIncrement = () => {
-    setValue((typeof data.value === 'number' ? data.value : 0) + 1)
+    setContent((typeof data.content === 'number' ? data.content : 0) + 1)
   }
 
   return (

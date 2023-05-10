@@ -18,14 +18,16 @@ export default {
   inject: ['plugin'],
   computed: {
     label() {
-      const value = this.plugin.data.value
-      return typeof value !== 'number' ? 0 : JSON.stringify(value)
+      const content = this.plugin.data.content
+      return typeof content !== 'number' ? 0 : JSON.stringify(content)
     },
   },
   methods: {
     handleIncrement() {
-      const value = this.plugin.data.value
-      this.plugin.actions.setValue((typeof value === 'number' ? value : 0) + 1)
+      const content = this.plugin.data.content
+      this.plugin.actions.setContent(
+        (typeof content === 'number' ? content : 0) + 1,
+      )
     },
   },
 }
