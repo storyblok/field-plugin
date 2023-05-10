@@ -56,7 +56,10 @@ type TestStory = { content: { count: number } }
 
 const UrlQueryParam = withDefault(StringParam, defaultUrl)
 
-export const FieldPluginContainer: FunctionComponent = () => {
+const useSandbox = (
+  onError: (message: { title: string; message?: string }) => void,
+) => {
+  const { uid } = pluginParams
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
   const [url, setUrl] = useQueryParam('url', UrlQueryParam)
 
@@ -90,18 +93,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
       count: 0,
     },
   })
-  const onMutateStory = () =>
-    setStory((oldStory) => ({
-      ...oldStory,
-      content: {
-        ...oldStory.content,
-        count: oldStory.content.count + 1,
-      },
-    }))
 
-  const { error } = useNotifications()
-
-  // State
   // TODO replace with useReducer
   const [isModal, setModal] = useState(false)
   const [height, setHeight] = useState(initialHeight)
@@ -140,13 +132,13 @@ export const FieldPluginContainer: FunctionComponent = () => {
             fieldPluginURL.origin,
           )
       } catch (e) {
-        error({
+        onError({
           title: 'Failed to post message to plugin',
           message: e instanceof Error ? e.message : undefined,
         })
       }
     },
-    [error, fieldPluginURL],
+    [onError, fieldPluginURL],
   )
 
   const dispatchStateChanged = useCallback(
@@ -209,11 +201,12 @@ export const FieldPluginContainer: FunctionComponent = () => {
         },
         {
           iframeOrigin: fieldPluginURL?.origin,
-          uid: pluginParams.uid,
+          uid,
           window,
         },
       ),
     [
+      uid,
       onLoaded,
       setValue,
       setHeight,
@@ -223,6 +216,44 @@ export const FieldPluginContainer: FunctionComponent = () => {
       fieldPluginURL,
     ],
   )
+
+  return [
+    {
+      height,
+      isModal,
+      fieldTypeIframe,
+      iframeUid,
+      fieldPluginURL,
+      value,
+      schema,
+      iframeSrc,
+      url,
+    },
+    {
+      setUrl,
+      handleRefreshIframe,
+      setSchema,
+      setValue,
+    },
+  ] as const
+}
+
+export const FieldPluginContainer: FunctionComponent = () => {
+  const { error } = useNotifications()
+  const [
+    {
+      height,
+      isModal,
+      fieldTypeIframe,
+      iframeUid,
+      fieldPluginURL,
+      value,
+      schema,
+      iframeSrc,
+      url,
+    },
+    { setUrl, handleRefreshIframe, setSchema, setValue },
+  ] = useSandbox(error)
 
   return (
     <Container>
@@ -253,7 +284,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
           </AccordionSummary>
           <AccordionDetails>
             <SchemaEditor
-              schema={loadedData.schema}
+              schema={schema}
               setSchema={setSchema}
             />
           </AccordionDetails>
