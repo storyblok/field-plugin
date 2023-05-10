@@ -220,8 +220,8 @@ const useSandbox = (
 
   return [
     {
-      value,
-      isModal,
+      content,
+      isModalOpen,
       height,
       schema,
       url,
@@ -230,7 +230,7 @@ const useSandbox = (
       iframeUid,
     },
     {
-      setValue,
+      setContent,
       setSchema,
       setUrl,
       refreshIframe,
@@ -242,8 +242,8 @@ export const FieldPluginContainer: FunctionComponent = () => {
   const { error } = useNotifications()
   const [
     {
-      value,
-      isModal,
+      content,
+      isModalOpen,
       height,
       schema,
       url,
@@ -251,7 +251,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
       iframeSrc,
       iframeUid,
     },
-    { setValue, setSchema, setUrl, refreshIframe },
+    { setContent, setSchema, setUrl, refreshIframe },
   ] = useSandbox(error)
 
   return (
