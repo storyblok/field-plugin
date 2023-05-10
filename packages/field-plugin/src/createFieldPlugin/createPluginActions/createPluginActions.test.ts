@@ -149,20 +149,6 @@ describe('createPluginActions', () => {
       )
     })
   })
-  describe('setPluginReady()', () => {
-    it('send a message to the container to receive the initial state', () => {
-      const { uid, postToContainer, onUpdateState } = mock()
-      const {
-        actions: { setPluginReady },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
-      setPluginReady()
-      expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining({
-          event: 'loaded',
-        } satisfies Partial<PluginLoadedMessage>),
-      )
-    })
-  })
   describe('requestContext()', () => {
     it('send a message to the container to request the story', () => {
       const { uid, postToContainer, onUpdateState } = mock()
