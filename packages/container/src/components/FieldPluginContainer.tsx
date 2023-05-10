@@ -9,6 +9,7 @@ import {
 import {
   AssetSelectedMessage,
   ContextRequestMessage,
+  FieldPluginData,
   FieldPluginSchema,
   originFromPluginParams,
   PluginUrlParams,
@@ -286,12 +287,13 @@ export const FieldPluginContainer: FunctionComponent = () => {
                   FieldPluginResponse.data
                 </Typography>
               }
-              output={{
-                value,
-                height,
-                isModal,
-                options: recordFromFieldPluginOptions(schema.options),
-              }}
+              output={
+                {
+                  value,
+                  isModal,
+                  options: recordFromFieldPluginOptions(schema.options),
+                } satisfies FieldPluginData
+              }
             />
           </AccordionDetails>
         </Accordion>

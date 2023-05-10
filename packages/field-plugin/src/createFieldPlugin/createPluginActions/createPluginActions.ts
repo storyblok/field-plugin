@@ -6,7 +6,6 @@ import {
   assetFromAssetSelectedMessage,
   assetModalChangeMessage,
   getContextMessage,
-  heightChangeMessage,
   modalChangeMessage,
   OnAssetSelectMessage,
   OnContextRequestMessage,
@@ -23,7 +22,6 @@ import {
 
 // TODO get rid of this default state
 export const defaultState: FieldPluginData = {
-  height: 0,
   isModalOpen: false,
   value: undefined,
   options: {},
@@ -100,14 +98,6 @@ export const createPluginActions: CreatePluginActions = (
   const setPluginReady = () => postToContainer(pluginLoadedMessage(uid))
   return {
     actions: {
-      setHeight: (height) => {
-        postToContainer(heightChangeMessage(uid, height))
-        state = {
-          ...state,
-          height,
-        }
-        onUpdateState(state)
-      },
       setValue: (value) => {
         postToContainer(valueChangeMessage(uid, value))
         state = {

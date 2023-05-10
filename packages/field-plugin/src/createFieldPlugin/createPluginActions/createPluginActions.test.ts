@@ -120,35 +120,6 @@ describe('createPluginActions', () => {
       )
     })
   })
-  describe('height state change', () => {
-    it('updates the height state when setHeight is called', () => {
-      const { uid, postToContainer, onUpdateState } = mock()
-      const {
-        actions: { setHeight },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
-      const height = 2403984
-      setHeight(height)
-      expect(onUpdateState).toHaveBeenLastCalledWith(
-        expect.objectContaining({
-          height,
-        } satisfies Partial<FieldPluginData>),
-      )
-    })
-    it('send a message to the container with the expected value', () => {
-      const { uid, postToContainer, onUpdateState } = mock()
-      const {
-        actions: { setHeight },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
-      const height = 289437
-      setHeight(height)
-      expect(postToContainer).toHaveBeenLastCalledWith(
-        expect.objectContaining({
-          event: 'heightChange',
-          height,
-        } satisfies Partial<HeightChangeMessage>),
-      )
-    })
-  })
   describe('setPluginReady()', () => {
     it('send a message to the container to receive the initial state', () => {
       const { uid, postToContainer, onUpdateState } = mock()
