@@ -6,18 +6,16 @@ import {
   isValueChangeMessage,
   isAssetModalChangeMessage,
   RequestContext,
-  SetHeight,
   SetModalOpen,
-  SetPluginReady,
-  SetValue,
+  SetContent,
   isGetContextMessage,
 } from '@storyblok/field-plugin'
 
 type ContainerActions = {
-  setHeight: SetHeight
-  setValue: SetValue
+  setHeight: (height: number) => void
+  setContent: SetContent
   setModalOpen: SetModalOpen
-  setPluginReady: SetPluginReady
+  setPluginReady: () => void
   requestContext: RequestContext
   selectAsset: (field: string) => void
 }
@@ -48,7 +46,7 @@ export const createContainerMessageListener: CreateContainerListener = (
     }
 
     if (isValueChangeMessage(message)) {
-      eventHandlers.setValue(message.model)
+      eventHandlers.setContent(message.model)
     } else if (isPluginLoadedMessage(message)) {
       eventHandlers.setPluginReady()
     } else if (isModalChangeMessage(message)) {
