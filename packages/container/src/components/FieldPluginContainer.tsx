@@ -36,30 +36,33 @@ import { ValueView } from './ValueView'
 import { StringParam, useQueryParam, withDefault } from 'use-query-params'
 import { ObjectView } from './ObjectView'
 import { UrlView } from './UrlView'
+import { StoryData } from '@storyblok/field-plugin'
 
-const uid = () => Math.random().toString(32).slice(2)
-
-const wrapperHost = 'localhost:7070'
 const defaultUrl = 'http://localhost:8080'
 const initialContent = ''
 const initialHeight = 300
 const initialWidth = 300
 
-const pluginParams: PluginUrlParams = {
-  uid: uid(),
-  host: wrapperHost,
-  secure: false,
-  preview: true,
-}
-
-type TestStory = { content: { count: number } }
-
 const UrlQueryParam = withDefault(StringParam, defaultUrl)
+
+const usePluginParams = () => {
+  return useMemo<PluginUrlParams>(
+    () => ({
+      uid: Math.random().toString(32).slice(2),
+      host: window.location.host,
+      secure: window.location.protocol === 'https:',
+      preview: true,
+    }),
+    [],
+  )
+}
 
 const useSandbox = (
   onError: (message: { title: string; message?: string }) => void,
 ) => {
+  const pluginParams = usePluginParams()
   const { uid } = pluginParams
+
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
   const [url, setUrl] = useQueryParam('url', UrlQueryParam)
 
@@ -85,13 +88,11 @@ const useSandbox = (
     return `${fieldPluginURL.origin}${
       fieldPluginURL.pathname
     }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
-  }, [fieldPluginURL])
+  }, [fieldPluginURL, pluginParams])
   const [iframeUid, setIframeUid] = useState(uid)
 
-  const [story, setStory] = useState<TestStory>({
-    content: {
-      count: 0,
-    },
+  const [story, setStory] = useState<StoryData>({
+    content: {},
   })
 
   // TODO replace with useReducer
@@ -112,7 +113,7 @@ const useSandbox = (
       model: value,
       schema: schema,
       action: 'loaded',
-      uid: pluginParams.uid,
+      uid,
       blockId: undefined,
       language: 'default',
       spaceId: null,
@@ -120,7 +121,7 @@ const useSandbox = (
       storyId: undefined,
       token: null,
     }),
-    [value, schema, story],
+    [uid, value, schema, story],
   )
 
   const postToPlugin = useCallback(
@@ -170,22 +171,22 @@ const useSandbox = (
   const onContextRequested = useCallback(
     () =>
       dispatchContextRequest({
-        uid: pluginParams.uid,
+        uid,
         action: 'get-context',
         story: loadedData.story,
       }),
-    [dispatchContextRequest, loadedData.story],
+    [uid, dispatchContextRequest, loadedData.story],
   )
   const onAssetSelected = useCallback(
     (field: string) => {
       dispatchAssetSelected({
-        uid: pluginParams.uid,
+        uid,
         field,
         action: 'asset-selected',
         filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
       })
     },
-    [dispatchAssetSelected],
+    [uid, pluginParams, dispatchAssetSelected],
   )
 
   useEffect(
