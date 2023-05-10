@@ -7,7 +7,6 @@ import {
   isAssetModalChangeMessage,
   RequestContext,
   SetModalOpen,
-  SetPluginReady,
   SetContent,
   isGetContextMessage,
 } from '@storyblok/field-plugin'
@@ -16,7 +15,7 @@ type ContainerActions = {
   setHeight: (height: number) => void
   setContent: SetContent
   setModalOpen: SetModalOpen
-  setPluginReady: SetPluginReady
+  setPluginReady: () => void
   requestContext: RequestContext
   selectAsset: (field: string) => void
 }
