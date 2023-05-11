@@ -168,6 +168,7 @@ await $`yarn install`
 await $`git add .`
 const scope = COMMIT_SCOPE[packageName]
 const commitMessage = `chore(${scope}): release ${packageName}@${nextVersion}`
+const prBody = `## What?\n\nThis PR updates the library version for release.`
 await $`git commit -m ${commitMessage}`
 await $`git push -u origin ${branchName}`
-await $`gh pr create --title ${commitMessage} --web`
+await $`gh pr create --title ${commitMessage} --body ${prBody} --web`
