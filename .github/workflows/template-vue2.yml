@@ -6,7 +6,7 @@ on:
       - 'packages/field-plugin/**'
 jobs:
   build:
-    if: "!startsWith(github.event.pull_request.title, 'chore(lib): release @storyblok/field-plugin@')"
+    if: ${{ !startsWith(github.event.pull_request.title, 'chore(lib): release @storyblok/field-plugin@') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
