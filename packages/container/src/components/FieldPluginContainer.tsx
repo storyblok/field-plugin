@@ -12,9 +12,9 @@ import {
   FieldPluginData,
   FieldPluginSchema,
   originFromPluginParams,
-  PluginUrlParams,
   recordFromFieldPluginOptions,
   StateChangedMessage,
+  StoryData,
   urlSearchParamsFromPluginUrlParams,
 } from '@storyblok/field-plugin'
 import '@fontsource/roboto/300.css'
@@ -37,30 +37,25 @@ import { ContentView } from './ContentView'
 import { StringParam, useQueryParam, withDefault } from 'use-query-params'
 import { ObjectView } from './ObjectView'
 import { UrlView } from './UrlView'
+import { usePluginParams } from './usePluginParams'
 
-const uid = () => Math.random().toString(32).slice(2)
-
-const wrapperHost = 'localhost:7070'
 const defaultUrl = 'http://localhost:8080'
+const initialStory: StoryData = {
+  content: {},
+  lang: 'default',
+}
 const initialContent = ''
 const initialHeight = 300
 const initialWidth = 300
-
-const pluginParams: PluginUrlParams = {
-  uid: uid(),
-  host: wrapperHost,
-  secure: false,
-  preview: true,
-}
-
-type TestStory = { content: { count: number } }
 
 const UrlQueryParam = withDefault(StringParam, defaultUrl)
 
 const useSandbox = (
   onError: (message: { title: string; message?: string }) => void,
 ) => {
+  const pluginParams = usePluginParams()
   const { uid } = pluginParams
+
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
   const [url, setUrl] = useQueryParam('url', UrlQueryParam)
 
@@ -86,14 +81,10 @@ const useSandbox = (
     return `${fieldPluginURL.origin}${
       fieldPluginURL.pathname
     }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
-  }, [fieldPluginURL])
+  }, [fieldPluginURL, pluginParams])
   const [iframeUid, setIframeUid] = useState(uid)
 
-  const [story, setStory] = useState<TestStory>({
-    content: {
-      count: 0,
-    },
-  })
+  const [story] = useState<StoryData>(initialStory)
 
   // TODO replace with useReducer
   const [isModalOpen, setModalOpen] = useState(false)
@@ -113,7 +104,7 @@ const useSandbox = (
       model: content,
       schema: schema,
       action: 'loaded',
-      uid: pluginParams.uid,
+      uid,
       blockId: undefined,
       language: 'default',
       spaceId: null,
@@ -121,7 +112,7 @@ const useSandbox = (
       storyId: undefined,
       token: null,
     }),
-    [content, schema, story],
+    [uid, content, schema, story],
   )
 
   const postToPlugin = useCallback(
@@ -171,22 +162,22 @@ const useSandbox = (
   const onContextRequested = useCallback(
     () =>
       dispatchContextRequest({
-        uid: pluginParams.uid,
+        uid,
         action: 'get-context',
         story: loadedData.story,
       }),
-    [dispatchContextRequest, loadedData.story],
+    [uid, dispatchContextRequest, loadedData.story],
   )
   const onAssetSelected = useCallback(
     (field: string) => {
       dispatchAssetSelected({
-        uid: pluginParams.uid,
+        uid,
         field,
         action: 'asset-selected',
         filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
       })
     },
-    [dispatchAssetSelected],
+    [uid, pluginParams, dispatchAssetSelected],
   )
 
   useEffect(
