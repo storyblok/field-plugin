@@ -67,12 +67,19 @@ if (currentBranch.toString().trim() !== 'main') {
 }
 
 // Check if the working directory is clean
-if ((await $`git status --porcelain`.quiet()).toString().trim() !== '') {
-  print(
-    bold(red('[Error]')),
-    'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
-  )
-  exit(1)
+const isWorkingDirectoryClean =
+  (await $`git status --porcelain`.quiet()).toString().trim() === ''
+if (!isWorkingDirectoryClean) {
+  const { proceed } = await prompts({
+    type: 'confirm',
+    name: 'proceed',
+    message:
+      'There are uncommitted changes in the working directory. Do you want to continue including those changes?',
+    initial: false,
+  })
+  if (!proceed) {
+    exit(1)
+  }
 }
 
 // Select which package to deploy ('field-plugin' | 'cli')
