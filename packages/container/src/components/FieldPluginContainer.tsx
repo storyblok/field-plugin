@@ -12,9 +12,9 @@ import {
   FieldPluginData,
   FieldPluginSchema,
   originFromPluginParams,
-  PluginUrlParams,
   recordFromFieldPluginOptions,
   StateChangedMessage,
+  StoryData,
   urlSearchParamsFromPluginUrlParams,
 } from '@storyblok/field-plugin'
 import '@fontsource/roboto/300.css'
@@ -37,7 +37,7 @@ import { ContentView } from './ContentView'
 import { StringParam, useQueryParam, withDefault } from 'use-query-params'
 import { ObjectView } from './ObjectView'
 import { UrlView } from './UrlView'
-import { StoryData } from '@storyblok/field-plugin'
+import { usePluginParams } from './usePluginParams'
 
 const defaultUrl = 'http://localhost:8080'
 const initialStory: StoryData = {
@@ -49,18 +49,6 @@ const initialHeight = 300
 const initialWidth = 300
 
 const UrlQueryParam = withDefault(StringParam, defaultUrl)
-
-const usePluginParams = () => {
-  return useMemo<PluginUrlParams>(
-    () => ({
-      uid: Math.random().toString(32).slice(2),
-      host: window.location.host,
-      secure: window.location.protocol === 'https:',
-      preview: true,
-    }),
-    [],
-  )
-}
 
 const useSandbox = (
   onError: (message: { title: string; message?: string }) => void,
