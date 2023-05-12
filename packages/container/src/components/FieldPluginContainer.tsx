@@ -26,9 +26,14 @@ import {
   AccordionDetails,
   AccordionSummary,
   Container,
+  Stack,
   Typography,
 } from '@mui/material'
-import { ChevronDownIcon, useNotifications } from '@storyblok/mui'
+import {
+  CenteredContent,
+  ChevronDownIcon,
+  useNotifications,
+} from '@storyblok/mui'
 import { SchemaEditor } from './SchemaEditor'
 import { FieldTypePreview } from './FieldTypePreview'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
@@ -46,7 +51,6 @@ const initialStory: StoryData = {
 }
 const initialContent = ''
 const initialHeight = 300
-const initialWidth = 300
 
 const UrlQueryParam = withDefault(StringParam, defaultUrl)
 
@@ -246,16 +250,39 @@ export const FieldPluginContainer: FunctionComponent = () => {
   ] = useSandbox(error)
 
   return (
-    <Container>
-      <FieldTypePreview
-        src={iframeSrc}
-        height={`${height}px`}
-        initialWidth={`${initialWidth}px`}
-        isModal={isModalOpen}
-        ref={fieldTypeIframe}
-        uid={iframeUid}
-        sx={{ my: 15 }}
-      />
+    <Stack
+      sx={{
+        mb: 12,
+        alignItems: 'center',
+      }}
+    >
+      <Accordion defaultExpanded>
+        <AccordionSummary>
+          <Typography variant="h3">Preview</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <CenteredContent
+            component="div"
+            sx={{
+              p: 10,
+              display: 'block',
+              resize: 'horizontal',
+              maxWidth: '100%',
+              minWidth: '100px',
+              width: (theme) => theme.breakpoints.values.md,
+              overflow: 'auto',
+            }}
+          >
+            <FieldTypePreview
+              src={iframeSrc}
+              height={`${height}px`}
+              isModal={isModalOpen}
+              ref={fieldTypeIframe}
+              uid={iframeUid}
+            />
+          </CenteredContent>
+        </AccordionDetails>
+      </Accordion>
       <Container maxWidth="md">
         <UrlView
           url={url}
@@ -292,7 +319,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
             />
           </AccordionDetails>
         </Accordion>
-        <Accordion>
+        <Accordion defaultExpanded>
           <AccordionSummary
             expandIcon={<ChevronDownIcon />}
             sx={{ p: 0 }}
@@ -317,6 +344,6 @@ export const FieldPluginContainer: FunctionComponent = () => {
           </AccordionDetails>
         </Accordion>
       </Container>
-    </Container>
+    </Stack>
   )
 }
