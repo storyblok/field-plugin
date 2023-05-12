@@ -39,7 +39,6 @@ const FieldTypeModal: FunctionComponent<
 const FieldTypeContainer: FunctionComponent<
   PropsWithChildren<{
     isModal: boolean
-    initialWidth: string
   }>
 > = (props) => (
   <Box
@@ -54,7 +53,6 @@ const FieldTypeContainer: FunctionComponent<
           }
         : {
             overflow: 'auto',
-            resize: 'horizontal',
             p: 1,
             maxWidth: '100%',
             minWidth: '100px',
@@ -62,7 +60,7 @@ const FieldTypeContainer: FunctionComponent<
     }
     style={{
       margin: 'auto',
-      width: props.isModal ? '90%' : props.initialWidth,
+      width: props.isModal ? '90%' : '100%',
     }}
   >
     {props.children}
@@ -74,7 +72,6 @@ export const FieldTypePreview = forwardRef<
   {
     src: string | undefined
     height: string
-    initialWidth: string
     isModal: boolean
     // Allows the iframe to be refreshed
     uid?: string
@@ -89,10 +86,7 @@ export const FieldTypePreview = forwardRef<
         sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
       />
       <FieldTypeModal isModal={props.isModal}>
-        <FieldTypeContainer
-          isModal={props.isModal}
-          initialWidth={props.initialWidth}
-        >
+        <FieldTypeContainer isModal={props.isModal}>
           {typeof props.src !== 'undefined' ? (
             <Box
               ref={ref}

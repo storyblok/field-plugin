@@ -1,11 +1,11 @@
 import { FunctionComponent } from 'react'
 import {
   AppContainer,
+  AppContent,
   lightTheme,
   NotificationProvider,
-  AppContent,
 } from '@storyblok/mui'
-import { CssBaseline, ThemeProvider } from '@mui/material'
+import { CssBaseline, Divider, ThemeProvider } from '@mui/material'
 import { FieldPluginContainer } from './FieldPluginContainer'
 import { SandboxAppHeader } from './SandboxAppHeader'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'

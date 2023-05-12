@@ -71,6 +71,10 @@ body {
 .container {
   max-width: 22rem;
   margin: 0 auto;
+  background-color: #ffffff;
+  border: 1px solid var(--light);
+  padding: 15px;
+  border-radius: 5px;
 }
 
 h2 {
