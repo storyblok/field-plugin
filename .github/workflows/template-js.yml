@@ -5,8 +5,11 @@ on:
       - 'packages/cli/templates/js/**'
       - 'packages/field-plugin/**'
 jobs:
+  check-if-releasing-library:
+    uses: ./.github/workflows/check-if-releasing-library.yml
   build:
-    if: ${{ !startsWith(github.event.pull_request.title, 'chore(lib): release @storyblok/field-plugin@') }}
+    needs: check-if-releasing-library
+    if: ${{ needs.check-if-releasing-library.outputs.result == 'false' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
