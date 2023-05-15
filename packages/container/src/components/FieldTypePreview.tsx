@@ -74,7 +74,7 @@ export const FieldTypePreview = forwardRef<
     height: string
     isModal: boolean
     // Allows the iframe to be refreshed
-    uid?: string
+    iframeKey?: number
     sx?: SxProps
   }
 >(function FieldTypePreview(props, ref) {
@@ -90,7 +90,7 @@ export const FieldTypePreview = forwardRef<
           {typeof props.src !== 'undefined' ? (
             <Box
               ref={ref}
-              key={props.uid}
+              key={props.iframeKey}
               component="iframe"
               src={props.src}
               title="Field Plugin Preview"

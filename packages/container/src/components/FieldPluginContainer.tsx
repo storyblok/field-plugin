@@ -86,7 +86,7 @@ const useSandbox = (
       fieldPluginURL.pathname
     }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
-  const [iframeUid, setIframeUid] = useState(uid)
+  const [iframeKey, setIframeKey] = useState(0)
 
   const [story] = useState<StoryData>(initialStory)
 
@@ -100,7 +100,7 @@ const useSandbox = (
   const [content, setContent] = useState<unknown>(initialContent)
 
   const refreshIframe = () => {
-    setIframeUid(uid)
+    setIframeKey((key) => key + 1)
   }
 
   const loadedData = useMemo<StateChangedMessage>(
@@ -222,7 +222,7 @@ const useSandbox = (
       url,
       fieldTypeIframe,
       iframeSrc,
-      iframeUid,
+      iframeUid: iframeKey,
     },
     {
       setContent,
@@ -278,7 +278,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
               height={`${height}px`}
               isModal={isModalOpen}
               ref={fieldTypeIframe}
-              uid={iframeUid}
+              iframeKey={iframeUid}
             />
           </CenteredContent>
         </AccordionDetails>
