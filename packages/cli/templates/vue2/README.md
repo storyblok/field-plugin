@@ -2,7 +2,6 @@
 
 This project was created using Vue 2. It consists of a set of base functionalities, such as value updating, modal toggling and asset selection. This starter is intended to help developers when creating their own Storyblok Field Plugin.
 
-
 ## Usage
 
 For development, run the application locally with
@@ -11,7 +10,7 @@ For development, run the application locally with
 yarn dev
 ```
 
-and open the [Sandbox](https://storyblok-field-plugin-sandbox.vercel.app/).
+and open the [Sandbox](https://plugin-sandbox.storyblok.com/).
 
 To build the project, run
 

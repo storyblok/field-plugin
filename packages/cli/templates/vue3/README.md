@@ -8,7 +8,6 @@ You can choose either option. This template is written using the Composition API
 
 If you prefer to use the Options API, you can refer to [the Vue 2 template](https://github.com/storyblok/field-plugin/blob/main/packages/cli/templates/vue2/src/App.vue).
 
-
 ## Usage
 
 For development, run the application locally with
@@ -17,7 +16,7 @@ For development, run the application locally with
 yarn dev
 ```
 
-and open the [Sandbox](https://storyblok-field-plugin-sandbox.vercel.app/).
+and open the [Sandbox](https://plugin-sandbox.storyblok.com/).
 
 To build the project, run
 

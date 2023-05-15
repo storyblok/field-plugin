@@ -28,7 +28,7 @@ export default defineConfig({
   },
 })
 
-const sandboxBaseUrl = `https://storyblok-field-plugin-sandbox.vercel.app`
+const sandboxBaseUrl = `https://plugin-sandbox.storyblok.com`
 const sandboxUrl = (fieldPluginUrl: string) => {
   const urlQuery = querystring.stringify({
     url: fieldPluginUrl,
