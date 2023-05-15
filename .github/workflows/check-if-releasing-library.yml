@@ -1,0 +1,24 @@
+on:
+  workflow_call:
+    outputs:
+      result:
+        value: ${{ jobs.check-if-releasing-library.outputs.result }}
+
+jobs:
+  check-if-releasing-library:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.validation.outputs.result }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: PR
+        uses: jwalton/gh-find-current-pr@v1
+      - id: validation
+        run: |
+          if [[ "${{ steps.PR.outputs.title }}" == "@storyblok/field-plugin-cli@"* ]]; then
+            echo "releasing library"
+            echo "result=true" >> $GITHUB_OUTPUT
+          else
+            echo "not releasing library"
+            echo "result=false" >> $GITHUB_OUTPUT
+          fi
