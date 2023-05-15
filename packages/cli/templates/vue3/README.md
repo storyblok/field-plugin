@@ -16,7 +16,7 @@ For development, run the application locally with
 yarn dev
 ```
 
-and open the [Sandbox](https://plugin-sandbox.storyblok.com/).
+and open the [Sandbox](https://plugin-sandbox.storyblok.com/field-plugin/).
 
 To build the project, run
 
