@@ -249,7 +249,7 @@ const confirmCreatingFieldPlugin = async (name: string) => {
   const { create } = await betterPrompts<{ create: boolean }>({
     type: 'confirm',
     name: 'create',
-    message: `You want to create a new field plugin \`${name}\`?`,
+    message: `You want to deploy a new field plugin \`${name}\`?`,
     initial: true,
   })
   return create
