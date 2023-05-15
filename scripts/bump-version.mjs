@@ -67,12 +67,19 @@ if (currentBranch.toString().trim() !== 'main') {
 }
 
 // Check if the working directory is clean
-if ((await $`git status --porcelain`.quiet()).toString().trim() !== '') {
-  print(
-    bold(red('[Error]')),
-    'There are uncommitted changes in the working directory. Please clean them up before proceeding.',
-  )
-  exit(1)
+const isWorkingDirectoryClean =
+  (await $`git status --porcelain`.quiet()).toString().trim() === ''
+if (!isWorkingDirectoryClean) {
+  const { proceed } = await prompts({
+    type: 'confirm',
+    name: 'proceed',
+    message:
+      'There are uncommitted changes in the working directory. Do you want to continue including those changes?',
+    initial: false,
+  })
+  if (!proceed) {
+    exit(1)
+  }
 }
 
 // Select which package to deploy ('field-plugin' | 'cli')
@@ -168,7 +175,7 @@ await $`yarn install`
 await $`git add .`
 const scope = COMMIT_SCOPE[packageName]
 const commitMessage = `chore(${scope}): release ${packageName}@${nextVersion}`
-const prBody = `## What?\n\nThis PR updates the library version for release.`
+const prBody = `## What?\n\nThis PR updates the ${scope} version for release.`
 await $`git commit -m ${commitMessage}`
 await $`git push -u origin ${branchName}`
 await $`gh pr create --title ${commitMessage} --body ${prBody} --web`
