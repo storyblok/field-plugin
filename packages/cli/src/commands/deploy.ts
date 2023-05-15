@@ -161,7 +161,7 @@ const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
 
   const storyblokClient = StoryblokClient({ token, scope })
 
-  console.log(bold(cyan('[info] Fetching field plugins...')))
+  console.log(bold(cyan('[info] Checking existing field plugins...')))
   const allFieldPlugins = await storyblokClient.fetchAllFieldTypes()
   const fieldPlugin = allFieldPlugins.find(
     (fieldPlugin) => fieldPlugin.name === packageName,
