@@ -161,7 +161,7 @@ const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
 
   const storyblokClient = StoryblokClient({ token, scope })
 
-  console.log(bold(cyan('[info] Fetching field plugins...')))
+  console.log(bold(cyan('[info] Checking existing field plugins...')))
   const allFieldPlugins = await storyblokClient.fetchAllFieldTypes()
   const fieldPlugin = allFieldPlugins.find(
     (fieldPlugin) => fieldPlugin.name === packageName,
@@ -249,7 +249,7 @@ const confirmCreatingFieldPlugin = async (name: string) => {
   const { create } = await betterPrompts<{ create: boolean }>({
     type: 'confirm',
     name: 'create',
-    message: `You want to create a new field plugin \`${name}\`?`,
+    message: `You want to deploy a new field plugin \`${name}\`?`,
     initial: true,
   })
   return create
