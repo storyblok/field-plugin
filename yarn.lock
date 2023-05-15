@@ -1597,13 +1597,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@npm:0.0.1-alpha.3":
-  version: 0.0.1-alpha.3
-  resolution: "@storyblok/field-plugin@npm:0.0.1-alpha.3"
-  checksum: 2a13e4e927a814b8d48d3c0d7731498931dc52c3bb327f9bd9b10b0657a0326582edf4b5acf8e5e05a49f01ea18b6c4008baa2b569e9f9b7e84c1503838c4bcc
-  languageName: node
-  linkType: hard
-
 "@storyblok/mui@npm:0.0.19-alpha":
   version: 0.0.19-alpha
   resolution: "@storyblok/mui@npm:0.0.19-alpha"
