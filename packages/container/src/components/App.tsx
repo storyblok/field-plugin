@@ -5,10 +5,10 @@ import {
   lightTheme,
   NotificationProvider,
 } from '@storyblok/mui'
-import { CssBaseline, Divider, ThemeProvider } from '@mui/material'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 import { FieldPluginContainer } from './FieldPluginContainer'
 import { SandboxAppHeader } from './SandboxAppHeader'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
 import { QueryParamProvider } from 'use-query-params'
 
@@ -21,6 +21,10 @@ export const App: FunctionComponent = () => (
           <Routes>
             <Route
               path="/"
+              element={<Navigate to="/field-plugin" />}
+            />
+            <Route
+              path="/field-plugin"
               element={
                 <AppContainer>
                   <SandboxAppHeader />
