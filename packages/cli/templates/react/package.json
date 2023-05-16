@@ -10,7 +10,7 @@
     "deploy": "npm run build && npx @storyblok/field-plugin-cli@alpha deploy"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "0.0.1-alpha.4",
+    "@storyblok/field-plugin": "0.0.1-beta.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
