@@ -23,6 +23,6 @@ jobs:
       - name: Copy the root's readme file
         run: cp README.md packages/field-plugin/
       - name: Publish the package to NPM
-        run: cd packages/field-plugin && npm publish --access public --tag alpha
+        run: cd packages/field-plugin && npm publish --access public --tag beta
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH}}
