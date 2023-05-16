@@ -57,7 +57,7 @@ const UrlQueryParam = withDefault(StringParam, defaultUrl)
 const useSandbox = (
   onError: (message: { title: string; message?: string }) => void,
 ) => {
-  const pluginParams = usePluginParams()
+  const { pluginParams, randomizeUid } = usePluginParams()
   const { uid } = pluginParams
 
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
@@ -86,7 +86,7 @@ const useSandbox = (
       fieldPluginURL.pathname
     }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
-  const [iframeUid, setIframeUid] = useState(uid)
+  const [iframeKey, setIframeKey] = useState(0)
 
   const [story] = useState<StoryData>(initialStory)
 
@@ -98,10 +98,6 @@ const useSandbox = (
     options: [],
   })
   const [content, setContent] = useState<unknown>(initialContent)
-
-  const refreshIframe = () => {
-    setIframeUid(uid)
-  }
 
   const loadedData = useMemo<StateChangedMessage>(
     () => ({
@@ -222,13 +218,12 @@ const useSandbox = (
       url,
       fieldTypeIframe,
       iframeSrc,
-      iframeUid,
     },
     {
       setContent,
       setSchema,
       setUrl,
-      refreshIframe,
+      randomizeUid,
     },
   ] as const
 }
@@ -236,17 +231,8 @@ const useSandbox = (
 export const FieldPluginContainer: FunctionComponent = () => {
   const { error } = useNotifications()
   const [
-    {
-      content,
-      isModalOpen,
-      height,
-      schema,
-      url,
-      fieldTypeIframe,
-      iframeSrc,
-      iframeUid,
-    },
-    { setContent, setSchema, setUrl, refreshIframe },
+    { content, isModalOpen, height, schema, url, fieldTypeIframe, iframeSrc },
+    { setContent, setSchema, setUrl, randomizeUid },
   ] = useSandbox(error)
 
   return (
@@ -278,7 +264,6 @@ export const FieldPluginContainer: FunctionComponent = () => {
               height={`${height}px`}
               isModal={isModalOpen}
               ref={fieldTypeIframe}
-              uid={iframeUid}
             />
           </CenteredContent>
         </AccordionDetails>
@@ -287,7 +272,8 @@ export const FieldPluginContainer: FunctionComponent = () => {
         <UrlView
           url={url}
           setUrl={setUrl}
-          onRefresh={refreshIframe}
+          // Randomizing the uid will change the url which in turn refreshes the iframe window
+          onRefresh={randomizeUid}
           error={typeof iframeSrc === 'undefined'}
           placeholder={defaultUrl}
         />
