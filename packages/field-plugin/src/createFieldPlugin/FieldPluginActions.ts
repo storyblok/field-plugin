@@ -1,9 +1,10 @@
 import { Asset } from '../messaging'
 
+type DispatchAction<T> = T | ((value: T) => T)
 export type SetContent = <Content = undefined>(
-  setContentAction: Content | ((content: Content) => void),
+  setContentAction: DispatchAction<Content>,
 ) => void
-export type SetModalOpen = (isModal: boolean) => void
+export type SetModalOpen = (setModalOpenAction: DispatchAction<boolean>) => void
 export type RequestContext = () => void
 export type SelectAsset = () => Promise<Asset>
 

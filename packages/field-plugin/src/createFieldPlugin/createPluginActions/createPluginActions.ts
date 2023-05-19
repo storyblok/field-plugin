@@ -95,12 +95,9 @@ export const createPluginActions: CreatePluginActions = (
 
   return {
     actions: {
-      setContent: (contentOrUpdaterFunction) => {
+      setContent: (action) => {
         const content: unknown =
-          typeof contentOrUpdaterFunction === 'function'
-            ? contentOrUpdaterFunction(state.content)
-            : contentOrUpdaterFunction
-        console.log(typeof contentOrUpdaterFunction, content)
+          typeof action === 'function' ? action(state.content) : action
         postToContainer(valueChangeMessage(uid, content))
         state = {
           ...state,
@@ -108,7 +105,9 @@ export const createPluginActions: CreatePluginActions = (
         }
         onUpdateState(state)
       },
-      setModalOpen: (isModalOpen) => {
+      setModalOpen: (action) => {
+        const isModalOpen: boolean =
+          typeof action === 'function' ? action(state.isModalOpen) : action
         postToContainer(modalChangeMessage(uid, isModalOpen))
         state = {
           ...state,
