@@ -95,7 +95,12 @@ export const createPluginActions: CreatePluginActions = (
 
   return {
     actions: {
-      setContent: (content) => {
+      setContent: (contentOrUpdaterFunction) => {
+        const content: unknown =
+          typeof contentOrUpdaterFunction === 'function'
+            ? contentOrUpdaterFunction(state.content)
+            : contentOrUpdaterFunction
+        console.log(typeof contentOrUpdaterFunction, content)
         postToContainer(valueChangeMessage(uid, content))
         state = {
           ...state,

@@ -1,6 +1,8 @@
 import { Asset } from '../messaging'
 
-export type SetContent = (content: unknown) => void
+export type SetContent = <Content = undefined>(
+  setContentAction: Content | ((content: Content) => void),
+) => void
 export type SetModalOpen = (isModal: boolean) => void
 export type RequestContext = () => void
 export type SelectAsset = () => Promise<Asset>
