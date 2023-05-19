@@ -1,7 +1,8 @@
 import { Asset } from '../messaging'
 
-export type SetContent = (content: unknown) => void
-export type SetModalOpen = (isModal: boolean) => void
+export type SetStateAction<T> = T | ((value: T) => T)
+export type SetContent = <C>(setContentAction: SetStateAction<C>) => void
+export type SetModalOpen = (setModalOpenAction: SetStateAction<boolean>) => void
 export type RequestContext = () => void
 export type SelectAsset = () => Promise<Asset>
 

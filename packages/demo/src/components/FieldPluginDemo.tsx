@@ -7,6 +7,7 @@ import { ValueMutator } from './ValueMutator'
 import { ModalToggle } from './ModalToggle'
 import { AssetSelector } from './AssetSelector'
 import { ContextRequester } from './ContextRequester'
+import { UpdaterFunctionDemo } from './UpdaterFunctionDemo'
 
 export type PluginComponent = FunctionComponent<{
   data: FieldPluginData
@@ -43,6 +44,8 @@ export const FieldPluginDemo: FunctionComponent = () => {
     >
       <Stack gap={4}>
         <ValueMutator {...props} />
+        <Divider />
+        <UpdaterFunctionDemo {...props} />
         <Divider />
         <ModalToggle {...props} />
         <Divider />
