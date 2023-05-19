@@ -42,15 +42,11 @@ export const FieldPluginDemo: FunctionComponent = () => {
     <Paper
       sx={{ p: 3, border: (theme) => `1px solid ${theme.palette.divider}` }}
     >
-      <Stack gap={4}>
+      <Stack gap={6}>
         <ValueMutator {...props} />
-        <Divider />
         <UpdaterFunctionDemo {...props} />
-        <Divider />
         <ModalToggle {...props} />
-        <Divider />
         <AssetSelector {...props} />
-        <Divider />
         <ContextRequester {...props} />
       </Stack>
     </Paper>
