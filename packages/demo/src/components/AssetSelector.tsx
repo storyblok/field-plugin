@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Button, Divider, Stack, Typography } from '@mui/material'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import { AssetIcon, DeleteIcon } from '@storyblok/mui'
 import { PluginComponent } from './FieldPluginDemo'
 import { Asset } from '@storyblok/field-plugin'
