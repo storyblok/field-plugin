@@ -9,9 +9,7 @@ export const AssetSelector: PluginComponent = (props) => {
   const [asset, setAsset] = useState<Asset | undefined>()
   return (
     <Stack gap={2}>
-      <Divider>
-        <Typography variant="subtitle1">Asset Selector</Typography>
-      </Divider>
+      <Typography variant="subtitle1">Asset Selector</Typography>
       <Box
         height={100}
         position="relative"
