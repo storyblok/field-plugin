@@ -1582,7 +1582,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@0.0.1-beta.0, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@npm:0.0.1-beta.0":
+  version: 0.0.1-beta.0
+  resolution: "@storyblok/field-plugin@npm:0.0.1-beta.0"
+  checksum: eea8114931b5848152c47ce14c4eef0b9482d5fdc87d5541c7e0db625139ae4b7b076b7eeb877f4257e347cc1f544ff0c72ea26f1f26a3f1aed0c2f98e7d8090
+  languageName: node
+  linkType: hard
+
+"@storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
