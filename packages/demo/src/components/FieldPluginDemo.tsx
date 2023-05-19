@@ -39,7 +39,7 @@ export const FieldPluginDemo: FunctionComponent = () => {
   }
   return (
     <Paper
-      sx={{ p: 3, border: (theme) => `1px dashed ${theme.palette.divider}` }}
+      sx={{ p: 3, border: (theme) => `1px solid ${theme.palette.divider}` }}
     >
       <Stack gap={4}>
         <ValueMutator {...props} />
