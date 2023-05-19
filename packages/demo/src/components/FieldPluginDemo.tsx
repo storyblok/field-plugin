@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Divider, Paper, Stack, Typography } from '@mui/material'
 import { useFieldPlugin } from '../useFieldPlugin'
 import { LoadingIcon, SquareErrorIcon } from '@storyblok/mui'
 import { FieldPluginActions, FieldPluginData } from '@storyblok/field-plugin'
@@ -39,12 +39,16 @@ export const FieldPluginDemo: FunctionComponent = () => {
     actions,
   }
   return (
-    <Stack gap={4}>
-      <ValueMutator {...props} />
-      <UpdaterFunctionDemo {...props} />
-      <ModalToggle {...props} />
-      <AssetSelector {...props} />
-      <ContextRequester {...props} />
-    </Stack>
+    <Paper
+      sx={{ p: 3, border: (theme) => `1px solid ${theme.palette.divider}` }}
+    >
+      <Stack gap={6}>
+        <ValueMutator {...props} />
+        <UpdaterFunctionDemo {...props} />
+        <ModalToggle {...props} />
+        <AssetSelector {...props} />
+        <ContextRequester {...props} />
+      </Stack>
+    </Paper>
   )
 }

@@ -17,4 +17,5 @@ jobs:
             sandbox
             cli
             template
+            demo
           requireScope: true

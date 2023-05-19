@@ -1,4 +1,4 @@
-import { Button, Divider, Stack, Typography } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 import { PluginComponent } from './FieldPluginDemo'
 
 export const ValueMutator: PluginComponent = (props) => {
@@ -15,9 +15,7 @@ export const ValueMutator: PluginComponent = (props) => {
 
   return (
     <Stack gap={2}>
-      <Divider>
-        <Typography variant="subtitle1">Field Value</Typography>
-      </Divider>
+      <Typography variant="subtitle1">Field Value</Typography>
       <Typography textAlign="center">{label}</Typography>
       <Button
         variant="outlined"
