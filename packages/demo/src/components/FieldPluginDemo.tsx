@@ -38,7 +38,9 @@ export const FieldPluginDemo: FunctionComponent = () => {
     actions,
   }
   return (
-    <Paper sx={{ p: 3, borderColor: 'divider', border: 1 }}>
+    <Paper
+      sx={{ p: 3, border: (theme) => `1px dashed ${theme.palette.divider}` }}
+    >
       <Stack gap={4}>
         <ValueMutator {...props} />
         <Divider />
