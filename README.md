@@ -6,7 +6,7 @@ It's easy to get started! Simply
 use [Storyblok's field plugin CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli) to bootstrap your project with your favorite frontend framework:
 
 ```shell
-npx @storyblok/field-plugin-cli@alpha
+npx @storyblok/field-plugin-cli@beta
 ```
 
 Storyblok provides the following starter projects:
@@ -23,7 +23,7 @@ Storyblok provides the following starter projects:
 To integrate `@storyblok/field-plugin` into a frontend framework, bootstrap your application with the `--template js` flag.
 
 ```shell
-npx @storyblok/field-plugin-cli@alpha --template js
+npx @storyblok/field-plugin-cli@beta --template js
 ```
 
 The entry point of the application is in `src/main.js`. Replace this code with the following:
@@ -197,7 +197,7 @@ Properties:
 
 ## Caveats
 
-Field plugins for Storyblok have some unique feature that one should be aware of. It can be tricky to set up a new project from scratch, and it is therefore recommended to bootstrap new projects with `npx @storyblok/field-plugin-cli@alpha`.
+Field plugins for Storyblok have some unique feature that one should be aware of. It can be tricky to set up a new project from scratch, and it is therefore recommended to bootstrap new projects with `npx @storyblok/field-plugin-cli@beta`.
 
 ### Single JavaScript Bundle
 
