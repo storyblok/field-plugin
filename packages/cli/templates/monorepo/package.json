@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "add-plugin": "npx @storyblok/field-plugin-cli@alpha add --dir \"./packages\" --structure monorepo",
+    "add-plugin": "npx @storyblok/field-plugin-cli@beta add --dir \"./packages\" --structure monorepo",
     "lint": "eslint --ext .js,.vue .",
     "format": "prettier . --write"
   },
