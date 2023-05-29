@@ -246,7 +246,15 @@ export const FieldPluginContainer: FunctionComponent = () => {
         <AccordionSummary>
           <Typography variant="h3">Preview</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 5,
+          }}
+        >
           <CenteredContent
             component="div"
             sx={{
@@ -266,22 +274,27 @@ export const FieldPluginContainer: FunctionComponent = () => {
               ref={fieldTypeIframe}
             />
           </CenteredContent>
+          <Container
+            sx={{
+              display: 'flex',
+              justifyContent: 'left',
+              width: (theme) => theme.breakpoints.values.md,
+            }}
+          >
+            <UrlView
+              url={url}
+              setUrl={setUrl}
+              // Randomizing the uid will change the url which in turn refreshes the iframe window
+              onRefresh={randomizeUid}
+              error={typeof iframeSrc === 'undefined'}
+              placeholder={defaultUrl}
+            />
+          </Container>
         </AccordionDetails>
       </Accordion>
-      <Container maxWidth="md">
-        <UrlView
-          url={url}
-          setUrl={setUrl}
-          // Randomizing the uid will change the url which in turn refreshes the iframe window
-          onRefresh={randomizeUid}
-          error={typeof iframeSrc === 'undefined'}
-          placeholder={defaultUrl}
-        />
+      <Stack sx={{ width: (theme) => theme.breakpoints.values.md }}>
         <Accordion defaultExpanded>
-          <AccordionSummary
-            expandIcon={<ChevronDownIcon />}
-            sx={{ p: 0 }}
-          >
+          <AccordionSummary>
             <Typography variant="h3">Options</Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -292,10 +305,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
           </AccordionDetails>
         </Accordion>
         <Accordion defaultExpanded>
-          <AccordionSummary
-            expandIcon={<ChevronDownIcon />}
-            sx={{ p: 0 }}
-          >
+          <AccordionSummary>
             <Typography variant="h3">Content</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ position: 'relative' }}>
@@ -306,13 +316,10 @@ export const FieldPluginContainer: FunctionComponent = () => {
           </AccordionDetails>
         </Accordion>
         <Accordion defaultExpanded>
-          <AccordionSummary
-            expandIcon={<ChevronDownIcon />}
-            sx={{ p: 0 }}
-          >
+          <AccordionSummary>
             <Typography variant="h3">Data</Typography>
           </AccordionSummary>
-          <AccordionDetails sx={{ p: 0 }}>
+          <AccordionDetails>
             <ObjectView
               title={
                 <Typography variant="caption">
@@ -329,7 +336,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
             />
           </AccordionDetails>
         </Accordion>
-      </Container>
+      </Stack>
     </Stack>
   )
 }
