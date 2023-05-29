@@ -1610,9 +1610,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storyblok/mui@npm:0.0.22":
-  version: 0.0.22
-  resolution: "@storyblok/mui@npm:0.0.22"
+"@storyblok/mui@npm:0.2.0":
+  version: 0.2.0
+  resolution: "@storyblok/mui@npm:0.2.0"
   dependencies:
     "@mui/system": ^5.6.1
     "@mui/utils": ^5.6.1
@@ -1622,7 +1622,7 @@ __metadata:
     "@mui/material": ">=5.6.1"
     react: ">=18.2.0"
     react-dom: ">=18.2.0"
-  checksum: bbbfafd3438eed85a35cc0aed922d4f18bd95b9595b22e7e3dc48deaeb57f374d5a10ae0a796ad6b60394d479625349cd01a7e8ba9a1048a7db2e34a94002461
+  checksum: c41642d96a8b6efb1d705a25fa05e16fc380936c55af72fd6af09e2d628f5ce2f3c6b5e962bc476dee8f6b917d9764a5dd1de63a80fb0bce58f6f5b7e8ce4808
   languageName: node
   linkType: hard
 
@@ -3241,7 +3241,7 @@ __metadata:
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
     "@storyblok/field-plugin": 0.0.1-beta.1
-    "@storyblok/mui": 0.0.22
+    "@storyblok/mui": 0.2.0
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.0.0
     eslint: ^8.20.0
@@ -3448,7 +3448,7 @@ __metadata:
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
     "@storyblok/field-plugin": "workspace:*"
-    "@storyblok/mui": 0.0.22
+    "@storyblok/mui": 0.2.0
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.0.0
     eslint: ^8.20.0
