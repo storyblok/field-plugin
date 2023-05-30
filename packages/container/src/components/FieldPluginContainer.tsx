@@ -236,26 +236,29 @@ export const FieldPluginContainer: FunctionComponent = () => {
   ] = useSandbox(error)
 
   return (
-    <Stack
-      sx={{
-        mb: 12,
-        alignItems: 'center',
-      }}
-    >
+    <Container maxWidth="md">
       <Accordion defaultExpanded>
         <AccordionSummary>
           <Typography variant="h3">Preview</Typography>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 5,
+            p: 0,
+          }}
+        >
           <CenteredContent
             component="div"
             sx={{
               p: 10,
               display: 'block',
               resize: 'horizontal',
-              maxWidth: '100%',
               minWidth: '100px',
-              width: (theme) => theme.breakpoints.values.md,
+              width: '100%',
               overflow: 'auto',
             }}
           >
@@ -266,70 +269,67 @@ export const FieldPluginContainer: FunctionComponent = () => {
               ref={fieldTypeIframe}
             />
           </CenteredContent>
+          <Container
+            sx={{
+              display: 'flex',
+              justifyContent: 'left',
+              width: (theme) => theme.breakpoints.values.md,
+            }}
+          >
+            <UrlView
+              url={url}
+              setUrl={setUrl}
+              // Randomizing the uid will change the url which in turn refreshes the iframe window
+              onRefresh={randomizeUid}
+              error={typeof iframeSrc === 'undefined'}
+              placeholder={defaultUrl}
+            />
+          </Container>
         </AccordionDetails>
       </Accordion>
-      <Container maxWidth="md">
-        <UrlView
-          url={url}
-          setUrl={setUrl}
-          // Randomizing the uid will change the url which in turn refreshes the iframe window
-          onRefresh={randomizeUid}
-          error={typeof iframeSrc === 'undefined'}
-          placeholder={defaultUrl}
-        />
-        <Accordion defaultExpanded>
-          <AccordionSummary
-            expandIcon={<ChevronDownIcon />}
-            sx={{ p: 0 }}
-          >
-            <Typography variant="h3">Options</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <SchemaEditor
-              schema={schema}
-              setSchema={setSchema}
-            />
-          </AccordionDetails>
-        </Accordion>
-        <Accordion defaultExpanded>
-          <AccordionSummary
-            expandIcon={<ChevronDownIcon />}
-            sx={{ p: 0 }}
-          >
-            <Typography variant="h3">Content</Typography>
-          </AccordionSummary>
-          <AccordionDetails sx={{ position: 'relative' }}>
-            <ContentView
-              content={content}
-              setContent={setContent}
-            />
-          </AccordionDetails>
-        </Accordion>
-        <Accordion defaultExpanded>
-          <AccordionSummary
-            expandIcon={<ChevronDownIcon />}
-            sx={{ p: 0 }}
-          >
-            <Typography variant="h3">Data</Typography>
-          </AccordionSummary>
-          <AccordionDetails sx={{ p: 0 }}>
-            <ObjectView
-              title={
-                <Typography variant="caption">
-                  FieldPluginResponse.data
-                </Typography>
-              }
-              output={
-                {
-                  content,
-                  isModalOpen,
-                  options: recordFromFieldPluginOptions(schema.options),
-                } satisfies Partial<FieldPluginData>
-              }
-            />
-          </AccordionDetails>
-        </Accordion>
-      </Container>
-    </Stack>
+      <Accordion defaultExpanded>
+        <AccordionSummary>
+          <Typography variant="h3">Options</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <SchemaEditor
+            schema={schema}
+            setSchema={setSchema}
+          />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary>
+          <Typography variant="h3">Content</Typography>
+        </AccordionSummary>
+        <AccordionDetails sx={{ position: 'relative' }}>
+          <ContentView
+            content={content}
+            setContent={setContent}
+          />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary>
+          <Typography variant="h3">Data</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <ObjectView
+            title={
+              <Typography variant="caption">
+                FieldPluginResponse.data
+              </Typography>
+            }
+            output={
+              {
+                content,
+                isModalOpen,
+                options: recordFromFieldPluginOptions(schema.options),
+              } satisfies Partial<FieldPluginData>
+            }
+          />
+        </AccordionDetails>
+      </Accordion>
+    </Container>
   )
 }
