@@ -41,3 +41,13 @@ yarn deploy --name $NAME --skipPrompts
 ```
 
 [@storyblok/design-system](https://www.npmjs.com/package/@storyblok/design-system) is Storyblok's component library for Vue. To add it to this project, follow the instructions in the [readme](https://www.npmjs.com/package/@storyblok/design-system).
+
+## Clean up the boilerplate
+
+To start from a blank state, delete the following files:
+
+- src/components/AssetSelelctor.vue
+- src/components/Counter.vue
+- src/components/ModalToggle.vue
+
+And search for comments `DELETE THIS BOILERPLATE` comments and delete the code around them.
