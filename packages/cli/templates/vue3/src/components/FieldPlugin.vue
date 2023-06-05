@@ -13,7 +13,7 @@ function closeModal() {
 
 <template>
   <div>
-    <!-- BEGIN - DELETE THIS BOILERPLATE -->
+    <!-- #region DELETE THIS BOILERPLATE -->
     <button
       v-if="plugin.data.isModalOpen"
       type="button"
@@ -41,6 +41,6 @@ function closeModal() {
       <hr />
       <AssetSelector />
     </div>
-    <!-- END - DELETE THIS BOILERPLATE -->
+    <!-- #endregion -->
   </div>
 </template>

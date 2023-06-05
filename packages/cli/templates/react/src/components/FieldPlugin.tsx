@@ -13,6 +13,7 @@ const FieldPlugin: FunctionComponent = () => {
 
   return (
     <div>
+      {/* #region DELETE THIS BOILERPLATE */}
       {data.isModalOpen && (
         <button
           type="button"
@@ -43,6 +44,7 @@ const FieldPlugin: FunctionComponent = () => {
         <hr />
         <AssetSelector />
       </div>
+      {/* #endregion */}
     </div>
   )
 }

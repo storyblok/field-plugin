@@ -66,8 +66,8 @@ body {
   box-sizing: border-box;
 }
 
+/* #region DELETE THIS BOILERPLATE */
 /*Layout Styles*/
-
 .container {
   max-width: 22rem;
   margin: 0 auto;
@@ -173,3 +173,4 @@ hr {
 .asset-selected.selected .btn-select-asset {
   display: none;
 }
+/* #endregion */

@@ -17,6 +17,7 @@ let previousType = 'loading'
 createFieldPlugin((response) => {
   // Re-render the button element when messages
   const { data, actions, type } = response
+  // #region DELETE THIS BOILERPLATE
   if (previousType === 'loading') {
     previousType = type
     if (type === 'error') {
@@ -27,6 +28,7 @@ createFieldPlugin((response) => {
   } else {
     updateData({ data, container: rootElement })
   }
+  // #endregion
 })
 
 // This error replaces another error which message is harder to understand and impossible to avoid util the issue https://github.com/storyblok/field-plugin/issues/107 has been resolved.

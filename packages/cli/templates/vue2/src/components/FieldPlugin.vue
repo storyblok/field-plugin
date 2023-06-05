@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- #region DELETE THIS BOILERPLATE -->
     <button
       v-if="plugin.data.isModalOpen"
       type="button"
@@ -27,6 +28,7 @@
       <hr />
       <AssetSelector />
     </div>
+    <!-- #endregion -->
   </div>
 </template>
 

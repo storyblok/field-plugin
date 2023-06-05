@@ -66,8 +66,9 @@ body {
   box-sizing: border-box;
 }
 
-/*Layout Styles*/
+/* #region DELETE THIS BOILERPLATE */
 
+/*Layout Styles*/
 .container {
   max-width: 22rem;
   margin: 0 auto;
@@ -145,3 +146,4 @@ hr {
   width: 1px !important;
   overflow: hidden;
 }
+/* #endregion */
