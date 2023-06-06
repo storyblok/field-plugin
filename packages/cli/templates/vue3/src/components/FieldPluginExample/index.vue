@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import './example.css'
 import ModalToggle from './ModalToggle.vue'
 import Counter from './Counter.vue'
 import AssetSelector from './AssetSelector.vue'
-import { useFieldPlugin } from '../useFieldPlugin'
+import { useFieldPlugin } from '../../useFieldPlugin'
 
 const plugin = useFieldPlugin()
 
@@ -13,7 +14,6 @@ function closeModal() {
 
 <template>
   <div>
-    <!-- #region DELETE THIS BOILERPLATE -->
     <button
       v-if="plugin.data.isModalOpen"
       type="button"
@@ -41,6 +41,5 @@ function closeModal() {
       <hr />
       <AssetSelector />
     </div>
-    <!-- #endregion -->
   </div>
 </template>
