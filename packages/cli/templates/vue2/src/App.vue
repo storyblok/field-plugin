@@ -14,7 +14,7 @@ import FieldPluginExample from './components/FieldPluginExample/index.vue'
 export default {
   components: {
     FieldPluginProvider,
-    FieldPlugin,
+    FieldPluginExample,
   },
 }
 </script>

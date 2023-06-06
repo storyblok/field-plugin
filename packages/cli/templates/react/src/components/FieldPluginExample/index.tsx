@@ -1,8 +1,9 @@
+import './example.css'
 import Counter from './Counter'
 import ModalToggle from './ModalToggle'
 import AssetSelector from './AssetSelector'
 import { FunctionComponent } from 'react'
-import { useFieldPlugin } from '../useFieldPlugin'
+import { useFieldPlugin } from '../../useFieldPlugin'
 
 const FieldPlugin: FunctionComponent = () => {
   const { data, actions } = useFieldPlugin()

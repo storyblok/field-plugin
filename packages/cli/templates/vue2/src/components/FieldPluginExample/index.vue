@@ -51,3 +51,7 @@ export default {
   },
 }
 </script>
+
+<style>
+@import './example.css';
+</style>
