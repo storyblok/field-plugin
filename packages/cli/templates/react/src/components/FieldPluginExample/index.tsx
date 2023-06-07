@@ -1,7 +1,3 @@
-- UPDATE READMEs
-- Take a look at JS templates
-
-
 import './example.css'
 import Counter from './Counter'
 import ModalToggle from './ModalToggle'
