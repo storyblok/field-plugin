@@ -36,10 +36,4 @@ yarn deploy --name $NAME --skipPrompts
 
 ## Clean up the boilerplate
 
-To start from a blank state, delete the following files:
-
-- src/components/AssetSelelctor.vue
-- src/components/Counter.vue
-- src/components/ModalToggle.vue
-
-And search for comments `DELETE THIS BOILERPLATE` comments and delete the code around them.
+To start from a blank state, remove the example component `<FieldPluginExample />` from `src/App.vue`.

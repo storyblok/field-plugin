@@ -1,3 +1,7 @@
+- UPDATE READMEs
+- Take a look at JS templates
+
+
 import './example.css'
 import Counter from './Counter'
 import ModalToggle from './ModalToggle'
@@ -14,7 +18,6 @@ const FieldPlugin: FunctionComponent = () => {
 
   return (
     <div>
-      {/* #region DELETE THIS BOILERPLATE */}
       {data.isModalOpen && (
         <button
           type="button"
@@ -45,7 +48,6 @@ const FieldPlugin: FunctionComponent = () => {
         <hr />
         <AssetSelector />
       </div>
-      {/* #endregion */}
     </div>
   )
 }
