@@ -41,3 +41,7 @@ yarn deploy --name $NAME --skipPrompts
 ```
 
 [@storyblok/design-system](https://www.npmjs.com/package/@storyblok/design-system) is Storyblok's component library for Vue. To add it to this project, follow the instructions in the [readme](https://www.npmjs.com/package/@storyblok/design-system).
+
+## Clean up the boilerplate
+
+To start from a blank state, remove the example component `<FieldPluginExample />` from `src/App.vue`.

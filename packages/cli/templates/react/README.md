@@ -39,3 +39,7 @@ yarn deploy --name $NAME --skipPrompts
 ```
 
 [@storyblok/mui](https://www.npmjs.com/package/@storyblok/mui) contains a component library and theme for [MUI](https://mui.com/). To add it to this project, follow the instructions in the [readme](https://github.com/storyblok/mui).
+
+## Clean up the boilerplate
+
+To start from a blank state, remove the example component `<FieldPluginExample />` from `src/App.tsx`.

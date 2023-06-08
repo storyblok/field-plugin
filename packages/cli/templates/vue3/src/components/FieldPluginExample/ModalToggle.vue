@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFieldPlugin } from '../useFieldPlugin'
+import { useFieldPlugin } from '../../useFieldPlugin'
 
 const plugin = useFieldPlugin()
 </script>

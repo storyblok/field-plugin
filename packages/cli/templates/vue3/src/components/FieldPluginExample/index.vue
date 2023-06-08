@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import './example.css'
 import ModalToggle from './ModalToggle.vue'
 import Counter from './Counter.vue'
 import AssetSelector from './AssetSelector.vue'
-import { useFieldPlugin } from '../useFieldPlugin'
+import { useFieldPlugin } from '../../useFieldPlugin'
 
 const plugin = useFieldPlugin()
 

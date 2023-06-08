@@ -1,4 +1,4 @@
-import FieldPlugin from './components/FieldPlugin'
+import FieldPluginExample from './components/FieldPluginExample'
 import { FunctionComponent } from 'react'
 import { FieldPluginProvider } from './FieldPluginProvider'
 
@@ -8,7 +8,7 @@ const App: FunctionComponent = () => {
       Loading={Loading}
       Error={Error}
     >
-      <FieldPlugin />
+      <FieldPluginExample />
     </FieldPluginProvider>
   )
 }

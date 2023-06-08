@@ -33,3 +33,11 @@ Set up continuous integration with the [CLI](https://www.npmjs.com/package/@stor
 ```shell
 yarn deploy --name $NAME --skipPrompts
 ```
+
+## Clean up the boilerplate
+
+To start from a blank state, delete the following files:
+
+- src/components/components.js
+
+And search for comments `DELETE THIS BOILERPLATE` comments and delete the code around them.

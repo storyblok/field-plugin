@@ -33,3 +33,7 @@ Set up continuous integration with the [CLI](https://www.npmjs.com/package/@stor
 ```shell
 yarn deploy --name $NAME --skipPrompts
 ```
+
+## Clean up the boilerplate
+
+To start from a blank state, remove the example component `<FieldPluginExample />` from `src/App.vue`.

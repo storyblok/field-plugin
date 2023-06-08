@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react'
-import { useFieldPlugin } from '../useFieldPlugin'
+import { useFieldPlugin } from '../../useFieldPlugin'
 
 const ModalToggle: FunctionComponent = () => {
   const {
