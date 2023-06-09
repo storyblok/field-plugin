@@ -9,11 +9,13 @@
 
 <script>
 import FieldPluginProvider from './components/FieldPluginProvider.vue'
+import FieldPlugin from './components/FieldPlugin.vue'
 import FieldPluginExample from './components/FieldPluginExample/index.vue'
 
 export default {
   components: {
     FieldPluginProvider,
+    FieldPlugin,
     FieldPluginExample,
   },
 }

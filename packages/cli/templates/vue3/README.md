@@ -44,4 +44,4 @@ yarn deploy --name $NAME --skipPrompts
 
 ## Clean up the boilerplate
 
-To start from a blank state, remove the example component `<FieldPluginExample />` from `src/App.vue`.
+To start from a blank state, replace the example component `<FieldPluginExample />` from `src/App.vue` with `<FieldPlugin />`.
