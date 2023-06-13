@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div class="field-plugin-provider">
     <slot
       name="loading"
       v-if="plugin.type === 'loading'"
@@ -36,3 +36,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.field-plugin-provider {
+  width: 100%;
+}
+</style>
