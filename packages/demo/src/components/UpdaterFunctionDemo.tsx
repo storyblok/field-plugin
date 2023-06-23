@@ -12,10 +12,6 @@ export const UpdaterFunctionDemo: PluginComponent = (props) => {
       (content) => (typeof content === 'number' ? content : 0) + 1,
     )
   }
-  const label =
-    typeof data.content === 'undefined'
-      ? 'undefined'
-      : JSON.stringify(data.content)
 
   return (
     <Stack gap={2}>
@@ -24,7 +20,6 @@ export const UpdaterFunctionDemo: PluginComponent = (props) => {
         Increment the counter twice by calling <code>setContent</code> two times
         consecutively in between two renders.
       </Typography>
-      <Typography textAlign="center">{label}</Typography>
       <Button
         variant="outlined"
         color="secondary"

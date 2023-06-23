@@ -46,7 +46,13 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
     window.parent.postMessage(message, origin)
   }
 
-  const cleanupAutoResizeSideEffects = createAutoResizer(uid, postToContainer)
+  let isModalOpen = false
+  const isAutoResizerEnabled = () => !isModalOpen
+  const cleanupAutoResizeSideEffects = createAutoResizer(
+    uid,
+    postToContainer,
+    isAutoResizerEnabled,
+  )
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
@@ -54,6 +60,7 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
     uid,
     postToContainer,
     (data) => {
+      isModalOpen = data.isModalOpen
       onUpdateState({
         type: 'loaded',
         data,

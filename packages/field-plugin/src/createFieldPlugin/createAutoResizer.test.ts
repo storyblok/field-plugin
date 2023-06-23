@@ -5,7 +5,7 @@
 /* eslint-disable functional/no-let */
 
 import { createAutoResizer } from './createAutoResizer'
-import { isHeightChangeMessage } from '../messaging'
+import { HeightChangeMessage, isHeightChangeMessage } from '../messaging'
 
 const uid = '093w2jfido'
 
@@ -14,13 +14,13 @@ describe('auto resizer', () => {
     const postToContainer = jest.fn()
     const { observe } = mockResizeObserver()
     expect(observe).not.toHaveBeenCalledWith(document.body)
-    createAutoResizer(uid, postToContainer)
+    createAutoResizer(uid, postToContainer, () => true)
     expect(observe).toHaveBeenCalledWith(document.body)
   })
   it('disconnects when the cleanup function is called', () => {
     const { mockResize } = mockResizeObserver()
     const postToContainer = jest.fn()
-    const cleanup = createAutoResizer(uid, postToContainer)
+    const cleanup = createAutoResizer(uid, postToContainer, () => true)
     expect(postToContainer).toHaveBeenCalledTimes(0)
     mockResize()
     expect(postToContainer).toHaveBeenCalledTimes(1)
@@ -33,7 +33,7 @@ describe('auto resizer', () => {
     const postToContainer = jest.fn()
     mockResize()
     expect(postToContainer).toHaveBeenCalledTimes(0)
-    createAutoResizer(uid, postToContainer)
+    createAutoResizer(uid, postToContainer, () => true)
     expect(postToContainer).toHaveBeenCalledTimes(0)
     mockResize()
     expect(postToContainer).toHaveBeenCalledTimes(1)
@@ -46,27 +46,41 @@ describe('auto resizer', () => {
     const postToContainer = jest.fn((m) => {
       message = m
     })
-    createAutoResizer(uid, postToContainer)
+    createAutoResizer(uid, postToContainer, () => true)
     mockResize()
     expect(isHeightChangeMessage(message)).toEqual(true)
   })
-  it('posts the right height to the container', () => {
+  it('posts the height as a string to the container', () => {
     const { mockResize } = mockResizeObserver()
-    let message = undefined as unknown
-    const postToContainer = jest.fn((m) => {
-      message = m
-    })
+    const postToContainer = jest.fn()
 
     const expectedClientHeight = 3816
     jest
       .spyOn(document.body, 'clientHeight', 'get')
       .mockImplementation(() => expectedClientHeight)
-    createAutoResizer(uid, postToContainer)
+    createAutoResizer(uid, postToContainer, () => true)
     mockResize()
-    if (!isHeightChangeMessage(message)) {
-      fail('The message is not a height change message')
-    }
-    expect(message.height).toEqual(expectedClientHeight)
+    expect(postToContainer).toHaveBeenCalledWith(
+      expect.objectContaining({
+        height: `${expectedClientHeight}px`,
+      } satisfies Partial<HeightChangeMessage>),
+    )
+  })
+  describe('disabled/enabled state', () => {
+    it('does post a messages in an enabled state', () => {
+      const { mockResize } = mockResizeObserver()
+      const postToContainer = jest.fn()
+      createAutoResizer(uid, postToContainer, () => true)
+      mockResize()
+      expect(postToContainer).toHaveBeenCalled()
+    })
+    it('does not post any messages in a disabled state', () => {
+      const { mockResize } = mockResizeObserver()
+      const postToContainer = jest.fn()
+      createAutoResizer(uid, postToContainer, () => false)
+      mockResize()
+      expect(postToContainer).not.toHaveBeenCalled()
+    })
   })
 })
 

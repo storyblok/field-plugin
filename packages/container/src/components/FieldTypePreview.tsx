@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material'
 import { DisableShieldsNotification } from './DisableShieldsNotification'
+import { Property } from 'csstype'
 
 const FieldTypeModal: FunctionComponent<
   PropsWithChildren<{
@@ -59,6 +60,7 @@ const FieldTypeContainer: FunctionComponent<
           }
     }
     style={{
+      display: 'flex',
       margin: 'auto',
       width: props.isModal ? '90%' : '100%',
     }}
@@ -71,7 +73,7 @@ export const FieldTypePreview = forwardRef<
   HTMLIFrameElement,
   {
     src: string | undefined
-    height: string
+    height: Property.Height<string | number>
     isModal: boolean
     // Allows the iframe to be refreshed
     iframeKey?: number

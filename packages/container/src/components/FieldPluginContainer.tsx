@@ -264,7 +264,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
           >
             <FieldTypePreview
               src={iframeSrc}
-              height={`${height}px`}
+              height={height}
               isModal={isModalOpen}
               ref={fieldTypeIframe}
             />

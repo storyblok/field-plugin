@@ -2,6 +2,7 @@ import { createPluginActions } from './createPluginActions'
 import {
   AssetModalChangeMessage,
   GetContextMessage,
+  HeightChangeMessage,
   ModalChangeMessage,
   ValueChangeMessage,
 } from '../../messaging'
@@ -73,7 +74,7 @@ describe('createPluginActions', () => {
       } = createPluginActions(uid, postToContainer, onUpdateState)
       setModalOpen(false)
 
-      expect(postToContainer).toHaveBeenLastCalledWith(
+      expect(postToContainer).toHaveBeenCalledWith(
         expect.objectContaining({
           event: 'toggleModal',
           status: false,
@@ -81,11 +82,32 @@ describe('createPluginActions', () => {
       )
 
       setModalOpen(true)
-      expect(postToContainer).toHaveBeenLastCalledWith(
+      expect(postToContainer).toHaveBeenCalledWith(
         expect.objectContaining({
           event: 'toggleModal',
           status: true,
         } satisfies Partial<ModalChangeMessage>),
+      )
+    })
+    it('sends a height change message to the container when opened on modal mode', () => {
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { setModalOpen },
+      } = createPluginActions(uid, postToContainer, onUpdateState)
+      setModalOpen(false)
+
+      expect(postToContainer).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'heightChange',
+        } satisfies Partial<HeightChangeMessage>),
+      )
+
+      setModalOpen(true)
+      expect(postToContainer).toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'heightChange',
+          height: 'auto',
+        } satisfies Partial<HeightChangeMessage>),
       )
     })
   })

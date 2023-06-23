@@ -6,6 +6,7 @@ import {
   assetFromAssetSelectedMessage,
   assetModalChangeMessage,
   getContextMessage,
+  heightChangeMessage,
   modalChangeMessage,
   OnAssetSelectMessage,
   OnContextRequestMessage,
@@ -113,6 +114,9 @@ export const createPluginActions: CreatePluginActions = (
         const isModalOpen =
           typeof action === 'function' ? action(state.isModalOpen) : action
         postToContainer(modalChangeMessage(uid, isModalOpen))
+        if (isModalOpen) {
+          postToContainer(heightChangeMessage(uid, 'auto'))
+        }
         state = {
           ...state,
           isModalOpen,
