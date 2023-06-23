@@ -1,5 +1,5 @@
 import { createPluginActions } from './createPluginActions'
-import { createAutoResizer } from './createAutoResizer'
+import { createHeightChangeListener } from './createHeightChangeListener'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginLoadedMessage, pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
@@ -46,21 +46,12 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
     window.parent.postMessage(message, origin)
   }
 
-  let isModalOpen = false
-  const isAutoResizerEnabled = () => !isModalOpen
-  const cleanupAutoResizeSideEffects = createAutoResizer(
-    uid,
-    postToContainer,
-    isAutoResizerEnabled,
-  )
-
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
-  const { actions, messageCallbacks } = createPluginActions(
+  const { actions, messageCallbacks, onHeightChange } = createPluginActions(
     uid,
     postToContainer,
     (data) => {
-      isModalOpen = data.isModalOpen
       onUpdateState({
         type: 'loaded',
         data,
@@ -68,6 +59,8 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
       })
     },
   )
+
+  const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
 
   // Request the initial state from the Visual Editor.
   postToContainer(pluginLoadedMessage(uid))
@@ -79,7 +72,7 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   return () => {
     cleanupMessageListenerSideEffects()
-    cleanupAutoResizeSideEffects()
+    cleanupHeightChangeListener()
     cleanupStyleSideEffects()
   }
 }
