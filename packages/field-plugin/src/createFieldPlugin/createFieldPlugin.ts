@@ -65,10 +65,8 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
   // Request the initial state from the Visual Editor.
   postToContainer(pluginLoadedMessage(uid))
 
-  const cleanupMessageListenerSideEffects = createPluginMessageListener(
-    params.uid,
-    messageCallbacks,
-  )
+  const cleanupMessageListenerSideEffects =
+    createPluginMessageListener(messageCallbacks)
 
   return () => {
     cleanupMessageListenerSideEffects()

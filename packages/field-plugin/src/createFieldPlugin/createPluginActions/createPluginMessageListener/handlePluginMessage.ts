@@ -8,7 +8,6 @@ import { PluginMessageCallbacks } from './createPluginMessageListener'
 
 export const handlePluginMessage = (
   data: unknown,
-  uid: string,
   callbacks: PluginMessageCallbacks,
 ) => {
   if (!isMessageToPlugin(data)) {
@@ -17,11 +16,6 @@ export const handlePluginMessage = (
   }
 
   // TODO check origin https://app.storyblok.com/ in production mode, * in dev mode
-
-  if (data.uid !== uid) {
-    // Not intended for this field plugin
-    return
-  }
 
   if (isStateChangedMessage(data)) {
     callbacks.onStateChange(data)

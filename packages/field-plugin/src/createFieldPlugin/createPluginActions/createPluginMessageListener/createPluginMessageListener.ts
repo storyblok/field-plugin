@@ -5,6 +5,11 @@ import {
   OnUnknownPluginMessage,
 } from '../../../messaging'
 import { handlePluginMessage } from './handlePluginMessage'
+import {
+  partialPluginStateFromContextRequestMessage,
+  partialPluginStateFromStateChangeMessage,
+} from '../partialPluginStateFromStateChangeMessage'
+import { FieldPluginData } from '../../FieldPluginData'
 
 export type PluginMessageCallbacks = {
   onStateChange: OnStateChangeMessage
@@ -14,7 +19,6 @@ export type PluginMessageCallbacks = {
 }
 
 export type CreatePluginMessageListener = (
-  uid: string,
   callbacks: PluginMessageCallbacks,
 ) => () => void
 
@@ -23,15 +27,30 @@ export type CreatePluginMessageListener = (
  * Returns a cleanup function that unregisters effects.
  */
 export const createPluginMessageListener: CreatePluginMessageListener = (
-  uid,
   callbacks,
 ) => {
   const handleEvent = (event: MessageEvent<unknown>) => {
-    handlePluginMessage(event.data, uid, callbacks)
+    handlePluginMessage(event.data, callbacks)
   }
   window.addEventListener('message', handleEvent, false)
 
   return () => {
     window.removeEventListener('message', handleEvent, false)
   }
+}
+
+export type CreatePluginDataListener = (
+  onUpdate: (data: Partial<FieldPluginData>) => void,
+) => () => void
+export const createPluginDataListener: CreatePluginDataListener = (
+  onUpdate,
+) => {
+  return createPluginMessageListener({
+    onStateChange: (message) =>
+      onUpdate(partialPluginStateFromStateChangeMessage(message)),
+    onContextRequest: (message) =>
+      onUpdate(partialPluginStateFromContextRequestMessage(message)),
+    onAssetSelect: () => undefined,
+    onUnknownMessage: () => console.error('unknown message type'),
+  })
 }
