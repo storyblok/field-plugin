@@ -8,6 +8,7 @@ import { ModalToggle } from './ModalToggle'
 import { AssetSelector } from './AssetSelector'
 import { ContextRequester } from './ContextRequester'
 import { UpdaterFunctionDemo } from './UpdaterFunctionDemo'
+import { LanguageView } from './LanguageView'
 
 export type PluginComponent = FunctionComponent<{
   data: FieldPluginData
@@ -48,6 +49,7 @@ export const FieldPluginDemo: FunctionComponent = () => {
         <ModalToggle {...props} />
         <AssetSelector {...props} />
         <ContextRequester {...props} />
+        <LanguageView {...props} />
       </Stack>
     </Paper>
   )
