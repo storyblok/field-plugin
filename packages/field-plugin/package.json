@@ -1,6 +1,6 @@
 {
   "name": "@storyblok/field-plugin",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "description": "SDK for creating Field Plugins for Storyblok.",
   "sideEffects": false,
   "files": [
