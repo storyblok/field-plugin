@@ -26,14 +26,9 @@ import {
   AccordionDetails,
   AccordionSummary,
   Container,
-  Stack,
   Typography,
 } from '@mui/material'
-import {
-  CenteredContent,
-  ChevronDownIcon,
-  useNotifications,
-} from '@storyblok/mui'
+import { CenteredContent, useNotifications } from '@storyblok/mui'
 import { SchemaEditor } from './SchemaEditor'
 import { FieldTypePreview } from './FieldTypePreview'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
@@ -47,7 +42,6 @@ import { usePluginParams } from './usePluginParams'
 const defaultUrl = 'http://localhost:8080'
 const initialStory: StoryData = {
   content: {},
-  lang: 'default',
 }
 const initialContent = ''
 const initialHeight = 300
