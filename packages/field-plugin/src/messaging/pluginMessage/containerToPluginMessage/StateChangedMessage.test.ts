@@ -65,6 +65,41 @@ describe('StateChangedMessage', () => {
       ).toEqual(false)
     })
   })
+
+  describe('the "language" property', () => {
+    it('is a string', () => {
+      expect(
+        isStateChangedMessage({
+          ...stub,
+          language: 'anything',
+        }),
+      ).toEqual(true)
+    })
+    it('is not undefined', () => {
+      expect(
+        isStateChangedMessage({
+          ...stub,
+          language: undefined,
+        }),
+      ).toEqual(false)
+    })
+    it('is not null', () => {
+      expect(
+        isStateChangedMessage({
+          ...stub,
+          language: null,
+        }),
+      ).toEqual(false)
+    })
+    it('is not a number', () => {
+      expect(
+        isStateChangedMessage({
+          ...stub,
+          language: 123,
+        }),
+      ).toEqual(false)
+    })
+  })
   describe('The "schema" property', () => {
     it('is required', () => {
       expect(

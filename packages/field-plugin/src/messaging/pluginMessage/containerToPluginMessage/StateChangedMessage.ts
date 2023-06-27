@@ -25,6 +25,8 @@ export const isStateChangedMessage = (
   data: unknown,
 ): data is StateChangedMessage =>
   isMessageToPlugin(data) &&
+  hasKey(data, 'language') &&
+  typeof data.language === 'string' &&
   data.action === 'loaded' &&
   hasKey(data, 'schema') &&
   isFieldPluginSchema(data.schema) &&
