@@ -15,8 +15,10 @@ import {
   filterPathsToInclude,
   getInstallCommand,
   getNPMCommand,
+  isValidPackageManager,
   promptName,
   runCommand,
+  selectPackageManager,
 } from '../utils'
 import type { PackageManager } from './types'
 
@@ -54,7 +56,10 @@ const selectTemplate = async () => {
 }
 
 export const add: AddFunc = async (args) => {
-  const packageManager = args.packageManager
+  const packageManager = isValidPackageManager(args.packageManager)
+    ? args.packageManager
+    : await selectPackageManager()
+
   const structure = args.structure || 'polyrepo'
 
   console.log(bold(cyan('\nWelcome!')))
@@ -130,7 +135,7 @@ export const add: AddFunc = async (args) => {
     )
   }
 
-  const installCommand = getInstallCommand(args.packageManager)
+  const installCommand = getInstallCommand(packageManager)
   console.log(`\nRunning \`${installCommand}\`..\n`)
   console.log(
     (

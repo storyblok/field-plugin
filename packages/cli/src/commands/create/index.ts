@@ -1,7 +1,11 @@
 import { createMonorepo } from './monorepo'
 import { createPolyrepo } from './polyrepo'
 import { Structure } from '../add'
-import { betterPrompts } from '../../utils'
+import {
+  betterPrompts,
+  isValidPackageManager,
+  selectPackageManager,
+} from '../../utils'
 import { CreateFunc, CreateArgs } from './types'
 import { PackageManager } from '../types'
 
@@ -33,44 +37,6 @@ const selectRepositoryStructure = async () => {
 
 const isValidStructure = (structure: string): structure is Structure => {
   return structure === 'monorepo' || structure === 'polyrepo'
-}
-
-const isValidPackageManager = (
-  packageManager?: string,
-): packageManager is PackageManager => {
-  return (
-    packageManager === 'npm' ||
-    packageManager === 'yarn' ||
-    packageManager === 'pnpm'
-  )
-}
-
-const selectPackageManager = async () => {
-  const { packageManager } = await betterPrompts<{
-    packageManager: PackageManager
-  }>([
-    {
-      type: 'select',
-      name: 'packageManager',
-      message: 'Which package manager do you use?',
-      initial: 'npm',
-      choices: [
-        {
-          title: 'npm',
-          value: 'npm',
-        },
-        {
-          title: 'yarn',
-          value: 'yarn',
-        },
-        {
-          title: 'pnpm',
-          value: 'pnpm',
-        },
-      ],
-    },
-  ])
-  return packageManager
 }
 
 export const create: CreateFunc = async (opts) => {

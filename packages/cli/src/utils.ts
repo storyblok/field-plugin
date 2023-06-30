@@ -210,3 +210,41 @@ export const getNPMCommand = (args: GetNPMCommandArgs) => {
     }
   }
 }
+
+export const isValidPackageManager = (
+  packageManager?: string,
+): packageManager is PackageManager => {
+  return (
+    packageManager === 'npm' ||
+    packageManager === 'yarn' ||
+    packageManager === 'pnpm'
+  )
+}
+
+export const selectPackageManager = async () => {
+  const { packageManager } = await betterPrompts<{
+    packageManager: PackageManager
+  }>([
+    {
+      type: 'select',
+      name: 'packageManager',
+      message: 'Which package manager do you use?',
+      initial: 'npm',
+      choices: [
+        {
+          title: 'npm',
+          value: 'npm',
+        },
+        {
+          title: 'yarn',
+          value: 'yarn',
+        },
+        {
+          title: 'pnpm',
+          value: 'pnpm',
+        },
+      ],
+    },
+  ])
+  return packageManager
+}

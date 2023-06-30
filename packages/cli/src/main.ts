@@ -33,9 +33,9 @@ export const main = () => {
       ),
     )
     .addOption(
-      new Option('--packageManager <value>', 'package manager')
-        .choices(packageManagerOptions)
-        .default('npm'),
+      new Option('--packageManager <value>', 'package manager').choices(
+        packageManagerOptions,
+      ),
     )
     .option(
       '--pluginName <value>',
@@ -105,9 +105,9 @@ export const main = () => {
       ),
     )
     .addOption(
-      new Option('--packageManager <value>', 'package manager')
-        .choices(packageManagerOptions)
-        .default('npm'),
+      new Option('--packageManager <value>', 'package manager').choices(
+        packageManagerOptions,
+      ),
     )
     .action(async function (this: Command) {
       await add(this.opts<AddArgs>())
