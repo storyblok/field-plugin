@@ -229,7 +229,6 @@ export const selectPackageManager = async () => {
       type: 'select',
       name: 'packageManager',
       message: 'Which package manager do you use?',
-      initial: 'npm',
       choices: [
         {
           title: 'npm',

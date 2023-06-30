@@ -86,7 +86,7 @@ export const createMonorepo: CreateMonorepoFunc = async ({
 
   if (packageManager === 'yarn' || packageManager === 'pnpm') {
     const json = JSON.parse(
-      readFileSync(resolve(templatePath, 'package.json')).toString(),
+      readFileSync(resolve(repoDir, 'package.json')).toString(),
     ) as Record<string, unknown> & { scripts: Record<string, string> }
 
     // eslint-disable-next-line functional/immutable-data
@@ -95,14 +95,14 @@ export const createMonorepo: CreateMonorepoFunc = async ({
     json['packageManager'] = packageManager === 'yarn' ? 'yarn@3.2.4' : 'pnpm'
 
     writeFileSync(
-      resolve(templatePath, 'package.json'),
+      resolve(repoDir, 'package.json'),
       JSON.stringify(json, null, 2),
     )
   }
 
   if (packageManager === 'pnpm') {
     writeFileSync(
-      resolve(templatePath, 'pnpm-workspace.yaml'),
+      resolve(repoDir, 'pnpm-workspace.yaml'),
       `packages:\n  - 'packages/*'\n`,
     )
   }
