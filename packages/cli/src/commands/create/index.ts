@@ -1,17 +1,11 @@
-import { createMonorepo, type CreateMonorepoArgs } from './monorepo'
-import { createPolyrepo, type CreatePolyrepoArgs } from './polyrepo'
+import { createMonorepo } from './monorepo'
+import { createPolyrepo } from './polyrepo'
 import { Structure } from '../add'
 import { betterPrompts } from '../../utils'
+import { CreateFunc, CreateArgs } from './types'
+import { PackageManager } from '../types'
 
-export type CreateArgs =
-  | ({
-      structure: 'monorepo'
-    } & CreateMonorepoArgs)
-  | ({
-      structure: 'polyrepo'
-    } & CreatePolyrepoArgs)
-
-export type CreateFunc = (args: CreateArgs) => Promise<void>
+export type { CreateArgs }
 
 const selectRepositoryStructure = async () => {
   const { structure } = await betterPrompts<{ structure: Structure }>([
@@ -41,15 +35,62 @@ const isValidStructure = (structure: string): structure is Structure => {
   return structure === 'monorepo' || structure === 'polyrepo'
 }
 
+const isValidPackageManager = (
+  packageManager?: string,
+): packageManager is PackageManager => {
+  return (
+    packageManager === 'npm' ||
+    packageManager === 'yarn' ||
+    packageManager === 'pnpm'
+  )
+}
+
+const selectPackageManager = async () => {
+  const { packageManager } = await betterPrompts<{
+    packageManager: PackageManager
+  }>([
+    {
+      type: 'select',
+      name: 'packageManager',
+      message: 'Which package manager do you use?',
+      initial: 'npm',
+      choices: [
+        {
+          title: 'npm',
+          value: 'npm',
+        },
+        {
+          title: 'yarn',
+          value: 'yarn',
+        },
+        {
+          title: 'pnpm',
+          value: 'pnpm',
+        },
+      ],
+    },
+  ])
+  return packageManager
+}
+
 export const create: CreateFunc = async (opts) => {
-  const { structure: structureParam, ...rest } = opts
+  const {
+    structure: structureParam,
+    packageManager: packageManagerParam,
+    ...rest
+  } = opts
+
+  const packageManager = isValidPackageManager(packageManagerParam)
+    ? packageManagerParam
+    : await selectPackageManager()
+
   const structure = isValidStructure(structureParam)
     ? structureParam
     : await selectRepositoryStructure()
 
   if (structure === 'polyrepo') {
-    await createPolyrepo(rest)
+    await createPolyrepo({ packageManager, ...rest })
   } else if (structure === 'monorepo') {
-    await createMonorepo(rest)
+    await createMonorepo({ packageManager, ...rest })
   }
 }

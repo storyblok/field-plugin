@@ -1,21 +1,16 @@
-import { add, Template } from '../add'
+import { add } from '../add'
 import { initializeNewRepo } from '../../utils'
-
-export type CreatePolyrepoArgs = {
-  dir: string
-  pluginName?: string
-  template?: Template
-}
-
-type CreatePolyrepoFunc = (args: CreatePolyrepoArgs) => Promise<void>
+import { CreatePolyrepoFunc } from './types'
 
 export const createPolyrepo: CreatePolyrepoFunc = async ({
   dir,
+  packageManager,
   pluginName,
   template,
 }) => {
   const { destPath } = await add({
     dir,
+    packageManager,
     name: pluginName,
     template,
     structure: 'polyrepo',

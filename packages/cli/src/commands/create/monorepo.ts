@@ -1,25 +1,23 @@
-import prompts from 'prompts'
-import { copyFileSync, existsSync, mkdirSync, unlinkSync } from 'fs'
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs'
 import { bold, cyan } from 'kleur/colors'
 import { dirname, resolve } from 'path'
-import { MONOREPO_TEMPLATE_PATH, TEMPLATES_PATH } from '../../../config'
+import { MONOREPO_TEMPLATE_PATH } from '../../../config'
 import {
   betterPrompts,
   filterPathsToInclude,
+  getInstallCommand,
   initializeNewRepo,
   runCommand,
 } from '../../utils'
-import { add, Template } from '../add'
+import { add } from '../add'
 import walk from 'walkdir'
-
-export type CreateMonorepoArgs = {
-  dir: string
-  repoName?: string
-  pluginName?: string
-  template?: Template
-}
-
-type CreateMonorepoFunc = (args: CreateMonorepoArgs) => Promise<void>
+import { CreateMonorepoFunc } from './types'
 
 const isValidRepoName = ({
   name,
@@ -50,6 +48,7 @@ const promptRepoName = async (dir: string) => {
 
 export const createMonorepo: CreateMonorepoFunc = async ({
   dir,
+  packageManager,
   repoName,
   pluginName,
   template,
@@ -84,12 +83,28 @@ export const createMonorepo: CreateMonorepoFunc = async ({
     copyFileSync(file, destFilePath)
   })
 
-  console.log(bold(cyan('[info] Running `yarn install`...')))
-  await runCommand(`yarn install`, { cwd: repoDir })
+  if (packageManager === 'yarn' || packageManager === 'pnpm') {
+    const value = packageManager === 'yarn' ? 'yarn@3.2.4' : 'pnpm'
+    await runCommand(`npm pkg set packageManager=${value}`, {
+      cwd: templatePath,
+    })
+  }
+
+  if (packageManager === 'pnpm') {
+    writeFileSync(
+      resolve(templatePath, 'pnpm-workspace.yaml'),
+      `packages:\n  - 'packages/*'\n`,
+    )
+  }
+
+  const installCommand = getInstallCommand(packageManager)
+  console.log(bold(cyan(`[info] Running \`${installCommand}\`...`)))
+  await runCommand(installCommand, { cwd: repoDir })
 
   console.log(bold(cyan('[info] Creating the first field-plugin...')))
   await add({
     dir: `${repoDir}/packages`,
+    packageManager,
     structure: 'monorepo',
     name: pluginName,
     template,

@@ -1,8 +1,9 @@
 import dotenv from 'dotenv'
 import prompts from 'prompts'
 import { isAbsolute, relative, resolve } from 'path'
-import { existsSync, appendFileSync } from 'fs'
+import { existsSync, appendFileSync, readFileSync, writeFileSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
+import { PackageManager } from './commands/types'
 
 type RunCommandFunc = (
   command: string,
@@ -176,4 +177,36 @@ export const checkIfSubDir = (parent: string, dir: string) => {
   }
 
   return !relativePath.startsWith('..') && !isAbsolute(relativePath)
+}
+
+export const getInstallCommand = (packageManager: PackageManager) => {
+  return `${packageManager} install`
+}
+
+type GetNPMCommandArgs =
+  | {
+      commandName: string
+      packageManager: PackageManager
+      structure: 'polyrepo'
+    }
+  | {
+      commandName: string
+      packageManager: PackageManager
+      structure: 'monorepo'
+      packageName: string
+    }
+
+export const getNPMCommand = (args: GetNPMCommandArgs) => {
+  if (args.structure === 'polyrepo') {
+    return `${args.packageManager} run ${args.commandName}`
+  } else {
+    const { commandName, packageManager, packageName } = args
+    if (packageManager === 'yarn') {
+      return `yarn workspace ${packageName} ${commandName}`
+    } else if (packageManager === 'pnpm') {
+      return `pnpm -F ${packageName} run ${commandName}`
+    } else {
+      return `npm run ${commandName} --workspace=${packageName}`
+    }
+  }
 }
