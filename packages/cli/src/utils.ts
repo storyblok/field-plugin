@@ -183,7 +183,7 @@ export const getInstallCommand = (packageManager: PackageManager) => {
   return `${packageManager} install`
 }
 
-type GetNPMCommandArgs =
+type GetCommandByPackageManagerArgs =
   | {
       commandName: string
       packageManager: PackageManager
@@ -196,7 +196,9 @@ type GetNPMCommandArgs =
       packageName: string
     }
 
-export const getNPMCommand = (args: GetNPMCommandArgs) => {
+export const getCommandByPackageManager = (
+  args: GetCommandByPackageManagerArgs,
+) => {
   if (args.structure === 'polyrepo') {
     return `${args.packageManager} run ${args.commandName}`
   } else {

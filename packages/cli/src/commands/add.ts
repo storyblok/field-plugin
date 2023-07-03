@@ -14,7 +14,7 @@ import {
   checkIfSubDir,
   filterPathsToInclude,
   getInstallCommand,
-  getNPMCommand,
+  getCommandByPackageManager,
   isValidPackageManager,
   promptName,
   runCommand,
@@ -154,13 +154,19 @@ export const add: AddFunc = async (args) => {
   if (structure === 'polyrepo') {
     console.log(
       `    >`,
-      green(getNPMCommand({ structure, packageManager, commandName: 'dev' })),
+      green(
+        getCommandByPackageManager({
+          structure,
+          packageManager,
+          commandName: 'dev',
+        }),
+      ),
     )
   } else if (structure === 'monorepo') {
     console.log(
       `    >`,
       green(
-        getNPMCommand({
+        getCommandByPackageManager({
           structure,
           packageManager,
           commandName: 'dev',
@@ -176,14 +182,18 @@ export const add: AddFunc = async (args) => {
     console.log(
       `    >`,
       green(
-        getNPMCommand({ structure, packageManager, commandName: 'deploy' }),
+        getCommandByPackageManager({
+          structure,
+          packageManager,
+          commandName: 'deploy',
+        }),
       ),
     )
   } else if (structure === 'monorepo') {
     console.log(
       `    >`,
       green(
-        getNPMCommand({
+        getCommandByPackageManager({
           structure,
           packageManager,
           commandName: 'deploy',
