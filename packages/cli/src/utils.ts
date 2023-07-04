@@ -183,34 +183,26 @@ export const getInstallCommand = (packageManager: PackageManager) => {
   return `${packageManager} install`
 }
 
-type GetCommandByPackageManagerArgs =
-  | {
-      commandName: string
-      packageManager: PackageManager
-      structure: 'polyrepo'
-    }
-  | {
-      commandName: string
-      packageManager: PackageManager
-      structure: 'monorepo'
-      packageName: string
-    }
-
-export const getCommandByPackageManager = (
-  args: GetCommandByPackageManagerArgs,
-) => {
-  if (args.structure === 'polyrepo') {
-    return `${args.packageManager} run ${args.commandName}`
+export const getMonorepoCommandByPackageManager = (args: {
+  commandName: string
+  packageManager: PackageManager
+  packageName: string
+}) => {
+  const { commandName, packageManager, packageName } = args
+  if (packageManager === 'yarn') {
+    return `yarn workspace ${packageName} ${commandName}`
+  } else if (packageManager === 'pnpm') {
+    return `pnpm -F ${packageName} run ${commandName}`
   } else {
-    const { commandName, packageManager, packageName } = args
-    if (packageManager === 'yarn') {
-      return `yarn workspace ${packageName} ${commandName}`
-    } else if (packageManager === 'pnpm') {
-      return `pnpm -F ${packageName} run ${commandName}`
-    } else {
-      return `npm run ${commandName} --workspace=${packageName}`
-    }
+    return `npm run ${commandName} --workspace=${packageName}`
   }
+}
+
+export const getPolyrepoCommandByPackageManager = (args: {
+  commandName: string
+  packageManager: PackageManager
+}) => {
+  return `${args.packageManager} run ${args.commandName}`
 }
 
 export const isValidPackageManager = (

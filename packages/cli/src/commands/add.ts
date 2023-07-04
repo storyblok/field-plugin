@@ -14,7 +14,8 @@ import {
   checkIfSubDir,
   filterPathsToInclude,
   getInstallCommand,
-  getCommandByPackageManager,
+  getMonorepoCommandByPackageManager,
+  getPolyrepoCommandByPackageManager,
   isValidPackageManager,
   promptName,
   runCommand,
@@ -155,8 +156,7 @@ export const add: AddFunc = async (args) => {
     console.log(
       `    >`,
       green(
-        getCommandByPackageManager({
-          structure,
+        getPolyrepoCommandByPackageManager({
           packageManager,
           commandName: 'dev',
         }),
@@ -166,8 +166,7 @@ export const add: AddFunc = async (args) => {
     console.log(
       `    >`,
       green(
-        getCommandByPackageManager({
-          structure,
+        getMonorepoCommandByPackageManager({
           packageManager,
           commandName: 'dev',
           packageName,
@@ -182,8 +181,7 @@ export const add: AddFunc = async (args) => {
     console.log(
       `    >`,
       green(
-        getCommandByPackageManager({
-          structure,
+        getPolyrepoCommandByPackageManager({
           packageManager,
           commandName: 'deploy',
         }),
@@ -193,8 +191,7 @@ export const add: AddFunc = async (args) => {
     console.log(
       `    >`,
       green(
-        getCommandByPackageManager({
-          structure,
+        getMonorepoCommandByPackageManager({
           packageManager,
           commandName: 'deploy',
           packageName,
