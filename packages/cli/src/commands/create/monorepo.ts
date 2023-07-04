@@ -19,6 +19,7 @@ import {
 import { add } from '../add'
 import walk from 'walkdir'
 import { CreateMonorepoFunc } from './types'
+import { PackageManager } from '../types'
 
 const isValidRepoName = ({
   name,
@@ -45,6 +46,30 @@ const promptRepoName = async (dir: string) => {
     },
   ])
   return name
+}
+
+const specifyPackageManager = ({
+  packageManager,
+  repoDir,
+}: {
+  packageManager: PackageManager
+  repoDir: string
+}) => {
+  if (packageManager === 'yarn' || packageManager === 'pnpm') {
+    const json = JSON.parse(
+      readFileSync(resolve(repoDir, 'package.json')).toString(),
+    ) as Record<string, unknown> & { scripts: Record<string, string> }
+
+    // eslint-disable-next-line functional/immutable-data
+    json['scripts']['add-plugin'] += ` --packageManager ${packageManager}`
+    // eslint-disable-next-line functional/immutable-data
+    json['packageManager'] = packageManager === 'yarn' ? 'yarn@3.2.4' : 'pnpm'
+
+    writeFileSync(
+      resolve(repoDir, 'package.json'),
+      JSON.stringify(json, null, 2),
+    )
+  }
 }
 
 export const createMonorepo: CreateMonorepoFunc = async ({
@@ -84,21 +109,7 @@ export const createMonorepo: CreateMonorepoFunc = async ({
     copyFileSync(file, destFilePath)
   })
 
-  if (packageManager === 'yarn' || packageManager === 'pnpm') {
-    const json = JSON.parse(
-      readFileSync(resolve(repoDir, 'package.json')).toString(),
-    ) as Record<string, unknown> & { scripts: Record<string, string> }
-
-    // eslint-disable-next-line functional/immutable-data
-    json['scripts']['add-plugin'] += ` --packageManager ${packageManager}`
-    // eslint-disable-next-line functional/immutable-data
-    json['packageManager'] = packageManager === 'yarn' ? 'yarn@3.2.4' : 'pnpm'
-
-    writeFileSync(
-      resolve(repoDir, 'package.json'),
-      JSON.stringify(json, null, 2),
-    )
-  }
+  specifyPackageManager({ packageManager, repoDir })
 
   if (packageManager === 'pnpm') {
     writeFileSync(
