@@ -1,8 +1,9 @@
 import dotenv from 'dotenv'
 import prompts from 'prompts'
 import { isAbsolute, relative, resolve } from 'path'
-import { existsSync, appendFileSync } from 'fs'
+import { existsSync, appendFileSync, readFileSync, writeFileSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
+import { PackageManager } from './commands/types'
 
 type RunCommandFunc = (
   command: string,
@@ -176,4 +177,67 @@ export const checkIfSubDir = (parent: string, dir: string) => {
   }
 
   return !relativePath.startsWith('..') && !isAbsolute(relativePath)
+}
+
+export const getInstallCommand = (packageManager: PackageManager) => {
+  return `${packageManager} install`
+}
+
+export const getMonorepoCommandByPackageManager = (args: {
+  commandName: string
+  packageManager: PackageManager
+  packageName: string
+}) => {
+  const { commandName, packageManager, packageName } = args
+  if (packageManager === 'yarn') {
+    return `yarn workspace ${packageName} ${commandName}`
+  } else if (packageManager === 'pnpm') {
+    return `pnpm -F ${packageName} run ${commandName}`
+  } else {
+    return `npm run ${commandName} --workspace=${packageName}`
+  }
+}
+
+export const getPolyrepoCommandByPackageManager = (args: {
+  commandName: string
+  packageManager: PackageManager
+}) => {
+  return `${args.packageManager} run ${args.commandName}`
+}
+
+export const isValidPackageManager = (
+  packageManager?: string,
+): packageManager is PackageManager => {
+  return (
+    packageManager === 'npm' ||
+    packageManager === 'yarn' ||
+    packageManager === 'pnpm'
+  )
+}
+
+export const selectPackageManager = async () => {
+  const { packageManager } = await betterPrompts<{
+    packageManager: PackageManager
+  }>([
+    {
+      type: 'select',
+      name: 'packageManager',
+      message: 'Which package manager do you use?',
+      choices: [
+        {
+          title: 'npm',
+          value: 'npm',
+        },
+        {
+          title: 'yarn',
+          value: 'yarn',
+        },
+        {
+          title: 'pnpm',
+          value: 'pnpm',
+        },
+      ],
+    },
+  ])
+  return packageManager
 }

@@ -14,6 +14,7 @@ import packageJson from './../package.json'
 const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
 const structureOptions = ['polyrepo', 'monorepo']
+const packageManagerOptions = ['npm', 'yarn', 'pnpm']
 
 export const main = () => {
   program
@@ -31,6 +32,11 @@ export const main = () => {
         structureOptions,
       ),
     )
+    .addOption(
+      new Option('--packageManager <value>', 'package manager').choices(
+        packageManagerOptions,
+      ),
+    )
     .option(
       '--pluginName <value>',
       'name of plugin (Lowercase alphanumeric and dash)',
@@ -40,8 +46,7 @@ export const main = () => {
       '[Monorepo] name of repository (Lowercase alphanumeric and dash)',
     )
     .action(async function (this: Command) {
-      const opts = this.opts<CreateArgs>()
-      await create(opts)
+      await create(this.opts<CreateArgs>())
     })
 
   program
@@ -78,18 +83,7 @@ export const main = () => {
       ),
     )
     .action(async function (this: Command) {
-      const { dir, skipPrompts, name, token, output, dotEnvPath, scope } =
-        this.opts<DeployArgs>()
-
-      await deploy({
-        skipPrompts,
-        token,
-        name,
-        dir,
-        output,
-        dotEnvPath,
-        scope,
-      })
+      await deploy(this.opts<DeployArgs>())
     })
 
   program
@@ -110,10 +104,13 @@ export const main = () => {
         structureOptions,
       ),
     )
+    .addOption(
+      new Option('--packageManager <value>', 'package manager').choices(
+        packageManagerOptions,
+      ),
+    )
     .action(async function (this: Command) {
-      const { name, template, dir, structure } = this.opts<AddArgs>()
-
-      await add({ name, template, dir, structure })
+      await add(this.opts<AddArgs>())
     })
 
   program.parse(process.argv)

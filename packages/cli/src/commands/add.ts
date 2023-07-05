@@ -13,9 +13,15 @@ import {
   betterPrompts,
   checkIfSubDir,
   filterPathsToInclude,
+  getInstallCommand,
+  getMonorepoCommandByPackageManager,
+  getPolyrepoCommandByPackageManager,
+  isValidPackageManager,
   promptName,
   runCommand,
+  selectPackageManager,
 } from '../utils'
+import type { PackageManager } from './types'
 
 export type Template = 'vue2'
 
@@ -23,6 +29,7 @@ export type Structure = 'polyrepo' | 'monorepo'
 
 export type AddArgs = {
   dir: string
+  packageManager: PackageManager
   name?: string
   template?: Template
   structure?: Structure
@@ -50,6 +57,10 @@ const selectTemplate = async () => {
 }
 
 export const add: AddFunc = async (args) => {
+  const packageManager = isValidPackageManager(args.packageManager)
+    ? args.packageManager
+    : await selectPackageManager()
+
   const structure = args.structure || 'polyrepo'
 
   console.log(bold(cyan('\nWelcome!')))
@@ -125,10 +136,11 @@ export const add: AddFunc = async (args) => {
     )
   }
 
-  console.log(`\nRunning \`yarn install\`..\n`)
+  const installCommand = getInstallCommand(packageManager)
+  console.log(`\nRunning \`${installCommand}\`..\n`)
   console.log(
     (
-      await runCommand('yarn install', {
+      await runCommand(installCommand, {
         cwd: destPath,
       })
     ).stdout,
@@ -139,18 +151,53 @@ export const add: AddFunc = async (args) => {
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
   console.log(`- To run development mode run the following commands:`)
   console.log(`    >`, green(`cd ${relativePath}`))
+
   if (structure === 'polyrepo') {
-    console.log(`    >`, green(`yarn dev`))
+    console.log(
+      `    >`,
+      green(
+        getPolyrepoCommandByPackageManager({
+          packageManager,
+          commandName: 'dev',
+        }),
+      ),
+    )
   } else if (structure === 'monorepo') {
-    console.log(`    >`, green(`yarn workspace ${packageName} dev`))
+    console.log(
+      `    >`,
+      green(
+        getMonorepoCommandByPackageManager({
+          packageManager,
+          commandName: 'dev',
+          packageName,
+        }),
+      ),
+    )
   }
 
   console.log(`\n\n- To deploy the newly created field plugin to Storyblok:`)
   console.log(`    >`, green(`cd ${relativePath}`))
   if (structure === 'polyrepo') {
-    console.log(`    >`, green(`yarn deploy`))
+    console.log(
+      `    >`,
+      green(
+        getPolyrepoCommandByPackageManager({
+          packageManager,
+          commandName: 'deploy',
+        }),
+      ),
+    )
   } else if (structure === 'monorepo') {
-    console.log(`    >`, green(`yarn workspace ${packageName} deploy`))
+    console.log(
+      `    >`,
+      green(
+        getMonorepoCommandByPackageManager({
+          packageManager,
+          commandName: 'deploy',
+          packageName,
+        }),
+      ),
+    )
   }
   return { destPath }
 }

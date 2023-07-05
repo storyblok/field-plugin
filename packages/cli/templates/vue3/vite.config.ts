@@ -52,7 +52,7 @@ function printProd(): PluginOption {
       console.log(` 
   Deploy the plugin to production with:
   
-    ${green('yarn deploy')}
+    ${green('npm run deploy')}
       `)
     },
   }

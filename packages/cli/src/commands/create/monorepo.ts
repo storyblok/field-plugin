@@ -1,25 +1,25 @@
-import prompts from 'prompts'
-import { copyFileSync, existsSync, mkdirSync, unlinkSync } from 'fs'
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs'
 import { bold, cyan } from 'kleur/colors'
 import { dirname, resolve } from 'path'
-import { MONOREPO_TEMPLATE_PATH, TEMPLATES_PATH } from '../../../config'
+import { MONOREPO_TEMPLATE_PATH } from '../../../config'
 import {
   betterPrompts,
   filterPathsToInclude,
+  getInstallCommand,
   initializeNewRepo,
   runCommand,
 } from '../../utils'
-import { add, Template } from '../add'
+import { add } from '../add'
 import walk from 'walkdir'
-
-export type CreateMonorepoArgs = {
-  dir: string
-  repoName?: string
-  pluginName?: string
-  template?: Template
-}
-
-type CreateMonorepoFunc = (args: CreateMonorepoArgs) => Promise<void>
+import { CreateMonorepoFunc } from './types'
+import { PackageManager } from '../types'
 
 const isValidRepoName = ({
   name,
@@ -48,8 +48,33 @@ const promptRepoName = async (dir: string) => {
   return name
 }
 
+const specifyPackageManager = ({
+  packageManager,
+  repoDir,
+}: {
+  packageManager: PackageManager
+  repoDir: string
+}) => {
+  if (packageManager === 'yarn' || packageManager === 'pnpm') {
+    const json = JSON.parse(
+      readFileSync(resolve(repoDir, 'package.json')).toString(),
+    ) as Record<string, unknown> & { scripts: Record<string, string> }
+
+    // eslint-disable-next-line functional/immutable-data
+    json['scripts']['add-plugin'] += ` --packageManager ${packageManager}`
+    // eslint-disable-next-line functional/immutable-data
+    json['packageManager'] = packageManager === 'yarn' ? 'yarn@3.2.4' : 'pnpm'
+
+    writeFileSync(
+      resolve(repoDir, 'package.json'),
+      JSON.stringify(json, null, 2),
+    )
+  }
+}
+
 export const createMonorepo: CreateMonorepoFunc = async ({
   dir,
+  packageManager,
   repoName,
   pluginName,
   template,
@@ -84,12 +109,23 @@ export const createMonorepo: CreateMonorepoFunc = async ({
     copyFileSync(file, destFilePath)
   })
 
-  console.log(bold(cyan('[info] Running `yarn install`...')))
-  await runCommand(`yarn install`, { cwd: repoDir })
+  specifyPackageManager({ packageManager, repoDir })
+
+  if (packageManager === 'pnpm') {
+    writeFileSync(
+      resolve(repoDir, 'pnpm-workspace.yaml'),
+      `packages:\n  - 'packages/*'\n`,
+    )
+  }
+
+  const installCommand = getInstallCommand(packageManager)
+  console.log(bold(cyan(`[info] Running \`${installCommand}\`...`)))
+  await runCommand(installCommand, { cwd: repoDir })
 
   console.log(bold(cyan('[info] Creating the first field-plugin...')))
   await add({
     dir: `${repoDir}/packages`,
+    packageManager,
     structure: 'monorepo',
     name: pluginName,
     template,
