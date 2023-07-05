@@ -1,19 +1,10 @@
-import {
-  FunctionComponent,
-  createContext,
-  useEffect,
-  useState,
-  ComponentType,
-} from 'react'
+import { FunctionComponent, useEffect, useState, ComponentType } from 'react'
 import {
   type FieldPluginResponse,
   createFieldPlugin,
 } from '@storyblok/field-plugin'
+import { FieldPluginContext } from './context'
 import { ReactNode } from 'react'
-
-export const FieldPluginContext = createContext<
-  Extract<FieldPluginResponse, { type: 'loaded' }> | undefined
->(undefined)
 
 type Props = {
   Error?: ComponentType<{ error: Error }>

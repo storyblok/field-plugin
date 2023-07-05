@@ -1,7 +1,7 @@
 import FieldPlugin from './components/FieldPlugin'
 import FieldPluginExample from './components/FieldPluginExample'
 import { FunctionComponent } from 'react'
-import { FieldPluginProvider } from './FieldPluginProvider'
+import { FieldPluginProvider } from '@storyblok/field-plugin/react'
 
 const App: FunctionComponent = () => {
   return (
