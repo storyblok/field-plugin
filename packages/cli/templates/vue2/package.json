@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@storyblok/field-plugin": "0.0.1-beta.2",
-    "joi": "^17.7.0",
     "vue": "^2.7.14"
   },
   "devDependencies": {
