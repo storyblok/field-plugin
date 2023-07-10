@@ -13,7 +13,8 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
-      name: 'field-plugin',
+      name: 'FieldPlugin',
+      fileName: 'field-plugin',
     },
     emptyOutDir: false,
   },

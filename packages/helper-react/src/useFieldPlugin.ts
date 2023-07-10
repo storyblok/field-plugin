@@ -1,6 +1,6 @@
 import { FieldPluginResponse } from '@storyblok/field-plugin'
 import { useContext } from 'react'
-import { FieldPluginContext } from './FieldPluginProvider'
+import { FieldPluginContext } from './context'
 
 export const useFieldPlugin = (): Extract<
   FieldPluginResponse,
