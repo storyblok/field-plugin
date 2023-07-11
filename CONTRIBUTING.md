@@ -5,7 +5,8 @@ Welcome to the Contributor Guide for the Field Plugin SDK. Here you'll find ever
 - [Reporting an issue](#reporting-an-issue)
 - [Monorepo](#monorepo)
 - [Commit conventions](#commit-conventions)
-- [Requirements](#reqwuirements)
+- [Creating Pull Request](#creating-pull-request)
+- [Requirements](#requirements)
 - [Projects](#projects)
   - [Library](#library)
   - [CLI](#cli)
@@ -44,6 +45,13 @@ Scopes we're using:
 - demo
 
 [See the setup →](https://github.com/storyblok/field-plugin/blob/main/.github/workflows/pr-title.yml)
+
+## Creating Pull Request
+
+> **Note**
+> If you are an external contributor, please create an issue first, so that we can align on what should be included in the Field Plugin SDK before you invest your time and effort.
+
+We strive to keep pull requests as small as possible to facilitate more effective feedback from reviewers. There is no set limit on the amount of changes, but if the reviewer feels the pull request is too large, they can request that the creator split it up.
 
 ## Requirements
 
@@ -124,12 +132,16 @@ Things to keep in mind when creating a new template include:
 
 - Naming `gitignore` files without the dot (`gitignore`) as otherwise the file will be ignored by `npm publish`.
 - Omitting `.env.local.example` as it will be copied from the `monorepo` template.
+- Adding `dev:<template-name>` script inside the root `package.json` (e.g. `dev:react`, `dev:vue3`, etc)
 
 ### Helpers
 
 This section will be filled once the helpers are shipped. Work is in progress.
 
 ## Release
+
+> **Note**
+> Only internal contributors can release the SDK.
 
 You can release either `@storyblok/field-plugin` or `@storyblok/field-plugin-cli`. To begin the release process, run the following command on the `main` branch:
 
