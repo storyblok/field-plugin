@@ -11,28 +11,27 @@ const plugin = reactive<FieldPluginResponse>({
   type: 'loading',
 })
 createFieldPlugin((newState) => {
-  plugin.type = newState.type
-  plugin.error = newState.error
-
   // Instead of replacing `plugin.data` which loses the reactive reference,
   // we're assigning each property into `plugin.data`.
-  if (newState.type === 'loaded') {
-    if (plugin.data) {
-      const keys = Object.keys(newState.data) as Array<keyof FieldPluginData>
-      keys.forEach((key) => {
-        if (typeof plugin.data[key] === 'object') {
-          // @ts-ignore not sure how to solve this
-          Object.assign(plugin.data[key], newState.data[key])
-        } else {
-          // @ts-ignore not sure how to solve this
-          plugin.data[key] = newState.data[key]
-        }
-      })
-    } else {
-      // @ts-ignore if `plugin.type` just became 'loaded', then `plugin.data` is still undefined.
-      // So this is a valid else-branch.
-      plugin.data = newState.data
-    }
+
+  if (newState.type === 'loaded' && plugin.type === 'loading') {
+    Object.assign(plugin, {
+      type: 'loaded',
+      data: newState.data,
+    })
+  }
+
+  if (newState.type === 'loaded' && plugin.type === 'loaded') {
+    const keys = Object.keys(newState.data) as Array<keyof FieldPluginData>
+    keys.forEach((key) => {
+      if (typeof plugin.data[key] === 'object') {
+        // @ts-ignore not sure how to solve this
+        Object.assign(plugin.data[key], newState.data[key])
+      } else {
+        // @ts-ignore not sure how to solve this
+        plugin.data[key] = newState.data[key]
+      }
+    })
   }
 
   if (newState.actions) {
@@ -45,6 +44,9 @@ createFieldPlugin((newState) => {
   } else {
     plugin.actions = undefined
   }
+
+  plugin.type = newState.type
+  plugin.error = newState.error
 })
 provide('field-plugin', plugin)
 </script>
