@@ -31,8 +31,7 @@
     "check:types": "tsc --noEmit",
     "dev": "vite build --watch",
     "test": "jest",
-    "build": "rm -rf dist && vite build && yarn build:helpers && yarn copy-helpers",
-    "copy-helpers": "./scripts/copy-helpers.sh"
+    "build": "echo '#### field-plugin' && rm -rf dist && vite build && yarn build:helpers"
   },
   "devDependencies": {
     "@types/jest": "29.0.3",
