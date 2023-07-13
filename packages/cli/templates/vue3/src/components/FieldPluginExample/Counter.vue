@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useFieldPlugin } from '../../useFieldPlugin'
+import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
 const plugin = useFieldPlugin()
 

@@ -3,7 +3,7 @@ import './example.css'
 import ModalToggle from './ModalToggle.vue'
 import Counter from './Counter.vue'
 import AssetSelector from './AssetSelector.vue'
-import { useFieldPlugin } from '../../useFieldPlugin'
+import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
 const plugin = useFieldPlugin()
 
