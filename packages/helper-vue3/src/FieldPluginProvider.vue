@@ -10,6 +10,22 @@ import { convertToRaw } from '../utils'
 const plugin = reactive<FieldPluginResponse>({
   type: 'loading',
 })
+
+const updateObjectWithoutChangingReference = (
+  originalObject: Record<string, unknown>,
+  newObject: Record<string, unknown>,
+) => {
+  // Delete keys that do not exist anymore
+  Object.keys(originalObject).forEach((key) => {
+    if (newObject[key] === undefined) {
+      delete originalObject[key]
+    }
+  })
+  // Update the original object with the new one
+  // @ts-ignore not sure how to solve this
+  Object.assign(originalObject, newObject)
+}
+
 createFieldPlugin((newState) => {
   // Instead of replacing `plugin.data` which loses the reactive reference,
   // we're assigning each property into `plugin.data`.
@@ -25,8 +41,10 @@ createFieldPlugin((newState) => {
     const keys = Object.keys(newState.data) as Array<keyof FieldPluginData>
     keys.forEach((key) => {
       if (typeof plugin.data[key] === 'object') {
-        // @ts-ignore not sure how to solve this
-        Object.assign(plugin.data[key], newState.data[key])
+        updateObjectWithoutChangingReference(
+          plugin.data[key] as Record<string, unknown>,
+          newState.data[key] as Record<string, unknown>,
+        )
       } else {
         // @ts-ignore not sure how to solve this
         plugin.data[key] = newState.data[key]
