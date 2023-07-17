@@ -6,8 +6,8 @@ export type CreateArgs =
       structure: 'monorepo'
     } & CreateMonorepoArgs)
   | ({
-      structure: 'polyrepo'
-    } & CreatePolyrepoArgs)
+      structure: 'standalone'
+    } & CreateStandaloneArgs)
 
 export type CreateFunc = (args: CreateArgs) => Promise<void>
 
@@ -21,11 +21,11 @@ export type CreateMonorepoArgs = {
 
 export type CreateMonorepoFunc = (args: CreateMonorepoArgs) => Promise<void>
 
-export type CreatePolyrepoArgs = {
+export type CreateStandaloneArgs = {
   dir: string
   packageManager: PackageManager
   pluginName?: string
   template?: Template
 }
 
-export type CreatePolyrepoFunc = (args: CreatePolyrepoArgs) => Promise<void>
+export type CreateStandaloneFunc = (args: CreateStandaloneArgs) => Promise<void>

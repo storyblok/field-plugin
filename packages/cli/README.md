@@ -40,7 +40,7 @@ The `create` command allows a set of **optional** options for customization.
 --packageManager <value> package manager (choices: "npm", "yarn", "pnpm")
 --repoName <value>    name of repository, for monorepo (Lowercase alphanumeric and dash)
 --template <value>    name of template to use (choices: "vue2", "vue3", "react", "js")
---structure <value>   setup structure (choices: "polyrepo", "monorepo")
+--structure <value>   setup structure (choices: "standalone", "monorepo")
 -h, --help            display help for command
 ```
 
@@ -51,10 +51,10 @@ The `create` command allows a set of **optional** options for customization.
 npx @storyblok/field-plugin-cli
 
 # Create a single field plugin with Vue 3 template inside a specific directory with a specific named
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=polyrepo --packageManager=npm
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=standalone --packageManager=npm
 
 # Create a single field plugin with React template inside a specific directory with a specific named
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=react --structure=polyrepo --packageManager=npm
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=react --structure=standalone --packageManager=npm
 
 # Create a monorepo with field plugin with a specific named inside a specific directory with Vue 2 template
 npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=monorepo --packageManager=npm
@@ -62,11 +62,11 @@ npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_P
 
 #### Structure
 
-Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a polyrepo and a monorepo setup.
+Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a standalone and a monorepo setup.
 
-##### polyrepo (one package in one repo)
+##### standalone (one package in one repo)
 
-Here is a simplified folder structure of a polyrepo mode:
+Here is a simplified folder structure of a standalone mode:
 
 ```bash
 ├── field-plugin

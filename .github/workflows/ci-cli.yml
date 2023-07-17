@@ -16,7 +16,7 @@ jobs:
       - run: yarn install
       - run: yarn eslint packages/cli
       - run: yarn workspace @storyblok/field-plugin-cli build
-  polyrepo-cli-checks:
+  standalone-cli-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -29,7 +29,7 @@ jobs:
       - run: git config --global user.name "Your Name"
       - run: yarn install
       - run: yarn workspace @storyblok/field-plugin-cli build
-      - run: npx field-plugin --dir=${{runner.temp}} --pluginName=temp-single-field-plugin --template=vue2 --structure=polyrepo --packageManager=npm
+      - run: npx field-plugin --dir=${{runner.temp}} --pluginName=temp-single-field-plugin --template=vue2 --structure=standalone --packageManager=npm
       - run: cd ${{runner.temp}}/temp-single-field-plugin && npm run build
   monorepo-cli-checks:
     runs-on: ubuntu-latest

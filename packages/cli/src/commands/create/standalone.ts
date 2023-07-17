@@ -1,8 +1,8 @@
 import { add } from '../add'
 import { initializeNewRepo } from '../../utils'
-import { CreatePolyrepoFunc } from './types'
+import { CreateStandaloneFunc } from './types'
 
-export const createPolyrepo: CreatePolyrepoFunc = async ({
+export const createStandalone: CreateStandaloneFunc = async ({
   dir,
   packageManager,
   pluginName,
@@ -13,7 +13,7 @@ export const createPolyrepo: CreatePolyrepoFunc = async ({
     packageManager,
     name: pluginName,
     template,
-    structure: 'polyrepo',
+    structure: 'standalone',
   })
   await initializeNewRepo({ dir: destPath })
 }

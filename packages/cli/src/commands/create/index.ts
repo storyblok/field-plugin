@@ -1,5 +1,5 @@
 import { createMonorepo } from './monorepo'
-import { createPolyrepo } from './polyrepo'
+import { createStandalone } from './standalone'
 import { Structure } from '../add'
 import {
   betterPrompts,
@@ -25,9 +25,9 @@ const selectRepositoryStructure = async () => {
           value: 'monorepo',
         },
         {
-          title: 'Polyrepo (one plugin in one repo)',
+          title: 'Standalone (one plugin in one repo)',
           // description: 'some description if exists',
-          value: 'polyrepo',
+          value: 'standalone',
         },
       ],
     },
@@ -36,7 +36,7 @@ const selectRepositoryStructure = async () => {
 }
 
 const isValidStructure = (structure: string): structure is Structure => {
-  return structure === 'monorepo' || structure === 'polyrepo'
+  return structure === 'monorepo' || structure === 'standalone'
 }
 
 export const create: CreateFunc = async (opts) => {
@@ -54,8 +54,8 @@ export const create: CreateFunc = async (opts) => {
     ? structureParam
     : await selectRepositoryStructure()
 
-  if (structure === 'polyrepo') {
-    await createPolyrepo({ packageManager, ...rest })
+  if (structure === 'standalone') {
+    await createStandalone({ packageManager, ...rest })
   } else if (structure === 'monorepo') {
     await createMonorepo({ packageManager, ...rest })
   }
