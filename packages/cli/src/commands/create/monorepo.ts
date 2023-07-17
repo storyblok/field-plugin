@@ -12,9 +12,7 @@ import { MONOREPO_TEMPLATE_PATH } from '../../../config'
 import {
   betterPrompts,
   filterPathsToInclude,
-  getInstallCommand,
   initializeNewRepo,
-  runCommand,
 } from '../../utils'
 import { add } from '../add'
 import walk from 'walkdir'
