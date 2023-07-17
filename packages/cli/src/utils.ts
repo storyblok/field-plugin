@@ -198,7 +198,7 @@ export const getMonorepoCommandByPackageManager = (args: {
   }
 }
 
-export const getPolyrepoCommandByPackageManager = (args: {
+export const getStandaloneCommandByPackageManager = (args: {
   commandName: string
   packageManager: PackageManager
 }) => {

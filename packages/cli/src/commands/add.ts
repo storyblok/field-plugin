@@ -15,7 +15,7 @@ import {
   filterPathsToInclude,
   getInstallCommand,
   getMonorepoCommandByPackageManager,
-  getPolyrepoCommandByPackageManager,
+  getStandaloneCommandByPackageManager,
   isValidPackageManager,
   promptName,
   runCommand,
@@ -25,7 +25,7 @@ import type { PackageManager } from './types'
 
 export type Template = 'vue2'
 
-export type Structure = 'polyrepo' | 'monorepo'
+export type Structure = 'standalone' | 'monorepo'
 
 export type AddArgs = {
   dir: string
@@ -61,7 +61,7 @@ export const add: AddFunc = async (args) => {
     ? args.packageManager
     : await selectPackageManager()
 
-  const structure = args.structure || 'polyrepo'
+  const structure = args.structure || 'standalone'
 
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's create a field-type extension.\n")
@@ -128,8 +128,8 @@ export const add: AddFunc = async (args) => {
     copyFileSync(file, destFilePath)
   })
 
-  if (structure === 'polyrepo') {
-    // Polyrepo gets .env.local.example copied from the monorepo template.
+  if (structure === 'standalone') {
+    // Standalone gets .env.local.example copied from the monorepo template.
     copyFileSync(
       resolve(MONOREPO_TEMPLATE_PATH, '.env.local.example'),
       resolve(destPath, '.env.local.example'),
@@ -152,11 +152,11 @@ export const add: AddFunc = async (args) => {
   console.log(`- To run development mode run the following commands:`)
   console.log(`    >`, green(`cd ${relativePath}`))
 
-  if (structure === 'polyrepo') {
+  if (structure === 'standalone') {
     console.log(
       `    >`,
       green(
-        getPolyrepoCommandByPackageManager({
+        getStandaloneCommandByPackageManager({
           packageManager,
           commandName: 'dev',
         }),
@@ -177,11 +177,11 @@ export const add: AddFunc = async (args) => {
 
   console.log(`\n\n- To deploy the newly created field plugin to Storyblok:`)
   console.log(`    >`, green(`cd ${relativePath}`))
-  if (structure === 'polyrepo') {
+  if (structure === 'standalone') {
     console.log(
       `    >`,
       green(
-        getPolyrepoCommandByPackageManager({
+        getStandaloneCommandByPackageManager({
           packageManager,
           commandName: 'deploy',
         }),
