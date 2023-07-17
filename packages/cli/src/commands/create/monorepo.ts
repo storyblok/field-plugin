@@ -72,6 +72,12 @@ const specifyPackageManager = ({
   }
 }
 
+const MONOREPO_DOCS: Record<PackageManager, string> = {
+  npm: 'https://docs.npmjs.com/cli/v7/using-npm/workspaces',
+  yarn: 'https://yarnpkg.com/features/workspaces',
+  pnpm: 'https://pnpm.io/workspaces',
+}
+
 export const createMonorepo: CreateMonorepoFunc = async ({
   dir,
   packageManager,
@@ -118,10 +124,6 @@ export const createMonorepo: CreateMonorepoFunc = async ({
     )
   }
 
-  const installCommand = getInstallCommand(packageManager)
-  console.log(bold(cyan(`[info] Running \`${installCommand}\`...`)))
-  await runCommand(installCommand, { cwd: repoDir })
-
   console.log(bold(cyan('[info] Creating the first field-plugin...')))
   await add({
     dir: `${repoDir}/packages`,
@@ -132,4 +134,7 @@ export const createMonorepo: CreateMonorepoFunc = async ({
   })
   unlinkSync(`${repoDir}/packages/.gitkeep`)
   await initializeNewRepo({ dir: repoDir })
+
+  console.log('\n\n- To learn more about monorepo:')
+  console.log(`    > ${MONOREPO_DOCS[packageManager]}`)
 }
