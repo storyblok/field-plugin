@@ -20,6 +20,11 @@
       "import": "./dist/react/index.js",
       "require": "./dist/react/index.umd.cjs",
       "types": "./dist/react/index.d.ts"
+    },
+    "./vue3": {
+      "import": "./dist/vue3/index.js",
+      "require": "./dist/vue3/index.umd.cjs",
+      "types": "./dist/vue3/index.d.ts"
     }
   },
   "repository": {

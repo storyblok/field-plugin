@@ -1,6 +1,6 @@
 on:
   pull_request:
-    types: [opened, edited, synchronize, reopened]
+    types: [ opened, edited, synchronize, reopened ]
 
 # https://github.com/amannn/action-semantic-pull-request
 jobs:
@@ -18,4 +18,5 @@ jobs:
             cli
             template
             demo
+            helper
           requireScope: true

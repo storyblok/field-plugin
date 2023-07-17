@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import FieldPlugin from './components/FieldPlugin.vue'
 import FieldPluginExample from './components/FieldPluginExample/index.vue'
-import FieldPluginProvider from './components/FieldPluginProvider.vue'
+import { FieldPluginProvider } from '@storyblok/field-plugin/vue3'
 </script>
 
 <template>
