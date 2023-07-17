@@ -20,14 +20,14 @@ const selectRepositoryStructure = async () => {
         'How many field plugins potentially do you want in this repository?',
       choices: [
         {
-          title: 'Monorepo (multiple plugins in one repo)',
-          // description: 'some description if exists',
-          value: 'monorepo',
-        },
-        {
           title: 'Standalone (one plugin in one repo)',
           // description: 'some description if exists',
           value: 'standalone',
+        },
+        {
+          title: 'Monorepo (multiple plugins in one repo)',
+          // description: 'some description if exists',
+          value: 'monorepo',
         },
       ],
     },
