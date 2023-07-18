@@ -5273,6 +5273,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"helper-vue2@workspace:packages/helper-vue2":
+  version: 0.0.0-use.local
+  resolution: "helper-vue2@workspace:packages/helper-vue2"
+  dependencies:
+    "@storyblok/field-plugin": "workspace:*"
+    "@vitejs/plugin-vue2": 2.2.0
+    vite: ^4.4.0
+    vue: ^2.7.14
+  languageName: unknown
+  linkType: soft
+
 "helper-vue3@workspace:packages/helper-vue3":
   version: 0.0.0-use.local
   resolution: "helper-vue3@workspace:packages/helper-vue3"

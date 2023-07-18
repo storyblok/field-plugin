@@ -21,6 +21,11 @@
       "require": "./dist/react/index.umd.cjs",
       "types": "./dist/react/index.d.ts"
     },
+    "./vue2": {
+      "import": "./dist/vue2/index.js",
+      "require": "./dist/vue2/index.umd.cjs",
+      "types": "./dist/vue2/index.d.ts"
+    },
     "./vue3": {
       "import": "./dist/vue3/index.js",
       "require": "./dist/vue3/index.umd.cjs",
