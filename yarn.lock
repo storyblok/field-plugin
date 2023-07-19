@@ -4707,6 +4707,7 @@ __metadata:
   dependencies:
     "@storyblok/field-plugin": 0.0.1-beta.2
     "@vitejs/plugin-vue2": 2.2.0
+    typescript: 5.1.6
     vite: ^4.2.2
     vite-plugin-css-injected-by-js: 2.4.0
     vue: ^2.7.14

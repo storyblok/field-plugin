@@ -23,8 +23,7 @@
     },
     "./vue2": {
       "import": "./dist/vue2/index.js",
-      "require": "./dist/vue2/index.umd.cjs",
-      "types": "./dist/vue2/index.d.ts"
+      "require": "./dist/vue2/index.umd.cjs"
     },
     "./vue3": {
       "import": "./dist/vue3/index.js",
