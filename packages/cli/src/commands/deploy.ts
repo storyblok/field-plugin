@@ -312,7 +312,7 @@ const selectApiScope = async (token: string): Promise<Scope> => {
   ) {
     console.error(
       red('[ERROR]'),
-      `The token appears to be invalid as it does not have access to either My Plugins or the plugins on the Partner Portal.`,
+      `The token appears to be invalid as it does not have access to either My Plugins, the plugins on the Partner Portal or the Organization plugins.`,
     )
     process.exit(1)
   }
