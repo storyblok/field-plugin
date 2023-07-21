@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue2'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import * as querystring from 'querystring'
 
+// test
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), cssInjectedByJsPlugin(), printProd(), printDev()],

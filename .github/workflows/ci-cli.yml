@@ -35,14 +35,12 @@ jobs:
     needs: prepare-cli-checks
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/ci-check-env
       - run: npx field-plugin --dir=${{runner.temp}} --pluginName=temp-single-field-plugin --template=vue2 --structure=standalone --packageManager=npm
       - run: cd ${{runner.temp}}/temp-single-field-plugin && npm link @storyblok/field-plugin && npm run build
   monorepo-cli-checks:
     needs: prepare-cli-checks
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/ci-check-env
       - run: npx field-plugin --dir=${{runner.temp}} --repoName=temp-monorepo-field-plugin --pluginName=test-plugin --template=vue2 --structure=monorepo --packageManager=npm
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
