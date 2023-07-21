@@ -10,6 +10,7 @@ import {
 import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
 import packageJson from './../package.json'
+import { expandTilde } from './utils'
 
 const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
@@ -46,7 +47,8 @@ export const main = () => {
       '[Monorepo] name of repository (Lowercase alphanumeric and dash)',
     )
     .action(async function (this: Command) {
-      await create(this.opts<CreateArgs>())
+      const opts = this.opts<CreateArgs>()
+      await create({ ...opts, dir: expandTilde(opts.dir) })
     })
 
   program
@@ -83,7 +85,8 @@ export const main = () => {
       ),
     )
     .action(async function (this: Command) {
-      await deploy(this.opts<DeployArgs>())
+      const opts = this.opts<DeployArgs>()
+      await deploy({ ...opts, dir: expandTilde(opts.dir) })
     })
 
   program
@@ -110,7 +113,8 @@ export const main = () => {
       ),
     )
     .action(async function (this: Command) {
-      await add(this.opts<AddArgs>())
+      const opts = this.opts<AddArgs>()
+      await add({ ...opts, dir: expandTilde(opts.dir) })
     })
 
   program.parse(process.argv)

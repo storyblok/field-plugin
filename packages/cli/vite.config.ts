@@ -19,6 +19,7 @@ export default defineConfig({
         'prompts',
         'kleur',
         'fs',
+        'os',
         'path',
         'walkdir',
         'execa',
