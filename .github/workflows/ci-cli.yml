@@ -19,6 +19,7 @@ jobs:
   standalone-cli-checks:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Prepare test environment
         uses: ./.github/actions/cli-checks-env
       - run: npx field-plugin --dir=${{runner.temp}} --pluginName=temp-single-field-plugin --template=vue2 --structure=standalone --packageManager=npm
@@ -26,6 +27,7 @@ jobs:
   monorepo-cli-checks:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Prepare test environment
         uses: ./.github/actions/cli-checks-env
       - run: npx field-plugin --dir=${{runner.temp}} --repoName=temp-monorepo-field-plugin --pluginName=test-plugin --template=vue2 --structure=monorepo --packageManager=npm
