@@ -50,3 +50,23 @@ jobs:
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
       - run: cd ${{runner.temp}}/temp-monorepo-field-plugin && npm link @storyblok/field-plugin && npm run build --workspace=test-plugin
+  monorepo-vue3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare test environment
+        uses: ./.github/actions/cli-checks-env
+      - run: npx field-plugin --dir=${{runner.temp}} --repoName=temp-monorepo-field-plugin --pluginName=test-plugin --template=vue3 --structure=monorepo --packageManager=npm
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
+      - run: cd ${{runner.temp}}/temp-monorepo-field-plugin && npm link @storyblok/field-plugin && npm run build --workspace=test-plugin
+  monorepo-react:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare test environment
+        uses: ./.github/actions/cli-checks-env
+      - run: npx field-plugin --dir=${{runner.temp}} --repoName=temp-monorepo-field-plugin --pluginName=test-plugin --template=react --structure=monorepo --packageManager=npm
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
+      - run: cd ${{runner.temp}}/temp-monorepo-field-plugin && npm link @storyblok/field-plugin && npm run build --workspace=test-plugin
