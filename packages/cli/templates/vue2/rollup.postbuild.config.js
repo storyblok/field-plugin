@@ -11,7 +11,7 @@ This Vue 2 template, however, has two build steps.
 
 For an unknown reason, `vite build` fails to resolve and bundle `vue` into the output. That's why `vite.config.ts` has the extra `external` configuration, which excludes `vue`, so that the next step can handle it.
 
-It may be related to `@vitejs/plugin-vue2`, but this is uncertain.
+It may be related to `@vitejs/plugin-vue2`, but this is uncertain. Therefore, this two-step build flow is a workaround.
 */
 
 export default {
