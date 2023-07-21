@@ -16,31 +16,18 @@ jobs:
       - run: yarn install
       - run: yarn eslint packages/cli
       - run: yarn workspace @storyblok/field-plugin-cli build
-  prepare-cli-checks:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.16.0
-          cache: 'yarn'
-      - run: git config --global user.email "you@example.com"
-      - run: git config --global user.name "Your Name"
-      - run: yarn install
-      - run: yarn workspace @storyblok/field-plugin build
-      - run: cd packages/field-plugin && npm link
-      - run: yarn workspace @storyblok/field-plugin-cli build
   standalone-cli-checks:
-    needs: prepare-cli-checks
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare test environment
+        uses: ./.github/actions/cli-checks-env
       - run: npx field-plugin --dir=${{runner.temp}} --pluginName=temp-single-field-plugin --template=vue2 --structure=standalone --packageManager=npm
       - run: cd ${{runner.temp}}/temp-single-field-plugin && npm link @storyblok/field-plugin && npm run build
   monorepo-cli-checks:
-    needs: prepare-cli-checks
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare test environment
+        uses: ./.github/actions/cli-checks-env
       - run: npx field-plugin --dir=${{runner.temp}} --repoName=temp-monorepo-field-plugin --pluginName=test-plugin --template=vue2 --structure=monorepo --packageManager=npm
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
