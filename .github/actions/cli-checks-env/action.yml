@@ -7,8 +7,14 @@ runs:
         node-version: 18.16.0
         cache: 'yarn'
     - run: git config --global user.email "you@example.com"
+      shell: bash
     - run: git config --global user.name "Your Name"
+      shell: bash
     - run: yarn install
+      shell: bash
     - run: yarn workspace @storyblok/field-plugin build
+      shell: bash
     - run: cd packages/field-plugin && npm link
+      shell: bash
     - run: yarn workspace @storyblok/field-plugin-cli build
+      shell: bash
