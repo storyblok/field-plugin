@@ -16,7 +16,7 @@ jobs:
       - run: yarn install
       - run: yarn eslint packages/cli
       - run: yarn workspace @storyblok/field-plugin-cli build
-  standalone-cli-checks:
+  standalone-vue2:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,7 +24,23 @@ jobs:
         uses: ./.github/actions/cli-checks-env
       - run: npx field-plugin --dir=${{runner.temp}} --pluginName=temp-single-field-plugin --template=vue2 --structure=standalone --packageManager=npm
       - run: cd ${{runner.temp}}/temp-single-field-plugin && npm link @storyblok/field-plugin && npm run build
-  monorepo-cli-checks:
+  standalone-vue3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare test environment
+        uses: ./.github/actions/cli-checks-env
+      - run: npx field-plugin --dir=${{runner.temp}} --pluginName=temp-single-field-plugin --template=vue3 --structure=standalone --packageManager=npm
+      - run: cd ${{runner.temp}}/temp-single-field-plugin && npm link @storyblok/field-plugin && npm run build
+  standalone-react:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare test environment
+        uses: ./.github/actions/cli-checks-env
+      - run: npx field-plugin --dir=${{runner.temp}} --pluginName=temp-single-field-plugin --template=react --structure=standalone --packageManager=npm
+      - run: cd ${{runner.temp}}/temp-single-field-plugin && npm link @storyblok/field-plugin && npm run build
+  monorepo-vue2:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
