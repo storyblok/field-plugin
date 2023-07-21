@@ -5,9 +5,9 @@ Normally, other templates have a single build step: `vite build`. It bundles eve
 
 This Vue 2 template, however, has two build steps.
 
-First, `vite build` bundles everything into `dist/temp.js`. It externalizes the `vue` dependency, meaning `dist/temp.js` does not include `vue`, but just does `import Vue from 'vue'`.
+1. `vite build` bundles everything into `dist/temp.js`. It externalizes the `vue` dependency, meaning `dist/temp.js` does not include `vue`, but just does `import Vue from 'vue'`.
 
-Second, `npm run bundle:vue` combines `dist/temp.js` and `vue` into `dist/index.js`.
+2. `npm run bundle:vue` combines `dist/temp.js` and `vue` into `dist/index.js`.
 
 For an unknown reason, `vite build` fails to resolve and bundle `vue` into the output. That's why `vite.config.ts` has the extra `external` configuration, which excludes `vue`, so that the next step can handle it.
 
