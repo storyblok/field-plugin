@@ -59,7 +59,7 @@ jobs:
       - run: npx field-plugin --dir=${{runner.temp}} --repoName=temp-monorepo-field-plugin --pluginName=test-plugin --template=vue3 --structure=monorepo --packageManager=npm
         env:
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
-      - run: cd ${{runner.temp}}/temp-monorepo-field-plugin && npm link @storyblok/field-plugin && npm run build --workspace=test-plugin
+      - run: cd ${{runner.temp}}/temp-monorepo-field-plugin && npm link @storyblok/field-plugin && cd packages/test-plugin && npx vite build
   monorepo-react:
     runs-on: ubuntu-latest
     steps:
