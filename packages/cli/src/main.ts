@@ -10,7 +10,6 @@ import {
 import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
 import packageJson from './../package.json'
-import { expandTilde } from './utils'
 
 const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
@@ -46,9 +45,8 @@ export const main = () => {
       '--repoName <value>',
       '[Monorepo] name of repository (Lowercase alphanumeric and dash)',
     )
-    .action(async function (this: Command) {
-      const opts = this.opts<CreateArgs>()
-      await create({ ...opts, dir: expandTilde(opts.dir) })
+    .action(async function(this: Command) {
+      await create(this.opts<CreateArgs>())
     })
 
   program
@@ -84,9 +82,8 @@ export const main = () => {
         `where to deploy the field plugin ('my-plugins' | 'partner-portal')`,
       ),
     )
-    .action(async function (this: Command) {
-      const opts = this.opts<DeployArgs>()
-      await deploy({ ...opts, dir: expandTilde(opts.dir) })
+    .action(async function(this: Command) {
+      await deploy(this.opts<DeployArgs>())
     })
 
   program
@@ -112,9 +109,8 @@ export const main = () => {
         packageManagerOptions,
       ),
     )
-    .action(async function (this: Command) {
-      const opts = this.opts<AddArgs>()
-      await add({ ...opts, dir: expandTilde(opts.dir) })
+    .action(async function(this: Command) {
+      await add(this.opts<AddArgs>())
     })
 
   program.parse(process.argv)
