@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { configDefaults, defineConfig } from 'vitest/config'
 
+// test
 // https://vitejs.dev/config/
 export default defineConfig({
   test: {
@@ -18,6 +19,7 @@ export default defineConfig({
         'prompts',
         'kleur',
         'fs',
+        'os',
         'path',
         'walkdir',
         'execa',
