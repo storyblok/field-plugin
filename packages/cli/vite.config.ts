@@ -1,7 +1,6 @@
 import { resolve } from 'path'
 import { configDefaults, defineConfig } from 'vitest/config'
 
-// test
 // https://vitejs.dev/config/
 export default defineConfig({
   test: {
