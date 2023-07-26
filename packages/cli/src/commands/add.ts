@@ -70,9 +70,9 @@ export const add: AddFunc = async (args) => {
     typeof args.name !== 'undefined' && args.name !== ''
       ? args.name
       : await promptName({
-          message:
-            'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
-        })
+        message:
+          'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
+      })
 
   const template =
     typeof args.template !== 'undefined'
@@ -137,14 +137,10 @@ export const add: AddFunc = async (args) => {
   }
 
   const installCommand = getInstallCommand(packageManager)
-  console.log(`\nRunning \`${installCommand}\`..\n`)
-  console.log(
-    (
-      await runCommand(installCommand, {
-        cwd: destPath,
-      })
-    ).stdout,
-  )
+  await runCommand(installCommand, {
+    cwd: destPath,
+    spinnerMessage: `Running \`${installCommand}\`..`,
+  })
 
   const relativePath = getRelativePath(repoRootPath)
 
