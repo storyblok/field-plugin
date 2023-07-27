@@ -46,7 +46,7 @@ export const createCLI = () => {
       '--repoName <value>',
       '[Monorepo] name of repository (Lowercase alphanumeric and dash)',
     )
-    .action(async function(this: Command) {
+    .action(async function (this: Command) {
       await create(this.opts<CreateArgs>())
     })
 
@@ -83,7 +83,7 @@ export const createCLI = () => {
         `where to deploy the field plugin ('my-plugins' | 'partner-portal' | 'organization')`,
       ).choices(deployScopeOptions),
     )
-    .action(async function(this: Command) {
+    .action(async function (this: Command) {
       await deploy(this.opts<DeployArgs>())
     })
 
@@ -110,7 +110,7 @@ export const createCLI = () => {
         packageManagerOptions,
       ),
     )
-    .action(async function(this: Command) {
+    .action(async function (this: Command) {
       await add(this.opts<AddArgs>())
     })
 
