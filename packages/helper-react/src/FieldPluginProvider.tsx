@@ -3,7 +3,7 @@ import {
   type FieldPluginResponse,
   createFieldPlugin,
 } from '@storyblok/field-plugin'
-import { FieldPluginContext } from './context'
+import { FieldPluginContext } from './FieldPluginContext'
 import { ReactNode } from 'react'
 
 type Props = {
