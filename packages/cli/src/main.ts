@@ -11,13 +11,13 @@ import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
 import packageJson from './../package.json'
 
-const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
 const structureOptions = ['standalone', 'monorepo']
 const packageManagerOptions = ['npm', 'yarn', 'pnpm']
 const deployScopeOptions = ['my-plugins', 'partner-portal', 'organization']
 
-export const main = () => {
+export const createCLI = () => {
+  const program = new Command()
   program
     .version(packageJson.version)
     .command('create', { isDefault: true })
@@ -46,7 +46,7 @@ export const main = () => {
       '--repoName <value>',
       '[Monorepo] name of repository (Lowercase alphanumeric and dash)',
     )
-    .action(async function (this: Command) {
+    .action(async function(this: Command) {
       await create(this.opts<CreateArgs>())
     })
 
@@ -83,7 +83,7 @@ export const main = () => {
         `where to deploy the field plugin ('my-plugins' | 'partner-portal' | 'organization')`,
       ).choices(deployScopeOptions),
     )
-    .action(async function (this: Command) {
+    .action(async function(this: Command) {
       await deploy(this.opts<DeployArgs>())
     })
 
@@ -110,9 +110,14 @@ export const main = () => {
         packageManagerOptions,
       ),
     )
-    .action(async function (this: Command) {
+    .action(async function(this: Command) {
       await add(this.opts<AddArgs>())
     })
 
+  return program
+}
+
+export const main = () => {
+  const program = createCLI()
   program.parse(process.argv)
 }
