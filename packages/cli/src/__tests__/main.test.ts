@@ -7,10 +7,6 @@ vi.mock('../commands')
 const DEFAULT_ARGS = ['node', 'main.ts'] // cli.parse() should receive the executable and its arget as its first two arguments.
 
 describe('main', () => {
-  it('does nothing', () => {
-    expect(1).toBe(1)
-  })
-
   describe('default arguments', () => {
     it('create command', () => {
       const cli = createCLI()
