@@ -3,7 +3,7 @@ import prompts from 'prompts'
 import { isAbsolute, relative, resolve } from 'path'
 import { existsSync, appendFileSync, readFileSync, writeFileSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
-import { PackageManager } from './commands/types'
+import type { PackageManager, Structure } from './commands/types'
 
 type RunCommandFunc = (
   command: string,
@@ -240,4 +240,33 @@ export const selectPackageManager = async () => {
     },
   ])
   return packageManager
+}
+
+export const selectRepositoryStructure = async () => {
+  const { structure } = await betterPrompts<{ structure: Structure }>([
+    {
+      type: 'select',
+      name: 'structure',
+      message:
+        'How many field plugins potentially do you want in this repository?',
+      choices: [
+        {
+          title:
+            'Standalone (one plugin in one repo, also known as `polyrepo`)',
+          // description: 'some description if exists',
+          value: 'standalone',
+        },
+        {
+          title: 'Monorepo (multiple plugins in one repo)',
+          // description: 'some description if exists',
+          value: 'monorepo',
+        },
+      ],
+    },
+  ])
+  return structure
+}
+
+export const isValidStructure = (structure: string): structure is Structure => {
+  return structure === 'monorepo' || structure === 'standalone'
 }

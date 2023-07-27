@@ -21,11 +21,7 @@ import {
   runCommand,
   selectPackageManager,
 } from '../utils'
-import type { PackageManager } from './types'
-
-export type Template = 'vue2'
-
-export type Structure = 'standalone' | 'monorepo'
+import type { PackageManager, Structure, Template } from './types'
 
 export type AddArgs = {
   dir: string
@@ -70,9 +66,9 @@ export const add: AddFunc = async (args) => {
     typeof args.name !== 'undefined' && args.name !== ''
       ? args.name
       : await promptName({
-          message:
-            'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
-        })
+        message:
+          'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
+      })
 
   const template =
     typeof args.template !== 'undefined'
