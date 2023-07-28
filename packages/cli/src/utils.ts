@@ -3,6 +3,7 @@ import prompts from 'prompts'
 import { isAbsolute, relative, resolve } from 'path'
 import { existsSync, appendFileSync, readFileSync, writeFileSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
+import { TEMPLATES } from '../config'
 import type { PackageManager, Structure } from './commands/types'
 
 type RunCommandFunc = (
@@ -269,4 +270,16 @@ export const selectRepositoryStructure = async () => {
 
 export const isValidStructure = (structure: string): structure is Structure => {
   return structure === 'monorepo' || structure === 'standalone'
+}
+
+export const selectTemplate = async () => {
+  const { template } = await betterPrompts<{ template: string }>([
+    {
+      type: 'select',
+      name: 'template',
+      message: 'Which template?',
+      choices: TEMPLATES,
+    },
+  ])
+  return template
 }

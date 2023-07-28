@@ -8,9 +8,8 @@ import {
   writeFileSync,
 } from 'fs'
 import walk from 'walkdir'
-import { MONOREPO_TEMPLATE_PATH, TEMPLATES, TEMPLATES_PATH } from '../../config'
+import { MONOREPO_TEMPLATE_PATH, TEMPLATES_PATH } from '../../config'
 import {
-  betterPrompts,
   checkIfSubDir,
   filterPathsToInclude,
   getInstallCommand,
@@ -20,6 +19,7 @@ import {
   promptName,
   runCommand,
   selectPackageManager,
+  selectTemplate,
 } from '../utils'
 import type { PackageManager, Structure, Template } from './types'
 
@@ -40,18 +40,6 @@ export type PackageJson = {
 
 export type AddFunc = (args: AddArgs) => Promise<{ destPath: string }>
 
-const selectTemplate = async () => {
-  const { template } = await betterPrompts<{ template: string }>([
-    {
-      type: 'select',
-      name: 'template',
-      message: 'Which template?',
-      choices: TEMPLATES,
-    },
-  ])
-  return template
-}
-
 export const add: AddFunc = async (args) => {
   const packageManager = isValidPackageManager(args.packageManager)
     ? args.packageManager
@@ -66,9 +54,9 @@ export const add: AddFunc = async (args) => {
     typeof args.name !== 'undefined' && args.name !== ''
       ? args.name
       : await promptName({
-          message:
-            'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
-        })
+        message:
+          'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
+      })
 
   const template =
     typeof args.template !== 'undefined'
