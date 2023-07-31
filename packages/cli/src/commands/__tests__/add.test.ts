@@ -29,6 +29,13 @@ describe('add', () => {
     })
     const files = await readdir(`${dir}/${name}`)
     expect(files).toContain('.env.local.example')
+
+    const packageJson = JSON.parse(
+      (await readFile(`${dir}/${name}/package.json`)).toString(),
+    )
+    expect(packageJson['scripts']['deploy']).toMatchInlineSnapshot(
+      '"npm run build && npx @storyblok/field-plugin-cli@beta deploy"',
+    )
     expect(files).toMatchInlineSnapshot(`
       [
         ".env.local.example",
