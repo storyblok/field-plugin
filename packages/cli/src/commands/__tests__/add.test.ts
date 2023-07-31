@@ -1,6 +1,6 @@
 import { readdir, readFile } from 'fs/promises'
 import tempDir from 'temp-dir'
-import { add } from '../add'
+import { add, PackageJson } from '../add'
 import { randomString } from '../../utils'
 import { vi } from 'vitest'
 
@@ -32,7 +32,7 @@ describe('add', () => {
 
     const packageJson = JSON.parse(
       (await readFile(`${dir}/${name}/package.json`)).toString(),
-    )
+    ) as PackageJson
     expect(packageJson['scripts']['deploy']).toMatchInlineSnapshot(
       '"npm run build && npx @storyblok/field-plugin-cli@beta deploy"',
     )
@@ -72,7 +72,7 @@ describe('add', () => {
 
     const packageJson = JSON.parse(
       (await readFile(`${dir}/${name}/package.json`)).toString(),
-    )
+    ) as PackageJson
     expect(packageJson['scripts']['deploy']).toMatchInlineSnapshot(
       '"npm run build && npx @storyblok/field-plugin-cli@beta deploy --dotEnvPath \'../../.env\'"',
     )
