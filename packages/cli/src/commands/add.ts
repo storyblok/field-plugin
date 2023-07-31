@@ -1,4 +1,3 @@
-import { bold, cyan, red, green } from 'kleur/colors'
 import { resolve, dirname, relative } from 'path'
 import {
   existsSync,

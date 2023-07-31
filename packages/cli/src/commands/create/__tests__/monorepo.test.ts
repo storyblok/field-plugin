@@ -2,24 +2,10 @@ import { readdir } from 'fs/promises'
 import tempDir from 'temp-dir'
 import { add } from '../../add'
 import { createMonorepo } from '../monorepo'
+import { randomString } from '../../../utils'
 import { vi } from 'vitest'
 
 vi.mock('../../add')
-
-const randomString = (length = 16) => {
-  // eslint-disable-next-line functional/no-let
-  let result = ''
-  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789-'
-  const charactersLength = characters.length
-  // eslint-disable-next-line functional/no-let
-  let counter = 0
-  // eslint-disable-next-line functional/no-loop-statement
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength))
-    counter += 1
-  }
-  return result
-}
 
 const createMonorepoSilently = async () => {
   const repoName = randomString()
