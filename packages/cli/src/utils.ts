@@ -1,7 +1,8 @@
+import os from 'os'
 import dotenv from 'dotenv'
 import prompts from 'prompts'
 import { isAbsolute, relative, resolve } from 'path'
-import { existsSync, appendFileSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, appendFileSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
 import type { PackageManager, Structure } from './commands/types'
 
@@ -269,4 +270,12 @@ export const selectRepositoryStructure = async () => {
 
 export const isValidStructure = (structure: string): structure is Structure => {
   return structure === 'monorepo' || structure === 'standalone'
+}
+  
+export const expandTilde = (folderPath: string) => {
+  const homedir = os.homedir()
+  if (folderPath.startsWith('~')) {
+    return homedir + folderPath.slice(1)
+  }
+  return folderPath
 }
