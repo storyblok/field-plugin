@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build && mv dist/src/* dist/",
-    "lint": "eslint ."
+    "lint": "eslint src"
   },
   "dependencies": {
     "@storyblok/field-plugin": "workspace:*",

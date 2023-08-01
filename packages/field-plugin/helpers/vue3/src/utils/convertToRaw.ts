@@ -1,5 +1,6 @@
 import { toRaw, isProxy, isRef, unref } from 'vue'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function convertToRaw(value: any): any {
   let rawValue = value
   if (isProxy(rawValue)) {
