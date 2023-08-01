@@ -23,7 +23,8 @@
   ],
   "workspaces": [
     "packages/*",
-    "packages/cli/templates/*"
+    "packages/cli/templates/*",
+    "packages/field-plugin/helpers/*"
   ],
   "engines": {
     "yarn": "^3.2.4"
@@ -34,7 +35,7 @@
   "scripts": {
     "postinstall": "yarn build:lib",
     "build": "yarn build:lib && yarn workspaces foreach --exclude @storyblok/field-plugin run build",
-    "build:lib": "yarn workspace @storyblok/field-plugin build",
+    "build:lib": "yarn workspace @storyblok/field-plugin build && yarn run build:helpers",
     "build:cli": "yarn workspace @storyblok/field-plugin-cli build",
     "build:container": "yarn build:lib && yarn workspace container build",
     "build:helpers": "yarn workspaces foreach --include \"helper-*\" run build && ./scripts/copy-helpers.sh",

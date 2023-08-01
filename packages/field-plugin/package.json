@@ -40,7 +40,7 @@
     "check:types": "tsc --noEmit",
     "dev": "vite build --watch",
     "test": "jest",
-    "build": "rm -rf dist && vite build && yarn build:helpers"
+    "build": "echo 'building the library' && rm -rf dist && vite build"
   },
   "devDependencies": {
     "@types/jest": "29.0.3",
