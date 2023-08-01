@@ -8,9 +8,8 @@ import {
   writeFileSync,
 } from 'fs'
 import walk from 'walkdir'
-import { MONOREPO_TEMPLATE_PATH, TEMPLATES, TEMPLATES_PATH } from '../../config'
+import { MONOREPO_TEMPLATE_PATH, TEMPLATES_PATH } from '../../config'
 import {
-  betterPrompts,
   checkIfSubDir,
   filterPathsToInclude,
   getInstallCommand,
@@ -20,12 +19,9 @@ import {
   promptName,
   runCommand,
   selectPackageManager,
+  selectTemplate,
 } from '../utils'
-import type { PackageManager } from './types'
-
-export type Template = 'vue2'
-
-export type Structure = 'standalone' | 'monorepo'
+import type { PackageManager, Structure, Template } from './types'
 
 export type AddArgs = {
   dir: string
@@ -43,18 +39,6 @@ export type PackageJson = {
 }
 
 export type AddFunc = (args: AddArgs) => Promise<{ destPath: string }>
-
-const selectTemplate = async () => {
-  const { template } = await betterPrompts<{ template: string }>([
-    {
-      type: 'select',
-      name: 'template',
-      message: 'Which template?',
-      choices: TEMPLATES,
-    },
-  ])
-  return template
-}
 
 export const add: AddFunc = async (args) => {
   const packageManager = isValidPackageManager(args.packageManager)

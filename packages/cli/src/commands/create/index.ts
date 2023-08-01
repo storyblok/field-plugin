@@ -1,44 +1,14 @@
 import { createMonorepo } from './monorepo'
 import { createStandalone } from './standalone'
-import { Structure } from '../add'
 import {
-  betterPrompts,
   isValidPackageManager,
   selectPackageManager,
+  selectRepositoryStructure,
+  isValidStructure,
 } from '../../utils'
 import { CreateFunc, CreateArgs } from './types'
-import { PackageManager } from '../types'
 
 export type { CreateArgs }
-
-const selectRepositoryStructure = async () => {
-  const { structure } = await betterPrompts<{ structure: Structure }>([
-    {
-      type: 'select',
-      name: 'structure',
-      message:
-        'How many field plugins potentially do you want in this repository?',
-      choices: [
-        {
-          title:
-            'Standalone (one plugin in one repo, also known as `polyrepo`)',
-          // description: 'some description if exists',
-          value: 'standalone',
-        },
-        {
-          title: 'Monorepo (multiple plugins in one repo)',
-          // description: 'some description if exists',
-          value: 'monorepo',
-        },
-      ],
-    },
-  ])
-  return structure
-}
-
-const isValidStructure = (structure: string): structure is Structure => {
-  return structure === 'monorepo' || structure === 'standalone'
-}
 
 export const create: CreateFunc = async (opts) => {
   const {

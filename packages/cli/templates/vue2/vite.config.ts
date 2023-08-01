@@ -7,11 +7,11 @@ import * as querystring from 'querystring'
 export default defineConfig({
   plugins: [vue(), cssInjectedByJsPlugin(), printProd(), printDev()],
   build: {
-    // minify: false,
     rollupOptions: {
+      external: ["vue"],
       output: {
-        format: 'commonjs',
-        entryFileNames: `[name].js`,
+        format: 'es',
+        entryFileNames: `temp.js`,
         chunkFileNames: `[name].js`,
         assetFileNames: `[name].[ext]`,
       },

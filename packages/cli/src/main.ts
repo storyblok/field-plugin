@@ -10,14 +10,15 @@ import {
 import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
 import packageJson from './../package.json'
+import { expandTilde } from './utils'
 
-const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
 const structureOptions = ['standalone', 'monorepo']
 const packageManagerOptions = ['npm', 'yarn', 'pnpm']
 const deployScopeOptions = ['my-plugins', 'partner-portal', 'organization']
 
-export const main = () => {
+export const createCLI = () => {
+  const program = new Command()
   program
     .version(packageJson.version)
     .command('create', { isDefault: true })
@@ -47,7 +48,8 @@ export const main = () => {
       '[Monorepo] name of repository (Lowercase alphanumeric and dash)',
     )
     .action(async function (this: Command) {
-      await create(this.opts<CreateArgs>())
+      const opts = this.opts<CreateArgs>()
+      await create({ ...opts, dir: expandTilde(opts.dir) })
     })
 
   program
@@ -84,7 +86,8 @@ export const main = () => {
       ).choices(deployScopeOptions),
     )
     .action(async function (this: Command) {
-      await deploy(this.opts<DeployArgs>())
+      const opts = this.opts<DeployArgs>()
+      await deploy({ ...opts, dir: expandTilde(opts.dir) })
     })
 
   program
@@ -111,8 +114,14 @@ export const main = () => {
       ),
     )
     .action(async function (this: Command) {
-      await add(this.opts<AddArgs>())
+      const opts = this.opts<AddArgs>()
+      await add({ ...opts, dir: expandTilde(opts.dir) })
     })
 
+  return program
+}
+
+export const main = () => {
+  const program = createCLI()
   program.parse(process.argv)
 }
