@@ -36,8 +36,3 @@ export default {
   },
 }
 </script>
-<style scoped>
-.field-plugin-provider {
-  width: 100%;
-}
-</style>
