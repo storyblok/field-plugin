@@ -12,13 +12,13 @@ import { Command, Option } from 'commander'
 import packageJson from './../package.json'
 import { expandTilde } from './utils'
 
-const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
 const structureOptions = ['standalone', 'monorepo']
 const packageManagerOptions = ['npm', 'yarn', 'pnpm']
 const deployScopeOptions = ['my-plugins', 'partner-portal', 'organization']
 
-export const main = () => {
+export const createCLI = () => {
+  const program = new Command()
   program
     .version(packageJson.version)
     .command('create', { isDefault: true })
@@ -118,5 +118,10 @@ export const main = () => {
       await add({ ...opts, dir: expandTilde(opts.dir) })
     })
 
+  return program
+}
+
+export const main = () => {
+  const program = createCLI()
   program.parse(process.argv)
 }

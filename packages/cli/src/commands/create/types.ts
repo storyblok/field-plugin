@@ -1,5 +1,4 @@
-import { Template } from '../add'
-import { PackageManager } from '../types'
+import type { PackageManager, Template } from '../types'
 
 export type CreateArgs =
   | ({

@@ -21,11 +21,7 @@ import {
   runCommand,
   selectPackageManager,
 } from '../utils'
-import type { PackageManager } from './types'
-
-export type Template = 'vue2'
-
-export type Structure = 'standalone' | 'monorepo'
+import type { PackageManager, Structure, Template } from './types'
 
 export type AddArgs = {
   dir: string
