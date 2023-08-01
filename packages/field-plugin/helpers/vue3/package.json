@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build && mv dist/src/* dist/",
+    "build": "vue-tsc && vite build",
     "lint": "eslint src"
   },
   "dependencies": {
