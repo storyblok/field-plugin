@@ -99,7 +99,7 @@ export const createPluginActions = <Content>(
   return {
     actions: {
       setContent: (action) => {
-        const content: Content = isFunction(action)
+        const content: Content = isUpdaterFunction(action)
           ? action(state.content)
           : action
         postToContainer(valueChangeMessage(uid, content))
@@ -110,7 +110,7 @@ export const createPluginActions = <Content>(
         onUpdateState(state)
       },
       setModalOpen: (action) => {
-        const isModalOpen = isFunction(action)
+        const isModalOpen = isUpdaterFunction(action)
           ? action(state.isModalOpen)
           : action
         postToContainer(modalChangeMessage(uid, isModalOpen))
@@ -137,6 +137,6 @@ export const createPluginActions = <Content>(
  * But typescript's does not manage to infer the type after such a check, thus we extract that logic into this utility function.
  * @param setStateAction
  */
-const isFunction = <T>(
+const isUpdaterFunction = <T>(
   setStateAction: SetStateAction<T>,
 ): setStateAction is (state: T) => T => typeof setStateAction === 'function'
