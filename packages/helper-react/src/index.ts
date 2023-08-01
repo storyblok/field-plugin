@@ -1,3 +1,3 @@
-export * from './context'
-export * from './provider'
+export * from './FieldPluginContext'
+export * from './FieldPluginProvider'
 export * from './useFieldPlugin'
