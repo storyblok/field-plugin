@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import prompts from 'prompts'
 import { isAbsolute, relative, resolve } from 'path'
-import { existsSync, appendFileSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, appendFileSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
 import { PackageManager } from './commands/types'
 
@@ -241,3 +241,4 @@ export const selectPackageManager = async () => {
   ])
   return packageManager
 }
+
