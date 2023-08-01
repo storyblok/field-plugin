@@ -10,7 +10,7 @@ import { sandboxUrl } from './sandboxUrl'
  * @returns cleanup function for side effects
  */
 export const createFieldPlugin = <Content>(
-  onUpdateState: (state: FieldPluginResponse) => void,
+  onUpdateState: (state: FieldPluginResponse<Content>) => void,
   parseContent: (content: unknown) => Content,
 ): (() => void) => {
   const isEmbedded = window.parent !== window
