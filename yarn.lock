@@ -1588,6 +1588,7 @@ __metadata:
     kleur: ^4.1.5
     node-fetch: ^3.3.0
     prompts: ^2.4.2
+    temp-dir: 3.0.0
     vite: ^4.2.2
     vitest: 0.25.3
     walkdir: ^0.4.1
@@ -8431,6 +8432,13 @@ __metadata:
     mkdirp: ^1.0.3
     yallist: ^4.0.0
   checksum: f23832fceeba7578bf31907aac744ae21e74a66f4a17a9e94507acf460e48f6db598c7023882db33bab75b80e027c21f276d405e4a0322d58f51c7088d428268
+  languageName: node
+  linkType: hard
+
+"temp-dir@npm:3.0.0":
+  version: 3.0.0
+  resolution: "temp-dir@npm:3.0.0"
+  checksum: 577211e995d1d584dd60f1469351d45e8a5b4524e4a9e42d3bdd12cfde1d0bb8f5898311bef24e02aaafb69514c1feb58c7b4c33dcec7129da3b0861a4ca935b
   languageName: node
   linkType: hard
 

@@ -38,6 +38,7 @@
     "@types/execa": "2.0.0",
     "@types/fs-extra": "11.0.1",
     "@types/prompts": "2.4.2",
+    "temp-dir": "3.0.0",
     "vitest": "0.25.3"
   }
 }

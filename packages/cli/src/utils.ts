@@ -4,6 +4,7 @@ import prompts from 'prompts'
 import { isAbsolute, relative, resolve } from 'path'
 import { existsSync, appendFileSync } from 'fs'
 import { bold, cyan } from 'kleur/colors'
+import { TEMPLATES } from '../config'
 import type { PackageManager, Structure } from './commands/types'
 
 type RunCommandFunc = (
@@ -142,7 +143,9 @@ export const filterPathsToInclude = (
   directory: string,
   files: string[],
 ): string[] | Promise<string[]> =>
-  files.filter((file) => file !== 'node_modules' && file !== 'cache')
+  files.filter(
+    (file) => file !== 'node_modules' && file !== 'cache' && file !== 'dist',
+  )
 
 export const initializeNewRepo = async ({ dir }: { dir: string }) => {
   if (await checkIfInsideRepository({ dir })) {
@@ -270,6 +273,33 @@ export const selectRepositoryStructure = async () => {
 
 export const isValidStructure = (structure: string): structure is Structure => {
   return structure === 'monorepo' || structure === 'standalone'
+}
+
+export const selectTemplate = async () => {
+  const { template } = await betterPrompts<{ template: string }>([
+    {
+      type: 'select',
+      name: 'template',
+      message: 'Which template?',
+      choices: TEMPLATES,
+    },
+  ])
+  return template
+}
+
+export const randomString = (length = 16) => {
+  // eslint-disable-next-line functional/no-let
+  let result = ''
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789-'
+  const charactersLength = characters.length
+  // eslint-disable-next-line functional/no-let
+  let counter = 0
+  // eslint-disable-next-line functional/no-loop-statement
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
+    counter += 1
+  }
+  return result
 }
   
 export const expandTilde = (folderPath: string) => {
