@@ -1,3 +1,4 @@
+import os from 'os'
 import dotenv from 'dotenv'
 import prompts from 'prompts'
 import { isAbsolute, relative, resolve } from 'path'
@@ -242,3 +243,10 @@ export const selectPackageManager = async () => {
   return packageManager
 }
 
+export const expandTilde = (folderPath: string) => {
+  const homedir = os.homedir()
+  if (folderPath.startsWith('~')) {
+    return homedir + folderPath.slice(1)
+  }
+  return folderPath
+}
