@@ -121,14 +121,10 @@ export const add: AddFunc = async (args) => {
   }
 
   const installCommand = getInstallCommand(packageManager)
-  console.log(`\nRunning \`${installCommand}\`..\n`)
-  console.log(
-    (
-      await runCommand(installCommand, {
-        cwd: destPath,
-      })
-    ).stdout,
-  )
+  await runCommand(installCommand, {
+    cwd: destPath,
+    spinnerMessage: `Running \`${installCommand}\`..`,
+  })
 
   const relativePath = getRelativePath(repoRootPath)
 

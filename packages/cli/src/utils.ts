@@ -9,12 +9,32 @@ import type { PackageManager, Structure } from './commands/types'
 
 type RunCommandFunc = (
   command: string,
-  options?: import('execa').SyncOptions,
+  options?: { spinnerMessage?: string } & import('execa').SyncOptions,
 ) => Promise<import('execa').ExecaSyncReturnValue>
 
-export const runCommand: RunCommandFunc = async (command, options) => {
+export const runCommand: RunCommandFunc = async (
+  command,
+  { spinnerMessage, ...options } = {},
+) => {
+  const ora = (await import('ora')).default
+  const spinner = spinnerMessage !== undefined ? ora(spinnerMessage) : undefined
+  if (spinner) {
+    spinner.start()
+  }
   const execa = await import('execa')
-  return execa.execaCommandSync(command, options)
+  try {
+    const result = await execa.execaCommand(command, options)
+    if (spinner) {
+      spinner.succeed()
+    }
+    return result
+  } catch (err) {
+    if (spinner) {
+      spinner.fail()
+    }
+    // eslint-disable-next-line
+    throw err
+  }
 }
 
 export const betterPrompts = async <Model>(
