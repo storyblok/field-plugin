@@ -6,9 +6,10 @@ import {
 } from '../../messaging'
 
 //TODO: create a test
-export const partialPluginStateFromStateChangeMessage = (
+export const partialPluginStateFromStateChangeMessage = <Content>(
   message: StateChangedMessage,
-): Omit<FieldPluginData, 'isModalOpen'> => ({
+  parseContent: (content: unknown) => Content,
+): Omit<FieldPluginData<Content>, 'isModalOpen'> => ({
   spaceId: message.spaceId ?? undefined,
   story: message.story ?? undefined,
   storyId: message.storyId ?? undefined,
@@ -17,7 +18,7 @@ export const partialPluginStateFromStateChangeMessage = (
   token: message.token ?? undefined,
   options: recordFromFieldPluginOptions(message.schema.options),
   uid: message.uid ?? undefined,
-  content: message.model ?? undefined,
+  content: parseContent(message.model),
 })
 
 export const partialPluginStateFromContextRequestMessage = (

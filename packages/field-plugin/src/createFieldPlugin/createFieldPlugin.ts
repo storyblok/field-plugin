@@ -6,14 +6,13 @@ import { FieldPluginResponse } from './FieldPluginResponse'
 import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 import { sandboxUrl } from './sandboxUrl'
 
-export type CreateFieldPlugin = (
-  onUpdate: (state: FieldPluginResponse) => void,
-) => () => void
-
 /**
  * @returns cleanup function for side effects
  */
-export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
+export const createFieldPlugin = <Content>(
+  onUpdateState: (state: FieldPluginResponse) => void,
+  parseContent: (content: unknown) => Content,
+): (() => void) => {
   const isEmbedded = window.parent !== window
 
   if (!isEmbedded) {
@@ -50,17 +49,18 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
-  const { actions, messageCallbacks } = createPluginActions(
+  const { actions, messageCallbacks } = createPluginActions({
     uid,
     postToContainer,
-    (data) => {
+    onUpdateState: (data) => {
       onUpdateState({
         type: 'loaded',
         data,
         actions,
       })
     },
-  )
+    parseContent,
+  })
 
   // Request the initial state from the Visual Editor.
   postToContainer(pluginLoadedMessage(uid))

@@ -13,16 +13,18 @@ import {
   OnUnknownPluginMessage,
   valueChangeMessage,
 } from '../../messaging'
-import { FieldPluginActions } from '../FieldPluginActions'
+import { FieldPluginActions, SetStateAction } from '../FieldPluginActions'
 import {
   partialPluginStateFromContextRequestMessage,
   partialPluginStateFromStateChangeMessage,
 } from './partialPluginStateFromStateChangeMessage'
 
 // TODO get rid of this default state
-export const defaultState: FieldPluginData = {
+export const defaultState = <Content>(
+  defaultContent: Content,
+): FieldPluginData<Content> => ({
   isModalOpen: false,
-  content: undefined,
+  content: defaultContent,
   options: {},
   storyLang: 'default',
   story: { content: {} },
@@ -31,29 +33,29 @@ export const defaultState: FieldPluginData = {
   token: undefined,
   uid: '-preview',
   spaceId: undefined,
+})
+
+export type CreatePluginActionsOptions<Content> = {
+  uid: string
+  postToContainer: (message: unknown) => void
+  onUpdateState: (state: FieldPluginData<Content>) => void
+  parseContent: (content: unknown) => Content
 }
 
-export type CreatePluginActions = (
-  uid: string,
-  postToContainer: (message: unknown) => void,
-  onUpdateState: (state: FieldPluginData) => void,
-) => {
+export const createPluginActions = <Content>(
+  options: CreatePluginActionsOptions<Content>,
+): {
   // These functions are to be called by the field plugin when the user performs actions in the UI
-  actions: FieldPluginActions
+  actions: FieldPluginActions<Content>
   // These functions are called when the plugin receives messages from the container
   messageCallbacks: PluginMessageCallbacks
-}
-
-export const createPluginActions: CreatePluginActions = (
-  uid,
-  postToContainer,
-  onUpdateState,
-) => {
+} => {
+  const { uid, postToContainer, onUpdateState, parseContent } = options
   // Tracks the full state of the plugin.
   //  Because the container doesn't send the full state in its messages, we need to track it ourselves.
   //  isModal and height is not included in the messages to the children and must thus be tracked here.
   //  In future improved versions of the plugin API, this should not be needed.
-  let state: FieldPluginData = defaultState
+  let state: FieldPluginData<Content> = defaultState(parseContent(undefined))
 
   let assetSelectedCallbackRef: undefined | ((filename: Asset) => void) =
     undefined
@@ -61,7 +63,7 @@ export const createPluginActions: CreatePluginActions = (
   const onStateChange: OnStateChangeMessage = (data) => {
     state = {
       ...state,
-      ...partialPluginStateFromStateChangeMessage(data),
+      ...partialPluginStateFromStateChangeMessage(data, parseContent),
     }
     onUpdateState(state)
   }
@@ -97,12 +99,9 @@ export const createPluginActions: CreatePluginActions = (
   return {
     actions: {
       setContent: (action) => {
-        const content: unknown =
-          // This is not safe: if the user pass a function to setContent(),
-          //  this code assumes that it is an updater function
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          typeof action === 'function' ? action(state.content) : action
+        const content: Content = isFunction(action)
+          ? action(state.content)
+          : action
         postToContainer(valueChangeMessage(uid, content))
         state = {
           ...state,
@@ -111,8 +110,9 @@ export const createPluginActions: CreatePluginActions = (
         onUpdateState(state)
       },
       setModalOpen: (action) => {
-        const isModalOpen =
-          typeof action === 'function' ? action(state.isModalOpen) : action
+        const isModalOpen = isFunction(action)
+          ? action(state.isModalOpen)
+          : action
         postToContainer(modalChangeMessage(uid, isModalOpen))
         state = {
           ...state,
@@ -131,3 +131,12 @@ export const createPluginActions: CreatePluginActions = (
     messageCallbacks,
   }
 }
+
+/**
+ * If we know that setStateAction is a SetStateAction, we can safely check the type with typeof setStateAction === 'function'.
+ * But typescript's does not manage to infer the type after such a check, thus we extract that logic into this utility function.
+ * @param setStateAction
+ */
+const isFunction = <T>(
+  setStateAction: SetStateAction<T>,
+): setStateAction is (state: T) => T => typeof setStateAction === 'function'
