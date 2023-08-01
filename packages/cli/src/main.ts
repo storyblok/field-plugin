@@ -16,6 +16,7 @@ const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
 const structureOptions = ['standalone', 'monorepo']
 const packageManagerOptions = ['npm', 'yarn', 'pnpm']
+const deployScopeOptions = ['my-plugins', 'partner-portal', 'organization']
 
 export const main = () => {
   program
@@ -81,8 +82,8 @@ export const main = () => {
     .addOption(
       new Option(
         '--scope <value>',
-        `where to deploy the field plugin ('my-plugins' | 'partner-portal')`,
-      ),
+        `where to deploy the field plugin ('my-plugins' | 'partner-portal' | 'organization')`,
+      ).choices(deployScopeOptions),
     )
     .action(async function (this: Command) {
       const opts = this.opts<DeployArgs>()

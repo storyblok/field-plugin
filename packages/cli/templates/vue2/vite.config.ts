@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [vue(), cssInjectedByJsPlugin(), printProd(), printDev()],
   build: {
     rollupOptions: {
-      external: ['vue'],
+      external: ["vue"],
       output: {
         format: 'es',
         entryFileNames: `temp.js`,
