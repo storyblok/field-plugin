@@ -1,4 +1,5 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve'
+import replace from '@rollup/plugin-replace'
 
 /*
 Normally, other templates have a single build step: `vite build`. It bundles everything, including `vue` or `react`, into `dist/index.js`.
@@ -21,5 +22,10 @@ export default {
     format: 'cjs',
     compact: true,
   },
-  plugins: [nodeResolve()],
+  plugins: [
+    nodeResolve(),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+  ],
 }

@@ -115,9 +115,18 @@ export const deploy: DeployFunc = async ({
     console.log(
       `  > https://app.storyblok.com/#/partner/fields/${fieldPluginId}`,
     )
-  } else {
+  }
+
+  if (apiScope === 'my-plugins') {
     console.log(`  > https://app.storyblok.com/#/me/plugins/${fieldPluginId}`)
   }
+
+  if (apiScope === 'organization') {
+    console.log(
+      `  > https://app.storyblok.com/#/me/org/fields/${fieldPluginId}`,
+    )
+  }
+
   console.log(
     'You can also find it in "My account > My Plugins" at the bottom of the sidebar.',
   )
@@ -291,10 +300,19 @@ const selectApiScope = async (token: string): Promise<Scope> => {
     scope: 'partner-portal',
   }).isAuthenticated()
 
-  if (!accessibleToMyPlugins && !accessibleToPartnerPortal) {
+  const accessibleToOrganizationPortal = await StoryblokClient({
+    token,
+    scope: 'organization',
+  }).isAuthenticated()
+
+  if (
+    !accessibleToMyPlugins &&
+    !accessibleToPartnerPortal &&
+    !accessibleToOrganizationPortal
+  ) {
     console.error(
       red('[ERROR]'),
-      `The token appears to be invalid as it does not have access to either My Plugins or the plugins on the Partner Portal.`,
+      `The token appears to be invalid as it does not have access to either My Plugins, the plugins on the Partner Portal or the Organization plugins.`,
     )
     process.exit(1)
   }
@@ -312,6 +330,10 @@ const selectApiScope = async (token: string): Promise<Scope> => {
         accessibleToPartnerPortal && {
           title: 'Partner Portal',
           value: 'partner-portal',
+        },
+        accessibleToOrganizationPortal && {
+          title: 'Organization',
+          value: 'organization',
         },
       ].filter(Boolean) as Choice[],
     },
