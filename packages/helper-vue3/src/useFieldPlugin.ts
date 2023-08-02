@@ -1,8 +1,11 @@
 import { inject } from 'vue'
-import { type FieldPluginResponse } from '@storyblok/field-plugin'
+import { FieldPluginResponse } from '@storyblok/field-plugin'
 
-export const useFieldPlugin = () => {
-  const plugin = inject<FieldPluginResponse>(
+export const useFieldPlugin = <Content>(): Extract<
+  FieldPluginResponse<Content>,
+  { type: 'loaded' }
+> => {
+  const plugin = inject<FieldPluginResponse<Content>>(
     'field-plugin',
     () => {
       throw new Error(

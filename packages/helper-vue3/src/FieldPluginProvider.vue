@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { provide, reactive } from 'vue'
+import { onMounted, provide, reactive } from 'vue'
 import {
   createFieldPlugin,
   FieldPluginResponse,
   FieldPluginData,
 } from '@storyblok/field-plugin'
 import { convertToRaw } from '../utils'
+
+const props = defineProps<{
+  parseContent: (unknown: unknown) => unknown
+}>()
 
 const plugin = reactive<FieldPluginResponse>({
   type: 'loading',
@@ -26,7 +30,7 @@ const updateObjectWithoutChangingReference = (
   Object.assign(originalObject, newObject)
 }
 
-createFieldPlugin((newState) => {
+const onUpdateState = (newState: FieldPluginResponse) => {
   // Instead of replacing `plugin.data` which loses the reactive reference,
   // we're assigning each property into `plugin.data`.
 
@@ -65,7 +69,8 @@ createFieldPlugin((newState) => {
 
   plugin.type = newState.type
   plugin.error = newState.error
-})
+}
+onMounted(() => createFieldPlugin(onUpdateState, props.parseContent))
 provide('field-plugin', plugin)
 </script>
 

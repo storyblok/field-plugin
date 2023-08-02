@@ -9,7 +9,7 @@ export const ModalToggle: PluginComponent = (props) => {
       <FormControlLabel
         control={<Switch defaultChecked />}
         checked={data.isModalOpen}
-        onChange={() => actions.setModalOpen(!data.isModalOpen)}
+        onChange={() => actions.setModalOpen((isOpen) => !isOpen)}
         label="Modal"
         sx={{
           justifyContent: 'center',

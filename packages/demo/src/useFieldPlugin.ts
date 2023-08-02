@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react'
 
 type UseFieldPlugin = () => FieldPluginResponse
 
-const parseContent = (content: unknown) =>
+type Parser<Content> = (content: unknown) => Content
+
+type Content = number
+const parseContent: Parser<Content> = (content) =>
   typeof content === 'number' ? content : 0
 
 export const useFieldPlugin: UseFieldPlugin = () => {

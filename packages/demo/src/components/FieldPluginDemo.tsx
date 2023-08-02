@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react'
 import { Box, Divider, Paper, Stack, Typography } from '@mui/material'
-import { useFieldPlugin } from '../useFieldPlugin'
 import { LoadingIcon, SquareErrorIcon } from '@storyblok/mui'
 import { FieldPluginActions, FieldPluginData } from '@storyblok/field-plugin'
 import { ValueMutator } from './ValueMutator'
@@ -9,14 +8,15 @@ import { AssetSelector } from './AssetSelector'
 import { ContextRequester } from './ContextRequester'
 import { UpdaterFunctionDemo } from './UpdaterFunctionDemo'
 import { LanguageView } from './LanguageView'
+import { useFieldPlugin, Content } from './context'
 
 export type PluginComponent = FunctionComponent<{
-  data: FieldPluginData
-  actions: FieldPluginActions
+  data: FieldPluginData<Content>
+  actions: FieldPluginActions<Content>
 }>
 
 export const FieldPluginDemo: FunctionComponent = () => {
-  const { type, data, actions } = useFieldPlugin()
+  const { type, data, actions } = useFieldPlugin<Content>()
 
   if (type === 'loading') {
     return (

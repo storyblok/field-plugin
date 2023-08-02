@@ -5,18 +5,12 @@ export const ValueMutator: PluginComponent = (props) => {
   const { data, actions } = props
 
   const handleClickIncrement = () =>
-    actions?.setContent(
-      (typeof data.content === 'number' ? data.content : 0) + 1,
-    )
-  const label =
-    typeof data.content === 'undefined'
-      ? 'undefined'
-      : JSON.stringify(data.content)
+    actions.setContent((content) => content + 1)
 
   return (
     <Stack gap={2}>
       <Typography variant="subtitle1">Field Value</Typography>
-      <Typography textAlign="center">{label}</Typography>
+      <Typography textAlign="center">{data.content}</Typography>
       <Button
         variant="outlined"
         color="secondary"
