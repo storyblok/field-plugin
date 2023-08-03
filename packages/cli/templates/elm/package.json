@@ -1,0 +1,22 @@
+{
+  "name": "field-plugin-elm-template",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev:elm": "elm reactor",
+    "build:elm": "elm make src/Main.elm --optimize --output=elm.js"
+  },
+  "dependencies": {
+    "@storyblok/field-plugin": "0.0.1-beta.2"
+  },
+  "devDependencies": {
+    "elm": "^0.19.1-5",
+    "vite": "^4.4.5",
+    "vite-plugin-css-injected-by-js": "^3.2.1",
+    "vite-plugin-elm": "^2.8.0"
+  }
+}
