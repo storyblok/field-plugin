@@ -20,7 +20,7 @@ app.ports.setModalOpen.subscribe((isOpen) => {
 const parseContent = (content) => (typeof content === 'number' ? content : 0)
 
 let state
-const cleanup = createFieldPlugin((newState) => {
+createFieldPlugin((newState) => {
   state = newState
   const data = {
     ...newState.data,
