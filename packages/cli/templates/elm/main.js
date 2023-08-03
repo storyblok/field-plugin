@@ -2,17 +2,29 @@
 // Elm.Main.init({ node: document.getElementById('app') })
 import { Elm } from './src/Main.elm'
 import { createFieldPlugin } from '@storyblok/field-plugin'
+import './src/style.css'
 
-const app = Elm.Main.init({ node: document.getElementById('app') })
-app.ports.setCount.subscribe((count) => {
-  state.actions.setContent(count)
-  console.log(count)
+const rootNode = document.createElement('div')
+const appNode = document.createElement('div')
+appNode.id = 'app'
+appNode.append(rootNode)
+document.body.append(appNode)
+const app = Elm.Main.init({ node: rootNode })
+app.ports.setCount.subscribe((content) => {
+  state.actions.setContent(content)
 })
+app.ports.setModalOpen.subscribe((isOpen) => {
+  state.actions.setModalOpen(isOpen)
+})
+
+const parseContent = (content) => (typeof content === 'number' ? content : 0)
 
 let state
 const cleanup = createFieldPlugin((newState) => {
   state = newState
-  const { content } = newState.data
-  console.log('content', content)
-  app.ports.contentChange.send(typeof content === 'number' ? content : 0)
+  const data = {
+    ...newState.data,
+    content: parseContent(newState.data.content),
+  }
+  app.ports.contentChange.send(data)
 })
