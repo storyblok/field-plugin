@@ -29,6 +29,11 @@
       "import": "./dist/vue3/index.js",
       "require": "./dist/vue3/index.umd.cjs",
       "types": "./dist/vue3/index.d.ts"
+    },
+    "./vite": {
+      "import": "./dist/vite/index.js",
+      "require": "./dist/vite/index.umd.cjs",
+      "types": "./dist/vite/index.d.ts"
     }
   },
   "repository": {
