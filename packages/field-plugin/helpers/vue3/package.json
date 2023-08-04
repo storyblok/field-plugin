@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build && mv dist/src/* dist/",
-    "lint": "eslint ."
+    "build": "vue-tsc && vite build",
+    "lint": "eslint src"
   },
   "dependencies": {
     "@storyblok/field-plugin": "workspace:*",

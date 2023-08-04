@@ -5,7 +5,7 @@ import {
   FieldPluginResponse,
   FieldPluginData,
 } from '@storyblok/field-plugin'
-import { convertToRaw } from '../utils'
+import { convertToRaw } from './utils'
 
 const plugin = reactive<FieldPluginResponse>({
   type: 'loading',
