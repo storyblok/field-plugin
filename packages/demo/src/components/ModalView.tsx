@@ -1,13 +1,12 @@
-import { Stack, styled, Typography } from '@mui/material'
-import { ModalToggle } from './ModalToggle'
-import { ValueMutator } from './ValueMutator'
-import { NumberStack } from './NumberStack'
+import { Box, IconButton, Stack, styled, Typography } from '@mui/material'
+import { HeightChangeDemo } from './HeightChangeDemo'
 import { PluginComponent } from './FieldPluginDemo'
+import { CloseIcon } from '@storyblok/mui'
 
 const ScrollArea = styled(Stack)(({ theme }) => ({
   overflow: 'auto',
   flex: 1,
-  p: theme.spacing(4),
+  padding: theme.spacing(4),
   borderColor: theme.palette.divider,
   borderWidth: 1,
   borderStyle: 'solid',
@@ -16,16 +15,24 @@ const ScrollArea = styled(Stack)(({ theme }) => ({
 
 export const ModalView: PluginComponent = (props) => (
   <Stack
-    gap={6}
     sx={{
       height: '100vh',
       justifyContent: 'space-between',
+      gap: 6,
     }}
   >
-    <ModalToggle {...props} />
-    <ValueMutator {...props} />
+    <Box display="flex">
+      <Typography>I am a header that is position at the top!</Typography>
+      <Box flex={1} />
+      <IconButton
+        color="secondary"
+        onClick={() => props.actions.setModalOpen(false)}
+      >
+        <CloseIcon />
+      </IconButton>
+    </Box>
     <ScrollArea>
-      <NumberStack {...props} />
+      <HeightChangeDemo {...props} />
     </ScrollArea>
     <Typography>I am a footer that is positioned at the bottom!</Typography>
   </Stack>

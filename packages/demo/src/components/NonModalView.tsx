@@ -1,7 +1,7 @@
 import { Paper, Stack } from '@mui/material'
 import { ModalToggle } from './ModalToggle'
 import { ValueMutator } from './ValueMutator'
-import { NumberStack } from './NumberStack'
+import { HeightChangeDemo } from './HeightChangeDemo'
 import { UpdaterFunctionDemo } from './UpdaterFunctionDemo'
 import { AssetSelector } from './AssetSelector'
 import { ContextRequester } from './ContextRequester'
@@ -13,10 +13,10 @@ export const NonModalView: PluginComponent = (props) => (
       <ModalToggle {...props} />
       <ValueMutator {...props} />
       <UpdaterFunctionDemo {...props} />
-      <NumberStack {...props} />
       <ModalToggle {...props} />
       <AssetSelector {...props} />
       <ContextRequester {...props} />
+      <HeightChangeDemo {...props} />
     </Stack>
   </Paper>
 )

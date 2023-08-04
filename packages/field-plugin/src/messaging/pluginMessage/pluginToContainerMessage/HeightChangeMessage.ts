@@ -16,7 +16,7 @@ export const isHeightChangeMessage = (
 
 export const heightChangeMessage = (
   uid: string,
-  height: Property.Height<string | number>,
+  height: number,
 ): HeightChangeMessage => ({
   action: 'plugin-changed',
   event: 'heightChange',

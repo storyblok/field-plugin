@@ -97,10 +97,7 @@ export const createPluginActions: CreatePluginActions = (
   }
 
   const onHeightChange = (height: number) => {
-    if (state.isModalOpen) {
-      return
-    }
-    postToContainer(heightChangeMessage(uid, `${height}px`))
+    postToContainer(heightChangeMessage(uid, height))
   }
 
   return {
@@ -123,9 +120,6 @@ export const createPluginActions: CreatePluginActions = (
         const isModalOpen =
           typeof action === 'function' ? action(state.isModalOpen) : action
         postToContainer(modalChangeMessage(uid, isModalOpen))
-        if (isModalOpen) {
-          postToContainer(heightChangeMessage(uid, 'auto'))
-        }
         state = {
           ...state,
           isModalOpen,
