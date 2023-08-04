@@ -1,16 +1,10 @@
 port module Main exposing (..)
 
--- Press buttons to increment and decrement a counter.
---
--- Read how it works:
---   https://guide.elm-lang.org/architecture/buttons.html
---
-
 import Browser
-import Dict exposing (Dict)
 import Html exposing (Html, button, div, h2, hr, text)
-import Html.Attributes exposing (class, classList)
+import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
+import Json.Decode exposing (Value)
 
 
 port setCount : Int -> Cmd msg
@@ -19,7 +13,7 @@ port setCount : Int -> Cmd msg
 port setModalOpen : Bool -> Cmd msg
 
 
-port contentChange : (FieldPluginData Content -> msg) -> Sub msg
+port contentChange : (FieldPluginData Value -> msg) -> Sub msg
 
 
 
@@ -34,6 +28,28 @@ type alias FieldPluginData content =
 
 type alias Content =
     Int
+
+
+
+-- Content validation
+
+
+contentFromValue : Value -> Result Json.Decode.Error Content
+contentFromValue value =
+    Json.Decode.decodeValue Json.Decode.int value
+
+
+fieldPluginDataFromValue : FieldPluginData Value -> Result Json.Decode.Error (FieldPluginData Content)
+fieldPluginDataFromValue fieldPluginData =
+    case contentFromValue fieldPluginData.content of
+        Ok content ->
+            Ok
+                { content = content
+                , isModalOpen = fieldPluginData.isModalOpen
+                }
+
+        Err msg ->
+            Err msg
 
 
 
@@ -63,9 +79,7 @@ subscriptions model =
 
 
 type Model
-    = Loaded
-        { fieldPluginData : FieldPluginData Content
-        }
+    = Loaded (FieldPluginData Content)
     | Loading
 
 
@@ -86,7 +100,7 @@ init _ =
 type Msg
     = Increment
     | ToggleModal
-    | SetFieldPluginData (FieldPluginData Content)
+    | SetFieldPluginData (FieldPluginData Value)
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
@@ -94,50 +108,36 @@ update msg model =
     case model of
         Loading ->
             case msg of
-                SetFieldPluginData fieldPluginData ->
-                    ( Loaded
-                        { fieldPluginData = fieldPluginData
-                        }
-                    , Cmd.none
-                    )
+                SetFieldPluginData payload ->
+                    case fieldPluginDataFromValue payload of
+                        Ok fieldPluginData ->
+                            ( Loaded fieldPluginData
+                            , Cmd.none
+                            )
+
+                        Err _ ->
+                            ( Loading, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
 
-        Loaded loaded ->
+        Loaded fieldPluginData ->
             case msg of
                 Increment ->
-                    ( model, setCount <| loaded.fieldPluginData.content + 1 )
+                    ( model, setCount <| fieldPluginData.content + 1 )
 
                 ToggleModal ->
-                    ( model, setModalOpen <| not loaded.fieldPluginData.isModalOpen )
+                    ( model, setModalOpen <| not fieldPluginData.isModalOpen )
 
-                SetFieldPluginData fieldPluginData ->
-                    ( Loaded { loaded | fieldPluginData = fieldPluginData }, Cmd.none )
+                SetFieldPluginData payload ->
+                    case fieldPluginDataFromValue payload of
+                        Ok data ->
+                            ( Loaded data
+                            , Cmd.none
+                            )
 
-
-type JsVal
-    = JsString String
-    | JsInt Int
-    | JsFloat Float
-    | JsArray (List JsVal)
-    | JsObject (Dict String JsVal)
-    | JsNull
-
-
-parseContent : JsVal -> Result String Content
-parseContent content =
-    case content of
-        JsInt count ->
-            Ok count
-
-        _ ->
-            Err "Failed to parse content"
-
-
-buildContent : Int -> Content
-buildContent count =
-    count
+                        Err _ ->
+                            ( model, Cmd.none )
 
 
 
@@ -147,10 +147,10 @@ buildContent count =
 view : Model -> Html Msg
 view model =
     case model of
-        Loaded loaded ->
+        Loaded fieldPluginData ->
             div [ class "container", class "w-full" ]
                 [ h2 [] [ text "Content" ]
-                , div [ class "counter-value" ] [ text (String.fromInt loaded.fieldPluginData.content) ]
+                , div [ class "counter-value" ] [ text (String.fromInt fieldPluginData.content) ]
                 , button [ class "btn", class "w-full", onClick Increment ] [ text "Increment" ]
                 , hr [] []
                 , button [ class "btn", class "w-full", onClick ToggleModal ] [ text "Toggle Modal" ]
