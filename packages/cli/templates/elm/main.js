@@ -17,14 +17,8 @@ app.ports.setModalOpen.subscribe((isOpen) => {
   state.actions.setModalOpen(isOpen)
 })
 
-const parseContent = (content) => (typeof content === 'number' ? content : 0)
-
 let state
 createFieldPlugin((newState) => {
   state = newState
-  const data = {
-    ...newState.data,
-    content: parseContent(newState.data.content),
-  }
-  app.ports.contentChange.send(data)
+  app.ports.contentChange.send(state.data)
 })

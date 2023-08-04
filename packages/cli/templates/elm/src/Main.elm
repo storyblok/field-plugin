@@ -26,12 +26,17 @@ type alias FieldPluginData content =
     }
 
 
+
+-- Content validation
+
+
 type alias Content =
     Int
 
 
-
--- Content validation
+defaultContent : Content
+defaultContent =
+    0
 
 
 contentFromValue : Value -> Result Json.Decode.Error Content
@@ -39,17 +44,18 @@ contentFromValue value =
     Json.Decode.decodeValue Json.Decode.int value
 
 
-fieldPluginDataFromValue : FieldPluginData Value -> Result Json.Decode.Error (FieldPluginData Content)
+fieldPluginDataFromValue : FieldPluginData Value -> FieldPluginData Content
 fieldPluginDataFromValue fieldPluginData =
     case contentFromValue fieldPluginData.content of
         Ok content ->
-            Ok
-                { content = content
-                , isModalOpen = fieldPluginData.isModalOpen
-                }
+            { content = content
+            , isModalOpen = fieldPluginData.isModalOpen
+            }
 
         Err msg ->
-            Err msg
+            { content = defaultContent
+            , isModalOpen = fieldPluginData.isModalOpen
+            }
 
 
 
@@ -109,14 +115,7 @@ update msg model =
         Loading ->
             case msg of
                 SetFieldPluginData payload ->
-                    case fieldPluginDataFromValue payload of
-                        Ok fieldPluginData ->
-                            ( Loaded fieldPluginData
-                            , Cmd.none
-                            )
-
-                        Err _ ->
-                            ( Loading, Cmd.none )
+                    ( Loaded (fieldPluginDataFromValue payload), Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
@@ -130,14 +129,9 @@ update msg model =
                     ( model, setModalOpen <| not fieldPluginData.isModalOpen )
 
                 SetFieldPluginData payload ->
-                    case fieldPluginDataFromValue payload of
-                        Ok data ->
-                            ( Loaded data
-                            , Cmd.none
-                            )
-
-                        Err _ ->
-                            ( model, Cmd.none )
+                    ( Loaded (fieldPluginDataFromValue payload)
+                    , Cmd.none
+                    )
 
 
 
