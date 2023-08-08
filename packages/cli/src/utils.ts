@@ -164,7 +164,11 @@ export const filterPathsToInclude = (
   files: string[],
 ): string[] | Promise<string[]> =>
   files.filter(
-    (file) => file !== 'node_modules' && file !== 'cache' && file !== 'dist',
+    (file) =>
+      file !== 'node_modules' &&
+      file !== 'cache' &&
+      file !== 'dist' &&
+      file !== '.env.local',
   )
 
 export const initializeNewRepo = async ({ dir }: { dir: string }) => {
