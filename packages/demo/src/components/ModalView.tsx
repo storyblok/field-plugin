@@ -22,7 +22,9 @@ export const ModalView: PluginComponent = (props) => (
     }}
   >
     <Box display="flex">
-      <Typography>I am a header that is position at the top!</Typography>
+      <Typography variant="subtitle1">
+        I am a header that is positioned at the top!
+      </Typography>
       <Box flex={1} />
       <IconButton
         color="secondary"
@@ -34,6 +36,8 @@ export const ModalView: PluginComponent = (props) => (
     <ScrollArea>
       <HeightChangeDemo {...props} />
     </ScrollArea>
-    <Typography>I am a footer that is positioned at the bottom!</Typography>
+    <Typography variant="subtitle1">
+      I am a footer that is positioned at the bottom!
+    </Typography>
   </Stack>
 )

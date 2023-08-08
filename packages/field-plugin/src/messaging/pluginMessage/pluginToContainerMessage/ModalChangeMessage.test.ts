@@ -84,50 +84,6 @@ describe('ModalChangeMessage', () => {
         }),
       ).toEqual(false)
     })
-    describe('fullHeight', () => {
-      it('is optional', () => {
-        expect(
-          isModalChangeMessage({
-            ...stub,
-            fullHeight: undefined,
-          }),
-        ).toEqual(true)
-      })
-      it('is a boolean', () => {
-        expect(
-          isModalChangeMessage({
-            ...stub,
-            fullHeight: true,
-          }),
-        ).toEqual(true)
-        expect(
-          isModalChangeMessage({
-            ...stub,
-            fullHeight: false,
-          }),
-        ).toEqual(true)
-        const { fullHeight: _, ...subWithoutFullHeight } = stub
-        expect(isModalChangeMessage(subWithoutFullHeight)).toEqual(true)
-        expect(
-          isModalChangeMessage({
-            ...stub,
-            fullHeight: 'false',
-          }),
-        ).toEqual(false)
-        expect(
-          isModalChangeMessage({
-            ...stub,
-            fullHeight: 123,
-          }),
-        ).toEqual(false)
-        expect(
-          isModalChangeMessage({
-            ...stub,
-            fullHeight: null,
-          }),
-        ).toEqual(false)
-      })
-    })
   })
   describe('constructor', () => {
     it('includes the uid', () => {
@@ -136,10 +92,6 @@ describe('ModalChangeMessage', () => {
     it('includes the modal status', () => {
       expect(modalChangeMessage(uid, true)).toHaveProperty('status', true)
       expect(modalChangeMessage(uid, false)).toHaveProperty('status', false)
-    })
-    it('sets fullHeight to true', () => {
-      expect(modalChangeMessage(uid, true)).toHaveProperty('fullHeight', true)
-      expect(modalChangeMessage(uid, false)).toHaveProperty('fullHeight', true)
     })
   })
 })

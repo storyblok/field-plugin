@@ -75,11 +75,13 @@ export const FieldTypePreview = forwardRef<
     src: string | undefined
     height: Property.Height<string | number>
     isModal: boolean
+    fullHeight: boolean
     // Allows the iframe to be refreshed
     iframeKey?: number
     sx?: SxProps
   }
 >(function FieldTypePreview(props, ref) {
+  const { height, isModal, fullHeight } = props
   return (
     <Box sx={props.sx}>
       <DisableShieldsNotification />
@@ -97,7 +99,7 @@ export const FieldTypePreview = forwardRef<
               src={props.src}
               title="Field Plugin Preview"
               style={{
-                height: props.height,
+                height: fullHeight && isModal ? 'auto' : height,
                 width: '100%',
                 flex: 1,
                 border: 'none',

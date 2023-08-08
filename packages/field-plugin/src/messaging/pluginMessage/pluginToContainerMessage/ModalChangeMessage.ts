@@ -3,16 +3,12 @@ import { isMessageToContainer, MessageToContainer } from './MessageToContainer'
 
 export type ModalChangeMessage = MessageToContainer<'toggleModal'> & {
   status: boolean
-  fullHeight?: boolean
 }
 export const isModalChangeMessage = (obj: unknown): obj is ModalChangeMessage =>
   isMessageToContainer(obj) &&
   obj.event === 'toggleModal' &&
   hasKey(obj, 'status') &&
-  typeof obj.status === 'boolean' &&
-  (!hasKey(obj, 'fullHeight') ||
-    typeof obj.fullHeight === 'undefined' ||
-    typeof obj.fullHeight === 'boolean')
+  typeof obj.status === 'boolean'
 
 export const modalChangeMessage = (
   uid: string,
@@ -22,6 +18,4 @@ export const modalChangeMessage = (
   event: 'toggleModal',
   uid,
   status,
-  // This propery signals to the container that we're using this newer feature
-  fullHeight: true,
 })

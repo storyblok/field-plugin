@@ -12,6 +12,7 @@ import {
   FieldPluginData,
   FieldPluginSchema,
   originFromPluginParams,
+  PluginLoadedMessage,
   recordFromFieldPluginOptions,
   StateChangedMessage,
   StoryData,
@@ -26,14 +27,9 @@ import {
   AccordionDetails,
   AccordionSummary,
   Container,
-  Stack,
   Typography,
 } from '@mui/material'
-import {
-  CenteredContent,
-  ChevronDownIcon,
-  useNotifications,
-} from '@storyblok/mui'
+import { CenteredContent, useNotifications } from '@storyblok/mui'
 import { SchemaEditor } from './SchemaEditor'
 import { FieldTypePreview } from './FieldTypePreview'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
@@ -93,6 +89,7 @@ const useSandbox = (
   // TODO replace with useReducer
   const [isModalOpen, setModalOpen] = useState(false)
   const [height, setHeight] = useState(initialHeight)
+  const [fullHeight, setFullHeight] = useState(false)
   const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
     options: [],
@@ -153,11 +150,13 @@ const useSandbox = (
   )
 
   // Listen to messages from field type iframe
-  const onLoaded = useCallback(() => {
-    dispatchStateChanged(loadedData)
-  }, [dispatchStateChanged, loadedData])
-
-  useEffect(onLoaded, [onLoaded])
+  const onLoaded = useCallback(
+    (message: PluginLoadedMessage) => {
+      setFullHeight(Boolean(message.fullHeight))
+      dispatchStateChanged(loadedData)
+    },
+    [dispatchStateChanged, loadedData],
+  )
 
   const onContextRequested = useCallback(
     () =>
@@ -214,6 +213,7 @@ const useSandbox = (
       content,
       isModalOpen,
       height,
+      fullHeight,
       schema,
       url,
       fieldTypeIframe,
@@ -231,7 +231,16 @@ const useSandbox = (
 export const FieldPluginContainer: FunctionComponent = () => {
   const { error } = useNotifications()
   const [
-    { content, isModalOpen, height, schema, url, fieldTypeIframe, iframeSrc },
+    {
+      content,
+      isModalOpen,
+      fullHeight,
+      height,
+      schema,
+      url,
+      fieldTypeIframe,
+      iframeSrc,
+    },
     { setContent, setSchema, setUrl, randomizeUid },
   ] = useSandbox(error)
 
@@ -266,6 +275,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
               src={iframeSrc}
               height={height}
               isModal={isModalOpen}
+              fullHeight={fullHeight}
               ref={fieldTypeIframe}
             />
           </CenteredContent>

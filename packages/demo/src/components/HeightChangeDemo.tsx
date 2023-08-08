@@ -1,7 +1,7 @@
 import { Box, Button, Stack, Tooltip, Typography } from '@mui/material'
 import { PluginComponent } from './FieldPluginDemo'
 import { useState } from 'react'
-import { CenteredContent } from '@storyblok/mui'
+import { CenteredContent, HelpIcon } from '@storyblok/mui'
 
 const step = 5
 const minHeight = step
@@ -14,9 +14,22 @@ export const HeightChangeDemo: PluginComponent = (props) => {
   const resetHeight = () => setHeight(minHeight)
   return (
     <Stack gap={2}>
-      <Tooltip title={<>This component changes height</>}>
-        <Typography variant="subtitle1">Height</Typography>
-      </Tooltip>
+      <Typography
+        variant="subtitle1"
+        sx={{ display: 'inline-flex' }}
+      >
+        Height
+        <Tooltip
+          title={
+            <>This component denstrates what happens when the height changes</>
+          }
+        >
+          <Box component="span">
+            {/*  HelpIcon does not forward ref, so we need to wrap with a Box */}
+            <HelpIcon />
+          </Box>
+        </Tooltip>
+      </Typography>
       <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
         <Button
           color="secondary"
