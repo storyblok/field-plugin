@@ -30,36 +30,35 @@ type DecidePackageName = (params: {
   name?: string
   skipPrompts: boolean
   dir: string
-}) => Promise<{ error: false; packageName: string } | { error: true }>
-export const decidePackageName: DecidePackageName = async ({
+}) => Promise<{ error: false; name: string } | { error: true }>
+export const getPackageName: DecidePackageName = async ({
   name,
   skipPrompts,
   dir,
 }) => {
-  console.log('💡 the real implementation of decide package name')
-  if (typeof name === 'string' && name.length > 0) {
-    return { error: false, packageName: name }
+  if (typeof name === 'string' && name !== '') {
+    return { error: false, name }
   }
 
-  const packageNameFromPackageJson = getPackageName(dir)
+  const packageJsonName = getPackageJsonName(dir)
 
-  if (skipPrompts) {
-    if (isValidPackageName(packageNameFromPackageJson)) {
-      return { error: false, packageName: packageNameFromPackageJson }
-    } else {
-      return { error: true }
+  if (skipPrompts === false) {
+    const nameFromPrompt = await promptName({
+      message: packageNameMessage,
+      initialValue: packageJsonName,
+    })
+
+    return {
+      error: false,
+      name: nameFromPrompt,
     }
   }
 
-  const nameFromPrompt = await promptName({
-    message: packageNameMessage,
-    initialValue: packageNameFromPackageJson,
-  })
-
-  return {
-    error: false,
-    packageName: nameFromPrompt,
+  if (isValidPackageName(packageJsonName)) {
+    return { error: false, name: packageJsonName }
   }
+
+  return { error: true }
 }
 
 export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
@@ -112,7 +111,7 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   return { id: newFieldPlugin.id }
 }
 
-export const getPackageName = (path: string): string | undefined => {
+export const getPackageJsonName = (path: string): string | undefined => {
   if (!lstatSync(path).isDirectory()) {
     return
   }
@@ -186,7 +185,9 @@ export const promptNewName = async (allFieldPlugins: FieldType[]) => {
   return name
 }
 
-export const selectApiScope = async (token: string): Promise<Scope> => {
+export const selectApiScope = async (
+  token: string,
+): Promise<Scope | undefined> => {
   const accessibleToMyPlugins = await StoryblokClient({
     token,
     scope: 'my-plugins',
@@ -207,11 +208,7 @@ export const selectApiScope = async (token: string): Promise<Scope> => {
     !accessibleToPartnerPortal &&
     !accessibleToOrganizationPortal
   ) {
-    console.error(
-      red('[ERROR]'),
-      `The token appears to be invalid as it does not have access to either My Plugins, the plugins on the Partner Portal or the Organization plugins.`,
-    )
-    process.exit(1)
+    return undefined
   }
 
   const { scope } = await betterPrompts<{ scope: Scope }>([
@@ -237,4 +234,15 @@ export const selectApiScope = async (token: string): Promise<Scope> => {
   ])
 
   return scope
+}
+
+export const getDeployBaseUrl = (scope: Scope): string => {
+  if (scope === 'organization') {
+    return 'https://app.storyblok.com/#/me/org/fields'
+  }
+  if (scope === 'partner-portal') {
+    return 'https://app.storyblok.com/#/partner/fields'
+  }
+
+  return 'https://app.storyblok.com/#/me/plugins'
 }

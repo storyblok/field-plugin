@@ -1,7 +1,12 @@
 import { existsSync, readFileSync } from 'fs'
 import { bold, cyan, red, green } from 'kleur/colors'
 import { resolve } from 'path'
-import { decidePackageName, selectApiScope, upsertFieldPlugin } from './helper'
+import {
+  getDeployBaseUrl,
+  getPackageName,
+  selectApiScope,
+  upsertFieldPlugin,
+} from './helper'
 import { getPersonalAccessToken } from '../../utils'
 import { Scope } from '../../storyblok/storyblok-client'
 
@@ -17,33 +22,54 @@ export type DeployArgs = {
 
 type DeployFunc = (args: DeployArgs) => Promise<void>
 
-export const deploy: DeployFunc = async ({
-  skipPrompts,
-  token,
-  name,
-  dir,
-  output,
-  dotEnvPath,
-  scope,
-}) => {
+export const deploy: DeployFunc = async (params) => {
+  const { skipPrompts, token, name, dir, output, dotEnvPath, scope } = params
+
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's deploy a field-plugin.\n")
 
-  const result = await getPersonalAccessToken({ token, dotEnvPath })
-  if (result.error === true) {
-    console.error(red('[ERROR]'), result.message)
+  //TODO: rewrite to include error for each case
+  // NOTE: moving this upward as an early escape
+  if (skipPrompts && !scope) {
+    console.error(
+      red('[ERROR]'),
+      'Please provide a value for the --scope flag when using --skipPrompts.',
+    )
+    process.exit(1)
+  }
+
+  const personalAccessTokenResult = await getPersonalAccessToken({
+    token,
+    dotEnvPath,
+    skipPrompts,
+  })
+
+  if (personalAccessTokenResult.error === true) {
+    console.error(red('[ERROR]'), personalAccessTokenResult.message)
     console.error(
       'Please provide a valid --token option value or STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable',
     )
     process.exit(1)
   }
 
-  const packageNameResult = await decidePackageName({ name, skipPrompts, dir })
+  const apiScope =
+    scope || (await selectApiScope(personalAccessTokenResult.token))
 
+  if (apiScope === undefined) {
+    console.error(
+      red('[ERROR]'),
+      `The token appears to be invalid as it does not have access to either My Plugins, the plugins on the Partner Portal or the Organization plugins.`,
+    )
+    process.exit(1)
+  }
+
+  const packageNameResult = await getPackageName({ name, skipPrompts, dir })
+
+  //TODO: move this check to getPackageName
   if (
     packageNameResult.error === true ||
-    typeof packageNameResult.packageName !== 'string' ||
-    packageNameResult.packageName === ''
+    typeof packageNameResult.name !== 'string' ||
+    packageNameResult.name === ''
   ) {
     console.error(red('[ERROR]'), 'The package name is missing')
     console.error(
@@ -52,19 +78,7 @@ export const deploy: DeployFunc = async ({
     process.exit(1)
   }
 
-  if (!scope && skipPrompts) {
-    console.error(
-      red('[ERROR]'),
-      'Please provide a value for the --scope flag when using --skipPrompts.',
-    )
-    process.exit(1)
-  }
-  const apiScope = scope || (await selectApiScope(result.token))
-
-  console.log(
-    bold(cyan(`[info] Plugin name: \`${packageNameResult.packageName}\``)),
-  )
-
+  console.log(bold(cyan(`[info] Plugin name: \`${packageNameResult.name}\``)))
   // path of the specific field-plugin package
   const defaultOutputPath = resolve(dir, 'dist', 'index.js')
   const outputPath =
@@ -84,9 +98,9 @@ export const deploy: DeployFunc = async ({
 
   const { id: fieldPluginId } = await upsertFieldPlugin({
     dir,
-    packageName: packageNameResult.packageName,
+    packageName: packageNameResult.name,
     skipPrompts,
-    token: result.token,
+    token: personalAccessTokenResult.token,
     output: outputFile,
     scope: apiScope,
   })
@@ -95,24 +109,8 @@ export const deploy: DeployFunc = async ({
     bold(green('[SUCCESS]')),
     'The field plugin is deployed successfully.',
   )
-
   console.log('You can find the deployed plugin at the following URL:')
-  if (apiScope === 'partner-portal') {
-    console.log(
-      `  > https://app.storyblok.com/#/partner/fields/${fieldPluginId}`,
-    )
-  }
-
-  if (apiScope === 'my-plugins') {
-    console.log(`  > https://app.storyblok.com/#/me/plugins/${fieldPluginId}`)
-  }
-
-  if (apiScope === 'organization') {
-    console.log(
-      `  > https://app.storyblok.com/#/me/org/fields/${fieldPluginId}`,
-    )
-  }
-
+  console.log(`  > ${getDeployBaseUrl(scope)}/${fieldPluginId}`)
   console.log(
     'You can also find it in "My account > My Plugins" at the bottom of the sidebar.',
   )
