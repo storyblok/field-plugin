@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeAll, expect, vi } from 'vitest'
+import { afterEach, expect, vi } from 'vitest'
 import { decidePackageName, deploy } from '../deploy'
 import { getPersonalAccessToken } from '../../utils'
 
@@ -9,21 +9,15 @@ vi.mock('../deploy', async () => {
     '../deploy',
   )
 
-  const mocks = await vi.importMock<typeof import('../deploy')>('../deploy')
-
   return {
-    ...mocks,
+    ...actualDeploy,
     decidePackageName: vi.fn(),
-    deploy: actualDeploy.deploy,
   }
 })
 
 describe('deploy', () => {
   afterEach(() => {
     vi.resetAllMocks()
-  })
-
-  afterAll(() => {
     vi.unstubAllGlobals()
   })
 
@@ -62,6 +56,28 @@ describe('deploy', () => {
     await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
       'Exiting Process Error',
     )
+    expect(exit).toHaveBeenCalledTimes(1)
+  })
+
+  it.only('should exit when scope is not provided', async () => {
+    const exit = vi.fn(() => {
+      // eslint-disable-next-line functional/no-throw-statement
+      throw new Error('Exiting Process Error')
+    })
+    vi.stubGlobal('process', { exit: exit })
+
+    vi.mocked(getPersonalAccessToken).mockImplementation((params) => {
+      return Promise.resolve({ error: false, token: 'token' })
+    })
+
+    vi.mocked(decidePackageName).mockImplementation((params) => {
+      return Promise.resolve({ error: false, packageName: 'Test' })
+    })
+
+    await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
+      'Exiting Process Error',
+    )
+
     expect(exit).toHaveBeenCalledTimes(1)
   })
 })
