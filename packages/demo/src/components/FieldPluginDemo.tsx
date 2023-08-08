@@ -8,7 +8,8 @@ import { AssetSelector } from './AssetSelector'
 import { ContextRequester } from './ContextRequester'
 import { UpdaterFunctionDemo } from './UpdaterFunctionDemo'
 import { LanguageView } from './LanguageView'
-import { useFieldPlugin, Content } from './context'
+import { parseContent, Content } from './context'
+import { useFieldPlugin } from '../useFieldPlugin'
 
 export type PluginComponent = FunctionComponent<{
   data: FieldPluginData<Content>
@@ -16,7 +17,9 @@ export type PluginComponent = FunctionComponent<{
 }>
 
 export const FieldPluginDemo: FunctionComponent = () => {
-  const { type, data, actions } = useFieldPlugin<Content>()
+  const { type, data, actions } = useFieldPlugin<Content>({
+    parseContent,
+  })
 
   if (type === 'loading') {
     return (

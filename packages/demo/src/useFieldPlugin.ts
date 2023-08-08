@@ -1,22 +1,24 @@
-import { createFieldPlugin, FieldPluginResponse } from '@storyblok/field-plugin'
+import {
+  createFieldPlugin,
+  FieldPluginOptions,
+  FieldPluginResponse,
+} from '@storyblok/field-plugin'
 import { useEffect, useState } from 'react'
 
-type UseFieldPlugin = () => FieldPluginResponse
-
-type Parser<Content> = (content: unknown) => Content
-
-type Content = number
-const parseContent: Parser<Content> = (content) =>
-  typeof content === 'number' ? content : 0
-
-export const useFieldPlugin: UseFieldPlugin = () => {
-  const [state, setState] = useState<FieldPluginResponse>(() => ({
+export const useFieldPlugin = <Content>(
+  options: FieldPluginOptions<Content>,
+): FieldPluginResponse<Content> => {
+  const [state, setState] = useState<FieldPluginResponse<Content>>(() => ({
     type: 'loading',
   }))
 
-  useEffect(() => {
-    return createFieldPlugin(setState, parseContent)
-  }, [])
+  useEffect(
+    () =>
+      createFieldPlugin<Content>(setState, {
+        parseContent: options.parseContent,
+      }),
+    [options.parseContent],
+  )
 
   return state
 }

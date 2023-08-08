@@ -6,13 +6,18 @@ import { FieldPluginResponse } from './FieldPluginResponse'
 import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 import { sandboxUrl } from './sandboxUrl'
 
+export type FieldPluginOptions<Content> = {
+  parseContent: (content: unknown) => Content
+}
+
 /**
  * @returns cleanup function for side effects
  */
 export const createFieldPlugin = <Content>(
   onUpdateState: (state: FieldPluginResponse<Content>) => void,
-  parseContent: (content: unknown) => Content,
+  options: FieldPluginOptions<Content>,
 ): (() => void) => {
+  const { parseContent } = options
   const isEmbedded = window.parent !== window
 
   if (!isEmbedded) {
