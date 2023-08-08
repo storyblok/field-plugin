@@ -58,12 +58,16 @@ export const deploy: DeployFunc = async ({
     process.exit(1)
   }
 
-  const packageName = await decidePackageName({ name, skipPrompts, dir })
+  const packageNameResult = await decidePackageName({ name, skipPrompts, dir })
 
-  if (typeof packageName !== 'string' || packageName === '') {
-    console.log(red('[ERROR]'), 'Package name is missing.')
-    console.log(
-      'Please provide a valid --name option value or type a valid one to the prompt.',
+  if (
+    packageNameResult.error === true ||
+    typeof packageNameResult.packageName !== 'string' ||
+    packageNameResult.packageName === ''
+  ) {
+    console.error(red('[ERROR]'), 'The package name is missing')
+    console.error(
+      'Use `--name <package-name>` or `--dir <path-to-package>` to specify the package name.',
     )
     process.exit(1)
   }
@@ -77,7 +81,9 @@ export const deploy: DeployFunc = async ({
   }
   const apiScope = scope || (await selectApiScope(result.token))
 
-  console.log(bold(cyan(`[info] Plugin name: \`${packageName}\``)))
+  console.log(
+    bold(cyan(`[info] Plugin name: \`${packageNameResult.packageName}\``)),
+  )
 
   // path of the specific field-plugin package
   const defaultOutputPath = resolve(dir, 'dist', 'index.js')
@@ -98,7 +104,7 @@ export const deploy: DeployFunc = async ({
 
   const { id: fieldPluginId } = await upsertFieldPlugin({
     dir,
-    packageName,
+    packageName: packageNameResult.packageName,
     skipPrompts,
     token: result.token,
     output: outputFile,
@@ -132,40 +138,42 @@ export const deploy: DeployFunc = async ({
   )
 }
 
-const decidePackageName = async ({
-  name,
-  skipPrompts,
-  dir,
-}: {
+type DecidePackageName = (params: {
   name?: string
   skipPrompts: boolean
   dir: string
+}) => Promise<{ error: false; packageName: string } | { error: true }>
+export const decidePackageName: DecidePackageName = async ({
+  name,
+  skipPrompts,
+  dir,
 }) => {
   if (typeof name === 'string' && name.length > 0) {
-    return name
+    return { error: false, packageName: name }
   }
 
   const packageNameFromPackageJson = getPackageName(dir)
 
   if (skipPrompts) {
     if (isValidPackageName(packageNameFromPackageJson)) {
-      return packageNameFromPackageJson
+      return { error: false, packageName: packageNameFromPackageJson }
     } else {
-      console.log(red('[ERROR]'), 'The package name is missing')
-      console.log(
-        'Use `--name <package-name>` or `--dir <path-to-package>` to specify the package name.',
-      )
-      process.exit(1)
+      return { error: true }
     }
   }
 
-  return await promptName({
+  const nameFromPrompt = await promptName({
     message: packageNameMessage,
     initialValue: packageNameFromPackageJson,
   })
+
+  return {
+    error: false,
+    packageName: nameFromPrompt,
+  }
 }
 
-const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
+export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   const { packageName, skipPrompts, token, output, dir, scope } = args
 
   const storyblokClient = StoryblokClient({ token, scope })
@@ -215,7 +223,7 @@ const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   return { id: newFieldPlugin.id }
 }
 
-const getPackageName = (path: string): string | undefined => {
+export const getPackageName = (path: string): string | undefined => {
   if (!lstatSync(path).isDirectory()) {
     return
   }
@@ -232,7 +240,7 @@ const getPackageName = (path: string): string | undefined => {
   return json.name
 }
 
-const selectUpsertMode = async () => {
+export const selectUpsertMode = async () => {
   const { mode } = await betterPrompts<{ mode: 'update' | 'create' }>([
     {
       type: 'select',
@@ -254,7 +262,7 @@ const selectUpsertMode = async () => {
   return mode
 }
 
-const confirmCreatingFieldPlugin = async (name: string) => {
+export const confirmCreatingFieldPlugin = async (name: string) => {
   const { create } = await betterPrompts<{ create: boolean }>({
     type: 'confirm',
     name: 'create',
@@ -264,7 +272,7 @@ const confirmCreatingFieldPlugin = async (name: string) => {
   return create
 }
 
-const confirmUpdatingName = async () => {
+export const confirmUpdatingName = async () => {
   const { update } = await betterPrompts<{ update: boolean }>({
     type: 'confirm',
     name: 'update',
@@ -274,7 +282,7 @@ const confirmUpdatingName = async () => {
   return update
 }
 
-const promptNewName = async (allFieldPlugins: FieldType[]) => {
+export const promptNewName = async (allFieldPlugins: FieldType[]) => {
   const { name } = await betterPrompts<{ name: string }>({
     type: 'text',
     name: 'name',
@@ -289,7 +297,7 @@ const promptNewName = async (allFieldPlugins: FieldType[]) => {
   return name
 }
 
-const selectApiScope = async (token: string): Promise<Scope> => {
+export const selectApiScope = async (token: string): Promise<Scope> => {
   const accessibleToMyPlugins = await StoryblokClient({
     token,
     scope: 'my-plugins',

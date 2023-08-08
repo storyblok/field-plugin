@@ -137,7 +137,7 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = async ({
   }
 }
 
-export const isValidPackageName = (name: string | undefined): boolean =>
+export const isValidPackageName = (name: string | undefined): name is string =>
   name !== undefined && new RegExp(/^[a-z0-9\\-]+$/).test(name)
 
 export const promptName = async ({
@@ -321,7 +321,7 @@ export const randomString = (length = 16) => {
   }
   return result
 }
-  
+
 export const expandTilde = (folderPath: string) => {
   const homedir = os.homedir()
   if (folderPath.startsWith('~')) {
