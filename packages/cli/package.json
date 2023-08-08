@@ -1,6 +1,6 @@
 {
   "name": "@storyblok/field-plugin-cli",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1-beta.3",
   "type": "module",
   "bin": {
     "field-plugin": "./bin.js"

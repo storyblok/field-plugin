@@ -10,7 +10,7 @@
     "deploy": "npm run build && npx @storyblok/field-plugin-cli@beta deploy"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "0.0.1-beta.2",
+    "@storyblok/field-plugin": "0.0.1-beta.3",
     "vue": "^3.2.47"
   },
   "devDependencies": {
