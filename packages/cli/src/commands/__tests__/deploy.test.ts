@@ -32,7 +32,7 @@ describe('deploy', () => {
     })
 
     it('should exit when getPersonalAccessToken returns an error', async () => {
-      getPersonalAccessTokenErrorMock()
+      mockPersonalAccessTokenError()
 
       await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
@@ -45,8 +45,8 @@ describe('deploy', () => {
     })
 
     it('should exit when getPackageName returns error response', async () => {
-      getPersonalAccessTokenSuccessMock()
-      getPackageJsonNameErrorMock()
+      mockPersonalAccessTokenSuccess()
+      mockPackageJsonNameError()
 
       await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
@@ -61,8 +61,8 @@ describe('deploy', () => {
     })
 
     it('should exit when getPackageName returns empty string', async () => {
-      getPersonalAccessTokenSuccessMock()
-      getPackageJsonNameSuccessEmptyMock()
+      mockPersonalAccessTokenSuccess()
+      mockPackageJsonNameSuccessEmpty()
 
       await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
@@ -76,8 +76,8 @@ describe('deploy', () => {
     })
 
     it('should exit when existsSync returns false', async () => {
-      getPersonalAccessTokenSuccessMock()
-      getPackageJsonNameSuccessMock()
+      mockPersonalAccessTokenSuccess()
+      mockPackageJsonNameSuccess()
 
       await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
@@ -102,11 +102,11 @@ const defaultDeployArgs: DeployArgs = {
   scope: 'my-plugins',
 }
 
-const getPersonalAccessTokenSuccessMock = () =>
+const mockPersonalAccessTokenSuccess = () =>
   vi.mocked(getPersonalAccessToken).mockImplementation((params) => {
     return Promise.resolve({ error: false, token: 'token' })
   })
-const getPersonalAccessTokenErrorMock = () =>
+const mockPersonalAccessTokenError = () =>
   vi.mocked(getPersonalAccessToken).mockImplementation((params) => {
     return Promise.resolve({
       error: true,
@@ -114,15 +114,15 @@ const getPersonalAccessTokenErrorMock = () =>
     })
   })
 
-const getPackageJsonNameErrorMock = () =>
+const mockPackageJsonNameError = () =>
   vi.mocked(getPackageName).mockImplementation((name) => {
     return Promise.resolve({ error: true })
   })
-const getPackageJsonNameSuccessMock = () =>
+const mockPackageJsonNameSuccess = () =>
   vi.mocked(getPackageName).mockImplementation((name) => {
     return Promise.resolve({ error: false, name: 'test name' })
   })
-const getPackageJsonNameSuccessEmptyMock = () =>
+const mockPackageJsonNameSuccessEmpty = () =>
   vi.mocked(getPackageName).mockImplementation((name) => {
     return Promise.resolve({ error: false, name: '' })
   })
