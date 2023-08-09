@@ -1,5 +1,5 @@
 import { readFileSync, lstatSync } from 'fs'
-import { bold, cyan, red } from 'kleur/colors'
+import { bold, cyan } from 'kleur/colors'
 import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
@@ -246,3 +246,9 @@ export const getDeployBaseUrl = (scope: Scope): string => {
 
   return 'https://app.storyblok.com/#/me/plugins'
 }
+
+export const createDefaultOutputPath = (dir: string) =>
+  resolve(dir, 'dist', 'index.js')
+
+export const isOutputValid = (output?: string): output is string =>
+  typeof output === 'string' && output !== ''

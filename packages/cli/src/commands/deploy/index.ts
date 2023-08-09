@@ -2,8 +2,10 @@ import { existsSync, readFileSync } from 'fs'
 import { bold, cyan, red, green } from 'kleur/colors'
 import { resolve } from 'path'
 import {
+  createDefaultOutputPath,
   getDeployBaseUrl,
   getPackageName,
+  isOutputValid,
   selectApiScope,
   upsertFieldPlugin,
 } from './helper'
@@ -52,6 +54,7 @@ export const deploy: DeployFunc = async (params) => {
     process.exit(1)
   }
 
+  //TODO: test
   const apiScope =
     scope || (await selectApiScope(personalAccessTokenResult.token))
 
@@ -80,9 +83,9 @@ export const deploy: DeployFunc = async (params) => {
 
   console.log(bold(cyan(`[info] Plugin name: \`${packageNameResult.name}\``)))
   // path of the specific field-plugin package
-  const defaultOutputPath = resolve(dir, 'dist', 'index.js')
-  const outputPath =
-    typeof output !== 'undefined' ? resolve(output) : defaultOutputPath
+  const outputPath = isOutputValid(output)
+    ? resolve(output)
+    : createDefaultOutputPath(dir)
 
   if (!existsSync(outputPath)) {
     console.log(red('[ERROR]'), 'Could not find a bundle at:')
@@ -110,7 +113,7 @@ export const deploy: DeployFunc = async (params) => {
     'The field plugin is deployed successfully.',
   )
   console.log('You can find the deployed plugin at the following URL:')
-  console.log(`  > ${getDeployBaseUrl(scope)}/${fieldPluginId}`)
+  console.log(`  > ${getDeployBaseUrl(apiScope)}/${fieldPluginId}`)
   console.log(
     'You can also find it in "My account > My Plugins" at the bottom of the sidebar.',
   )

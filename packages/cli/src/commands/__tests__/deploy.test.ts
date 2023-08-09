@@ -1,6 +1,6 @@
 import { describe, expect, vi, beforeEach, afterEach } from 'vitest'
-import { deploy } from '../deploy'
-import { getPackageName, selectApiScope } from '../deploy/helper'
+import { deploy, DeployArgs } from '../deploy'
+import { getPackageName, isOutputValid, selectApiScope } from '../deploy/helper'
 import { getPersonalAccessToken } from '../../utils'
 
 vi.mock('../../utils')
@@ -33,7 +33,6 @@ describe('deploy', () => {
 
     it('should exit when getPersonalAccessToken returns an error', async () => {
       getPersonalAccessTokenErrorMock()
-      getPackageJsonNameSuccessMock()
 
       await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
@@ -41,50 +40,59 @@ describe('deploy', () => {
 
       expect(exit).toHaveBeenCalledTimes(1)
       expect(getPersonalAccessToken).toHaveBeenCalledOnce()
-      expect(getPackageName).toHaveBeenCalledTimes(1)
       expect(selectApiScope).toHaveBeenCalledTimes(0)
+      expect(getPackageName).toHaveBeenCalledTimes(0)
     })
 
-    it('should exit when selectApiScope returns invalid scope', async () => {
+    it('should exit when getPackageName returns error response', async () => {
       getPersonalAccessTokenSuccessMock()
-      getPackageJsonNameSuccessMock()
+      getPackageJsonNameErrorMock()
 
       await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
       )
 
+      //TODO better check this
       expect(exit).toHaveBeenCalledTimes(1)
       expect(getPersonalAccessToken).toHaveBeenCalledOnce()
-    })
-
-    it.skip('should exit when scope is not provided', async () => {
-      getPersonalAccessTokenSuccessMock()
-      getPackageJsonNameSuccessMock()
-
-      await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
-        'Exiting Process Error',
-      )
-
-      expect(exit).toHaveBeenCalledTimes(1)
-      expect(getPersonalAccessToken).toHaveBeenCalledOnce()
+      expect(selectApiScope).toHaveBeenCalledTimes(0)
       expect(getPackageName).toHaveBeenCalledOnce()
-      expect(selectApiScope).toHaveBeenCalledTimes(0)
+      expect(isOutputValid).toHaveBeenCalledTimes(0)
     })
 
-    it.skip('should exit when existsSync returns false', async () => {
+    it('should exit when getPackageName returns empty string', async () => {
       getPersonalAccessTokenSuccessMock()
+      getPackageJsonNameSuccessEmptyMock()
 
       await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
       )
 
-      expect(selectApiScope).not.toHaveBeenCalled()
       expect(exit).toHaveBeenCalledTimes(1)
+      expect(getPersonalAccessToken).toHaveBeenCalledOnce()
+      expect(selectApiScope).toHaveBeenCalledTimes(0)
+      expect(getPackageName).toHaveBeenCalledOnce()
+      expect(isOutputValid).toHaveBeenCalledTimes(0)
+    })
+
+    it('should exit when existsSync returns false', async () => {
+      getPersonalAccessTokenSuccessMock()
+      getPackageJsonNameSuccessMock()
+
+      await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
+        'Exiting Process Error',
+      )
+
+      expect(exit).toHaveBeenCalledTimes(1)
+      expect(getPersonalAccessToken).toHaveBeenCalledOnce()
+      expect(selectApiScope).toHaveBeenCalledTimes(0)
+      expect(getPackageName).toHaveBeenCalledOnce()
+      expect(isOutputValid).toHaveBeenCalledTimes(1)
     })
   })
 })
 
-const defaultDeployArgs = {
+const defaultDeployArgs: DeployArgs = {
   skipPrompts: true,
   dir: '.',
   name: undefined,
@@ -99,16 +107,22 @@ const getPersonalAccessTokenSuccessMock = () =>
     return Promise.resolve({ error: false, token: 'token' })
   })
 const getPersonalAccessTokenErrorMock = () =>
-  vi.mocked(getPersonalAccessToken).mockImplementation(() => {
-    return Promise.resolve({ error: false, token: 'test token' })
+  vi.mocked(getPersonalAccessToken).mockImplementation((params) => {
+    return Promise.resolve({
+      error: true,
+      message: 'getPersonalAccessToken Error',
+    })
   })
 
+const getPackageJsonNameErrorMock = () =>
+  vi.mocked(getPackageName).mockImplementation((name) => {
+    return Promise.resolve({ error: true })
+  })
 const getPackageJsonNameSuccessMock = () =>
   vi.mocked(getPackageName).mockImplementation((name) => {
     return Promise.resolve({ error: false, name: 'test name' })
   })
-
-const selectApiScopeErrorMock = () =>
-  vi.mocked(selectApiScope).mockImplementation(() => {
-    return Promise.resolve(undefined)
+const getPackageJsonNameSuccessEmptyMock = () =>
+  vi.mocked(getPackageName).mockImplementation((name) => {
+    return Promise.resolve({ error: false, name: '' })
   })
