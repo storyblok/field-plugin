@@ -1,10 +1,17 @@
 import { describe, expect, vi, beforeEach, afterEach } from 'vitest'
 import { deploy, DeployArgs } from '../deploy'
-import { getPackageName, isOutputValid, selectApiScope } from '../deploy/helper'
+import {
+  getPackageName,
+  isOutputValid,
+  selectApiScope,
+  upsertFieldPlugin,
+} from '../deploy/helper'
 import { getPersonalAccessToken } from '../../utils'
+import { existsSync, readFileSync } from 'fs'
 
 vi.mock('../../utils')
 vi.mock('../deploy/helper')
+vi.mock('fs')
 
 describe('deploy', () => {
   const exit = vi.fn(() => {
@@ -23,7 +30,7 @@ describe('deploy', () => {
 
   describe('skipping prompts', () => {
     it('should exit if scope is not provided', async () => {
-      await expect(() =>
+      await expect(
         deploy({ ...defaultDeployArgs, scope: undefined }),
       ).rejects.toThrowError('Exiting Process Error')
 
@@ -34,7 +41,7 @@ describe('deploy', () => {
     it('should exit when getPersonalAccessToken returns an error', async () => {
       mockPersonalAccessTokenError()
 
-      await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
+      await expect(deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
       )
 
@@ -48,7 +55,7 @@ describe('deploy', () => {
       mockPersonalAccessTokenSuccess()
       mockPackageJsonNameError()
 
-      await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
+      await expect(deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
       )
 
@@ -64,7 +71,7 @@ describe('deploy', () => {
       mockPersonalAccessTokenSuccess()
       mockPackageJsonNameSuccessEmpty()
 
-      await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
+      await expect(deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
       )
 
@@ -75,11 +82,11 @@ describe('deploy', () => {
       expect(isOutputValid).toHaveBeenCalledTimes(0)
     })
 
-    it('should exit when existsSync returns false', async () => {
+    it('should exit when the outputPath does not exist', async () => {
       mockPersonalAccessTokenSuccess()
       mockPackageJsonNameSuccess()
 
-      await expect(() => deploy(defaultDeployArgs)).rejects.toThrowError(
+      await expect(deploy(defaultDeployArgs)).rejects.toThrowError(
         'Exiting Process Error',
       )
 
@@ -88,6 +95,24 @@ describe('deploy', () => {
       expect(selectApiScope).toHaveBeenCalledTimes(0)
       expect(getPackageName).toHaveBeenCalledOnce()
       expect(isOutputValid).toHaveBeenCalledTimes(1)
+    })
+
+    it('should resolve without throwing errors', async () => {
+      mockPersonalAccessTokenSuccess()
+      mockPackageJsonNameSuccess()
+      mockExistsSyncSuccess()
+      mockReadFileSyncSuccess()
+      mockUpsertFieldPluginSuccess()
+
+      await expect(deploy(defaultDeployArgs)).resolves.toEqual(undefined)
+
+      expect(exit).toHaveBeenCalledTimes(0)
+      expect(getPersonalAccessToken).toHaveBeenCalledOnce()
+      expect(selectApiScope).toHaveBeenCalledTimes(0)
+      expect(getPackageName).toHaveBeenCalledOnce()
+      expect(isOutputValid).toHaveBeenCalledOnce()
+      expect(readFileSync).toHaveBeenCalledOnce()
+      expect(upsertFieldPlugin).toHaveBeenCalledOnce()
     })
   })
 })
@@ -123,6 +148,21 @@ const mockPackageJsonNameSuccess = () =>
     return Promise.resolve({ error: false, name: 'test name' })
   })
 const mockPackageJsonNameSuccessEmpty = () =>
-  vi.mocked(getPackageName).mockImplementation((name) => {
-    return Promise.resolve({ error: false, name: '' })
+  vi.mocked(upsertFieldPlugin).mockImplementation((name) => {
+    return Promise.resolve({ id: 1 })
+  })
+
+const mockUpsertFieldPluginSuccess = () =>
+  vi.mocked(upsertFieldPlugin).mockImplementation((name) => {
+    return Promise.resolve({ id: 1 })
+  })
+
+const mockExistsSyncSuccess = () =>
+  vi.mocked(existsSync).mockImplementation(() => {
+    return true
+  })
+
+const mockReadFileSyncSuccess = () =>
+  vi.mocked(readFileSync).mockImplementation(() => {
+    return 'file'
   })

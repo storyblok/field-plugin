@@ -61,6 +61,7 @@ export const getPackageName: GetPackageName = async ({
   return { error: true }
 }
 
+// TODO: move all side effects to the deploy function
 export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   const { packageName, skipPrompts, token, output, dir, scope } = args
 
