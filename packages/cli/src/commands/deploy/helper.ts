@@ -26,12 +26,12 @@ type UpsertFieldPluginFunc = (args: {
   scope: Scope
 }) => Promise<{ id: number }>
 
-type DecidePackageName = (params: {
+type GetPackageName = (params: {
   name?: string
   skipPrompts: boolean
   dir: string
 }) => Promise<{ error: false; name: string } | { error: true }>
-export const getPackageName: DecidePackageName = async ({
+export const getPackageName: GetPackageName = async ({
   name,
   skipPrompts,
   dir,
