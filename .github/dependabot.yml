@@ -13,7 +13,7 @@ updates:
       time: "19:00"
       timezone: "Europe/Vienna"
       day: "thursday"
-    group:
+    groups:
       all:
         patterns:
           - "*"
