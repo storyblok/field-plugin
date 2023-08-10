@@ -12,6 +12,7 @@ updates:
       interval: "weekly"
       time: "19:00"
       timezone: "Europe/Vienna"
+      day: "thursday"
     group:
       all:
         patterns:
