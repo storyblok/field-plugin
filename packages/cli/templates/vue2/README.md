@@ -37,3 +37,5 @@ npm run deploy --name $NAME --skipPrompts
 ## Clean up the boilerplate
 
 To start from a blank state, remove the example component `<FieldPluginExample />` from `src/App.vue` with `<FieldPlugin />`.
+
+To avoid a flickering “Loading…” message during rendering, from `src/App.vue`, also remove `v-slot:loading` template inside `FieldPluginProvider`.

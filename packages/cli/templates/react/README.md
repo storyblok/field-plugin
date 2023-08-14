@@ -43,3 +43,5 @@ npm run deploy --name $NAME --skipPrompts
 ## Clean up the boilerplate
 
 To start from a blank state, remove the example component `<FieldPluginExample />` from `src/App.tsx` with `<FieldPlugin />`.
+
+To avoid a flickering “Loading…” message during rendering, from `src/App.tsx`, also remove the `Loading` parameter when calling `FieldPluginProvider` component.
