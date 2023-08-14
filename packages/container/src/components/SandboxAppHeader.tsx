@@ -29,7 +29,7 @@ export const SandboxAppHeader: FunctionComponent = () => (
         component="a"
         href="https://github.com/storyblok/field-type-examples"
       >
-        Open-source examples
+        Examples
       </ListItemButton>
     </DropMenu>
   </AppHeader>
