@@ -27,12 +27,6 @@ export const SandboxAppHeader: FunctionComponent = () => (
       </ListItemButton>
       <ListItemButton
         component="a"
-        href="https://www.storyblok.com/docs/plugins/field-type"
-      >
-        Documentation (Legacy)
-      </ListItemButton>
-      <ListItemButton
-        component="a"
         href="https://github.com/storyblok/field-type-examples"
       >
         Open-source examples
