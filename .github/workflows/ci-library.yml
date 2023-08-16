@@ -1,9 +1,5 @@
 name: Library
-on:
-  push:
-    paths:
-      - 'packages/field-plugin/**'
-      - '.github/**'
+on: ['push']
 jobs:
   build:
     runs-on: ubuntu-latest
