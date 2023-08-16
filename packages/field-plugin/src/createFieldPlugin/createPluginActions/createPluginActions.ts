@@ -18,6 +18,7 @@ import {
   partialPluginStateFromContextRequestMessage,
   partialPluginStateFromStateChangeMessage,
 } from './partialPluginStateFromStateChangeMessage'
+import { getRandomString } from '../../utils'
 
 // TODO get rid of this default state
 export const defaultState: FieldPluginData = {
@@ -55,8 +56,10 @@ export const createPluginActions: CreatePluginActions = (
   //  In future improved versions of the plugin API, this should not be needed.
   let state: FieldPluginData = defaultState
 
-  let assetSelectedCallbackRef: undefined | ((filename: Asset) => void) =
-    undefined
+  let assetSelectedCallbackRef:
+    | undefined
+    | { resolve: (filename: Asset) => void; reject: () => void } = undefined
+  let assetSelectedCallbackId: undefined | string = undefined
 
   const onStateChange: OnStateChangeMessage = (data) => {
     state = {
@@ -73,7 +76,11 @@ export const createPluginActions: CreatePluginActions = (
     onUpdateState(state)
   }
   const onAssetSelect: OnAssetSelectMessage = (data) => {
-    assetSelectedCallbackRef?.(assetFromAssetSelectedMessage(data))
+    if (data.callbackId === assetSelectedCallbackId) {
+      assetSelectedCallbackRef?.resolve(assetFromAssetSelectedMessage(data))
+    } else {
+      assetSelectedCallbackRef?.reject()
+    }
   }
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
     // TODO remove side-effect, making functions in this file pure.
@@ -121,9 +128,11 @@ export const createPluginActions: CreatePluginActions = (
         onUpdateState(state)
       },
       selectAsset: () => {
-        return new Promise((resolve) => {
-          assetSelectedCallbackRef = resolve
-          postToContainer(assetModalChangeMessage(uid))
+        const callbackId = getRandomString(16)
+        assetSelectedCallbackId = callbackId
+        return new Promise((resolve, reject) => {
+          assetSelectedCallbackRef = { resolve, reject }
+          postToContainer(assetModalChangeMessage(uid, callbackId))
         })
       },
       requestContext: () => postToContainer(getContextMessage(uid)),

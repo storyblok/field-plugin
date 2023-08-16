@@ -13,6 +13,14 @@ const mock = () => ({
   onUpdateState: jest.fn(),
 })
 
+const TEST_CALLBACK_ID = 'test-callback-id'
+
+jest.mock('../../utils/getRandomString', () => {
+  return {
+    getRandomString: jest.fn(() => TEST_CALLBACK_ID),
+  }
+})
+
 describe('createPluginActions', () => {
   describe('initial call', () => {
     it('does not send any message to the container', () => {
@@ -158,6 +166,7 @@ describe('createPluginActions', () => {
         uid,
         action: 'asset-selected',
         field: 'dummy',
+        callbackId: TEST_CALLBACK_ID,
         filename,
       })
       const result = await promise
