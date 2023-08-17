@@ -168,6 +168,7 @@ const useSandbox = (
         uid,
         field,
         action: 'asset-selected',
+        callbackId: 'test-callback-id',
         filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
       })
     },
