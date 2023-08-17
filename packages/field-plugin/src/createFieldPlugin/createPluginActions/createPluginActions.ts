@@ -76,10 +76,13 @@ export const createPluginActions: CreatePluginActions = (
     onUpdateState(state)
   }
   const onAssetSelect: OnAssetSelectMessage = (data) => {
+    // We do not reject the promise here.
+    // There can be another instance of `createFieldPlugin()`,
+    // calling `selectAsset` with different `callbackId`.
+    // In such case, we should simply ignore the callback.
+    // We may get another callback with correct `callbackId`.
     if (data.callbackId === assetSelectedCallbackId) {
       assetSelectedCallbackRef?.resolve(assetFromAssetSelectedMessage(data))
-    } else {
-      assetSelectedCallbackRef?.reject()
     }
   }
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {

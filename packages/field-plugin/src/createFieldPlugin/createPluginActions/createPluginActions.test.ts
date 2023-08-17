@@ -21,6 +21,12 @@ jest.mock('../../utils/getRandomString', () => {
   }
 })
 
+const wait = async (ms: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
 describe('createPluginActions', () => {
   describe('initial call', () => {
     it('does not send any message to the container', () => {
@@ -171,6 +177,29 @@ describe('createPluginActions', () => {
       })
       const result = await promise
       expect(result).toEqual({ filename })
+    })
+    it('does not call the callack function when callbackId does not match', async () => {
+      const WRONG_CALLBACK_ID = TEST_CALLBACK_ID + '_wrong'
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { selectAsset },
+        messageCallbacks: { onAssetSelect },
+      } = createPluginActions(uid, postToContainer, onUpdateState)
+      const promise = selectAsset()
+      const filename = 'hello.jpg'
+      onAssetSelect({
+        uid,
+        action: 'asset-selected',
+        field: 'dummy',
+        callbackId: WRONG_CALLBACK_ID,
+        filename,
+      })
+      const resolvedFn = jest.fn()
+      const rejectedFn = jest.fn()
+      promise.then(resolvedFn).catch(rejectedFn)
+      await wait(100)
+      expect(resolvedFn).toHaveBeenCalledTimes(0)
+      expect(rejectedFn).toHaveBeenCalledTimes(0)
     })
   })
 })
