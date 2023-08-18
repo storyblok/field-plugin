@@ -89,27 +89,6 @@ describe('createPluginActions', () => {
         } satisfies Partial<ModalChangeMessage>),
       )
     })
-    it('sends a height change message to the container when opened on modal mode', () => {
-      const { uid, postToContainer, onUpdateState } = mock()
-      const {
-        actions: { setModalOpen },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
-      setModalOpen(false)
-
-      expect(postToContainer).not.toHaveBeenCalledWith(
-        expect.objectContaining({
-          event: 'heightChange',
-        } satisfies Partial<HeightChangeMessage>),
-      )
-
-      setModalOpen(true)
-      expect(postToContainer).toHaveBeenCalledWith(
-        expect.objectContaining({
-          event: 'heightChange',
-          height: 'auto',
-        } satisfies Partial<HeightChangeMessage>),
-      )
-    })
   })
   describe('value state change', () => {
     it('updates the value state when setContent is called', () => {

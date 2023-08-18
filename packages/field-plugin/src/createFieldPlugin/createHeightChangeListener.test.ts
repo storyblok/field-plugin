@@ -43,6 +43,9 @@ describe('auto resizer', () => {
   it('calls the callback function with the height as argument', () => {
     const { mockResize } = mockResizeObserver()
     const expectedClientHeight = 3816
+    jest
+      .spyOn(document.body, 'clientHeight', 'get')
+      .mockImplementation(() => expectedClientHeight)
     const onHeightChange = jest.fn()
     createHeightChangeListener(onHeightChange)
     mockResize()
