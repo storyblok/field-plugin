@@ -41,9 +41,24 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
   const { uid } = params
 
   const postToContainer = (message: unknown) => {
-    // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
-    const origin = '*'
-    window.parent.postMessage(message, origin)
+    try {
+      // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
+      const origin = '*'
+      window.parent.postMessage(message, origin)
+    } catch (err) {
+      // eslint-disable-next-line functional/no-throw-statement
+      throw new Error(
+        `
+          It seems your message couldn't be serialized correctly by the 'structureClone()' function
+          used when sending messages thru 'windows.postMessage()'. 
+          Please check if your message is following the right specification here: 
+          https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
+        `,
+        {
+          cause: err,
+        },
+      )
+    }
   }
 
   const cleanupAutoResizeSideEffects = createAutoResizer(uid, postToContainer)
