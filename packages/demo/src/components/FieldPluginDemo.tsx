@@ -39,6 +39,6 @@ export const FieldPluginDemo: FunctionComponent = () => {
   return props.data.isModalOpen ? (
     <ModalView {...props} />
   ) : (
-    <NonModalView {...props} />=
+    <NonModalView {...props} />
   )
 }
