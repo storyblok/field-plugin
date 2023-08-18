@@ -49,9 +49,10 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
       // eslint-disable-next-line functional/no-throw-statement
       throw new Error(
         `
-          It seems your message couldn't be serialized correctly by the 'structureClone()' function
-          used when sending messages thru 'windows.postMessage()'. 
-          Please check if your message is following the right specification here: 
+          The argument could not be cloned. 
+          The argument must be cloneable with structuredClone() , so that it can be sent to other windows with window.postMessage(). 
+          Does your object contain functions, getters, setters, proxies, or any other value that is not cloneable? 
+          Did you try to pass a reactive object? For a full description on the structuredClone algorithm, see: 
           https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
         `,
         {
