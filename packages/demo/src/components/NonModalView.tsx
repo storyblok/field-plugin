@@ -6,6 +6,7 @@ import { UpdaterFunctionDemo } from './UpdaterFunctionDemo'
 import { AssetSelector } from './AssetSelector'
 import { ContextRequester } from './ContextRequester'
 import { PluginComponent } from './FieldPluginDemo'
+import { LanguageView } from './LanguageView'
 
 export const NonModalView: PluginComponent = (props) => (
   <Paper>
@@ -17,6 +18,7 @@ export const NonModalView: PluginComponent = (props) => (
       <AssetSelector {...props} />
       <ContextRequester {...props} />
       <HeightChangeDemo {...props} />
+      <LanguageView {...props} />
     </Stack>
   </Paper>
 )
