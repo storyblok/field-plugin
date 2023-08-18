@@ -10,12 +10,15 @@ import {
 import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
 import packageJson from './../package.json'
+import { expandTilde } from './utils'
 
-const program = new Command()
 const templateOptions = TEMPLATES.map((template) => template.value)
-const structureOptions = ['polyrepo', 'monorepo']
+const structureOptions = ['standalone', 'monorepo']
+const packageManagerOptions = ['npm', 'yarn', 'pnpm']
+const deployScopeOptions = ['my-plugins', 'partner-portal', 'organization']
 
-export const main = () => {
+export const createCLI = () => {
+  const program = new Command()
   program
     .version(packageJson.version)
     .command('create', { isDefault: true })
@@ -31,6 +34,11 @@ export const main = () => {
         structureOptions,
       ),
     )
+    .addOption(
+      new Option('--packageManager <value>', 'package manager').choices(
+        packageManagerOptions,
+      ),
+    )
     .option(
       '--pluginName <value>',
       'name of plugin (Lowercase alphanumeric and dash)',
@@ -41,7 +49,7 @@ export const main = () => {
     )
     .action(async function (this: Command) {
       const opts = this.opts<CreateArgs>()
-      await create(opts)
+      await create({ ...opts, dir: expandTilde(opts.dir) })
     })
 
   program
@@ -74,22 +82,12 @@ export const main = () => {
     .addOption(
       new Option(
         '--scope <value>',
-        `where to deploy the field plugin ('my-plugins' | 'partner-portal')`,
-      ),
+        `where to deploy the field plugin ('my-plugins' | 'partner-portal' | 'organization')`,
+      ).choices(deployScopeOptions),
     )
     .action(async function (this: Command) {
-      const { dir, skipPrompts, name, token, output, dotEnvPath, scope } =
-        this.opts<DeployArgs>()
-
-      await deploy({
-        skipPrompts,
-        token,
-        name,
-        dir,
-        output,
-        dotEnvPath,
-        scope,
-      })
+      const opts = this.opts<DeployArgs>()
+      await deploy({ ...opts, dir: expandTilde(opts.dir) })
     })
 
   program
@@ -110,11 +108,20 @@ export const main = () => {
         structureOptions,
       ),
     )
+    .addOption(
+      new Option('--packageManager <value>', 'package manager').choices(
+        packageManagerOptions,
+      ),
+    )
     .action(async function (this: Command) {
-      const { name, template, dir, structure } = this.opts<AddArgs>()
-
-      await add({ name, template, dir, structure })
+      const opts = this.opts<AddArgs>()
+      await add({ ...opts, dir: expandTilde(opts.dir) })
     })
 
+  return program
+}
+
+export const main = () => {
+  const program = createCLI()
   program.parse(process.argv)
 }

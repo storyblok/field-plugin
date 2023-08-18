@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import FieldPluginProvider from './components/FieldPluginProvider.vue'
+import { FieldPluginProvider } from '@storyblok/field-plugin/vue2'
 import FieldPlugin from './components/FieldPlugin.vue'
 import FieldPluginExample from './components/FieldPluginExample/index.vue'
 
@@ -20,3 +20,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.field-plugin-provider {
+  width: 100%;
+}
+</style>

@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from 'react'
-import { useFieldPlugin } from '../../useFieldPlugin'
+import { useFieldPlugin } from '@storyblok/field-plugin/react'
 import { Asset } from '@storyblok/field-plugin'
 
 const AssetSelector: FunctionComponent = () => {

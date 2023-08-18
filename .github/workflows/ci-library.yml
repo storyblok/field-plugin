@@ -1,9 +1,5 @@
 name: Library
-on:
-  push:
-    paths:
-      - 'packages/field-plugin/**'
-      - '.github/**'
+on: ['push']
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,9 +19,10 @@ jobs:
       - name: Check Types
         run: yarn workspace @storyblok/field-plugin check:types
       - name: Lint
-        run: yarn eslint packages/field-plugin
+        run: |
+          yarn eslint packages/field-plugin
+          yarn workspaces foreach --include "helper-*" run lint
       - name: Test
         run: yarn workspace @storyblok/field-plugin test
       - name: Build
         run: yarn workspace @storyblok/field-plugin build
-

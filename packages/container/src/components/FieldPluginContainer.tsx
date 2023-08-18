@@ -43,7 +43,6 @@ import { usePluginParams } from './usePluginParams'
 const defaultUrl = 'http://localhost:8080'
 const initialStory: StoryData = {
   content: {},
-  lang: 'default',
 }
 const initialContent = ''
 const initialHeight = 300

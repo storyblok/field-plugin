@@ -1,55 +1,33 @@
-import { createMonorepo, type CreateMonorepoArgs } from './monorepo'
-import { createPolyrepo, type CreatePolyrepoArgs } from './polyrepo'
-import { Structure } from '../add'
-import { betterPrompts } from '../../utils'
+import { createMonorepo } from './monorepo'
+import { createStandalone } from './standalone'
+import {
+  isValidPackageManager,
+  selectPackageManager,
+  selectRepositoryStructure,
+  isValidStructure,
+} from '../../utils'
+import { CreateFunc, CreateArgs } from './types'
 
-export type CreateArgs =
-  | ({
-      structure: 'monorepo'
-    } & CreateMonorepoArgs)
-  | ({
-      structure: 'polyrepo'
-    } & CreatePolyrepoArgs)
-
-export type CreateFunc = (args: CreateArgs) => Promise<void>
-
-const selectRepositoryStructure = async () => {
-  const { structure } = await betterPrompts<{ structure: Structure }>([
-    {
-      type: 'select',
-      name: 'structure',
-      message:
-        'How many field plugins potentially do you want in this repository?',
-      choices: [
-        {
-          title: 'Monorepo (multiple plugins in one repo)',
-          // description: 'some description if exists',
-          value: 'monorepo',
-        },
-        {
-          title: 'Polyrepo (one plugin in one repo)',
-          // description: 'some description if exists',
-          value: 'polyrepo',
-        },
-      ],
-    },
-  ])
-  return structure
-}
-
-const isValidStructure = (structure: string): structure is Structure => {
-  return structure === 'monorepo' || structure === 'polyrepo'
-}
+export type { CreateArgs }
 
 export const create: CreateFunc = async (opts) => {
-  const { structure: structureParam, ...rest } = opts
+  const {
+    structure: structureParam,
+    packageManager: packageManagerParam,
+    ...rest
+  } = opts
+
+  const packageManager = isValidPackageManager(packageManagerParam)
+    ? packageManagerParam
+    : await selectPackageManager()
+
   const structure = isValidStructure(structureParam)
     ? structureParam
     : await selectRepositoryStructure()
 
-  if (structure === 'polyrepo') {
-    await createPolyrepo(rest)
+  if (structure === 'standalone') {
+    await createStandalone({ packageManager, ...rest })
   } else if (structure === 'monorepo') {
-    await createMonorepo(rest)
+    await createMonorepo({ packageManager, ...rest })
   }
 }

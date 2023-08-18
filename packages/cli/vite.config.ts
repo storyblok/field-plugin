@@ -1,5 +1,12 @@
 import { resolve } from 'path'
 import { configDefaults, defineConfig } from 'vitest/config'
+import pkg from './package.json'
+const externalDependencies = [
+  'fs',
+  'path',
+  'os',
+  ...Object.keys(pkg.dependencies),
+]
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,17 +21,9 @@ export default defineConfig({
       formats: ['cjs'],
     },
     rollupOptions: {
-      external: [
-        'prompts',
-        'kleur',
-        'fs',
-        'path',
-        'walkdir',
-        'execa',
-        'node-fetch',
-        'commander',
-        'fs-extra',
-      ],
+      external: (id) => {
+        return externalDependencies.includes(id.split('/')[0])
+      },
     },
   },
 })

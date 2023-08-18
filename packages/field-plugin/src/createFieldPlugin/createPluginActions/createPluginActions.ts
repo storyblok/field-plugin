@@ -25,6 +25,7 @@ export const defaultState: FieldPluginData = {
   isModalOpen: false,
   content: undefined,
   options: {},
+  storyLang: 'default',
   story: { content: {} },
   blockUid: undefined,
   storyId: undefined,

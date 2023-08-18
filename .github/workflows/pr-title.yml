@@ -18,4 +18,6 @@ jobs:
             cli
             template
             demo
+            helper
+            deps
           requireScope: true

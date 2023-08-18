@@ -24,3 +24,9 @@ jobs:
         run: cd packages/cli && npm publish --access public --tag beta
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH}}
+      - name: Tag latest to the published version
+        run: |
+          PACKAGE_VERSION=$(cd packages/cli && npm pkg get version --workspaces=false | tr -d \")
+          cd packages/cli && npm dist-tag add "@storyblok/field-plugin@${PACKAGE_VERSION}" latest
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH}}

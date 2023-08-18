@@ -5,18 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run build:post",
+    "build:post": "rollup --config rollup.postbuild.config.js",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "deploy": "npm run build && npx @storyblok/field-plugin-cli@beta deploy"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "0.0.1-beta.1",
-    "joi": "^17.7.0",
+    "@storyblok/field-plugin": "0.0.1-beta.3",
     "vue": "^2.7.14"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "15.1.0",
+    "@rollup/plugin-replace": "5.0.2",
     "@vitejs/plugin-vue2": "2.2.0",
+    "rollup": "3.26.3",
+    "typescript": "5.1.6",
     "vite": "^4.2.2",
     "vite-plugin-css-injected-by-js": "2.4.0"
   }

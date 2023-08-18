@@ -23,7 +23,8 @@
   ],
   "workspaces": [
     "packages/*",
-    "packages/cli/templates/*"
+    "packages/cli/templates/*",
+    "packages/field-plugin/helpers/*"
   ],
   "engines": {
     "yarn": "^3.2.4"
@@ -37,16 +38,20 @@
     "build:lib": "yarn workspace @storyblok/field-plugin build",
     "build:cli": "yarn workspace @storyblok/field-plugin-cli build",
     "build:container": "yarn build:lib && yarn workspace container build",
-    "test": "jest",
+    "build:helpers": "yarn workspaces foreach --include \"helper-*\" run build && ./scripts/copy-helpers.sh",
+    "test": "yarn test:lib",
+    "test:lib": "yarn workspace @storyblok/field-plugin test",
+    "test:cli": "yarn workspace @storyblok/field-plugin-cli test",
+    "test:cli:watch": "yarn workspace @storyblok/field-plugin-cli test:watch",
     "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
-    "dev:container": "yarn workspace container run dev",
-    "dev:react": "yarn workspace field-plugin-react-template run dev",
-    "dev:js": "yarn workspace field-plugin-js-template run dev",
-    "dev:vue2": "yarn workspace field-plugin-vue2-template run dev",
-    "dev:vue3": "yarn workspace field-plugin-vue3-template run dev",
-    "dev:demo": "yarn workspace demo run dev",
-    "dev:lib": "yarn workspace @storyblok/field-plugin run dev",
+    "dev:container": "yarn workspace container dev",
+    "dev:react": "yarn workspace field-plugin-react-template dev",
+    "dev:js": "yarn workspace field-plugin-js-template dev",
+    "dev:vue2": "yarn workspace field-plugin-vue2-template dev",
+    "dev:vue3": "yarn workspace field-plugin-vue3-template dev",
+    "dev:demo": "yarn workspace demo dev",
+    "dev:lib": "yarn workspace @storyblok/field-plugin dev",
     "bump-version": "./scripts/bump-version.mjs"
   },
   "devDependencies": {

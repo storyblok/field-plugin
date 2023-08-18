@@ -3,7 +3,7 @@ import type { Response } from 'node-fetch'
 
 export type FieldType = { id: number; name: string; body: string }
 
-export type Scope = 'my-plugins' | 'partner-portal'
+export type Scope = 'my-plugins' | 'partner-portal' | 'organization'
 
 type IsAuthenticatedFunc = () => Promise<boolean>
 
@@ -32,10 +32,7 @@ type StoryblokClientFunc = (params: { token: string; scope: Scope }) => {
 }
 
 export const StoryblokClient: StoryblokClientFunc = ({ token, scope }) => {
-  const FIELD_TYPES_API_ENDPOINT =
-    scope === 'partner-portal'
-      ? 'https://mapi.storyblok.com/v1/partner_field_types/'
-      : 'https://mapi.storyblok.com/v1/field_types/'
+  const FIELD_TYPES_API_ENDPOINT = getFieldPluginAPIEndpoint(scope)
 
   const headers = {
     Authorization: token ?? '',
@@ -145,4 +142,15 @@ const handleErrorIfExists = (
     }
     process.exit(1)
   }
+}
+
+const getFieldPluginAPIEndpoint = (scope: Scope) => {
+  if (scope === 'partner-portal') {
+    return 'https://mapi.storyblok.com/v1/partner_field_types/'
+  }
+  if (scope === 'organization') {
+    return 'https://app.storyblok.com/v1/org_field_types/'
+  }
+
+  return 'https://mapi.storyblok.com/v1/field_types/'
 }

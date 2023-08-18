@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFieldPlugin } from '../useFieldPlugin'
+import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
 const plugin = useFieldPlugin()
 </script>

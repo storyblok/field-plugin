@@ -37,9 +37,10 @@ The `create` command allows a set of **optional** options for customization.
 ```bash
 --dir <value>         directory to create a repository into (default: `.`)
 --pluginName <value>  name of plugin (Lowercase alphanumeric and dash)
+--packageManager <value> package manager (choices: "npm", "yarn", "pnpm")
 --repoName <value>    name of repository, for monorepo (Lowercase alphanumeric and dash)
 --template <value>    name of template to use (choices: "vue2", "vue3", "react", "js")
---structure <value>   setup structure (choices: "polyrepo", "monorepo")
+--structure <value>   setup structure (choices: "standalone", "monorepo")
 -h, --help            display help for command
 ```
 
@@ -50,22 +51,22 @@ The `create` command allows a set of **optional** options for customization.
 npx @storyblok/field-plugin-cli
 
 # Create a single field plugin with Vue 3 template inside a specific directory with a specific named
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=polyrepo
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=standalone --packageManager=npm
 
 # Create a single field plugin with React template inside a specific directory with a specific named
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=react --structure=polyrepo
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=react --structure=standalone --packageManager=npm
 
 # Create a monorepo with field plugin with a specific named inside a specific directory with Vue 2 template
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=monorepo
+npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=monorepo --packageManager=npm
 ```
 
 #### Structure
 
-Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a polyrepo and a monorepo setup.
+Sometimes you might want to create only a single field plugin. At other times you might want to create and maintain multiple field plugins all in one repository. In both cases we have got you covered. The CLI supports both a standalone and a monorepo setup.
 
-##### polyrepo (one package in one repo)
+##### standalone (one package in one repo)
 
-Here is a simplified folder structure of a polyrepo mode:
+Here is a simplified folder structure of a standalone mode:
 
 ```bash
 ├── field-plugin
@@ -104,6 +105,7 @@ The options for the `add` command are the following:
 
 ```bash
 --template <value>  name of template to use (choices: "vue2", "vue3", "react", "js")
+--packageManager <value> package manager (choices: "npm", "yarn", "pnpm")
 --name <value>      name of plugin (Lowercase alphanumeric and dash)
 --dir <value>       directory to create a field plugin into (default: `.`)
 -h, --help          display help for command
@@ -116,10 +118,10 @@ The options for the `add` command are the following:
 npx @storyblok/field-plugin-cli add
 
 # Add field plugin with Vue 3 template to a project outside of the current directory
-npx @storyblok/field-plugin-cli add --name=<FIELD_PLUGIN_NAME> --template=vue3 --dir=<PATH_TO_DIR>
+npx @storyblok/field-plugin-cli add --name=<FIELD_PLUGIN_NAME> --template=vue3 --dir=<PATH_TO_DIR> --packageManager=npm
 
 # Add field plugin with React template to a project outside of the current directory
-npx @storyblok/field-plugin-cli add --name=<FIELD_PLUGIN_NAME> --template=react --dir=<PATH_TO_DIR>
+npx @storyblok/field-plugin-cli add --name=<FIELD_PLUGIN_NAME> --template=react --dir=<PATH_TO_DIR> --packageManager=npm
 ```
 
 [//]: # 'TBD Add GIF with interactive mode'

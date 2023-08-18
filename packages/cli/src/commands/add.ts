@@ -8,21 +8,24 @@ import {
   writeFileSync,
 } from 'fs'
 import walk from 'walkdir'
-import { MONOREPO_TEMPLATE_PATH, TEMPLATES, TEMPLATES_PATH } from '../../config'
+import { MONOREPO_TEMPLATE_PATH, TEMPLATES_PATH } from '../../config'
 import {
-  betterPrompts,
   checkIfSubDir,
   filterPathsToInclude,
+  getInstallCommand,
+  getMonorepoCommandByPackageManager,
+  getStandaloneCommandByPackageManager,
+  isValidPackageManager,
   promptName,
   runCommand,
+  selectPackageManager,
+  selectTemplate,
 } from '../utils'
-
-export type Template = 'vue2'
-
-export type Structure = 'polyrepo' | 'monorepo'
+import type { PackageManager, Structure, Template } from './types'
 
 export type AddArgs = {
   dir: string
+  packageManager: PackageManager
   name?: string
   template?: Template
   structure?: Structure
@@ -37,20 +40,12 @@ export type PackageJson = {
 
 export type AddFunc = (args: AddArgs) => Promise<{ destPath: string }>
 
-const selectTemplate = async () => {
-  const { template } = await betterPrompts<{ template: string }>([
-    {
-      type: 'select',
-      name: 'template',
-      message: 'Which template?',
-      choices: TEMPLATES,
-    },
-  ])
-  return template
-}
-
 export const add: AddFunc = async (args) => {
-  const structure = args.structure || 'polyrepo'
+  const packageManager = isValidPackageManager(args.packageManager)
+    ? args.packageManager
+    : await selectPackageManager()
+
+  const structure = args.structure || 'standalone'
 
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's create a field-type extension.\n")
@@ -59,9 +54,9 @@ export const add: AddFunc = async (args) => {
     typeof args.name !== 'undefined' && args.name !== ''
       ? args.name
       : await promptName({
-          message:
-            'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
-        })
+        message:
+          'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
+      })
 
   const template =
     typeof args.template !== 'undefined'
@@ -117,40 +112,72 @@ export const add: AddFunc = async (args) => {
     copyFileSync(file, destFilePath)
   })
 
-  if (structure === 'polyrepo') {
-    // Polyrepo gets .env.local.example copied from the monorepo template.
+  if (structure === 'standalone') {
+    // Standalone gets .env.local.example copied from the monorepo template.
     copyFileSync(
       resolve(MONOREPO_TEMPLATE_PATH, '.env.local.example'),
       resolve(destPath, '.env.local.example'),
     )
   }
 
-  console.log(`\nRunning \`yarn install\`..\n`)
-  console.log(
-    (
-      await runCommand('yarn install', {
-        cwd: destPath,
-      })
-    ).stdout,
-  )
+  const installCommand = getInstallCommand(packageManager)
+  await runCommand(installCommand, {
+    cwd: destPath,
+    spinnerMessage: `Running \`${installCommand}\`..`,
+  })
 
   const relativePath = getRelativePath(repoRootPath)
 
   console.log(bold(cyan(`\n\nYour project \`${packageName}\` is ready 🚀\n`)))
   console.log(`- To run development mode run the following commands:`)
   console.log(`    >`, green(`cd ${relativePath}`))
-  if (structure === 'polyrepo') {
-    console.log(`    >`, green(`yarn dev`))
+
+  if (structure === 'standalone') {
+    console.log(
+      `    >`,
+      green(
+        getStandaloneCommandByPackageManager({
+          packageManager,
+          commandName: 'dev',
+        }),
+      ),
+    )
   } else if (structure === 'monorepo') {
-    console.log(`    >`, green(`yarn workspace ${packageName} dev`))
+    console.log(
+      `    >`,
+      green(
+        getMonorepoCommandByPackageManager({
+          packageManager,
+          commandName: 'dev',
+          packageName,
+        }),
+      ),
+    )
   }
 
   console.log(`\n\n- To deploy the newly created field plugin to Storyblok:`)
   console.log(`    >`, green(`cd ${relativePath}`))
-  if (structure === 'polyrepo') {
-    console.log(`    >`, green(`yarn deploy`))
+  if (structure === 'standalone') {
+    console.log(
+      `    >`,
+      green(
+        getStandaloneCommandByPackageManager({
+          packageManager,
+          commandName: 'deploy',
+        }),
+      ),
+    )
   } else if (structure === 'monorepo') {
-    console.log(`    >`, green(`yarn workspace ${packageName} deploy`))
+    console.log(
+      `    >`,
+      green(
+        getMonorepoCommandByPackageManager({
+          packageManager,
+          commandName: 'deploy',
+          packageName,
+        }),
+      ),
+    )
   }
   return { destPath }
 }
