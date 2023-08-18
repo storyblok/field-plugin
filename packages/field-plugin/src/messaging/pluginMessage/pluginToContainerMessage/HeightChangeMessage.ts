@@ -1,9 +1,8 @@
 import { hasKey } from '../../../utils'
 import { isMessageToContainer, MessageToContainer } from './MessageToContainer'
-import { Property } from 'csstype'
 
 export type HeightChangeMessage = MessageToContainer<'heightChange'> & {
-  height: Property.Height<string | number>
+  height: number
 }
 
 export const isHeightChangeMessage = (
@@ -12,7 +11,7 @@ export const isHeightChangeMessage = (
   isMessageToContainer(obj) &&
   obj.event === 'heightChange' &&
   hasKey(obj, 'height') &&
-  (typeof obj.height === 'number' || typeof obj.height === 'string')
+  typeof obj.height === 'number'
 
 export const heightChangeMessage = (
   uid: string,

@@ -34,27 +34,19 @@ describe('isHeightChangeMessage', () => {
       ).toEqual(false)
     })
     describe('height', () => {
-      it('can be a number', () => {
+      it('is a number', () => {
         expect(
           isHeightChangeMessage({
             ...stub,
             height: 123,
           }),
         ).toEqual(true)
-      })
-      it('can be a string in CSS units', () => {
         expect(
           isHeightChangeMessage({
             ...stub,
-            height: 'auto',
+            height: '100%',
           }),
-        ).toEqual(true)
-        expect(
-          isHeightChangeMessage({
-            ...stub,
-            height: '100vw',
-          }),
-        ).toEqual(true)
+        ).toEqual(false)
       })
       it('is required', () => {
         expect(
