@@ -209,8 +209,8 @@ describe('createPluginActions', () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       selectAsset()
       const promise2 = selectAsset()
-      await expect(promise2).rejects.toMatch(
-        'Please wait until an asset is selected before making another request.',
+      await expect(promise2).rejects.toMatchInlineSnapshot(
+        `"Please wait until an asset is selected before making another request."`,
       )
     })
   })
