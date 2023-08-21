@@ -56,9 +56,8 @@ export const createPluginActions: CreatePluginActions = (
   //  In future improved versions of the plugin API, this should not be needed.
   let state: FieldPluginData = defaultState
 
-  let assetSelectedCallbackRef:
-    | undefined
-    | { resolve: (filename: Asset) => void; reject: () => void } = undefined
+  let assetSelectedCallbackRef: undefined | ((filename: Asset) => void) =
+    undefined
   let assetSelectedCallbackId: undefined | string = undefined
 
   const onStateChange: OnStateChangeMessage = (data) => {
@@ -82,7 +81,7 @@ export const createPluginActions: CreatePluginActions = (
     // In such case, we should simply ignore the callback.
     // We may get another callback with correct `callbackId`.
     if (data.callbackId === assetSelectedCallbackId) {
-      assetSelectedCallbackRef?.resolve(assetFromAssetSelectedMessage(data))
+      assetSelectedCallbackRef?.(assetFromAssetSelectedMessage(data))
       assetSelectedCallbackId = undefined
     }
   }
@@ -90,8 +89,7 @@ export const createPluginActions: CreatePluginActions = (
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
     console.debug(
-      `Plugin received a message from container of an unknown action type "${
-        data.action
+      `Plugin received a message from container of an unknown action type "${data.action
       }". You may need to upgrade the version of the @storyblok/field-plugin library. Full message: ${JSON.stringify(
         data,
       )}`,
@@ -141,7 +139,7 @@ export const createPluginActions: CreatePluginActions = (
         const callbackId = getRandomString(16)
         assetSelectedCallbackId = callbackId
         return new Promise((resolve, reject) => {
-          assetSelectedCallbackRef = { resolve, reject }
+          assetSelectedCallbackRef = resolve
           postToContainer(assetModalChangeMessage(uid, callbackId))
         })
       },
