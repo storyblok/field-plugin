@@ -5,7 +5,7 @@ export const LanguageView: FunctionComponent<{
   language: string
   setLanguage: (language: string) => void
 }> = (props) => (
-  <FormControl>
+  <FormControl sx={{ flex: 1 }}>
     <InputLabel
       htmlFor="field-plugin-language"
       shrink

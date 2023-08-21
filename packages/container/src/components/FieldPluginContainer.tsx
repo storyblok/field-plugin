@@ -280,7 +280,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
             sx={{
               display: 'flex',
               justifyContent: 'left',
-              width: (theme) => theme.breakpoints.values.md,
+              flexDirection: { xs: 'column', lg: 'row' },
               gap: '2rem',
             }}
           >
