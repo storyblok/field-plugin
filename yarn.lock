@@ -1758,8 +1758,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
+    "@types/core-js": 2.5.5
     "@types/jest": 29.0.3
     "@types/node": "*"
+    core-js: 3.32.1
     jest: 29.3.1
     jest-environment-jsdom: 29.4.2
     ts-jest: 29.0.1
@@ -1878,6 +1880,13 @@ __metadata:
   version: 4.3.5
   resolution: "@types/chai@npm:4.3.5"
   checksum: c8f26a88c6b5b53a3275c7f5ff8f107028e3cbb9ff26795fff5f3d9dea07106a54ce9e2dce5e40347f7c4cc35657900aaf0c83934a25a1ae12e61e0f5516e431
+  languageName: node
+  linkType: hard
+
+"@types/core-js@npm:2.5.5":
+  version: 2.5.5
+  resolution: "@types/core-js@npm:2.5.5"
+  checksum: 54eb91dc52206d8e524771cd079be4bed6a41947d08183a7954df7a3dc25ae21c8b7176143dc7203df82a6e5ff1df8998edc8d407c4a082bdbf0ede35369c5c3
   languageName: node
   linkType: hard
 
@@ -4030,6 +4039,13 @@ __metadata:
   version: 2.0.0
   resolution: "convert-source-map@npm:2.0.0"
   checksum: 63ae9933be5a2b8d4509daca5124e20c14d023c820258e484e32dc324d34c2754e71297c94a05784064ad27615037ef677e3f0c00469fb55f409d2bb21261035
+  languageName: node
+  linkType: hard
+
+"core-js@npm:3.32.1":
+  version: 3.32.1
+  resolution: "core-js@npm:3.32.1"
+  checksum: e4af91d9c6be7b59235feb3f273d16705126ce09a0b4a787144d131d874f0cd10be3c24fc52e5eea7d7cb03ceabe4be7b255abcd9474b5eb1ff365d2c5611f9a
   languageName: node
   linkType: hard
 
