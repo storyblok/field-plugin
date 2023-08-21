@@ -38,6 +38,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params'
 import { ObjectView } from './ObjectView'
 import { UrlView } from './UrlView'
 import { usePluginParams } from './usePluginParams'
+import { LanguageView } from './LanguageView'
 
 const defaultUrl = 'http://localhost:8080'
 const initialStory: StoryData = {
@@ -92,6 +93,7 @@ const useSandbox = (
     options: [],
   })
   const [content, setContent] = useState<unknown>(initialContent)
+  const [language, setLanguage] = useState<string>('')
 
   const loadedData = useMemo<StateChangedMessage>(
     () => ({
@@ -100,13 +102,13 @@ const useSandbox = (
       action: 'loaded',
       uid,
       blockId: undefined,
-      language: 'default',
+      language: language,
       spaceId: null,
       story,
       storyId: undefined,
       token: null,
     }),
-    [uid, content, schema, story],
+    [uid, content, language, schema, story],
   )
 
   const postToPlugin = useCallback(
@@ -206,6 +208,7 @@ const useSandbox = (
   return [
     {
       content,
+      language,
       isModalOpen,
       height,
       schema,
@@ -215,6 +218,7 @@ const useSandbox = (
     },
     {
       setContent,
+      setLanguage,
       setSchema,
       setUrl,
       randomizeUid,
@@ -225,8 +229,17 @@ const useSandbox = (
 export const FieldPluginContainer: FunctionComponent = () => {
   const { error } = useNotifications()
   const [
-    { content, isModalOpen, height, schema, url, fieldTypeIframe, iframeSrc },
-    { setContent, setSchema, setUrl, randomizeUid },
+    {
+      content,
+      language,
+      isModalOpen,
+      height,
+      schema,
+      url,
+      fieldTypeIframe,
+      iframeSrc,
+    },
+    { setContent, setLanguage, setSchema, setUrl, randomizeUid },
   ] = useSandbox(error)
 
   return (
@@ -268,6 +281,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
               display: 'flex',
               justifyContent: 'left',
               width: (theme) => theme.breakpoints.values.md,
+              gap: '2rem',
             }}
           >
             <UrlView
@@ -277,6 +291,10 @@ export const FieldPluginContainer: FunctionComponent = () => {
               onRefresh={randomizeUid}
               error={typeof iframeSrc === 'undefined'}
               placeholder={defaultUrl}
+            />
+            <LanguageView
+              language={language}
+              setLanguage={setLanguage}
             />
           </Container>
         </AccordionDetails>
