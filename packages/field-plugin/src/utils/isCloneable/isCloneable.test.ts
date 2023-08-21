@@ -1,4 +1,4 @@
-import 'core-js/actual/structured-clone'
+import 'core-js/stable/structured-clone'
 import { isCloneable } from './isCloneable'
 
 describe('isCloneable', () => {
