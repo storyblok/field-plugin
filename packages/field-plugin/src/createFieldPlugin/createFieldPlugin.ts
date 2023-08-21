@@ -5,6 +5,7 @@ import { pluginLoadedMessage, pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
 import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 import { sandboxUrl } from './sandboxUrl'
+import { isCloneable } from '../utils/isCloneable'
 
 export type CreateFieldPlugin = (
   onUpdate: (state: FieldPluginResponse) => void,
@@ -46,6 +47,9 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
       const origin = '*'
       window.parent.postMessage(message, origin)
     } catch (err) {
+      // eslint-disable-next-line functional/no-throw-statement
+      if (isCloneable(message)) throw err
+
       // eslint-disable-next-line functional/no-throw-statement
       throw new Error(
         'The argument could not be cloned. ' +
