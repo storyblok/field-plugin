@@ -83,6 +83,7 @@ export const createPluginActions: CreatePluginActions = (
     // We may get another callback with correct `callbackId`.
     if (data.callbackId === assetSelectedCallbackId) {
       assetSelectedCallbackRef?.resolve(assetFromAssetSelectedMessage(data))
+      assetSelectedCallbackId = undefined
     }
   }
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
@@ -131,6 +132,12 @@ export const createPluginActions: CreatePluginActions = (
         onUpdateState(state)
       },
       selectAsset: () => {
+        if (assetSelectedCallbackId !== undefined) {
+          // eslint-disable-next-line functional/no-promise-reject
+          return Promise.reject(
+            'Please wait until an asset is selected before making another request.',
+          )
+        }
         const callbackId = getRandomString(16)
         assetSelectedCallbackId = callbackId
         return new Promise((resolve, reject) => {

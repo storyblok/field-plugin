@@ -201,5 +201,17 @@ describe('createPluginActions', () => {
       expect(resolvedFn).toHaveBeenCalledTimes(0)
       expect(rejectedFn).toHaveBeenCalledTimes(0)
     })
+    it('should reject the second selectAsset request if the first one is not resolved yet', async () => {
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { selectAsset },
+      } = createPluginActions(uid, postToContainer, onUpdateState)
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      selectAsset()
+      const promise2 = selectAsset()
+      await expect(promise2).rejects.toMatch(
+        'Please wait until an asset is selected before making another request.',
+      )
+    })
   })
 })
