@@ -145,10 +145,11 @@ export const createPluginActions: CreatePluginActions = (
             'Please wait until an asset is selected before making another request.',
           )
         }
-        assetSelectedCallbackId = getRandomString(16)
+        const callbackId = getRandomString(16)
+        assetSelectedCallbackId = callbackId
         return new Promise((resolve) => {
           assetSelectedCallbackRef = resolve
-          postToContainer(assetModalChangeMessage(uid, assetSelectedCallbackId))
+          postToContainer(assetModalChangeMessage(uid, callbackId))
         })
       },
       requestContext: () => postToContainer(getContextMessage(uid)),
