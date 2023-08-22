@@ -6,10 +6,10 @@ export const UpdaterFunctionDemo: PluginComponent = (props) => {
 
   const handleClickIncrement = () => {
     actions?.setContent(
-      (content) => (typeof content === 'number' ? content : 0) + 1,
+      (typeof data.content === 'number' ? data.content : 0) + 1,
     )
     actions?.setContent(
-      (content) => (typeof content === 'number' ? content : 0) + 1,
+      (typeof data.content === 'number' ? data.content : 0) + 1,
     )
   }
 
