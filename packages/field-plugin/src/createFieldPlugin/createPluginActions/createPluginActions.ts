@@ -6,6 +6,7 @@ import {
   assetFromAssetSelectedMessage,
   assetModalChangeMessage,
   getContextMessage,
+  heightChangeMessage,
   modalChangeMessage,
   OnAssetSelectMessage,
   OnContextRequestMessage,
@@ -43,6 +44,8 @@ export type CreatePluginActions = (
   actions: FieldPluginActions
   // These functions are called when the plugin receives messages from the container
   messageCallbacks: PluginMessageCallbacks
+  // This function is called whenever the height changes
+  onHeightChange: (height: number) => void
 }
 
 export const createPluginActions: CreatePluginActions = (
@@ -105,6 +108,10 @@ export const createPluginActions: CreatePluginActions = (
     onUnknownMessage,
   }
 
+  const onHeightChange = (height: number) => {
+    postToContainer(heightChangeMessage(uid, height))
+  }
+
   return {
     actions: {
       setContent: (action) => {
@@ -148,5 +155,6 @@ export const createPluginActions: CreatePluginActions = (
       requestContext: () => postToContainer(getContextMessage(uid)),
     },
     messageCallbacks,
+    onHeightChange,
   }
 }

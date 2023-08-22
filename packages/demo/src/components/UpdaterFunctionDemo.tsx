@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, Stack, Tooltip, Typography } from '@mui/material'
 import { PluginComponent } from './FieldPluginDemo'
 
 export const UpdaterFunctionDemo: PluginComponent = (props) => {
@@ -12,19 +12,19 @@ export const UpdaterFunctionDemo: PluginComponent = (props) => {
       (content) => (typeof content === 'number' ? content : 0) + 1,
     )
   }
-  const label =
-    typeof data.content === 'undefined'
-      ? 'undefined'
-      : JSON.stringify(data.content)
 
   return (
     <Stack gap={2}>
-      <Typography variant="subtitle1">Field Value</Typography>
-      <Typography>
-        Increment the counter twice by calling <code>setContent</code> two times
-        consecutively in between two renders.
-      </Typography>
-      <Typography textAlign="center">{label}</Typography>
+      <Tooltip
+        title={
+          <>
+            Increment the counter twice by calling <code>setContent</code> two
+            times consecutively in between two renders.
+          </>
+        }
+      >
+        <Typography variant="subtitle1">Updater Function</Typography>
+      </Tooltip>
       <Button
         variant="outlined"
         color="secondary"
