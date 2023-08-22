@@ -83,14 +83,14 @@ export const createPluginActions: CreatePluginActions = (
     if (data.callbackId === assetSelectedCallbackId) {
       assetSelectedCallbackRef?.(assetFromAssetSelectedMessage(data))
       assetSelectedCallbackId = undefined
+      assetSelectedCallbackRef = undefined
     }
   }
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
     console.debug(
-      `Plugin received a message from container of an unknown action type "${
-        data.action
+      `Plugin received a message from container of an unknown action type "${data.action
       }". You may need to upgrade the version of the @storyblok/field-plugin library. Full message: ${JSON.stringify(
         data,
       )}`,
@@ -139,7 +139,7 @@ export const createPluginActions: CreatePluginActions = (
         }
         const callbackId = getRandomString(16)
         assetSelectedCallbackId = callbackId
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           assetSelectedCallbackRef = resolve
           postToContainer(assetModalChangeMessage(uid, callbackId))
         })
