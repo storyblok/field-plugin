@@ -1,15 +1,15 @@
 import {
   isAssetModalChangeMessage,
+  isGetContextMessage,
   isHeightChangeMessage,
   isMessageToContainer,
   isModalChangeMessage,
   isPluginLoadedMessage,
   isValueChangeMessage,
+  PluginLoadedMessage,
   RequestContext,
   SetContent,
   SetModalOpen,
-  isGetContextMessage,
-  PluginLoadedMessage,
 } from '@storyblok/field-plugin'
 
 type ContainerActions = {
@@ -45,7 +45,6 @@ export const createContainerMessageListener: CreateContainerListener = (
     if (message.uid !== options.uid) {
       return
     }
-    console.log({ message })
 
     if (isValueChangeMessage(message)) {
       eventHandlers.setContent(message.model)
