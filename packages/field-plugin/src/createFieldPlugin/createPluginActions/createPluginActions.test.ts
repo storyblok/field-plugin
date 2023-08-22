@@ -2,6 +2,7 @@ import { createPluginActions } from './createPluginActions'
 import {
   AssetModalChangeMessage,
   GetContextMessage,
+  HeightChangeMessage,
   ModalChangeMessage,
   ValueChangeMessage,
 } from '../../messaging'
@@ -73,7 +74,7 @@ describe('createPluginActions', () => {
       } = createPluginActions(uid, postToContainer, onUpdateState)
       setModalOpen(false)
 
-      expect(postToContainer).toHaveBeenLastCalledWith(
+      expect(postToContainer).toHaveBeenCalledWith(
         expect.objectContaining({
           event: 'toggleModal',
           status: false,
@@ -81,7 +82,7 @@ describe('createPluginActions', () => {
       )
 
       setModalOpen(true)
-      expect(postToContainer).toHaveBeenLastCalledWith(
+      expect(postToContainer).toHaveBeenCalledWith(
         expect.objectContaining({
           event: 'toggleModal',
           status: true,
