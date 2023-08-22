@@ -14,6 +14,20 @@ const mock = () => ({
   onUpdateState: jest.fn(),
 })
 
+const TEST_CALLBACK_ID = 'test-callback-id'
+
+jest.mock('../../utils/getRandomString', () => {
+  return {
+    getRandomString: jest.fn(() => TEST_CALLBACK_ID),
+  }
+})
+
+const wait = async (ms: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
 describe('createPluginActions', () => {
   describe('initial call', () => {
     it('does not send any message to the container', () => {
@@ -159,10 +173,46 @@ describe('createPluginActions', () => {
         uid,
         action: 'asset-selected',
         field: 'dummy',
+        callbackId: TEST_CALLBACK_ID,
         filename,
       })
       const result = await promise
       expect(result).toEqual({ filename })
+    })
+    it('does not call the callack function when callbackId does not match', async () => {
+      const WRONG_CALLBACK_ID = TEST_CALLBACK_ID + '_wrong'
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { selectAsset },
+        messageCallbacks: { onAssetSelect },
+      } = createPluginActions(uid, postToContainer, onUpdateState)
+      const promise = selectAsset()
+      const filename = 'hello.jpg'
+      onAssetSelect({
+        uid,
+        action: 'asset-selected',
+        field: 'dummy',
+        callbackId: WRONG_CALLBACK_ID,
+        filename,
+      })
+      const resolvedFn = jest.fn()
+      const rejectedFn = jest.fn()
+      promise.then(resolvedFn).catch(rejectedFn)
+      await wait(100)
+      expect(resolvedFn).toHaveBeenCalledTimes(0)
+      expect(rejectedFn).toHaveBeenCalledTimes(0)
+    })
+    it('should reject the second selectAsset request if the first one is not resolved yet', async () => {
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { selectAsset },
+      } = createPluginActions(uid, postToContainer, onUpdateState)
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      selectAsset()
+      const promise2 = selectAsset()
+      await expect(promise2).rejects.toMatchInlineSnapshot(
+        `"Please wait until an asset is selected before making another request."`,
+      )
     })
   })
 })

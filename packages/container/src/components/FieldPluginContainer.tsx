@@ -77,9 +77,8 @@ const useSandbox = (
       return undefined
     }
     // Omitting query parameters from the user-provided URL in a safe way
-    return `${fieldPluginURL.origin}${
-      fieldPluginURL.pathname
-    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+    return `${fieldPluginURL.origin}${fieldPluginURL.pathname
+      }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
   const [iframeKey, setIframeKey] = useState(0)
 
@@ -167,11 +166,12 @@ const useSandbox = (
     [uid, dispatchContextRequest, loadedData.story],
   )
   const onAssetSelected = useCallback(
-    (field: string) => {
+    (callbackId: string, field: string) => {
       dispatchAssetSelected({
         uid,
         field,
         action: 'asset-selected',
+        callbackId,
         filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
       })
     },
