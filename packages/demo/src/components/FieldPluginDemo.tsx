@@ -12,9 +12,9 @@ export type PluginComponent = FunctionComponent<{
 }>
 
 export const FieldPluginDemo: FunctionComponent = () => {
-  const response = useFieldPlugin()
+  const { type, data, actions } = useFieldPlugin()
 
-  if (response.type === 'loading') {
+  if (type === 'loading') {
     return (
       <Box>
         <LoadingIcon />
@@ -22,7 +22,7 @@ export const FieldPluginDemo: FunctionComponent = () => {
       </Box>
     )
   }
-  if (response.type === 'error') {
+  if (type === 'error') {
     return (
       <Box>
         <SquareErrorIcon />
@@ -31,9 +31,14 @@ export const FieldPluginDemo: FunctionComponent = () => {
     )
   }
 
-  return response.data.isModalOpen ? (
-    <ModalView {...response} />
+  const props = {
+    data,
+    actions,
+  }
+
+  return props.data.isModalOpen ? (
+    <ModalView {...props} />
   ) : (
-    <NonModalView {...response} />
+    <NonModalView {...props} />
   )
 }
