@@ -5,6 +5,7 @@ import {
   Asset,
   assetFromAssetSelectedMessage,
   assetModalChangeMessage,
+  ContextRequestMessage,
   getContextMessage,
   heightChangeMessage,
   modalChangeMessage,
@@ -63,6 +64,11 @@ export const createPluginActions: CreatePluginActions = (
     undefined
   let assetSelectedCallbackId: undefined | string = undefined
 
+  let requestContextCallbackRef:
+    | undefined
+    | ((message: ContextRequestMessage) => void) = undefined
+  let requestContextCallbackId: undefined | string = undefined
+
   const onStateChange: OnStateChangeMessage = (data) => {
     state = {
       ...state,
@@ -76,6 +82,17 @@ export const createPluginActions: CreatePluginActions = (
       ...partialPluginStateFromContextRequestMessage(data),
     }
     onUpdateState(state)
+
+    // We do not reject the promise here.
+    // There can be another instance of `createFieldPlugin()`,
+    // calling `selectAsset` with different `callbackId`.
+    // In such case, we should simply ignore the callback.
+    // We may get another callback with correct `callbackId`.
+    if (data.callbackId === requestContextCallbackId) {
+      requestContextCallbackRef?.(data)
+      requestContextCallbackId = undefined
+      requestContextCallbackRef = undefined
+    }
   }
   const onAssetSelect: OnAssetSelectMessage = (data) => {
     // We do not reject the promise here.
@@ -152,7 +169,20 @@ export const createPluginActions: CreatePluginActions = (
           postToContainer(assetModalChangeMessage(uid, callbackId))
         })
       },
-      requestContext: () => postToContainer(getContextMessage(uid)),
+      requestContext: () => {
+        if (requestContextCallbackId !== undefined) {
+          // eslint-disable-next-line functional/no-promise-reject
+          return Promise.reject(
+            'Please wait until a previous requestContext call is resolved.',
+          )
+        }
+        const callbackId = getRandomString(16)
+        requestContextCallbackId = callbackId
+        return new Promise((resolve) => {
+          requestContextCallbackRef = resolve
+          postToContainer(getContextMessage(uid, callbackId))
+        })
+      },
     },
     messageCallbacks,
     onHeightChange,

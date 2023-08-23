@@ -77,8 +77,9 @@ const useSandbox = (
       return undefined
     }
     // Omitting query parameters from the user-provided URL in a safe way
-    return `${fieldPluginURL.origin}${fieldPluginURL.pathname
-      }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+    return `${fieldPluginURL.origin}${
+      fieldPluginURL.pathname
+    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
   const [iframeKey, setIframeKey] = useState(0)
 
@@ -157,11 +158,12 @@ const useSandbox = (
   )
 
   const onContextRequested = useCallback(
-    () =>
+    (callbackId: string) =>
       dispatchContextRequest({
         uid,
         action: 'get-context',
         story: loadedData.story,
+        callbackId,
       }),
     [uid, dispatchContextRequest, loadedData.story],
   )

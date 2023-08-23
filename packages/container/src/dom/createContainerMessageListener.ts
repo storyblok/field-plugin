@@ -60,7 +60,7 @@ export const createContainerMessageListener: CreateContainerListener = (
         message.field ?? '',
       )
     } else if (isGetContextMessage(message)) {
-      eventHandlers.requestContext()
+      eventHandlers.requestContext(message.callbackId as string)
     } else {
       console.warn(
         `Container received unknown message from plugin: ${JSON.stringify(
