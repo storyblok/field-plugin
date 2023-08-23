@@ -55,12 +55,9 @@ export const createContainerMessageListener: CreateContainerListener = (
     } else if (isHeightChangeMessage(message)) {
       eventHandlers.setHeight(message.height)
     } else if (isAssetModalChangeMessage(message)) {
-      eventHandlers.selectAsset(
-        message.callbackId as string,
-        message.field ?? '',
-      )
+      eventHandlers.selectAsset(message.callbackId, message.field ?? '')
     } else if (isGetContextMessage(message)) {
-      eventHandlers.requestContext(message.callbackId as string)
+      eventHandlers.requestContext(message.callbackId)
     } else {
       console.warn(
         `Container received unknown message from plugin: ${JSON.stringify(
