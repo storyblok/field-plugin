@@ -4,6 +4,7 @@ import { Asset, isAsset } from './Asset'
 
 export type AssetSelectedMessage = MessageToPlugin<'asset-selected'> & {
   field?: string
+  callbackId: string
 } & Asset &
   Record<string, unknown>
 
