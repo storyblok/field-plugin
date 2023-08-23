@@ -85,7 +85,7 @@ export const createPluginActions: CreatePluginActions = (
 
     // We do not reject the promise here.
     // There can be another instance of `createFieldPlugin()`,
-    // calling `selectAsset` with different `callbackId`.
+    // calling `requestContext` with different `callbackId`.
     // In such case, we should simply ignore the callback.
     // We may get another callback with correct `callbackId`.
     if (data.callbackId === requestContextCallbackId) {
