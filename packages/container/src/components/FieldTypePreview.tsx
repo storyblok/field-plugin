@@ -59,6 +59,7 @@ const FieldTypeContainer: FunctionComponent<
           }
     }
     style={{
+      display: 'flex',
       margin: 'auto',
       width: props.isModal ? '90%' : '100%',
     }}
@@ -71,13 +72,15 @@ export const FieldTypePreview = forwardRef<
   HTMLIFrameElement,
   {
     src: string | undefined
-    height: string
+    height: number
     isModal: boolean
+    fullHeight: boolean
     // Allows the iframe to be refreshed
     iframeKey?: number
     sx?: SxProps
   }
 >(function FieldTypePreview(props, ref) {
+  const { height, isModal, fullHeight } = props
   return (
     <Box sx={props.sx}>
       <DisableShieldsNotification />
@@ -95,7 +98,7 @@ export const FieldTypePreview = forwardRef<
               src={props.src}
               title="Field Plugin Preview"
               style={{
-                height: props.height,
+                height: fullHeight && isModal ? 'auto' : height,
                 width: '100%',
                 flex: 1,
                 border: 'none',
