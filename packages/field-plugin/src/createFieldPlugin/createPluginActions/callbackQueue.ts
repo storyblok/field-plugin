@@ -26,6 +26,7 @@ export const callbackQueue = () => {
   }
   // eslint-disable-next-line functional/no-let
   let uuidIndex = 0
+  // TODO randomly generate instead
   const uuid = (): CallbackId => {
     uuidIndex = uuidIndex + 1
     return uuidIndex
