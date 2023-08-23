@@ -4,11 +4,19 @@ import { AssetSelectedMessage } from './AssetSelectedMessage'
 export type Asset = {
   filename: string
 }
+
 export const isAsset = (data: unknown): data is Asset =>
   hasKey(data, 'filename') && typeof data.filename === 'string'
+
 export const assetFromAssetSelectedMessage = (
   message: AssetSelectedMessage,
 ): Asset => {
-  const { uid: _uid, action: _action, field: _field, ...asset } = message
+  const {
+    uid: _uid,
+    action: _action,
+    field: _field,
+    callbackId: _callbackId,
+    ...asset
+  } = message
   return asset
 }

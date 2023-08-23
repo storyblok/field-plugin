@@ -1,14 +1,10 @@
 import { FunctionComponent } from 'react'
-import { Box, Divider, Paper, Stack, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useFieldPlugin } from '../useFieldPlugin'
 import { LoadingIcon, SquareErrorIcon } from '@storyblok/mui'
 import { FieldPluginActions, FieldPluginData } from '@storyblok/field-plugin'
-import { ValueMutator } from './ValueMutator'
-import { ModalToggle } from './ModalToggle'
-import { AssetSelector } from './AssetSelector'
-import { ContextRequester } from './ContextRequester'
-import { UpdaterFunctionDemo } from './UpdaterFunctionDemo'
-import { LanguageView } from './LanguageView'
+import { ModalView } from './ModalView'
+import { NonModalView } from './NonModalView'
 
 export type PluginComponent = FunctionComponent<{
   data: FieldPluginData
@@ -39,18 +35,10 @@ export const FieldPluginDemo: FunctionComponent = () => {
     data,
     actions,
   }
-  return (
-    <Paper
-      sx={{ p: 3, border: (theme) => `1px solid ${theme.palette.divider}` }}
-    >
-      <Stack gap={6}>
-        <ValueMutator {...props} />
-        <UpdaterFunctionDemo {...props} />
-        <ModalToggle {...props} />
-        <AssetSelector {...props} />
-        <ContextRequester {...props} />
-        <LanguageView {...props} />
-      </Stack>
-    </Paper>
+
+  return props.data.isModalOpen ? (
+    <ModalView {...props} />
+  ) : (
+    <NonModalView {...props} />
   )
 }
