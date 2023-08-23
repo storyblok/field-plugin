@@ -102,7 +102,7 @@ const useSandbox = (
       action: 'loaded',
       uid,
       blockId: undefined,
-      language: language,
+      language,
       spaceId: null,
       story,
       storyId: undefined,
@@ -255,7 +255,6 @@ export const FieldPluginContainer: FunctionComponent = () => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: 5,
-            p: 0,
           }}
         >
           <CenteredContent
@@ -278,10 +277,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
           </CenteredContent>
           <Container
             sx={{
-              display: 'flex',
-              justifyContent: 'left',
-              flexDirection: { xs: 'column', lg: 'row' },
-              gap: '2rem',
+              p: { xs: 0 },
             }}
           >
             <UrlView
@@ -291,10 +287,6 @@ export const FieldPluginContainer: FunctionComponent = () => {
               onRefresh={randomizeUid}
               error={typeof iframeSrc === 'undefined'}
               placeholder={defaultUrl}
-            />
-            <LanguageView
-              language={language}
-              setLanguage={setLanguage}
             />
           </Container>
         </AccordionDetails>
@@ -314,7 +306,25 @@ export const FieldPluginContainer: FunctionComponent = () => {
         <AccordionSummary>
           <Typography variant="h3">Content</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ position: 'relative' }}>
+        <AccordionDetails
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '2rem',
+            position: 'relative',
+          }}
+        >
+          <Container
+            sx={{
+              display: 'flex',
+              p: { xs: 0 },
+            }}
+          >
+            <LanguageView
+              language={language}
+              setLanguage={setLanguage}
+            />
+          </Container>
           <ContentView
             content={content}
             setContent={setContent}

@@ -16,7 +16,10 @@ export const UrlView: FunctionComponent<{
   error: boolean
   placeholder: string
 }> = (props) => (
-  <FormControl error={props.error}>
+  <FormControl
+    sx={{ width: '70%' }}
+    error={props.error}
+  >
     <InputLabel
       htmlFor="field-plugin-url"
       shrink
