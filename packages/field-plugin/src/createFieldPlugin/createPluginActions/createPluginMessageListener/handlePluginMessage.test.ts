@@ -8,6 +8,8 @@ import {
 } from '../../../messaging'
 
 const uid = 'abc123'
+const callbackId = 'test-callback-id'
+
 const mockCallbacks = (): PluginMessageCallbacks => ({
   onStateChange: jest.fn(),
   onContextRequest: jest.fn(),
@@ -73,6 +75,7 @@ describe('handlePluginMessage', () => {
     const data: ContextRequestMessage = {
       action: 'get-context',
       uid,
+      callbackId,
       story: { content: {} },
     }
     const callbacks = mockCallbacks()
@@ -88,7 +91,7 @@ describe('handlePluginMessage', () => {
       uid,
       filename: '/my-file.jpg',
       field: 'callback-uid',
-      callbackId: 'test-callback-id',
+      callbackId,
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)

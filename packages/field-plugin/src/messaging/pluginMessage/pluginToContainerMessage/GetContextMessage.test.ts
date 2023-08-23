@@ -6,10 +6,13 @@ import {
 } from './GetContextMessage'
 
 const uid = '-preview-abc-123'
+const callbackId = 'test-callback-id'
+
 const stub: GetContextMessage = {
   action: 'plugin-changed',
   event: 'getContext',
   uid,
+  callbackId,
 }
 
 describe('ValueChangeMessage', () => {
@@ -34,7 +37,14 @@ describe('ValueChangeMessage', () => {
   })
   describe('constructor', () => {
     it('includes the uid', () => {
-      expect(getContextMessage(uid)).toHaveProperty('uid', uid)
+      expect(getContextMessage(uid, callbackId)).toHaveProperty('uid', uid)
+    })
+
+    it('includes the callbackId', () => {
+      expect(getContextMessage(uid, callbackId)).toHaveProperty(
+        'callbackId',
+        callbackId,
+      )
     })
   })
 })

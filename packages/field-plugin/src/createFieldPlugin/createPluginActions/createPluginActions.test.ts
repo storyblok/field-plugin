@@ -2,7 +2,6 @@ import { createPluginActions } from './createPluginActions'
 import {
   AssetModalChangeMessage,
   GetContextMessage,
-  HeightChangeMessage,
   ModalChangeMessage,
   ValueChangeMessage,
 } from '../../messaging'
@@ -139,6 +138,7 @@ describe('createPluginActions', () => {
       const {
         actions: { requestContext },
       } = createPluginActions(uid, postToContainer, onUpdateState)
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       requestContext()
       expect(postToContainer).toHaveBeenLastCalledWith(
         expect.objectContaining({
@@ -146,6 +146,55 @@ describe('createPluginActions', () => {
         } satisfies Partial<GetContextMessage>),
       )
     })
+  })
+  it('requestContext calls the callback function when the container answers', async () => {
+    const { uid, postToContainer, onUpdateState } = mock()
+    const {
+      actions: { requestContext },
+      messageCallbacks: { onContextRequest },
+    } = createPluginActions(uid, postToContainer, onUpdateState)
+    const promise = requestContext()
+    onContextRequest({
+      uid,
+      story: { content: {} },
+      action: 'get-context',
+      callbackId: TEST_CALLBACK_ID,
+    })
+    const result = await promise
+    expect(result).toHaveProperty('callbackId', TEST_CALLBACK_ID)
+  })
+  it('requestContext does not call the callback function when callbackId does not match', async () => {
+    const WRONG_CALLBACK_ID = TEST_CALLBACK_ID + '_wrong'
+    const { uid, postToContainer, onUpdateState } = mock()
+    const {
+      actions: { requestContext },
+      messageCallbacks: { onContextRequest },
+    } = createPluginActions(uid, postToContainer, onUpdateState)
+    const promise = requestContext()
+    onContextRequest({
+      uid,
+      story: { content: {} },
+      action: 'get-context',
+      callbackId: WRONG_CALLBACK_ID,
+    })
+    const resolvedFn = jest.fn()
+    const rejectedFn = jest.fn()
+    promise.then(resolvedFn).catch(rejectedFn)
+    await wait(100)
+    expect(resolvedFn).toHaveBeenCalledTimes(0)
+    expect(rejectedFn).toHaveBeenCalledTimes(0)
+  })
+  it('requestContext should reject the second request if the first one is not resolved yet', async () => {
+    const { uid, postToContainer, onUpdateState } = mock()
+    const {
+      actions: { requestContext },
+    } = createPluginActions(uid, postToContainer, onUpdateState)
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    requestContext()
+    const promise2 = requestContext()
+    await expect(promise2).rejects.toMatchInlineSnapshot(
+      `"Please wait until a previous requestContext call is resolved."`,
+    )
   })
   describe('selectAsset()', () => {
     it('send a message to the container to open the asset selector', () => {
@@ -161,7 +210,7 @@ describe('createPluginActions', () => {
         } satisfies Partial<AssetModalChangeMessage>),
       )
     })
-    it('calls the callback function when an asset has been selected by the user', async () => {
+    it('selectAsset calls the callback function when an asset has been selected by the user', async () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         actions: { selectAsset },
@@ -179,7 +228,7 @@ describe('createPluginActions', () => {
       const result = await promise
       expect(result).toEqual({ filename })
     })
-    it('does not call the callack function when callbackId does not match', async () => {
+    it('selectAsset does not call the callback function when callbackId does not match', async () => {
       const WRONG_CALLBACK_ID = TEST_CALLBACK_ID + '_wrong'
       const { uid, postToContainer, onUpdateState } = mock()
       const {
@@ -202,7 +251,7 @@ describe('createPluginActions', () => {
       expect(resolvedFn).toHaveBeenCalledTimes(0)
       expect(rejectedFn).toHaveBeenCalledTimes(0)
     })
-    it('should reject the second selectAsset request if the first one is not resolved yet', async () => {
+    it('selectAsset should reject the second request if the first one is not resolved yet', async () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         actions: { selectAsset },
