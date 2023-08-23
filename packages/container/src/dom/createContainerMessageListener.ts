@@ -55,7 +55,10 @@ export const createContainerMessageListener: CreateContainerListener = (
     } else if (isHeightChangeMessage(message)) {
       eventHandlers.setHeight(message.height)
     } else if (isAssetModalChangeMessage(message)) {
-      eventHandlers.selectAsset(message.callbackId, message.field ?? '')
+      eventHandlers.selectAsset(
+        message.callbackId as string,
+        message.field ?? '',
+      )
     } else if (isGetContextMessage(message)) {
       eventHandlers.requestContext()
     } else {
