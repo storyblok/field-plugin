@@ -6,6 +6,7 @@ import { MessageToPlugin } from './MessageToPlugin'
 /**
  * The plugin container's sends it's state to the plugin
  */
+export type OnMessage<Message> = (message: Message) => void
 export type OnStateChangeMessage = (message: StateChangedMessage) => void
 export type OnAssetSelectMessage = (message: AssetSelectedMessage) => void
 export type OnContextRequestMessage = (message: ContextRequestMessage) => void

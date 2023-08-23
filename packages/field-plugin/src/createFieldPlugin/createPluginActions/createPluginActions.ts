@@ -2,7 +2,6 @@
 import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { FieldPluginData } from '../FieldPluginData'
 import {
-  Asset,
   assetFromAssetSelectedMessage,
   assetModalChangeMessage,
   getContextMessage,
@@ -15,11 +14,8 @@ import {
   valueChangeMessage,
 } from '../../messaging'
 import { FieldPluginActions } from '../FieldPluginActions'
-import {
-  partialPluginStateFromContextRequestMessage,
-  partialPluginStateFromStateChangeMessage,
-} from './partialPluginStateFromStateChangeMessage'
-import { getRandomString } from '../../utils'
+import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
+import { callbackQueue } from './callbackQueue'
 
 // TODO get rid of this default state
 export const defaultState: FieldPluginData = {
@@ -57,37 +53,19 @@ export const createPluginActions: CreatePluginActions = (
   //  Because the container doesn't send the full state in its messages, we need to track it ourselves.
   //  isModal and height is not included in the messages to the children and must thus be tracked here.
   //  In future improved versions of the plugin API, this should not be needed.
-  let state: FieldPluginData = defaultState
 
-  let assetSelectedCallbackRef: undefined | ((filename: Asset) => void) =
-    undefined
-  let assetSelectedCallbackId: undefined | string = undefined
+  const { pushCallback, popCallback } = callbackQueue()
 
   const onStateChange: OnStateChangeMessage = (data) => {
-    state = {
-      ...state,
-      ...partialPluginStateFromStateChangeMessage(data),
-    }
-    onUpdateState(state)
+    popCallback('state', data.callbackId)?.(data)
+    console.log(data.model)
+    onUpdateState(pluginStateFromStateChangeMessage(data))
   }
   const onContextRequest: OnContextRequestMessage = (data) => {
-    state = {
-      ...state,
-      ...partialPluginStateFromContextRequestMessage(data),
-    }
-    onUpdateState(state)
+    popCallback('context', data.callbackId)?.(data)
   }
   const onAssetSelect: OnAssetSelectMessage = (data) => {
-    // We do not reject the promise here.
-    // There can be another instance of `createFieldPlugin()`,
-    // calling `selectAsset` with different `callbackId`.
-    // In such case, we should simply ignore the callback.
-    // We may get another callback with correct `callbackId`.
-    if (data.callbackId === assetSelectedCallbackId) {
-      assetSelectedCallbackRef?.(assetFromAssetSelectedMessage(data))
-      assetSelectedCallbackId = undefined
-      assetSelectedCallbackRef = undefined
-    }
+    popCallback('asset', data.callbackId)?.(data)
   }
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
     // TODO remove side-effect, making functions in this file pure.
@@ -114,45 +92,42 @@ export const createPluginActions: CreatePluginActions = (
 
   return {
     actions: {
-      setContent: (action) => {
-        const content: unknown =
-          // This is not safe: if the user pass a function to setContent(),
-          //  this code assumes that it is an updater function
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          typeof action === 'function' ? action(state.content) : action
-        postToContainer(valueChangeMessage(uid, content))
-        state = {
-          ...state,
-          content,
-        }
-        onUpdateState(state)
-      },
-      setModalOpen: (action) => {
-        const isModalOpen =
-          typeof action === 'function' ? action(state.isModalOpen) : action
-        postToContainer(modalChangeMessage(uid, isModalOpen))
-        state = {
-          ...state,
-          isModalOpen,
-        }
-        onUpdateState(state)
-      },
-      selectAsset: () => {
-        if (assetSelectedCallbackId !== undefined) {
-          // eslint-disable-next-line functional/no-promise-reject
-          return Promise.reject(
-            'Please wait until an asset is selected before making another request.',
-          )
-        }
-        const callbackId = getRandomString(16)
-        assetSelectedCallbackId = callbackId
+      setContent: (content) => {
         return new Promise((resolve) => {
-          assetSelectedCallbackRef = resolve
-          postToContainer(assetModalChangeMessage(uid, callbackId))
+          const callbackId = pushCallback('state', (message) =>
+            resolve(pluginStateFromStateChangeMessage(message)),
+          )
+          postToContainer(
+            valueChangeMessage({ uid, callbackId, model: content }),
+          )
         })
       },
-      requestContext: () => postToContainer(getContextMessage(uid)),
+      setModalOpen: (isModalOpen) => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('state', (message) =>
+            resolve(pluginStateFromStateChangeMessage(message)),
+          )
+          postToContainer(
+            modalChangeMessage({ uid, callbackId, status: isModalOpen }),
+          )
+        })
+      },
+      selectAsset: () => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('asset', (message) =>
+            resolve(assetFromAssetSelectedMessage(message)),
+          )
+          postToContainer(assetModalChangeMessage({ uid, callbackId }))
+        })
+      },
+      requestContext: () => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('context', (message) =>
+            resolve(message.story),
+          )
+          postToContainer(getContextMessage({ uid, callbackId }))
+        })
+      },
     },
     messageCallbacks,
     onHeightChange,

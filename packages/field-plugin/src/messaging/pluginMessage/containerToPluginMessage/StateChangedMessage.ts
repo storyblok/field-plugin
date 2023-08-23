@@ -18,6 +18,7 @@ export type StateChangedMessage = MessageToPlugin<'loaded'> & {
   // Related to the field type itself
   schema: FieldPluginSchema
   model: unknown
+  isModalOpen: boolean
 }
 
 // TODO full implementation of validation

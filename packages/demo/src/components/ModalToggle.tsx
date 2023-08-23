@@ -9,7 +9,7 @@ export const ModalToggle: PluginComponent = (props) => {
       <Button
         variant="outlined"
         color="secondary"
-        onClick={() => actions.setModalOpen((isOpen) => !isOpen)}
+        onClick={() => actions.setModalOpen(!props.data.isModalOpen)}
       >
         Toggle Modal
       </Button>
