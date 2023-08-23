@@ -33,20 +33,29 @@ describe('isHeightChangeMessage', () => {
         }),
       ).toEqual(false)
     })
-    test('that height is a number', () => {
-      expect(isHeightChangeMessage(stub)).toEqual(true)
-      expect(
-        isHeightChangeMessage({
-          ...stub,
-          height: '100vw',
-        }),
-      ).toEqual(false)
-      expect(
-        isHeightChangeMessage({
-          ...stub,
-          height: undefined,
-        }),
-      ).toEqual(false)
+    describe('height', () => {
+      it('is a number', () => {
+        expect(
+          isHeightChangeMessage({
+            ...stub,
+            height: 123,
+          }),
+        ).toEqual(true)
+        expect(
+          isHeightChangeMessage({
+            ...stub,
+            height: '100%',
+          }),
+        ).toEqual(false)
+      })
+      it('is required', () => {
+        expect(
+          isHeightChangeMessage({
+            ...stub,
+            height: undefined,
+          }),
+        ).toEqual(false)
+      })
     })
   })
   describe('constructor', () => {

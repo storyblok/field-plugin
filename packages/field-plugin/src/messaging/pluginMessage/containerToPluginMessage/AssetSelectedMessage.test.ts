@@ -8,6 +8,7 @@ const stub: AssetSelectedMessage = {
   action: 'asset-selected',
   uid: '-preview',
   field: 'dummy-field',
+  callbackId: 'test-callback-id',
   filename: 'https://somthing.com/myimage.jpg',
 }
 

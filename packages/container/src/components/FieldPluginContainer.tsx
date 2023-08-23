@@ -12,6 +12,7 @@ import {
   FieldPluginData,
   FieldPluginSchema,
   originFromPluginParams,
+  PluginLoadedMessage,
   recordFromFieldPluginOptions,
   StateChangedMessage,
   StoryData,
@@ -77,9 +78,8 @@ const useSandbox = (
       return undefined
     }
     // Omitting query parameters from the user-provided URL in a safe way
-    return `${fieldPluginURL.origin}${
-      fieldPluginURL.pathname
-    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+    return `${fieldPluginURL.origin}${fieldPluginURL.pathname
+      }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
   const [iframeKey, setIframeKey] = useState(0)
 
@@ -88,6 +88,7 @@ const useSandbox = (
   // TODO replace with useReducer
   const [isModalOpen, setModalOpen] = useState(false)
   const [height, setHeight] = useState(initialHeight)
+  const [fullHeight, setFullHeight] = useState(false)
   const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
     options: [],
@@ -149,11 +150,13 @@ const useSandbox = (
   )
 
   // Listen to messages from field type iframe
-  const onLoaded = useCallback(() => {
-    dispatchStateChanged(loadedData)
-  }, [dispatchStateChanged, loadedData])
-
-  useEffect(onLoaded, [onLoaded])
+  const onLoaded = useCallback(
+    (message: PluginLoadedMessage) => {
+      setFullHeight(Boolean(message.fullHeight))
+      dispatchStateChanged(loadedData)
+    },
+    [dispatchStateChanged, loadedData],
+  )
 
   const onContextRequested = useCallback(
     () =>
@@ -165,11 +168,12 @@ const useSandbox = (
     [uid, dispatchContextRequest, loadedData.story],
   )
   const onAssetSelected = useCallback(
-    (field: string) => {
+    (callbackId: string, field: string) => {
       dispatchAssetSelected({
         uid,
         field,
         action: 'asset-selected',
+        callbackId,
         filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
       })
     },
@@ -211,6 +215,7 @@ const useSandbox = (
       language,
       isModalOpen,
       height,
+      fullHeight,
       schema,
       url,
       fieldTypeIframe,
@@ -233,6 +238,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
       content,
       language,
       isModalOpen,
+      fullHeight,
       height,
       schema,
       url,
@@ -271,8 +277,9 @@ export const FieldPluginContainer: FunctionComponent = () => {
           >
             <FieldTypePreview
               src={iframeSrc}
-              height={`${height}px`}
+              height={height}
               isModal={isModalOpen}
+              fullHeight={fullHeight}
               ref={fieldTypeIframe}
             />
           </CenteredContent>

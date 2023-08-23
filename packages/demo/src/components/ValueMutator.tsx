@@ -8,6 +8,8 @@ export const ValueMutator: PluginComponent = (props) => {
     actions?.setContent(
       (typeof data.content === 'number' ? data.content : 0) + 1,
     )
+  const handleClickReset = () => actions?.setContent(0)
+
   const label =
     typeof data.content === 'undefined'
       ? 'undefined'
@@ -23,6 +25,13 @@ export const ValueMutator: PluginComponent = (props) => {
         onClick={handleClickIncrement}
       >
         Increment
+      </Button>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={handleClickReset}
+      >
+        Reset
       </Button>
     </Stack>
   )
