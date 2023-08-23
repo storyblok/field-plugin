@@ -7,7 +7,6 @@ import {
   isPluginLoadedMessage,
   isValueChangeMessage,
   PluginLoadedMessage,
-  RequestContext,
   SetContent,
   SetModalOpen,
 } from '@storyblok/field-plugin'
@@ -17,7 +16,7 @@ type ContainerActions = {
   setContent: SetContent
   setModalOpen: SetModalOpen
   setPluginReady: (message: PluginLoadedMessage) => void
-  requestContext: RequestContext
+  requestContext: (callbackId: string) => void
   selectAsset: (callbackId: string, field: string) => void
 }
 
