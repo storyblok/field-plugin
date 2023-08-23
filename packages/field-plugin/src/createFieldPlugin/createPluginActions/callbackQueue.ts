@@ -2,10 +2,10 @@ import {
   AssetSelectedMessage,
   ContextRequestMessage,
   OnMessage,
-  StateChangedMessage,
+  LoadedMessage,
 } from '../../messaging'
 
-type CallbackId = number
+type CallbackId = string
 type CallbackRef<Message> = {
   callbackId: CallbackId
   callback: OnMessage<Message>
@@ -13,7 +13,7 @@ type CallbackRef<Message> = {
 type CallbackMap = {
   asset: CallbackRef<AssetSelectedMessage>[]
   context: CallbackRef<ContextRequestMessage>[]
-  state: CallbackRef<StateChangedMessage>[]
+  state: CallbackRef<LoadedMessage>[]
 }
 type CallbackType = keyof CallbackMap
 
@@ -37,7 +37,6 @@ export const callbackQueue = () => {
   ): CallbackId => {
     // TODO limit length of array
     const callbackId = uuid()
-    console.log('push', callbackId)
     callbackMap = {
       ...callbackMap,
       [callbackType]: [
@@ -55,7 +54,6 @@ export const callbackQueue = () => {
     callbackId: CallbackId | undefined,
   ): CallbackMap[T][number]['callback'] | undefined => {
     // TODO remove callback when popping
-    console.log('pop', callbackId)
     return callbackMap[callbackType].findLast(
       (it) => it.callbackId === callbackId,
     )?.callback

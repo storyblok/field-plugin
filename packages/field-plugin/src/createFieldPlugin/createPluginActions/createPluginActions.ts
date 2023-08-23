@@ -9,6 +9,7 @@ import {
   modalChangeMessage,
   OnAssetSelectMessage,
   OnContextRequestMessage,
+  OnLoadedMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
   valueChangeMessage,
@@ -58,7 +59,9 @@ export const createPluginActions: CreatePluginActions = (
 
   const onStateChange: OnStateChangeMessage = (data) => {
     popCallback('state', data.callbackId)?.(data)
-    console.log(data.model)
+    onUpdateState(pluginStateFromStateChangeMessage(data))
+  }
+  const onLoaded: OnLoadedMessage = (data) => {
     onUpdateState(pluginStateFromStateChangeMessage(data))
   }
   const onContextRequest: OnContextRequestMessage = (data) => {
@@ -81,6 +84,7 @@ export const createPluginActions: CreatePluginActions = (
 
   const messageCallbacks: PluginMessageCallbacks = {
     onStateChange,
+    onLoaded,
     onContextRequest,
     onAssetSelect,
     onUnknownMessage,

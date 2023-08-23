@@ -4,7 +4,7 @@ import {
   AssetSelectedMessage,
   ContextRequestMessage,
   MessageToPlugin,
-  StateChangedMessage,
+  LoadedMessage,
 } from '../../../messaging'
 
 const uid = 'abc123'
@@ -50,7 +50,7 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onUnknownMessage).toHaveBeenCalledWith(data)
   })
   it('handles state change messages', () => {
-    const data: StateChangedMessage = {
+    const data: LoadedMessage = {
       action: 'loaded',
       uid,
       blockId: '093jd',

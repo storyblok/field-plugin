@@ -1,10 +1,11 @@
 import {
   isAssetSelectedMessage,
   isMessageToPlugin,
-  isStateChangedMessage,
+  isLoadedMessage,
 } from '../../../messaging'
 import { isContextRequestMessage } from '../../../messaging'
 import { PluginMessageCallbacks } from './createPluginMessageListener'
+import { isStateMessage } from '../../../messaging/pluginMessage/containerToPluginMessage/StateChangedMessage'
 
 export const handlePluginMessage = (
   data: unknown,
@@ -23,7 +24,9 @@ export const handlePluginMessage = (
     return
   }
 
-  if (isStateChangedMessage(data)) {
+  if (isLoadedMessage(data)) {
+    callbacks.onLoaded(data)
+  } else if (isStateMessage(data)) {
     callbacks.onStateChange(data)
   } else if (isContextRequestMessage(data)) {
     callbacks.onContextRequest(data)
