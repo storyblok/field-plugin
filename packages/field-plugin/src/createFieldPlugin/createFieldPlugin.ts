@@ -47,8 +47,10 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
       const origin = '*'
       window.parent.postMessage(message, origin)
     } catch (err) {
-      // eslint-disable-next-line functional/no-throw-statement
-      if (isCloneable(message)) throw err
+      if (isCloneable(message)) {
+        // eslint-disable-next-line functional/no-throw-statement
+        throw err
+      }
 
       // eslint-disable-next-line functional/no-throw-statement
       throw new Error(
