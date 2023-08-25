@@ -41,6 +41,7 @@
     "build:helpers": "yarn workspaces foreach --include \"helper-*\" run build && ./scripts/copy-helpers.sh",
     "test": "yarn test:lib",
     "test:lib": "yarn workspace @storyblok/field-plugin test",
+    "test:lib:watch": "yarn workspace @storyblok/field-plugin test --watch",
     "test:cli": "yarn workspace @storyblok/field-plugin-cli test",
     "test:cli:watch": "yarn workspace @storyblok/field-plugin-cli test:watch",
     "check:types": "yarn workspaces foreach run check:types",
