@@ -18,20 +18,6 @@ import { FieldPluginActions } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
 import { callbackQueue } from './callbackQueue'
 
-// TODO get rid of this default state
-export const defaultState: FieldPluginData = {
-  isModalOpen: false,
-  content: undefined,
-  options: {},
-  storyLang: 'default',
-  story: { content: {} },
-  blockUid: undefined,
-  storyId: undefined,
-  token: undefined,
-  uid: '-preview',
-  spaceId: undefined,
-}
-
 export type CreatePluginActions = (
   uid: string,
   postToContainer: (message: unknown) => void,
