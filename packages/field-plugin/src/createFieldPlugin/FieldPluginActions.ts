@@ -7,10 +7,12 @@ export type SetModalOpen = (
 ) => Promise<FieldPluginData>
 export type RequestContext = () => Promise<StoryData>
 export type SelectAsset = () => Promise<Asset>
+export type SetLoaded = () => Promise<FieldPluginData>
 
 export type FieldPluginActions = {
   setContent: SetContent
   setModalOpen: SetModalOpen
   requestContext: RequestContext
   selectAsset: SelectAsset
+  setLoaded: SetLoaded
 }

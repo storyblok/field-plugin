@@ -62,8 +62,13 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
 
-  // Request the initial state from the Visual Editor.
-  postToContainer(pluginLoadedMessage(uid))
+  void actions.setLoaded().then((data) => {
+    onUpdateState({
+      type: 'loaded',
+      data,
+      actions,
+    })
+  })
 
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,

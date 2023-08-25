@@ -12,6 +12,7 @@ import {
   OnLoadedMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
+  pluginLoadedMessage,
   valueChangeMessage,
 } from '../../messaging'
 import { FieldPluginActions } from '../FieldPluginActions'
@@ -44,11 +45,11 @@ export const createPluginActions: CreatePluginActions = (
   const { pushCallback, popCallback } = callbackQueue()
 
   const onStateChange: OnStateChangeMessage = (data) => {
-    popCallback('state', data.callbackId)?.(data)
+    popCallback('stateChanged', data.callbackId)?.(data)
     onUpdateState(pluginStateFromStateChangeMessage(data))
   }
   const onLoaded: OnLoadedMessage = (data) => {
-    onUpdateState(pluginStateFromStateChangeMessage(data))
+    popCallback('loaded', data.callbackId)?.(data)
   }
   const onContextRequest: OnContextRequestMessage = (data) => {
     popCallback('context', data.callbackId)?.(data)
@@ -84,7 +85,7 @@ export const createPluginActions: CreatePluginActions = (
     actions: {
       setContent: (content) => {
         return new Promise((resolve) => {
-          const callbackId = pushCallback('state', (message) =>
+          const callbackId = pushCallback('stateChanged', (message) =>
             resolve(pluginStateFromStateChangeMessage(message)),
           )
           postToContainer(
@@ -94,7 +95,7 @@ export const createPluginActions: CreatePluginActions = (
       },
       setModalOpen: (isModalOpen) => {
         return new Promise((resolve) => {
-          const callbackId = pushCallback('state', (message) =>
+          const callbackId = pushCallback('stateChanged', (message) =>
             resolve(pluginStateFromStateChangeMessage(message)),
           )
           postToContainer(
@@ -116,6 +117,15 @@ export const createPluginActions: CreatePluginActions = (
             resolve(message.story),
           )
           postToContainer(getContextMessage({ uid, callbackId }))
+        })
+      },
+      setLoaded: () => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('loaded', (message) =>
+            resolve(pluginStateFromStateChangeMessage(message)),
+          )
+          // Request the initial state from the Visual Editor.
+          postToContainer(pluginLoadedMessage({ uid, callbackId }))
         })
       },
     },

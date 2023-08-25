@@ -3,6 +3,7 @@ import {
   ContextRequestMessage,
   OnMessage,
   LoadedMessage,
+  StateChangedMessage,
 } from '../../messaging'
 
 type CallbackId = string
@@ -13,7 +14,8 @@ type CallbackRef<Message> = {
 type CallbackMap = {
   asset: CallbackRef<AssetSelectedMessage>[]
   context: CallbackRef<ContextRequestMessage>[]
-  state: CallbackRef<LoadedMessage>[]
+  stateChanged: CallbackRef<StateChangedMessage>[]
+  loaded: CallbackRef<LoadedMessage>[]
 }
 type CallbackType = keyof CallbackMap
 
@@ -22,7 +24,8 @@ export const callbackQueue = () => {
   let callbackMap: CallbackMap = {
     asset: [],
     context: [],
-    state: [],
+    stateChanged: [],
+    loaded: [],
   }
   // eslint-disable-next-line functional/no-let
   let uuidIndex = 0
@@ -55,6 +58,7 @@ export const callbackQueue = () => {
     callbackId: CallbackId | undefined,
   ): CallbackMap[T][number]['callback'] | undefined => {
     // TODO remove callback when popping
+    // TODO test: that the order of insertion matched the direction we search from
     return callbackMap[callbackType].findLast(
       (it) => it.callbackId === callbackId,
     )?.callback
