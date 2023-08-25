@@ -1,11 +1,12 @@
 import { FunctionComponent } from 'react'
-import { FormControl, InputLabel, OutlinedInput } from '@mui/material'
+import { FormControl, InputLabel, OutlinedInput, SxProps } from '@mui/material'
 
 export const LanguageView: FunctionComponent<{
+  sx?: SxProps
   language: string
   setLanguage: (language: string) => void
 }> = (props) => (
-  <FormControl sx={{ width: '70%' }}>
+  <FormControl sx={props.sx}>
     <InputLabel
       htmlFor="field-plugin-language"
       shrink

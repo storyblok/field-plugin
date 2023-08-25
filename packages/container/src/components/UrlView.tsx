@@ -5,11 +5,13 @@ import {
   IconButton,
   InputLabel,
   OutlinedInput,
+  SxProps,
   Tooltip,
 } from '@mui/material'
 import { RefreshIcon } from '@storyblok/mui'
 
 export const UrlView: FunctionComponent<{
+  sx?: SxProps
   url: string
   setUrl: (url: string) => void
   onRefresh: () => void
@@ -17,7 +19,7 @@ export const UrlView: FunctionComponent<{
   placeholder: string
 }> = (props) => (
   <FormControl
-    sx={{ width: '70%' }}
+    sx={props.sx}
     error={props.error}
   >
     <InputLabel

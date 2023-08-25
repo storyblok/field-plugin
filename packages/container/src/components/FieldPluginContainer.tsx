@@ -27,6 +27,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Container,
+  Stack,
   Typography,
 } from '@mui/material'
 import { CenteredContent, useNotifications } from '@storyblok/mui'
@@ -78,8 +79,9 @@ const useSandbox = (
       return undefined
     }
     // Omitting query parameters from the user-provided URL in a safe way
-    return `${fieldPluginURL.origin}${fieldPluginURL.pathname
-      }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+    return `${fieldPluginURL.origin}${
+      fieldPluginURL.pathname
+    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
   const [iframeKey, setIframeKey] = useState(0)
 
@@ -282,11 +284,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
               ref={fieldTypeIframe}
             />
           </CenteredContent>
-          <Container
-            sx={{
-              p: { xs: 0 },
-            }}
-          >
+          <Stack alignSelf="flex-start">
             <UrlView
               url={url}
               setUrl={setUrl}
@@ -295,7 +293,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
               error={typeof iframeSrc === 'undefined'}
               placeholder={defaultUrl}
             />
-          </Container>
+          </Stack>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
@@ -313,29 +311,23 @@ export const FieldPluginContainer: FunctionComponent = () => {
         <AccordionSummary>
           <Typography variant="h3">Content</Typography>
         </AccordionSummary>
-        <AccordionDetails
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '2rem',
-            position: 'relative',
-          }}
-        >
-          <Container
-            sx={{
-              display: 'flex',
-              p: { xs: 0 },
-            }}
+        <AccordionDetails>
+          <Stack
+            width="xs"
+            gap={5}
           >
+            <ContentView
+              content={content}
+              setContent={setContent}
+            />
             <LanguageView
+              sx={{
+                alignSelf: 'flex-start',
+              }}
               language={language}
               setLanguage={setLanguage}
             />
-          </Container>
-          <ContentView
-            content={content}
-            setContent={setContent}
-          />
+          </Stack>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
