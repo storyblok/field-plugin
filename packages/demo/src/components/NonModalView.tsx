@@ -1,11 +1,11 @@
-import { Paper, Stack } from "@mui/material";
-import { ModalToggle } from "./ModalToggle";
-import { ValueMutator } from "./ValueMutator";
-import { HeightChangeDemo } from "./HeightChangeDemo";
-import { AssetSelector } from "./AssetSelector";
-import { ContextRequester } from "./ContextRequester";
-import { PluginComponent } from "./FieldPluginDemo";
-import { LanguageView } from "./LanguageView";
+import { Paper, Stack } from '@mui/material'
+import { ModalToggle } from './ModalToggle'
+import { ValueMutator } from './ValueMutator'
+import { HeightChangeDemo } from './HeightChangeDemo'
+import { AssetSelector } from './AssetSelector'
+import { ContextRequester } from './ContextRequester'
+import { PluginComponent } from './FieldPluginDemo'
+import { LanguageView } from './LanguageView'
 
 export const NonModalView: PluginComponent = (props) => (
   <Paper>
@@ -19,4 +19,4 @@ export const NonModalView: PluginComponent = (props) => (
       <LanguageView {...props} />
     </Stack>
   </Paper>
-);
+)
