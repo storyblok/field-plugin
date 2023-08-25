@@ -114,13 +114,7 @@ export const createPluginActions: CreatePluginActions = (
 
   return {
     actions: {
-      setContent: (action) => {
-        const content: unknown =
-          // This is not safe: if the user pass a function to setContent(),
-          //  this code assumes that it is an updater function
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          typeof action === 'function' ? action(state.content) : action
+      setContent: (content) => {
         postToContainer(valueChangeMessage(uid, content))
         state = {
           ...state,
@@ -128,9 +122,7 @@ export const createPluginActions: CreatePluginActions = (
         }
         onUpdateState(state)
       },
-      setModalOpen: (action) => {
-        const isModalOpen =
-          typeof action === 'function' ? action(state.isModalOpen) : action
+      setModalOpen: (isModalOpen) => {
         postToContainer(modalChangeMessage(uid, isModalOpen))
         state = {
           ...state,
