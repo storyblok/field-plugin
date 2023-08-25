@@ -19,7 +19,7 @@ type CallbackMap = {
 }
 type CallbackType = keyof CallbackMap
 
-export const callbackQueue = () => {
+export const callbackQueue = (maxQueueLength: number) => {
   // eslint-disable-next-line functional/no-let
   let callbackMap: CallbackMap = {
     asset: [],
@@ -27,20 +27,11 @@ export const callbackQueue = () => {
     stateChanged: [],
     loaded: [],
   }
-  // eslint-disable-next-line functional/no-let
-  let uuidIndex = 0
-  // TODO randomly generate instead
-  const uuid = (): CallbackId => {
-    uuidIndex = uuidIndex + 1
-    return uuidIndex
-  }
-
   const pushCallback = <T extends CallbackType>(
     callbackType: T,
     callback: CallbackMap[T][number]['callback'],
   ): CallbackId => {
-    // TODO limit length of array
-    const callbackId = uuid()
+    const callbackId = randomUid()
     callbackMap = {
       ...callbackMap,
       [callbackType]: [
@@ -49,7 +40,7 @@ export const callbackQueue = () => {
           callbackId,
           callback,
         },
-      ],
+      ].slice(-maxQueueLength),
     }
     return callbackId
   }
@@ -57,9 +48,7 @@ export const callbackQueue = () => {
     callbackType: T,
     callbackId: CallbackId | undefined,
   ): CallbackMap[T][number]['callback'] | undefined => {
-    // TODO remove callback when popping
-    // TODO test: that the order of insertion matched the direction we search from
-    return callbackMap[callbackType].findLast(
+    return (callbackMap[callbackType] as CallbackRef<unknown>[]).findLast(
       (it) => it.callbackId === callbackId,
     )?.callback
   }
@@ -68,3 +57,10 @@ export const callbackQueue = () => {
     popCallback,
   }
 }
+
+const random8 = () =>
+  Math.random()
+    .toString(16)
+    .slice(2, 2 + 8)
+
+const randomUid = (): CallbackId => new Array(4).fill(0).map(random8).join('-')

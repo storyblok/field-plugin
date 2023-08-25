@@ -44,7 +44,7 @@ export const createPluginActions: CreatePluginActions = (
   //  isModal and height is not included in the messages to the children and must thus be tracked here.
   //  In future improved versions of the plugin API, this should not be needed.
 
-  const { pushCallback, popCallback } = callbackQueue()
+  const { pushCallback, popCallback } = callbackQueue(10)
 
   const onStateChange: OnStateChangeMessage = (data) => {
     popCallback('stateChanged', data.callbackId)?.(data)
