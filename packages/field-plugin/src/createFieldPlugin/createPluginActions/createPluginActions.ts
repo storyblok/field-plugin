@@ -15,7 +15,7 @@ import {
   pluginLoadedMessage,
   valueChangeMessage,
 } from '../../messaging'
-import { FieldPluginActions } from '../FieldPluginActions'
+import { FieldPluginActions, SetLoaded } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
 import { callbackQueue } from './callbackQueue'
 
@@ -30,6 +30,8 @@ export type CreatePluginActions = (
   messageCallbacks: PluginMessageCallbacks
   // This function is called whenever the height changes
   onHeightChange: (height: number) => void
+  // This initiates the plugin
+  setLoaded: SetLoaded
 }
 
 export const createPluginActions: CreatePluginActions = (
@@ -119,17 +121,17 @@ export const createPluginActions: CreatePluginActions = (
           postToContainer(getContextMessage({ uid, callbackId }))
         })
       },
-      setLoaded: () => {
-        return new Promise((resolve) => {
-          const callbackId = pushCallback('loaded', (message) =>
-            resolve(pluginStateFromStateChangeMessage(message)),
-          )
-          // Request the initial state from the Visual Editor.
-          postToContainer(pluginLoadedMessage({ uid, callbackId }))
-        })
-      },
     },
     messageCallbacks,
     onHeightChange,
+    setLoaded: () => {
+      return new Promise((resolve) => {
+        const callbackId = pushCallback('loaded', (message) =>
+          resolve(pluginStateFromStateChangeMessage(message)),
+        )
+        // Request the initial state from the Visual Editor.
+        postToContainer(pluginLoadedMessage({ uid, callbackId }))
+      })
+    },
   }
 }

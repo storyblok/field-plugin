@@ -14,5 +14,4 @@ export type FieldPluginActions = {
   setModalOpen: SetModalOpen
   requestContext: RequestContext
   selectAsset: SelectAsset
-  setLoaded: SetLoaded
 }

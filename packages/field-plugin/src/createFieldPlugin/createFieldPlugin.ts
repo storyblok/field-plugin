@@ -48,21 +48,18 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
-  const { actions, messageCallbacks, onHeightChange } = createPluginActions(
-    uid,
-    postToContainer,
-    (data) => {
+  const { actions, messageCallbacks, onHeightChange, setLoaded } =
+    createPluginActions(uid, postToContainer, (data) => {
       onUpdateState({
         type: 'loaded',
         data,
         actions,
       })
-    },
-  )
+    })
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
 
-  void actions.setLoaded().then((data) => {
+  void setLoaded().then((data) => {
     onUpdateState({
       type: 'loaded',
       data,
