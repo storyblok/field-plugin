@@ -1,7 +1,12 @@
 import { resolve } from 'path'
 import { configDefaults, defineConfig } from 'vitest/config'
 import pkg from './package.json'
-const externalDependencies = ['fs', 'path', ...Object.keys(pkg.dependencies)]
+const externalDependencies = [
+  'fs',
+  'path',
+  'os',
+  ...Object.keys(pkg.dependencies),
+]
 
 // https://vitejs.dev/config/
 export default defineConfig({
