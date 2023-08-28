@@ -1,4 +1,4 @@
-import { PluginOption, defineConfig } from 'vite'
+import { defineConfig, PluginOption } from 'vite'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
@@ -23,5 +23,16 @@ export default defineConfig({
         },
       },
     },
+  },
+  resolve: {
+    alias:
+      process.env.NODE_ENV === 'production'
+        ? []
+        : [
+          {
+            find: /^@storyblok\/field-plugin$/,
+            replacement: resolve(__dirname, '../field-plugin/src/index.ts'),
+          },
+        ],
   },
 })
