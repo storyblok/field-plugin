@@ -47,8 +47,11 @@ export function printDev(): PluginOption {
     configureServer(server) {
       // Overrides the message that Vite prints out when the server is started. To reduce complexity, it does not include color
       server.printUrls = () => {
-        const localUrl = server.resolvedUrls!.local[0]
-        const networkUrl = server.resolvedUrls!.network[0]
+        if (!server.resolvedUrls) {
+          return
+        }
+        const localUrl = server.resolvedUrls.local[0]
+        const networkUrl = server.resolvedUrls.network[0]
 
         console.log(`
     ${arrow}  ${bold(
