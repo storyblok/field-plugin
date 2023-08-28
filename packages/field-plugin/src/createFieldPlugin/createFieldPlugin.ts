@@ -5,6 +5,7 @@ import { pluginLoadedMessage, pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
 import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 import { sandboxUrl } from './sandboxUrl'
+import { isCloneable } from '../utils/isCloneable'
 
 export type CreateFieldPlugin = (
   onUpdate: (state: FieldPluginResponse) => void,
@@ -41,9 +42,28 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
   const { uid } = params
 
   const postToContainer = (message: unknown) => {
-    // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
-    const origin = '*'
-    window.parent.postMessage(message, origin)
+    try {
+      // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
+      const origin = '*'
+      window.parent.postMessage(message, origin)
+    } catch (err) {
+      if (isCloneable(message)) {
+        // eslint-disable-next-line functional/no-throw-statement
+        throw err
+      }
+
+      // eslint-disable-next-line functional/no-throw-statement
+      throw new Error(
+        'The argument could not be cloned. ' +
+          'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +
+          'Does your object contain functions, getters, setters, proxies, or any other value that is not cloneable? Did you try to pass a reactive object? ' +
+          'For a full description on the structuredClone algorithm, see: ' +
+          'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm',
+        {
+          cause: err,
+        },
+      )
+    }
   }
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
