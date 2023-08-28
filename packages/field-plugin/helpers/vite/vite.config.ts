@@ -22,10 +22,10 @@ export default defineConfig({
       process.env.node_env === 'production'
         ? []
         : [
-          {
-            find: /^@storyblok\/field-plugin$/,
-            replacement: resolve(__dirname, '../field-plugin/src/index.ts'),
-          },
-        ],
+            {
+              find: /^@storyblok\/field-plugin$/,
+              replacement: resolve(__dirname, '../field-plugin/src/index.ts'),
+            },
+          ],
   },
 })
