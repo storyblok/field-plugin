@@ -19,68 +19,37 @@ of them while refreshing the Sandbox page or switching between field plugins.
 
 # Detailed design
 
-## Reflect Sandbox options changes in the URL
+## Reflect Sandbox options changes in the LocalStorage
 
 For every change in our `options` list, such as adding/removing items as well as
-changes to option names or values should trigger a url update call.
+changes to option names or values, should update the [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) with the respective updated values.
 
-This behavior can be implemented through the use of [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API) 
-as the example below:
+Example:
 
 ```
-const { options } = sandbox.getInstance(...)
+const { options, storage } = sandbox.getInstance(...)
 
 watch(options, (newValue) => {
-
-    const url = '/?' + new URLSearchParams(newValue).toString();
-
-    history.replaceState(null, '', url);
+  storage.sync(options)
 })
 ```
 
-Here would be nice to may use `history.replaceState()` rather than
-`history.pushState()` once it wouldn't do a full page reload and also
-not change the history stack.
-
 # Drawbacks
 
-- Sensitive data could be easily exposed once the URL can be shared.
-  One option here would be to warn the user inside the Field Plugin Sandbox page.
-- Each browser has its size limit.
+- Changing browsers would require it to be recreated from scratch;
+- We would need to have a `key` for persisting it properly and avoid mixing data between different
+  field-plugins.
 
 # Alternatives
 
-Another approach would be persisting options and values using the localStorage API.
-It would allow a larger storage size than using [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
-and avoid sharing sensitive data.
-
-However, here we also would have some drawbacks:
-
-- Not shareable (sharing could be useful for debugging or troubleshooting);
-- Changing browsers would require recreation;
-- We would need to have a `key` for persisting it properly and avoid mixing data between different
-  field-plugins.
+- All options could be synchronized with a backend and when shared, only a UUID be provided (for fetching the options). It'd allow changing browsers but also it would add complexity to the solution.
 
 # Adoption strategy
 
 All the proposed approach would be something entirely new and transparent for all users.
-It wouldn't raise any break changing and will affect all of Sandbox's user.
+It wouldn't raise any break change or impact negatively the users.
 
 # Unresolved questions
 
-- What would be the behavior when the users navigate using the back and forward button?
-  We may use `replaceState()` in place of `pushState()` since it would not reload the page or change the
-  history stack.
-- If the user adds/removes options directly in the URL as well as its values, we would
-  also need to reflect everything with both the "options section" and also the field plugin itself.
-- Should we provide a "reset" option for clearing all the options in both URL and "options section"?
-- Using this approach might users have a poor experience with this approach?
-- We may need to be specific to SERPs (`robot.txt` file) to not index the Sandbox
-  if it contains queries strings. Something like:
-
-```
-User-agent: *
-Disallow: /*?
-```
-
-If we use `history.replaceState()` it may not be required.
+- Which key are we going to use for storing those data?
+- Should we provide a "reset" button for clearing all the local storage?
