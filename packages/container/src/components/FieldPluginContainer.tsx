@@ -27,6 +27,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Container,
+  Stack,
   Typography,
 } from '@mui/material'
 import { CenteredContent, useNotifications } from '@storyblok/mui'
@@ -39,6 +40,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params'
 import { ObjectView } from './ObjectView'
 import { UrlView } from './UrlView'
 import { usePluginParams } from './usePluginParams'
+import { LanguageView } from './LanguageView'
 
 const defaultUrl = 'http://localhost:8080'
 const initialStory: StoryData = {
@@ -77,8 +79,9 @@ const useSandbox = (
       return undefined
     }
     // Omitting query parameters from the user-provided URL in a safe way
-    return `${fieldPluginURL.origin}${fieldPluginURL.pathname
-      }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+    return `${fieldPluginURL.origin}${
+      fieldPluginURL.pathname
+    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
   const [iframeKey, setIframeKey] = useState(0)
 
@@ -93,6 +96,7 @@ const useSandbox = (
     options: [],
   })
   const [content, setContent] = useState<unknown>(initialContent)
+  const [language, setLanguage] = useState<string>('')
 
   const loadedData = useMemo<StateChangedMessage>(
     () => ({
@@ -101,13 +105,13 @@ const useSandbox = (
       action: 'loaded',
       uid,
       blockId: undefined,
-      language: 'default',
+      language,
       spaceId: null,
       story,
       storyId: undefined,
       token: null,
     }),
-    [uid, content, schema, story],
+    [uid, content, language, schema, story],
   )
 
   const postToPlugin = useCallback(
@@ -210,6 +214,7 @@ const useSandbox = (
   return [
     {
       content,
+      language,
       isModalOpen,
       height,
       fullHeight,
@@ -220,6 +225,7 @@ const useSandbox = (
     },
     {
       setContent,
+      setLanguage,
       setSchema,
       setUrl,
       randomizeUid,
@@ -232,6 +238,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
   const [
     {
       content,
+      language,
       isModalOpen,
       fullHeight,
       height,
@@ -240,7 +247,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
       fieldTypeIframe,
       iframeSrc,
     },
-    { setContent, setSchema, setUrl, randomizeUid },
+    { setContent, setLanguage, setSchema, setUrl, randomizeUid },
   ] = useSandbox(error)
 
   return (
@@ -256,7 +263,6 @@ export const FieldPluginContainer: FunctionComponent = () => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: 5,
-            p: 0,
           }}
         >
           <CenteredContent
@@ -278,13 +284,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
               ref={fieldTypeIframe}
             />
           </CenteredContent>
-          <Container
-            sx={{
-              display: 'flex',
-              justifyContent: 'left',
-              width: (theme) => theme.breakpoints.values.md,
-            }}
-          >
+          <Stack alignSelf="flex-start">
             <UrlView
               url={url}
               setUrl={setUrl}
@@ -293,7 +293,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
               error={typeof iframeSrc === 'undefined'}
               placeholder={defaultUrl}
             />
-          </Container>
+          </Stack>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
@@ -311,11 +311,23 @@ export const FieldPluginContainer: FunctionComponent = () => {
         <AccordionSummary>
           <Typography variant="h3">Content</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ position: 'relative' }}>
-          <ContentView
-            content={content}
-            setContent={setContent}
-          />
+        <AccordionDetails>
+          <Stack
+            width="xs"
+            gap={5}
+          >
+            <ContentView
+              content={content}
+              setContent={setContent}
+            />
+            <LanguageView
+              sx={{
+                alignSelf: 'flex-start',
+              }}
+              language={language}
+              setLanguage={setLanguage}
+            />
+          </Stack>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
