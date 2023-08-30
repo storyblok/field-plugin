@@ -4,8 +4,9 @@ import fs from 'fs/promises'
 import path from 'path'
 
 const template = process.argv[3]
-const newConfigPath = `packages/cli/templates/${template}/node_modules/.${template}-vite.config.ts`
-await $`cp packages/cli/templates/${template}/vite.config.ts ${newConfigPath}`
+const templatePath = `packages/cli/templates/${template}`
+const newConfigPath = `${templatePath}/node_modules/.${template}-vite.config.ts`
+await $`cp ${templatePath}/vite.config.ts ${newConfigPath}`
 
 let file = (await fs.readFile(newConfigPath)).toString()
 file = file.replace(
