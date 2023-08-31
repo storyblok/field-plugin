@@ -163,6 +163,19 @@ if (prerelease) {
   nextVersion = result.nextVersion
 }
 
+if (packageFolder === 'cli') {
+  const { updateLibraryVersion } = await prompts({
+    type: 'confirm',
+    name: 'updateLibraryVersion',
+    message:
+      'Update the `@storyblok/field-plugin` version in all the templates?',
+    initial: true,
+  })
+  if (updateLibraryVersion) {
+    await $`./scripts/update-templates.mjs`
+  }
+}
+
 // Check out to a release branch
 const branchName = `chore/release-${packageFolder}-${nextVersion}`
 await $`git checkout -b ${branchName}`
