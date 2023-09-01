@@ -1,18 +1,16 @@
 import {
-  assetModalChangeMessage,
   AssetModalChangeMessage,
+  assetModalChangeMessage,
   isAssetModalChangeMessage,
 } from './AssetModalChangeMessage'
 
 const uid = '-preview-abc-123'
-const field = 'dummy-field'
 const callbackId = 'test-callback-id'
 const stub: AssetModalChangeMessage = {
   action: 'plugin-changed',
   uid,
   event: 'showAssetModal',
   callbackId,
-  field,
 }
 
 describe('AssetModalChangeMessage', () => {
@@ -56,21 +54,9 @@ describe('AssetModalChangeMessage', () => {
   })
   describe('constructor', () => {
     it('includes the uid', () => {
-      expect(assetModalChangeMessage(uid, callbackId, field)).toHaveProperty(
+      expect(assetModalChangeMessage({ uid, callbackId })).toHaveProperty(
         'uid',
         uid,
-      )
-    })
-    test('that the field is optional', () => {
-      expect(assetModalChangeMessage(uid, callbackId)).not.toHaveProperty(
-        'field',
-        field,
-      )
-    })
-    test('that if set, the field is included', () => {
-      expect(assetModalChangeMessage(uid, callbackId, field)).toHaveProperty(
-        'field',
-        field,
       )
     })
   })

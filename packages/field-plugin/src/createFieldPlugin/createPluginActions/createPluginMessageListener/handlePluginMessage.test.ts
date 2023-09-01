@@ -3,8 +3,8 @@ import { PluginMessageCallbacks } from './createPluginMessageListener'
 import {
   AssetSelectedMessage,
   ContextRequestMessage,
-  MessageToPlugin,
   LoadedMessage,
+  MessageToPlugin,
 } from '../../../messaging'
 
 const uid = 'abc123'
@@ -13,6 +13,7 @@ const mockCallbacks = (): PluginMessageCallbacks => ({
   onContextRequest: jest.fn(),
   onAssetSelect: jest.fn(),
   onUnknownMessage: jest.fn(),
+  onLoaded: jest.fn(),
 })
 
 describe('handlePluginMessage', () => {
@@ -61,10 +62,12 @@ describe('handlePluginMessage', () => {
       schema: { options: [], field_type: 'avh' },
       storyId: 1344,
       token: 'rfwreff2435wewff43',
+      isModalOpen: false,
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)
-    expect(callbacks.onStateChange).toHaveBeenCalledWith(data)
+    expect(callbacks.onLoaded).toHaveBeenCalledWith(data)
+    expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()

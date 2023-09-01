@@ -1,15 +1,18 @@
 import { isMessageToContainer } from './MessageToContainer'
 import {
-  getContextMessage,
   GetContextMessage,
+  getContextMessage,
   isGetContextMessage,
 } from './GetContextMessage'
 
 const uid = '-preview-abc-123'
+const callbackId = 'test-callback-id'
 const stub: GetContextMessage = {
   action: 'plugin-changed',
   event: 'getContext',
+  debounce: false,
   uid,
+  callbackId,
 }
 
 describe('ValueChangeMessage', () => {
@@ -34,7 +37,7 @@ describe('ValueChangeMessage', () => {
   })
   describe('constructor', () => {
     it('includes the uid', () => {
-      expect(getContextMessage(uid)).toHaveProperty('uid', uid)
+      expect(getContextMessage({ uid, callbackId })).toHaveProperty('uid', uid)
     })
   })
 })

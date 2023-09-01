@@ -1,11 +1,12 @@
 import { isMessageToContainer } from './MessageToContainer'
 import {
   isModalChangeMessage,
-  modalChangeMessage,
   ModalChangeMessage,
+  modalChangeMessage,
 } from './ModalChangeMessage'
 
 const uid = '-preview-abc-123'
+const callbackId = 'test-callback-id'
 const stub: ModalChangeMessage = {
   action: 'plugin-changed',
   event: 'toggleModal',
@@ -87,11 +88,17 @@ describe('ModalChangeMessage', () => {
   })
   describe('constructor', () => {
     it('includes the uid', () => {
-      expect(modalChangeMessage(uid, true)).toHaveProperty('uid', uid)
+      expect(
+        modalChangeMessage({ uid, callbackId, status: true }),
+      ).toHaveProperty('uid', uid)
     })
     it('includes the modal status', () => {
-      expect(modalChangeMessage(uid, true)).toHaveProperty('status', true)
-      expect(modalChangeMessage(uid, false)).toHaveProperty('status', false)
+      expect(
+        modalChangeMessage({ uid, callbackId, status: true }),
+      ).toHaveProperty('status', true)
+      expect(
+        modalChangeMessage({ uid, callbackId, status: false }),
+      ).toHaveProperty('status', false)
     })
   })
 })

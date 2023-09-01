@@ -5,6 +5,7 @@ import {
   OnMessage,
   StateChangedMessage,
 } from '../../messaging'
+import { getRandomUid } from '../../utils'
 
 export type CallbackId = string
 
@@ -28,7 +29,7 @@ export const callbackQueue = () => {
     callbackType: T,
     callback: CallbackMap[T][CallbackId],
   ): CallbackId => {
-    const callbackId = randomUid()
+    const callbackId = getRandomUid()
     callbackMap = {
       ...callbackMap,
       [callbackType]: {
@@ -72,10 +73,3 @@ export const callbackQueue = () => {
     popCallback,
   }
 }
-
-const random8 = () =>
-  Math.random()
-    .toString(16)
-    .slice(2, 2 + 8)
-
-const randomUid = (): CallbackId => new Array(4).fill(0).map(random8).join('-')
