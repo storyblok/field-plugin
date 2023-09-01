@@ -53,7 +53,7 @@
     "dev:vue3": "yarn workspace field-plugin-vue3-template dev",
     "dev:demo": "yarn workspace demo dev",
     "dev:lib": "yarn workspace @storyblok/field-plugin dev",
-    "bump-version": "./scripts/bump-version.mjs"
+    "bump-version": "./scripts/bump-version.mts"
   },
   "devDependencies": {
     "@storyblok/mui": "0.0.19-alpha",

@@ -7,17 +7,18 @@ import semver from 'semver'
 import { readFileSync } from 'fs'
 import { bold, cyan, green, red } from 'kleur/colors'
 
-const print = (...args) => {
+const print = (...args: string[]) => {
   // eslint-disable-next-line no-undef, no-console
   console.log(...args)
 }
 
-const exit = (code) => {
+const exit = (code: number) => {
   // eslint-disable-next-line no-undef
   process.exit(code)
 }
 
-const PACKAGE_FOLDERS = [
+type PackageFolder = 'field-plugin' | 'cli'
+const PACKAGE_FOLDERS: Array<{ title: string; value: PackageFolder }> = [
   {
     title: 'Library',
     value: 'field-plugin',
@@ -83,19 +84,21 @@ if (!isWorkingDirectoryClean) {
 }
 
 // Select which package to deploy ('field-plugin' | 'cli')
-const { packageFolder } = await prompts(
-  {
-    type: 'select',
-    name: 'packageFolder',
-    message: 'What to deploy?',
-    choices: PACKAGE_FOLDERS,
-  },
-  {
-    onCancel: () => {
-      process.exit(1)
+const packageFolder = (
+  await prompts(
+    {
+      type: 'select',
+      name: 'packageFolder',
+      message: 'What to deploy?',
+      choices: PACKAGE_FOLDERS,
     },
-  },
-)
+    {
+      onCancel: () => {
+        process.exit(1)
+      },
+    },
+  )
+).packageFolder as PackageFolder
 
 // Get the current version
 const { version: currentVersion, name: packageName } = JSON.parse(
@@ -115,15 +118,15 @@ const prerelease = semver.prerelease(currentVersion)
 
 // Get the next version
 // eslint-disable-next-line functional/no-let
-let nextVersion
-if (prerelease) {
+let nextVersion: string
+if (prerelease && typeof prerelease[0] === 'string') {
   // e.g. prerelease === ['alpha', 8]
   const result = await prompts(
     {
       type: 'text',
       name: 'nextVersion',
       message: 'Next version?',
-      initial: semver.inc(currentVersion, 'prerelease', prerelease[0]),
+      initial: semver.inc(currentVersion, 'prerelease', prerelease[0]) || '',
     },
     {
       onCancel: () => {
@@ -138,7 +141,10 @@ if (prerelease) {
       type: 'select',
       name: 'incrementLevel',
       message: 'Increment Level?',
-      choices: [{ value: 'patch' }, { value: 'minor' }, { value: 'major' }],
+      choices: ['patch', 'minor', 'major'].map((value) => ({
+        title: value,
+        value,
+      })),
     },
     {
       onCancel: () => {
@@ -152,7 +158,7 @@ if (prerelease) {
       type: 'text',
       name: 'nextVersion',
       message: 'Next version?',
-      initial: semver.inc(currentVersion, incrementLevel),
+      initial: semver.inc(currentVersion, incrementLevel) || '',
     },
     {
       onCancel: () => {
