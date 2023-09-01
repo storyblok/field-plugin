@@ -1,4 +1,6 @@
 #!/usr/bin/env -S node_modules/.bin/tsx
+// https://github.com/google/zx/issues/467#issuecomment-1577838056
+
 /* eslint-disable no-undef */
 import { $, which } from 'zx'
 import prompts from 'prompts'
