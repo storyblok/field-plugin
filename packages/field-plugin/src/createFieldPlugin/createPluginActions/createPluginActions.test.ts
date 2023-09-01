@@ -5,7 +5,11 @@ import {
   ModalChangeMessage,
   ValueChangeMessage,
 } from '../../messaging'
-import { FieldPluginData } from '../FieldPluginData'
+
+// INFO: The methods like `setContent` is not being resolved in this file because `pushCallback` doesn't resolve.
+// We can also mock `callbackQueue` and make it resolve, and resolve this `no-floating-promises` issue.
+//
+/* eslint-disable @typescript-eslint/no-floating-promises */
 
 const mock = () => ({
   uid: 'abc',
