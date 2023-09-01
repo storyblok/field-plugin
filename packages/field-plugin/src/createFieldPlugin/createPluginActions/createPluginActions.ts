@@ -15,7 +15,7 @@ import {
   pluginLoadedMessage,
   valueChangeMessage,
 } from '../../messaging'
-import { FieldPluginActions, SetLoaded } from '../FieldPluginActions'
+import { FieldPluginActions, Initialize } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
 import { callbackQueue } from './callbackQueue'
 
@@ -31,7 +31,7 @@ export type CreatePluginActions = (
   // This function is called whenever the height changes
   onHeightChange: (height: number) => void
   // This initiates the plugin
-  setLoaded: SetLoaded
+  initialize: Initialize
 }
 
 export const createPluginActions: CreatePluginActions = (
@@ -52,6 +52,7 @@ export const createPluginActions: CreatePluginActions = (
   }
   const onLoaded: OnLoadedMessage = (data) => {
     popCallback('loaded', data.callbackId)?.(data)
+    onUpdateState(pluginStateFromStateChangeMessage(data))
   }
   const onContextRequest: OnContextRequestMessage = (data) => {
     popCallback('context', data.callbackId)?.(data)
@@ -123,7 +124,7 @@ export const createPluginActions: CreatePluginActions = (
     },
     messageCallbacks,
     onHeightChange,
-    setLoaded: () => {
+    initialize: () => {
       return new Promise((resolve) => {
         const callbackId = pushCallback('loaded', (message) =>
           resolve(pluginStateFromStateChangeMessage(message)),

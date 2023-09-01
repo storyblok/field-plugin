@@ -1,7 +1,7 @@
-import { FunctionComponent, useEffect, useState, ComponentType } from 'react'
+import { ComponentType, FunctionComponent, useEffect, useState } from 'react'
 import {
-  type FieldPluginResponse,
   createFieldPlugin,
+  type FieldPluginResponse,
 } from '@storyblok/field-plugin'
 import { FieldPluginContext } from './FieldPluginContext'
 import { ReactNode } from 'react'
