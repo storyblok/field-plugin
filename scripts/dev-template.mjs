@@ -18,6 +18,11 @@ import fs from 'fs/promises'
 import path from 'path'
 
 const template = process.argv[3]
+if (!template) {
+  console.error('[ERROR] This script requires a template name as an argument.')
+  console.error('  > e.g. ./scripts/dev-template.mjs react')
+  process.exit(1)
+}
 const templatePath = `packages/cli/templates/${template}`
 const newConfigPath = `${templatePath}/node_modules/.${template}-vite.config.ts`
 await $`cp ${templatePath}/vite.config.ts ${newConfigPath}`
