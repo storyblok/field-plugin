@@ -1,6 +1,5 @@
-#!/usr/bin/env zx
+#!/usr/bin/env -S node_modules/.bin/tsx
 /* eslint-disable no-undef */
-
 import { $, which } from 'zx'
 import prompts from 'prompts'
 import semver from 'semver'
