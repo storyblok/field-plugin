@@ -3,8 +3,8 @@
 
 /* eslint-disable no-undef */
 import { $, which } from 'zx'
-import prompts from 'prompts'
-import semver from 'semver'
+import { betterPrompts } from '../packages/cli/src/utils'
+import semver, { type ReleaseType } from 'semver'
 import { readFileSync } from 'fs'
 import { bold, cyan, green, red } from 'kleur/colors'
 
@@ -34,6 +34,8 @@ const COMMIT_SCOPE = {
   '@storyblok/field-plugin': 'lib',
   '@storyblok/field-plugin-cli': 'cli',
 }
+
+type PackageName = keyof typeof COMMIT_SCOPE
 
 // Check if `gh` exists
 if (!(await which('gh', { nothrow: true }))) {
@@ -72,7 +74,7 @@ if (currentBranch.toString().trim() !== 'main') {
 const isWorkingDirectoryClean =
   (await $`git status --porcelain`.quiet()).toString().trim() === ''
 if (!isWorkingDirectoryClean) {
-  const { proceed } = await prompts({
+  const { proceed } = await betterPrompts<{ proceed: boolean }>({
     type: 'confirm',
     name: 'proceed',
     message:
@@ -85,26 +87,24 @@ if (!isWorkingDirectoryClean) {
 }
 
 // Select which package to deploy ('field-plugin' | 'cli')
-const packageFolder = (
-  await prompts(
-    {
-      type: 'select',
-      name: 'packageFolder',
-      message: 'What to deploy?',
-      choices: PACKAGE_FOLDERS,
+const { packageFolder } = await betterPrompts<{ packageFolder: PackageFolder }>(
+  {
+    type: 'select',
+    name: 'packageFolder',
+    message: 'What to deploy?',
+    choices: PACKAGE_FOLDERS,
+  },
+  {
+    onCancel: () => {
+      process.exit(1)
     },
-    {
-      onCancel: () => {
-        process.exit(1)
-      },
-    },
-  )
-).packageFolder as PackageFolder
+  },
+)
 
 // Get the current version
 const { version: currentVersion, name: packageName } = JSON.parse(
   readFileSync(`packages/${packageFolder}/package.json`).toString(),
-)
+) as { version: string; name: PackageName }
 
 print('')
 print(bold(cyan('💡 Commits since last release')))
@@ -122,12 +122,12 @@ const prerelease = semver.prerelease(currentVersion)
 let nextVersion: string
 if (prerelease && typeof prerelease[0] === 'string') {
   // e.g. prerelease === ['alpha', 8]
-  const result = await prompts(
+  const result = await betterPrompts<{ nextVersion: string }>(
     {
       type: 'text',
       name: 'nextVersion',
       message: 'Next version?',
-      initial: semver.inc(currentVersion, 'prerelease', prerelease[0]) || '',
+      initial: semver.inc(currentVersion, 'prerelease', prerelease[0]) ?? '',
     },
     {
       onCancel: () => {
@@ -137,7 +137,9 @@ if (prerelease && typeof prerelease[0] === 'string') {
   )
   nextVersion = result.nextVersion
 } else {
-  const { incrementLevel } = await prompts(
+  const { incrementLevel } = await betterPrompts<{
+    incrementLevel: ReleaseType
+  }>(
     {
       type: 'select',
       name: 'incrementLevel',
@@ -154,12 +156,12 @@ if (prerelease && typeof prerelease[0] === 'string') {
     },
   )
 
-  const result = await prompts(
+  const result = await betterPrompts<{ nextVersion: string }>(
     {
       type: 'text',
       name: 'nextVersion',
       message: 'Next version?',
-      initial: semver.inc(currentVersion, incrementLevel) || '',
+      initial: semver.inc(currentVersion, incrementLevel) ?? '',
     },
     {
       onCancel: () => {
@@ -171,7 +173,9 @@ if (prerelease && typeof prerelease[0] === 'string') {
 }
 
 if (packageFolder === 'cli') {
-  const { updateLibraryVersion } = await prompts({
+  const { updateLibraryVersion } = await betterPrompts<{
+    updateLibraryVersion: boolean
+  }>({
     type: 'confirm',
     name: 'updateLibraryVersion',
     message:
