@@ -5,18 +5,23 @@ import {
   IconButton,
   InputLabel,
   OutlinedInput,
+  SxProps,
   Tooltip,
 } from '@mui/material'
 import { RefreshIcon } from '@storyblok/mui'
 
 export const UrlView: FunctionComponent<{
+  sx?: SxProps
   url: string
   setUrl: (url: string) => void
   onRefresh: () => void
   error: boolean
   placeholder: string
 }> = (props) => (
-  <FormControl error={props.error}>
+  <FormControl
+    sx={props.sx}
+    error={props.error}
+  >
     <InputLabel
       htmlFor="field-plugin-url"
       shrink
