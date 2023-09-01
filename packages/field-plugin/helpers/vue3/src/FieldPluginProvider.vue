@@ -56,7 +56,7 @@ createFieldPlugin((newState) => {
     plugin.actions = {
       ...newState.actions,
       setContent: (newContent: unknown) => {
-        newState.actions.setContent(convertToRaw(newContent))
+        return newState.actions.setContent(convertToRaw(newContent))
       },
     }
   } else {
@@ -70,13 +70,7 @@ provide('field-plugin', plugin)
 </script>
 
 <template>
-  <slot
-    name="loading"
-    v-if="plugin.type === 'loading'"
-  ></slot>
-  <slot
-    name="error"
-    v-if="plugin.type === 'error'"
-  ></slot>
+  <slot name="loading" v-if="plugin.type === 'loading'"></slot>
+  <slot name="error" v-if="plugin.type === 'error'"></slot>
   <slot v-if="plugin.type === 'loaded'"></slot>
 </template>
