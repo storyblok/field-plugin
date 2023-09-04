@@ -7,16 +7,21 @@ import {
   useState,
 } from 'react'
 import {
+  AssetModalChangeMessage,
   AssetSelectedMessage,
   ContextRequestMessage,
   FieldPluginData,
   FieldPluginSchema,
+  HeightChangeMessage,
+  LoadedMessage,
+  ModalChangeMessage,
   originFromPluginParams,
   PluginLoadedMessage,
   recordFromFieldPluginOptions,
   StateChangedMessage,
   StoryData,
   urlSearchParamsFromPluginUrlParams,
+  ValueChangeMessage,
 } from '@storyblok/field-plugin'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -79,15 +84,15 @@ const useSandbox = (
       return undefined
     }
     // Omitting query parameters from the user-provided URL in a safe way
-    return `${fieldPluginURL.origin}${
-      fieldPluginURL.pathname
-    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+    return `${fieldPluginURL.origin}${fieldPluginURL.pathname
+      }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
   const [iframeKey, setIframeKey] = useState(0)
 
   const [story] = useState<StoryData>(initialStory)
 
   // TODO replace with useReducer
+  const [subscribeState, setSubscribeState] = useState<boolean>(false)
   const [isModalOpen, setModalOpen] = useState(false)
   const [height, setHeight] = useState(initialHeight)
   const [fullHeight, setFullHeight] = useState(false)
@@ -97,12 +102,13 @@ const useSandbox = (
   })
   const [content, setContent] = useState<unknown>(initialContent)
   const [language, setLanguage] = useState<string>('')
+  const [stateChangedCallbackId, setStateChangedCallbackId] = useState<string>()
 
-  const loadedData = useMemo<StateChangedMessage>(
+  const stateChangedData = useMemo<StateChangedMessage>(
     () => ({
       model: content,
       schema: schema,
-      action: 'loaded',
+      action: 'state-changed',
       uid,
       blockId: undefined,
       language,
@@ -110,6 +116,8 @@ const useSandbox = (
       story,
       storyId: undefined,
       token: null,
+      isModalOpen: false,
+      callbackId: stateChangedCallbackId,
     }),
     [uid, content, language, schema, story],
   )
@@ -132,12 +140,26 @@ const useSandbox = (
     [onError, fieldPluginURL],
   )
 
+  const dispatchLoadedChanged = useCallback(
+    (message: LoadedMessage) => {
+      postToPlugin(message)
+    },
+    [postToPlugin],
+  )
   const dispatchStateChanged = useCallback(
     (message: StateChangedMessage) => {
       postToPlugin(message)
     },
     [postToPlugin],
   )
+  useEffect(() => {
+    if (!subscribeState) {
+      return
+    }
+
+    dispatchStateChanged(stateChangedData)
+  }, [dispatchStateChanged, stateChangedData])
+
   const dispatchContextRequest = useCallback(
     (message: ContextRequestMessage) => {
       postToPlugin(message)
@@ -152,12 +174,40 @@ const useSandbox = (
   )
 
   // Listen to messages from field type iframe
+  const onModalChange = useCallback(
+    (message: ModalChangeMessage) => {
+      setModalOpen(message.status)
+      setStateChangedCallbackId(message.callbackId)
+    },
+    [setModalOpen, setStateChangedCallbackId],
+  )
+
+  const onHeightChange = useCallback(
+    (message: HeightChangeMessage) => {
+      setHeight(message.height)
+    },
+    [setHeight],
+  )
+
   const onLoaded = useCallback(
     (message: PluginLoadedMessage) => {
+      setSubscribeState(message.subscribeState)
       setFullHeight(Boolean(message.fullHeight))
-      dispatchStateChanged(loadedData)
+      dispatchLoadedChanged({
+        ...stateChangedData,
+        action: 'loaded',
+        callbackId: message.callbackId,
+      })
     },
-    [dispatchStateChanged, loadedData],
+    [dispatchLoadedChanged, stateChangedData],
+  )
+
+  const onUpdate = useCallback(
+    (message: ValueChangeMessage) => {
+      setContent(message.model)
+      setStateChangedCallbackId(message.callbackId)
+    },
+    [setContent, setStateChangedCallbackId],
   )
 
   const onContextRequested = useCallback(
@@ -165,17 +215,17 @@ const useSandbox = (
       dispatchContextRequest({
         uid,
         action: 'get-context',
-        story: loadedData.story,
+        story,
       }),
-    [uid, dispatchContextRequest, loadedData.story],
+    [uid, dispatchContextRequest, story],
   )
   const onAssetSelected = useCallback(
-    (callbackId: string, field: string) => {
+    (message: AssetModalChangeMessage) => {
       dispatchAssetSelected({
         uid,
-        field,
+        field: message.field,
         action: 'asset-selected',
-        callbackId,
+        callbackId: message.callbackId,
         filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
       })
     },
@@ -186,10 +236,10 @@ const useSandbox = (
     () =>
       createContainerMessageListener(
         {
-          setContent,
+          setContent: onUpdate,
           setPluginReady: onLoaded,
-          setHeight,
-          setModalOpen: setModalOpen,
+          setHeight: onHeightChange,
+          setModalOpen: onModalChange,
           requestContext: onContextRequested,
           selectAsset: onAssetSelected,
         },

@@ -1,4 +1,8 @@
 import {
+  AssetModalChangeMessage,
+  ContextRequestMessage,
+  GetContextMessage,
+  HeightChangeMessage,
   isAssetModalChangeMessage,
   isGetContextMessage,
   isHeightChangeMessage,
@@ -6,19 +10,18 @@ import {
   isModalChangeMessage,
   isPluginLoadedMessage,
   isValueChangeMessage,
+  ModalChangeMessage,
   PluginLoadedMessage,
-  RequestContext,
-  SetContent,
-  SetModalOpen,
+  ValueChangeMessage,
 } from '@storyblok/field-plugin'
 
 type ContainerActions = {
-  setHeight: (height: number) => void
-  setContent: SetContent
-  setModalOpen: SetModalOpen
+  setHeight: (message: HeightChangeMessage) => void
+  setContent: (message: ValueChangeMessage) => void
+  setModalOpen: (message: ModalChangeMessage) => void
   setPluginReady: (message: PluginLoadedMessage) => void
-  requestContext: RequestContext
-  selectAsset: (callbackId: string, field: string) => void
+  requestContext: (message: GetContextMessage) => void
+  selectAsset: (message: AssetModalChangeMessage) => void
 }
 
 export type CreateContainerListener = (
@@ -47,17 +50,17 @@ export const createContainerMessageListener: CreateContainerListener = (
     }
 
     if (isValueChangeMessage(message)) {
-      eventHandlers.setContent(message.model)
+      eventHandlers.setContent(message)
     } else if (isPluginLoadedMessage(message)) {
       eventHandlers.setPluginReady(message)
     } else if (isModalChangeMessage(message)) {
-      eventHandlers.setModalOpen(message.status)
+      eventHandlers.setModalOpen(message)
     } else if (isHeightChangeMessage(message)) {
-      eventHandlers.setHeight(message.height)
+      eventHandlers.setHeight(message)
     } else if (isAssetModalChangeMessage(message)) {
-      eventHandlers.selectAsset(message.callbackId, message.field ?? '')
+      eventHandlers.selectAsset(message)
     } else if (isGetContextMessage(message)) {
-      eventHandlers.requestContext()
+      eventHandlers.requestContext(message)
     } else {
       console.warn(
         `Container received unknown message from plugin: ${JSON.stringify(

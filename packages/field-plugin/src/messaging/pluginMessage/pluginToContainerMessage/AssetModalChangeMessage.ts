@@ -1,8 +1,12 @@
 import { isMessageToContainer, MessageToContainer } from './MessageToContainer'
 import { hasKey } from '../../../utils'
 
-export type AssetModalChangeMessage = MessageToContainer<'showAssetModal'> & {
+export type AssetModalChangeMessage = Omit<
+  MessageToContainer<'showAssetModal'>,
+  'callbackId'
+> & {
   field?: string
+  callbackId: string // required unlike others
 }
 
 export const isAssetModalChangeMessage = (
