@@ -1,23 +1,25 @@
-#!/usr/bin/env zx
-/* eslint-disable no-undef */
+#!/usr/bin/env -S node_modules/.bin/tsx
+// https://github.com/google/zx/issues/467#issuecomment-1577838056
 
+/* eslint-disable no-undef */
 import { $, which } from 'zx'
-import prompts from 'prompts'
-import semver from 'semver'
+import { betterPrompts } from '../packages/cli/src/utils'
+import semver, { type ReleaseType } from 'semver'
 import { readFileSync } from 'fs'
 import { bold, cyan, green, red } from 'kleur/colors'
 
-const print = (...args) => {
+const print = (...args: string[]) => {
   // eslint-disable-next-line no-undef, no-console
   console.log(...args)
 }
 
-const exit = (code) => {
+const exit = (code: number) => {
   // eslint-disable-next-line no-undef
   process.exit(code)
 }
 
-const PACKAGE_FOLDERS = [
+type PackageFolder = 'field-plugin' | 'cli'
+const PACKAGE_FOLDERS: Array<{ title: string; value: PackageFolder }> = [
   {
     title: 'Library',
     value: 'field-plugin',
@@ -32,6 +34,8 @@ const COMMIT_SCOPE = {
   '@storyblok/field-plugin': 'lib',
   '@storyblok/field-plugin-cli': 'cli',
 }
+
+type PackageName = keyof typeof COMMIT_SCOPE
 
 // Check if `gh` exists
 if (!(await which('gh', { nothrow: true }))) {
@@ -70,7 +74,7 @@ if (currentBranch.toString().trim() !== 'main') {
 const isWorkingDirectoryClean =
   (await $`git status --porcelain`.quiet()).toString().trim() === ''
 if (!isWorkingDirectoryClean) {
-  const { proceed } = await prompts({
+  const { proceed } = await betterPrompts<{ proceed: boolean }>({
     type: 'confirm',
     name: 'proceed',
     message:
@@ -83,7 +87,7 @@ if (!isWorkingDirectoryClean) {
 }
 
 // Select which package to deploy ('field-plugin' | 'cli')
-const { packageFolder } = await prompts(
+const { packageFolder } = await betterPrompts<{ packageFolder: PackageFolder }>(
   {
     type: 'select',
     name: 'packageFolder',
@@ -100,7 +104,7 @@ const { packageFolder } = await prompts(
 // Get the current version
 const { version: currentVersion, name: packageName } = JSON.parse(
   readFileSync(`packages/${packageFolder}/package.json`).toString(),
-)
+) as { version: string; name: PackageName }
 
 print('')
 print(bold(cyan('💡 Commits since last release')))
@@ -115,15 +119,15 @@ const prerelease = semver.prerelease(currentVersion)
 
 // Get the next version
 // eslint-disable-next-line functional/no-let
-let nextVersion
-if (prerelease) {
+let nextVersion: string
+if (prerelease && typeof prerelease[0] === 'string') {
   // e.g. prerelease === ['alpha', 8]
-  const result = await prompts(
+  const result = await betterPrompts<{ nextVersion: string }>(
     {
       type: 'text',
       name: 'nextVersion',
       message: 'Next version?',
-      initial: semver.inc(currentVersion, 'prerelease', prerelease[0]),
+      initial: semver.inc(currentVersion, 'prerelease', prerelease[0]) ?? '',
     },
     {
       onCancel: () => {
@@ -133,12 +137,17 @@ if (prerelease) {
   )
   nextVersion = result.nextVersion
 } else {
-  const { incrementLevel } = await prompts(
+  const { incrementLevel } = await betterPrompts<{
+    incrementLevel: ReleaseType
+  }>(
     {
       type: 'select',
       name: 'incrementLevel',
       message: 'Increment Level?',
-      choices: [{ value: 'patch' }, { value: 'minor' }, { value: 'major' }],
+      choices: ['patch', 'minor', 'major'].map((value) => ({
+        title: value,
+        value,
+      })),
     },
     {
       onCancel: () => {
@@ -147,12 +156,12 @@ if (prerelease) {
     },
   )
 
-  const result = await prompts(
+  const result = await betterPrompts<{ nextVersion: string }>(
     {
       type: 'text',
       name: 'nextVersion',
       message: 'Next version?',
-      initial: semver.inc(currentVersion, incrementLevel),
+      initial: semver.inc(currentVersion, incrementLevel) ?? '',
     },
     {
       onCancel: () => {
@@ -161,6 +170,21 @@ if (prerelease) {
     },
   )
   nextVersion = result.nextVersion
+}
+
+if (packageFolder === 'cli') {
+  const { updateLibraryVersion } = await betterPrompts<{
+    updateLibraryVersion: boolean
+  }>({
+    type: 'confirm',
+    name: 'updateLibraryVersion',
+    message:
+      'Update the `@storyblok/field-plugin` version in all the templates?',
+    initial: true,
+  })
+  if (updateLibraryVersion) {
+    await $`./scripts/update-templates.mjs`
+  }
 }
 
 // Check out to a release branch
