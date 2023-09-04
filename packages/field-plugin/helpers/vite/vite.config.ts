@@ -1,4 +1,4 @@
-import { PluginOption, defineConfig } from 'vite'
+import { defineConfig, PluginOption } from 'vite'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
 

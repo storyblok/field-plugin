@@ -5,7 +5,5 @@
     // ensure that nobody can accidentally use this config for a build
     "noEmit": true
   },
-  "include": [
-    "packages/*/vite.config.ts"
-  ]
+  "include": ["scripts/*.ts", "packages/*/vite.config.ts"]
 }
