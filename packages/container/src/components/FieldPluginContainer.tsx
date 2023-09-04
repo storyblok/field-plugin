@@ -191,7 +191,7 @@ const useSandbox = (
 
   const onLoaded = useCallback(
     (message: PluginLoadedMessage) => {
-      setSubscribeState(message.subscribeState)
+      setSubscribeState(Boolean(message.subscribeState))
       setFullHeight(Boolean(message.fullHeight))
       dispatchLoadedChanged({
         ...stateChangedData,
