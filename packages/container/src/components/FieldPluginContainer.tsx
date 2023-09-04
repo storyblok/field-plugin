@@ -116,10 +116,10 @@ const useSandbox = (
       story,
       storyId: undefined,
       token: null,
-      isModalOpen: false,
+      isModalOpen,
       callbackId: stateChangedCallbackId,
     }),
-    [uid, content, language, schema, story],
+    [uid, content, language, schema, story, isModalOpen],
   )
 
   const postToPlugin = useCallback(
