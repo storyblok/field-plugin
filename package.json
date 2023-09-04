@@ -47,13 +47,13 @@
     "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
     "dev:container": "yarn workspace container dev",
-    "dev:react": "yarn workspace field-plugin-react-template dev",
-    "dev:js": "yarn workspace field-plugin-js-template dev",
-    "dev:vue2": "yarn workspace field-plugin-vue2-template dev",
-    "dev:vue3": "yarn workspace field-plugin-vue3-template dev",
+    "dev:react": "./scripts/dev-template.mjs react",
+    "dev:js": "./scripts/dev-template.mjs js",
+    "dev:vue2": "./scripts/dev-template.mjs vue2",
+    "dev:vue3": "./scripts/dev-template.mjs vue3",
     "dev:demo": "yarn workspace demo dev",
     "dev:lib": "yarn workspace @storyblok/field-plugin dev",
-    "bump-version": "./scripts/bump-version.mjs"
+    "bump-version": "./scripts/bump-version.ts"
   },
   "devDependencies": {
     "@storyblok/mui": "0.0.19-alpha",
@@ -72,6 +72,7 @@
     "prompts": "2.4.2",
     "semver": "7.3.8",
     "ts-jest": "29.0.1",
+    "tsx": "3.12.7",
     "typescript": "^5.0.4",
     "vite": "3.2.3",
     "vite-plugin-dts": "1.7.1",
