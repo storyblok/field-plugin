@@ -5,9 +5,10 @@ import {
   StateChangedMessage,
 } from '../../messaging'
 
-export const pluginStateFromStateChangeMessage = (
+export const pluginStateFromStateChangeMessage = <Content>(
   message: LoadedMessage | StateChangedMessage,
-): FieldPluginData => ({
+  parseContent: (content: unknown) => Content,
+): FieldPluginData<Content> => ({
   spaceId: message.spaceId ?? undefined,
   story: message.story ?? undefined,
   storyId: message.storyId ?? undefined,
@@ -16,6 +17,6 @@ export const pluginStateFromStateChangeMessage = (
   token: message.token ?? undefined,
   options: recordFromFieldPluginOptions(message.schema.options),
   uid: message.uid ?? undefined,
-  content: message.model ?? undefined,
+  content: parseContent(message.model),
   isModalOpen: message.isModalOpen,
 })
