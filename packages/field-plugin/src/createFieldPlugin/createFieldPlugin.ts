@@ -1,20 +1,24 @@
 import { createPluginActions } from './createPluginActions'
 import { createHeightChangeListener } from './createHeightChangeListener'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
-import { pluginLoadedMessage, pluginUrlParamsFromUrl } from '../messaging'
+import { pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
 import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 import { sandboxUrl } from './sandboxUrl'
 import { isCloneable } from '../utils/isCloneable'
 
-export type CreateFieldPlugin = (
-  onUpdate: (state: FieldPluginResponse) => void,
-) => () => void
+export type CreateFieldPlugin = <Content = unknown>(options: {
+  onUpdateState: (state: FieldPluginResponse<Content>) => void
+  parseContent: (content: unknown) => Content
+}) => () => void
 
 /**
  * @returns cleanup function for side effects
  */
-export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
+export const createFieldPlugin: CreateFieldPlugin = ({
+  onUpdateState,
+  parseContent,
+}) => {
   const isEmbedded = window.parent !== window
 
   if (!isEmbedded) {
@@ -55,10 +59,10 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
       // eslint-disable-next-line functional/no-throw-statement
       throw new Error(
         'The argument could not be cloned. ' +
-          'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +
-          'Does your object contain functions, getters, setters, proxies, or any other value that is not cloneable? Did you try to pass a reactive object? ' +
-          'For a full description on the structuredClone algorithm, see: ' +
-          'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm',
+        'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +
+        'Does your object contain functions, getters, setters, proxies, or any other value that is not cloneable? Did you try to pass a reactive object? ' +
+        'For a full description on the structuredClone algorithm, see: ' +
+        'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm',
         {
           cause: err,
         },
@@ -69,12 +73,17 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
   const { actions, messageCallbacks, onHeightChange, initialize } =
-    createPluginActions(uid, postToContainer, (data) => {
-      onUpdateState({
-        type: 'loaded',
-        data,
-        actions,
-      })
+    createPluginActions({
+      uid,
+      postToContainer,
+      onUpdateState: (data) => {
+        onUpdateState({
+          type: 'loaded',
+          data,
+          actions,
+        })
+      },
+      parseContent,
     })
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)

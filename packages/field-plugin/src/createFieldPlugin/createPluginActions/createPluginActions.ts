@@ -19,13 +19,14 @@ import { FieldPluginActions, Initialize } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
 import { callbackQueue } from './callbackQueue'
 
-export type CreatePluginActions = (
-  uid: string,
-  postToContainer: (message: unknown) => void,
-  onUpdateState: (state: FieldPluginData) => void,
-) => {
+export type CreatePluginActions = <Content>(options: {
+  uid: string
+  postToContainer: (message: unknown) => void
+  onUpdateState: (state: FieldPluginData<Content>) => void
+  parseContent: (content: unknown) => Content
+}) => {
   // These functions are to be called by the field plugin when the user performs actions in the UI
-  actions: FieldPluginActions
+  actions: FieldPluginActions<Content>
   // These functions are called when the plugin receives messages from the container
   messageCallbacks: PluginMessageCallbacks
   // This function is called whenever the height changes
@@ -34,20 +35,21 @@ export type CreatePluginActions = (
   initialize: Initialize
 }
 
-export const createPluginActions: CreatePluginActions = (
+export const createPluginActions: CreatePluginActions = ({
   uid,
   postToContainer,
   onUpdateState,
-) => {
+  parseContent,
+}) => {
   const { pushCallback, popCallback } = callbackQueue()
 
   const onStateChange: OnStateChangeMessage = (data) => {
     popCallback('stateChanged', data.callbackId)?.(data)
-    onUpdateState(pluginStateFromStateChangeMessage(data))
+    onUpdateState(pluginStateFromStateChangeMessage(data, parseContent))
   }
   const onLoaded: OnLoadedMessage = (data) => {
     popCallback('loaded', data.callbackId)?.(data)
-    onUpdateState(pluginStateFromStateChangeMessage(data))
+    onUpdateState(pluginStateFromStateChangeMessage(data, parseContent))
   }
   const onContextRequest: OnContextRequestMessage = (data) => {
     popCallback('context', data.callbackId)?.(data)
@@ -59,8 +61,7 @@ export const createPluginActions: CreatePluginActions = (
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
     console.debug(
-      `Plugin received a message from container of an unknown action type "${
-        data.action
+      `Plugin received a message from container of an unknown action type "${data.action
       }". You may need to upgrade the version of the @storyblok/field-plugin library. Full message: ${JSON.stringify(
         data,
       )}`,
