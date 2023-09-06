@@ -7,10 +7,14 @@ import { createPluginMessageListener } from './createPluginActions/createPluginM
 import { sandboxUrl } from './sandboxUrl'
 import { isCloneable } from '../utils/isCloneable'
 
-export type CreateFieldPlugin = <Content = unknown>(options: {
+export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
   parseContent: (content: unknown) => Content
-}) => () => void
+}
+
+export type CreateFieldPlugin = <Content = unknown>(
+  options: CreateFieldPluginOptions<Content>,
+) => () => void
 
 /**
  * @returns cleanup function for side effects

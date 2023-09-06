@@ -2,7 +2,7 @@ import { inject } from 'vue'
 import { type FieldPluginResponse } from '@storyblok/field-plugin'
 
 export const useFieldPlugin = () => {
-  const plugin = inject<FieldPluginResponse>(
+  const plugin = inject<FieldPluginResponse<unknown>>(
     'field-plugin',
     () => {
       throw new Error(

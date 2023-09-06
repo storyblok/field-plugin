@@ -3,10 +3,10 @@ import Counter from './Counter'
 import ModalToggle from './ModalToggle'
 import AssetSelector from './AssetSelector'
 import { FunctionComponent } from 'react'
-import { useFieldPlugin } from '@storyblok/field-plugin/react'
+import { useMyFieldPlugin } from './useMyFieldPlugin'
 
 const FieldPlugin: FunctionComponent = () => {
-  const { data, actions } = useFieldPlugin()
+  const { data, actions } = useMyFieldPlugin()
 
   const closeModal = () => {
     actions.setModalOpen(false)
