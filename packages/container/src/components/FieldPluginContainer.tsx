@@ -84,8 +84,9 @@ const useSandbox = (
       return undefined
     }
     // Omitting query parameters from the user-provided URL in a safe way
-    return `${fieldPluginURL.origin}${fieldPluginURL.pathname
-      }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+    return `${fieldPluginURL.origin}${
+      fieldPluginURL.pathname
+    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
   const [iframeKey, setIframeKey] = useState(0)
 
@@ -119,7 +120,15 @@ const useSandbox = (
       isModalOpen,
       callbackId: stateChangedCallbackId,
     }),
-    [uid, content, language, schema, story, isModalOpen],
+    [
+      uid,
+      content,
+      language,
+      schema,
+      story,
+      isModalOpen,
+      stateChangedCallbackId,
+    ],
   )
 
   const postToPlugin = useCallback(
@@ -158,7 +167,7 @@ const useSandbox = (
     }
 
     dispatchStateChanged(stateChangedData)
-  }, [dispatchStateChanged, stateChangedData])
+  }, [dispatchStateChanged, subscribeState, stateChangedData])
 
   const dispatchContextRequest = useCallback(
     (message: ContextRequestMessage) => {
@@ -257,6 +266,9 @@ const useSandbox = (
       setModalOpen,
       onAssetSelected,
       onContextRequested,
+      onHeightChange,
+      onModalChange,
+      onUpdate,
       fieldPluginURL,
     ],
   )

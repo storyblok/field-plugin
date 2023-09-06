@@ -39,11 +39,6 @@ export const createPluginActions: CreatePluginActions = (
   postToContainer,
   onUpdateState,
 ) => {
-  // Tracks the full state of the plugin.
-  //  Because the container doesn't send the full state in its messages, we need to track it ourselves.
-  //  isModal and height is not included in the messages to the children and must thus be tracked here.
-  //  In future improved versions of the plugin API, this should not be needed.
-
   const { pushCallback, popCallback } = callbackQueue()
 
   const onStateChange: OnStateChangeMessage = (data) => {

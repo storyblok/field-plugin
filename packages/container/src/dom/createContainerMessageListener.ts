@@ -1,6 +1,5 @@
 import {
   AssetModalChangeMessage,
-  ContextRequestMessage,
   GetContextMessage,
   HeightChangeMessage,
   isAssetModalChangeMessage,
