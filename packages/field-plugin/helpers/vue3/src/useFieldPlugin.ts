@@ -12,6 +12,7 @@ export const useFieldPlugin = () => {
     true,
   )
 
+  console.log(plugin)
   if (plugin.type !== 'loaded') {
     throw new Error(
       'The plugin is not loaded, yet `useFieldPlugin()` was invoked. Ensure that the component that invoked `useFieldPlugin()` is wrapped within `<FieldPluginProvider>`, and that it is placed within the default slot.',
