@@ -61,7 +61,8 @@ export const createPluginActions: CreatePluginActions = ({
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
     console.debug(
-      `Plugin received a message from container of an unknown action type "${data.action
+      `Plugin received a message from container of an unknown action type "${
+        data.action
       }". You may need to upgrade the version of the @storyblok/field-plugin library. Full message: ${JSON.stringify(
         data,
       )}`,
@@ -85,7 +86,7 @@ export const createPluginActions: CreatePluginActions = ({
       setContent: (content) => {
         return new Promise((resolve) => {
           const callbackId = pushCallback('stateChanged', (message) =>
-            resolve(pluginStateFromStateChangeMessage(message)),
+            resolve(pluginStateFromStateChangeMessage(message, parseContent)),
           )
           postToContainer(
             valueChangeMessage({ uid, callbackId, model: content }),
@@ -95,7 +96,7 @@ export const createPluginActions: CreatePluginActions = ({
       setModalOpen: (isModalOpen) => {
         return new Promise((resolve) => {
           const callbackId = pushCallback('stateChanged', (message) =>
-            resolve(pluginStateFromStateChangeMessage(message)),
+            resolve(pluginStateFromStateChangeMessage(message, parseContent)),
           )
           postToContainer(
             modalChangeMessage({ uid, callbackId, status: isModalOpen }),
@@ -124,7 +125,7 @@ export const createPluginActions: CreatePluginActions = ({
     initialize: () => {
       return new Promise((resolve) => {
         const callbackId = pushCallback('loaded', (message) =>
-          resolve(pluginStateFromStateChangeMessage(message)),
+          resolve(pluginStateFromStateChangeMessage(message, parseContent)),
         )
         // Request the initial state from the Visual Editor.
         postToContainer(pluginLoadedMessage({ uid, callbackId }))
