@@ -1,12 +1,9 @@
 import { FunctionComponent, useState } from 'react'
-import { useFieldPlugin } from '@storyblok/field-plugin/react'
-import { Asset } from '@storyblok/field-plugin'
+import type { Asset, SelectAsset } from '@storyblok/field-plugin'
 
-const AssetSelector: FunctionComponent = () => {
-  const {
-    actions: { selectAsset },
-  } = useFieldPlugin()
-
+const AssetSelector: FunctionComponent<{ selectAsset: SelectAsset }> = ({
+  selectAsset,
+}) => {
   const [asset, setAsset] = useState<Asset | undefined>()
 
   const handleSelectAsset = async () => {
