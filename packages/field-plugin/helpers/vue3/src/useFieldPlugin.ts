@@ -1,23 +1,43 @@
-import { inject } from 'vue'
-import { type FieldPluginResponse } from '@storyblok/field-plugin'
+import {
+  createFieldPlugin,
+  CreateFieldPluginOptions,
+  FieldPluginResponse,
+} from '@storyblok/field-plugin'
+import { onMounted, reactive, UnwrapRef } from 'vue'
 
-export const useFieldPlugin = () => {
-  const plugin = inject<FieldPluginResponse<unknown>>(
-    'field-plugin',
-    () => {
-      throw new Error(
-        `You need to wrap your app with \`<FieldPluginProvider>\` component.`,
-      )
-    },
-    true,
-  )
+export const useFieldPlugin = <Content>({
+  parseContent,
+}: Omit<CreateFieldPluginOptions<Content>, 'onUpdateState'>): UnwrapRef<
+  FieldPluginResponse<Content>
+> => {
+  const plugin = reactive<FieldPluginResponse<Content>>({
+    type: 'loading',
+  })
 
-  console.log(plugin)
-  if (plugin.type !== 'loaded') {
-    throw new Error(
-      'The plugin is not loaded, yet `useFieldPlugin()` was invoked. Ensure that the component that invoked `useFieldPlugin()` is wrapped within `<FieldPluginProvider>`, and that it is placed within the default slot.',
-    )
-  }
+  onMounted(() => {
+    createFieldPlugin<Content>({
+      onUpdateState: (state) => {
+        if (state.type === 'error') {
+          // plugin.type = 'error'
+          // plugin.error = state.error
+          Object.assign(plugin, {
+            type: 'error',
+            error: state.error,
+          })
+        } else if (state.type === 'loaded') {
+          Object.assign(plugin, {
+            type: 'loaded',
+            data: state.data,
+            actions: state.actions,
+          })
+          // plugin.type = 'loaded'
+          // plugin.data = state.data
+          // plugin.actions = state.actions
+        }
+      },
+      parseContent,
+    })
+  })
 
   return plugin
 }

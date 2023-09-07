@@ -2,7 +2,10 @@
 import { computed } from 'vue'
 import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
-const plugin = useFieldPlugin()
+const plugin = useFieldPlugin({
+  parseContent: (content: unknown) =>
+    typeof content === 'number' ? content : 0,
+})
 
 const handleIncrement = () => {
   const content = plugin.data.content
