@@ -5,7 +5,7 @@ import {
 } from '@storyblok/field-plugin'
 import { useEffect, useState } from 'react'
 
-export const useFieldPlugin = <Content = any>({
+export const useFieldPlugin = <Content>({
   parseContent,
 }: Omit<
   CreateFieldPluginOptions<Content>,
