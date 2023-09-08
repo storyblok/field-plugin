@@ -6,7 +6,9 @@ import { useFieldPlugin } from '@storyblok/field-plugin/react'
 import { ModalView } from './ModalView'
 import { NonModalView } from './NonModalView'
 
-type Content = unknown
+const parseContent = (content: unknown) =>
+  typeof content === 'number' ? content : 0
+type Content = ReturnType<typeof parseContent>
 
 export type PluginComponent = FunctionComponent<{
   data: FieldPluginData<Content>
@@ -15,7 +17,7 @@ export type PluginComponent = FunctionComponent<{
 
 export const FieldPluginDemo: FunctionComponent = () => {
   const { type, data, actions } = useFieldPlugin({
-    parseContent: (content: Content) => content,
+    parseContent,
   })
 
   if (type === 'loading') {
