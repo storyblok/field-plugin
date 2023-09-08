@@ -31,18 +31,30 @@ const wait = async (ms: number) => {
   })
 }
 
+const parseContent = (content: unknown) => content
+
 describe('createPluginActions', () => {
   describe('initial call', () => {
     it('does not send any message to the container', () => {
       const { uid, postToContainer, onUpdateState } = mock()
-      createPluginActions(uid, postToContainer, onUpdateState)
+      createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       expect(postToContainer).not.toHaveBeenCalled()
     })
     it('updates the state when received from container', () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         messageCallbacks: { onLoaded },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       const randomString = '3490ruieo4jf984ej89q32jd0i2k3w09k3902'
       onLoaded({
         action: 'loaded',
@@ -69,7 +81,12 @@ describe('createPluginActions', () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         actions: { setModalOpen },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       setModalOpen(false)
 
       expect(postToContainer).toHaveBeenLastCalledWith(
@@ -89,7 +106,12 @@ describe('createPluginActions', () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         actions: { setModalOpen },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       setModalOpen(false)
 
       expect(postToContainer).toHaveBeenCalledWith(
@@ -113,7 +135,12 @@ describe('createPluginActions', () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         actions: { setContent },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       const content = '409fjk340wo9jkc0954ij0943iu09c43*&(YT-0c43'
       setContent(content)
       expect(postToContainer).toHaveBeenLastCalledWith(
@@ -126,7 +153,12 @@ describe('createPluginActions', () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         actions: { setContent },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       const content = '0932ui2foiuerhjv98453jeh09c34jwk-0c43'
       setContent(content)
       expect(postToContainer).toHaveBeenLastCalledWith(
@@ -142,7 +174,12 @@ describe('createPluginActions', () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         actions: { requestContext },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       requestContext()
       expect(postToContainer).toHaveBeenLastCalledWith(
         expect.objectContaining({
@@ -156,7 +193,12 @@ describe('createPluginActions', () => {
       const { uid, postToContainer, onUpdateState } = mock()
       const {
         actions: { selectAsset },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       selectAsset()
       expect(postToContainer).toHaveBeenLastCalledWith(
@@ -170,7 +212,12 @@ describe('createPluginActions', () => {
       const {
         actions: { selectAsset },
         messageCallbacks: { onAssetSelect },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       const promise = selectAsset()
       const filename = 'hello.jpg'
       onAssetSelect({
@@ -189,7 +236,12 @@ describe('createPluginActions', () => {
       const {
         actions: { selectAsset },
         messageCallbacks: { onAssetSelect },
-      } = createPluginActions(uid, postToContainer, onUpdateState)
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        parseContent,
+      })
       const promise = selectAsset()
       const filename = 'hello.jpg'
       onAssetSelect({

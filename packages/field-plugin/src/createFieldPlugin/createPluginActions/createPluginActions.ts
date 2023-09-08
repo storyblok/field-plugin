@@ -32,7 +32,7 @@ export type CreatePluginActions = <Content>(options: {
   // This function is called whenever the height changes
   onHeightChange: (height: number) => void
   // This initiates the plugin
-  initialize: Initialize
+  initialize: Initialize<Content>
 }
 
 export const createPluginActions: CreatePluginActions = ({
