@@ -25,6 +25,13 @@ export default defineConfig({
               '../field-plugin/src/index.ts',
             ),
           },
+          {
+            find: /^@storyblok\/field-plugin\/react$/,
+            replacement: path.resolve(
+              __dirname,
+              '../field-plugin/helpers/react/src/index.ts',
+            ),
+          },
         ],
   },
   server: {

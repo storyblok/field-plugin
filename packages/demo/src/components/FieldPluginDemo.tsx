@@ -1,18 +1,22 @@
 import { FunctionComponent } from 'react'
 import { Box, Typography } from '@mui/material'
-import { useFieldPlugin } from '../useFieldPlugin'
 import { LoadingIcon, SquareErrorIcon } from '@storyblok/mui'
 import { FieldPluginActions, FieldPluginData } from '@storyblok/field-plugin'
+import { useFieldPlugin } from '@storyblok/field-plugin/react'
 import { ModalView } from './ModalView'
 import { NonModalView } from './NonModalView'
 
+type Content = unknown
+
 export type PluginComponent = FunctionComponent<{
-  data: FieldPluginData
-  actions: FieldPluginActions
+  data: FieldPluginData<Content>
+  actions: FieldPluginActions<Content>
 }>
 
 export const FieldPluginDemo: FunctionComponent = () => {
-  const { type, data, actions } = useFieldPlugin()
+  const { type, data, actions } = useFieldPlugin({
+    parseContent: (content: Content) => content,
+  })
 
   if (type === 'loading') {
     return (
