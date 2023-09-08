@@ -1,33 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
-
-const plugin = useFieldPlugin({
-  parseContent: (content: unknown) =>
-    typeof content === 'number' ? content : 0,
-})
-
-const handleIncrement = () => {
-  const content = plugin.data.content
-  plugin.actions.setContent((typeof content === 'number' ? content : 0) + 1)
-}
-
-const label = computed(() => {
-  const content = plugin.data.content
-  return typeof content !== 'number' ? 0 : JSON.stringify(content)
-})
+const props = defineProps<{ count: number; onIncrease: () => void }>()
 </script>
 
 <template>
   <div>
     <h2>Field Value</h2>
     <div class="counter-value">
-      {{ label }}
+      {{ props.count }}
     </div>
-    <button
-      class="btn w-full"
-      @click="handleIncrement"
-    >
+    <button class="btn w-full" @click="props.onIncrease">
       Increment
     </button>
   </div>
