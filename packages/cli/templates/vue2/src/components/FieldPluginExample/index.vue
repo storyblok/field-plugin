@@ -23,7 +23,7 @@ import ModalToggle from './ModalToggle.vue'
 import Counter from './Counter.vue'
 import AssetSelector from './AssetSelector.vue'
 import Vue from 'vue'
-import { createFieldPlugin } from '@storyblok/field-plugin'
+import { fieldPluginMixin } from '../../fieldPlugin'
 
 export default {
   components: {
@@ -31,24 +31,7 @@ export default {
     Counter,
     AssetSelector,
   },
-  created() {
-    createFieldPlugin({
-      parseContent: (content) => (typeof content === 'number' ? content : 0),
-      onUpdateState: (newState) => {
-        Vue.set(this.plugin, 'type', newState.type)
-        Vue.set(this.plugin, 'error', newState.error)
-        Vue.set(this.plugin, 'data', newState.data)
-        Vue.set(this.plugin, 'actions', newState.actions)
-      },
-    })
-  },
-  data() {
-    return {
-      plugin: Vue.observable({
-        type: 'loading',
-      }),
-    }
-  },
+  mixins: [fieldPluginMixin],
   methods: {
     closeModal() {
       this.plugin.actions.setModalOpen(false)
