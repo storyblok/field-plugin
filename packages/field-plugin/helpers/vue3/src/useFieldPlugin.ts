@@ -33,8 +33,11 @@ export const useFieldPlugin = <Content>({
     createFieldPlugin<Content>({
       onUpdateState: (state) => {
         if (state.type === 'error') {
-          plugin.type = 'error'
-          plugin.error = state.error
+          Object.assign(plugin, {
+            type: 'error',
+            error: state.error,
+          })
+          return
         }
 
         if (state.type === 'loaded' && plugin.type === 'loading') {
@@ -43,6 +46,7 @@ export const useFieldPlugin = <Content>({
             data: state.data,
             actions: state.actions,
           })
+          return
         }
 
         if (state.type === 'loaded' && plugin.type === 'loaded') {
@@ -51,15 +55,18 @@ export const useFieldPlugin = <Content>({
           >
 
           keys.forEach((key) => {
-            //check if changes are present
-            if (
-              JSON.stringify(plugin.data[key]) ===
+            const hasValueChanged =
+              JSON.stringify(plugin.data[key]) !==
               JSON.stringify(state.data[key])
-            ) {
+
+            if (!hasValueChanged) {
               return
             }
 
-            if (typeof plugin.data[key] === 'object') {
+            if (
+              typeof plugin.data[key] === 'object' &&
+              plugin.data[key] !== null
+            ) {
               updateObjectWithoutChangingReference(
                 plugin.data[key] as Record<string, unknown>,
                 state.data[key] as Record<string, unknown>,
@@ -67,10 +74,12 @@ export const useFieldPlugin = <Content>({
               return
             }
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore not sure how to solve this
-            plugin.data[key] = state.data[key]
+            Object.assign(plugin.data, {
+              [key]: state.data[key],
+            })
           })
+
+          return
         }
       },
       parseContent,
