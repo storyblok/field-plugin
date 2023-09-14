@@ -1,12 +1,9 @@
 import { FunctionComponent } from 'react'
-import { useFieldPlugin } from '@storyblok/field-plugin/react'
 
-const ModalToggle: FunctionComponent = () => {
-  const {
-    data: { isModalOpen },
-    actions: { setModalOpen },
-  } = useFieldPlugin()
-
+const ModalToggle: FunctionComponent<{
+  isModalOpen: boolean
+  setModalOpen: (isModalOpen: boolean) => void
+}> = ({ isModalOpen, setModalOpen }) => {
   return (
     <div>
       <h2>Modal</h2>
