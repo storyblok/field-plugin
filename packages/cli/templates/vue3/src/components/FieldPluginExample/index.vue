@@ -5,7 +5,10 @@ import Counter from './Counter.vue'
 import AssetSelector from './AssetSelector.vue'
 import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
-const plugin = useFieldPlugin()
+const plugin = useFieldPlugin({
+  parseContent: (content: unknown) =>
+    typeof content === 'number' ? content : 0,
+})
 
 function closeModal() {
   plugin.actions.setModalOpen(false)
@@ -13,7 +16,7 @@ function closeModal() {
 </script>
 
 <template>
-  <div>
+  <div v-if="plugin.type === 'loaded'">
     <button
       v-if="plugin.data.isModalOpen"
       type="button"
@@ -35,11 +38,17 @@ function closeModal() {
       <span class="sr-only">Close Modal</span>
     </button>
     <div class="container">
-      <Counter />
+      <Counter
+        :count="plugin.data.content"
+        :onIncrease="() => plugin.actions.setContent(plugin.data.content + 1)"
+      />
       <hr />
-      <ModalToggle />
+      <ModalToggle
+        :isModalOpen="plugin.data.isModalOpen"
+        :setModalOpen="plugin.actions.setModalOpen"
+      />
       <hr />
-      <AssetSelector />
+      <AssetSelector :selectAsset="plugin.actions.selectAsset" />
     </div>
   </div>
 </template>
