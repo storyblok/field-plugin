@@ -3,7 +3,8 @@
 </template>
 
 <script>
+import { fieldPluginMixin } from '../fieldPlugin'
 export default {
-  inject: ['plugin'],
+  mixins: [fieldPluginMixin],
 }
 </script>

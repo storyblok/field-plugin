@@ -38,7 +38,7 @@
     "build:lib": "yarn workspace @storyblok/field-plugin build",
     "build:cli": "yarn workspace @storyblok/field-plugin-cli build",
     "build:container": "yarn build:lib && yarn workspace container build",
-    "build:helpers": "yarn workspaces foreach --include \"helper-*\" run build && ./scripts/copy-helpers.sh",
+    "build:helpers": "yarn workspaces foreach --include \"helper-*\" run build && ./scripts/copy-helpers.mjs",
     "test": "yarn test:lib",
     "test:lib": "yarn workspace @storyblok/field-plugin test",
     "test:lib:watch": "yarn workspace @storyblok/field-plugin test --watch",

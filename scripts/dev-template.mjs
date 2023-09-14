@@ -14,6 +14,7 @@
   https://github.com/storyblok/field-plugin/pull/264
 */
 
+import { $ } from 'zx'
 import fs from 'fs/promises'
 import path from 'path'
 
@@ -36,12 +37,6 @@ file = file.replace(
       replacement: '${path.resolve(
     __dirname,
     '../packages/field-plugin/src/index.ts',
-  )}'
-    }, {
-      find: /^@storyblok\\/field-plugin\\/vue2$/,
-      replacement: '${path.resolve(
-    __dirname,
-    '../packages/field-plugin/helpers/vue2/src/index.ts',
   )}'
     }, {
       find: /^@storyblok\\/field-plugin\\/vue3$/,
