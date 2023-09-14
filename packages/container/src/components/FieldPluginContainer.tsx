@@ -84,9 +84,8 @@ const useSandbox = (
       return undefined
     }
     // Omitting query parameters from the user-provided URL in a safe way
-    return `${fieldPluginURL.origin}${
-      fieldPluginURL.pathname
-    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+    return `${fieldPluginURL.origin}${fieldPluginURL.pathname
+      }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
   const [iframeKey, setIframeKey] = useState(0)
 
@@ -408,7 +407,7 @@ export const FieldPluginContainer: FunctionComponent = () => {
                 content,
                 isModalOpen,
                 options: recordFromFieldPluginOptions(schema.options),
-              } satisfies Partial<FieldPluginData>
+              } satisfies Partial<FieldPluginData<unknown>>
             }
           />
         </AccordionDetails>
