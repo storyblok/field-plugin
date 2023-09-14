@@ -5,6 +5,7 @@ import {
   FieldPluginResponse,
 } from '@storyblok/field-plugin'
 import { onMounted, reactive, UnwrapRef } from 'vue'
+import { convertToRaw } from './utils'
 
 const updateObjectWithoutChangingReference = (
   originalObject: Record<string, unknown>,
@@ -38,6 +39,15 @@ export const useFieldPlugin = <Content>({
             error: state.error,
           })
           return
+        }
+
+        if (state.actions) {
+          plugin.actions = {
+            ...state.actions,
+            setContent: (newContent: Content) => {
+              return state.actions.setContent(convertToRaw(newContent))
+            },
+          }
         }
 
         if (state.type === 'loaded' && plugin.type === 'loading') {
