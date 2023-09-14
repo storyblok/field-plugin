@@ -1,7 +1,7 @@
 import { FieldPluginData } from './FieldPluginData'
 import { FieldPluginActions } from './FieldPluginActions'
 
-export type FieldPluginResponse =
+export type FieldPluginResponse<Content> =
   | {
       type: 'loading'
       error?: never
@@ -17,6 +17,6 @@ export type FieldPluginResponse =
   | {
       type: 'loaded'
       error?: never
-      data: FieldPluginData
-      actions: FieldPluginActions
+      data: FieldPluginData<Content>
+      actions: FieldPluginActions<Content>
     }
