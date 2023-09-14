@@ -68,22 +68,18 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
-  const { actions, messageCallbacks, onHeightChange } = createPluginActions(
-    uid,
-    postToContainer,
-    (data) => {
+  const { actions, messageCallbacks, onHeightChange, initialize } =
+    createPluginActions(uid, postToContainer, (data) => {
       onUpdateState({
         type: 'loaded',
         data,
         actions,
       })
-    },
-  )
+    })
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
 
-  // Request the initial state from the Visual Editor.
-  postToContainer(pluginLoadedMessage(uid))
+  void initialize()
 
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,

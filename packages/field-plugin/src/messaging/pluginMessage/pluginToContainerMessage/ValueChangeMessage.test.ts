@@ -1,11 +1,12 @@
 import { isMessageToContainer } from './MessageToContainer'
 import {
   isValueChangeMessage,
-  valueChangeMessage,
   ValueChangeMessage,
+  valueChangeMessage,
 } from './ValueChangeMessage'
 
 const uid = '-preview-abc-123'
+const callbackId = 'test-callback-id'
 const stub: ValueChangeMessage = {
   action: 'plugin-changed',
   event: 'update',
@@ -83,27 +84,34 @@ describe('ValueChangeMessage', () => {
   })
   describe('constructor', () => {
     it('includes the uid', () => {
-      expect(valueChangeMessage(uid, undefined)).toHaveProperty('uid', uid)
+      expect(
+        valueChangeMessage({ uid, callbackId, model: undefined }),
+      ).toHaveProperty('uid', uid)
     })
     it('includes the model', () => {
-      expect(valueChangeMessage(uid, true)).toHaveProperty('model', true)
-      expect(valueChangeMessage(uid, 'a string')).toHaveProperty(
-        'model',
-        'a string',
-      )
-      expect(valueChangeMessage(uid, 123)).toHaveProperty('model', 123)
-      expect(valueChangeMessage(uid, { a: 1 })).toHaveProperty('model', {
+      expect(
+        valueChangeMessage({ uid, callbackId, model: true }),
+      ).toHaveProperty('model', true)
+      expect(
+        valueChangeMessage({ uid, callbackId, model: 'a string' }),
+      ).toHaveProperty('model', 'a string')
+      expect(
+        valueChangeMessage({ uid, callbackId, model: 123 }),
+      ).toHaveProperty('model', 123)
+      expect(
+        valueChangeMessage({ uid, callbackId, model: { a: 1 } }),
+      ).toHaveProperty('model', {
         a: 1,
       })
-      expect(valueChangeMessage(uid, [1, 2, 3])).toHaveProperty(
-        'model',
-        [1, 2, 3],
-      )
-      expect(valueChangeMessage(uid, undefined)).toHaveProperty(
-        'model',
-        undefined,
-      )
-      expect(valueChangeMessage(uid, null)).toHaveProperty('model', null)
+      expect(
+        valueChangeMessage({ uid, callbackId, model: [1, 2, 3] }),
+      ).toHaveProperty('model', [1, 2, 3])
+      expect(
+        valueChangeMessage({ uid, callbackId, model: undefined }),
+      ).toHaveProperty('model', undefined)
+      expect(
+        valueChangeMessage({ uid, callbackId, model: null }),
+      ).toHaveProperty('model', null)
     })
   })
 })

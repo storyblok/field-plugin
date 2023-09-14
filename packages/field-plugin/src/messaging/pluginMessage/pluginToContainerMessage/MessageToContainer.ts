@@ -4,6 +4,7 @@ export type MessageToContainer<Event extends string> = {
   action: 'plugin-changed'
   uid: string
   event: Event
+  callbackId?: string
 }
 
 export const isMessageToContainer = (

@@ -2,7 +2,6 @@
 import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { FieldPluginData } from '../FieldPluginData'
 import {
-  Asset,
   assetFromAssetSelectedMessage,
   assetModalChangeMessage,
   getContextMessage,
@@ -10,30 +9,15 @@ import {
   modalChangeMessage,
   OnAssetSelectMessage,
   OnContextRequestMessage,
+  OnLoadedMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
+  pluginLoadedMessage,
   valueChangeMessage,
 } from '../../messaging'
-import { FieldPluginActions } from '../FieldPluginActions'
-import {
-  partialPluginStateFromContextRequestMessage,
-  partialPluginStateFromStateChangeMessage,
-} from './partialPluginStateFromStateChangeMessage'
-import { getRandomString } from '../../utils'
-
-// TODO get rid of this default state
-export const defaultState: FieldPluginData = {
-  isModalOpen: false,
-  content: undefined,
-  options: {},
-  storyLang: 'default',
-  story: { content: {} },
-  blockUid: undefined,
-  storyId: undefined,
-  token: undefined,
-  uid: '-preview',
-  spaceId: undefined,
-}
+import { FieldPluginActions, Initialize } from '../FieldPluginActions'
+import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
+import { callbackQueue } from './callbackQueue'
 
 export type CreatePluginActions = (
   uid: string,
@@ -46,6 +30,8 @@ export type CreatePluginActions = (
   messageCallbacks: PluginMessageCallbacks
   // This function is called whenever the height changes
   onHeightChange: (height: number) => void
+  // This initiates the plugin
+  initialize: Initialize
 }
 
 export const createPluginActions: CreatePluginActions = (
@@ -53,41 +39,21 @@ export const createPluginActions: CreatePluginActions = (
   postToContainer,
   onUpdateState,
 ) => {
-  // Tracks the full state of the plugin.
-  //  Because the container doesn't send the full state in its messages, we need to track it ourselves.
-  //  isModal and height is not included in the messages to the children and must thus be tracked here.
-  //  In future improved versions of the plugin API, this should not be needed.
-  let state: FieldPluginData = defaultState
-
-  let assetSelectedCallbackRef: undefined | ((filename: Asset) => void) =
-    undefined
-  let assetSelectedCallbackId: undefined | string = undefined
+  const { pushCallback, popCallback } = callbackQueue()
 
   const onStateChange: OnStateChangeMessage = (data) => {
-    state = {
-      ...state,
-      ...partialPluginStateFromStateChangeMessage(data),
-    }
-    onUpdateState(state)
+    popCallback('stateChanged', data.callbackId)?.(data)
+    onUpdateState(pluginStateFromStateChangeMessage(data))
+  }
+  const onLoaded: OnLoadedMessage = (data) => {
+    popCallback('loaded', data.callbackId)?.(data)
+    onUpdateState(pluginStateFromStateChangeMessage(data))
   }
   const onContextRequest: OnContextRequestMessage = (data) => {
-    state = {
-      ...state,
-      ...partialPluginStateFromContextRequestMessage(data),
-    }
-    onUpdateState(state)
+    popCallback('context', data.callbackId)?.(data)
   }
   const onAssetSelect: OnAssetSelectMessage = (data) => {
-    // We do not reject the promise here.
-    // There can be another instance of `createFieldPlugin()`,
-    // calling `selectAsset` with different `callbackId`.
-    // In such case, we should simply ignore the callback.
-    // We may get another callback with correct `callbackId`.
-    if (data.callbackId === assetSelectedCallbackId) {
-      assetSelectedCallbackRef?.(assetFromAssetSelectedMessage(data))
-      assetSelectedCallbackId = undefined
-      assetSelectedCallbackRef = undefined
-    }
+    popCallback('asset', data.callbackId)?.(data)
   }
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
     // TODO remove side-effect, making functions in this file pure.
@@ -103,6 +69,7 @@ export const createPluginActions: CreatePluginActions = (
 
   const messageCallbacks: PluginMessageCallbacks = {
     onStateChange,
+    onLoaded,
     onContextRequest,
     onAssetSelect,
     onUnknownMessage,
@@ -115,38 +82,52 @@ export const createPluginActions: CreatePluginActions = (
   return {
     actions: {
       setContent: (content) => {
-        postToContainer(valueChangeMessage(uid, content))
-        state = {
-          ...state,
-          content,
-        }
-        onUpdateState(state)
-      },
-      setModalOpen: (isModalOpen) => {
-        postToContainer(modalChangeMessage(uid, isModalOpen))
-        state = {
-          ...state,
-          isModalOpen,
-        }
-        onUpdateState(state)
-      },
-      selectAsset: () => {
-        if (assetSelectedCallbackId !== undefined) {
-          // eslint-disable-next-line functional/no-promise-reject
-          return Promise.reject(
-            'Please wait until an asset is selected before making another request.',
-          )
-        }
-        const callbackId = getRandomString(16)
-        assetSelectedCallbackId = callbackId
         return new Promise((resolve) => {
-          assetSelectedCallbackRef = resolve
-          postToContainer(assetModalChangeMessage(uid, callbackId))
+          const callbackId = pushCallback('stateChanged', (message) =>
+            resolve(pluginStateFromStateChangeMessage(message)),
+          )
+          postToContainer(
+            valueChangeMessage({ uid, callbackId, model: content }),
+          )
         })
       },
-      requestContext: () => postToContainer(getContextMessage(uid)),
+      setModalOpen: (isModalOpen) => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('stateChanged', (message) =>
+            resolve(pluginStateFromStateChangeMessage(message)),
+          )
+          postToContainer(
+            modalChangeMessage({ uid, callbackId, status: isModalOpen }),
+          )
+        })
+      },
+      selectAsset: () => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('asset', (message) =>
+            resolve(assetFromAssetSelectedMessage(message)),
+          )
+          postToContainer(assetModalChangeMessage({ uid, callbackId }))
+        })
+      },
+      requestContext: () => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('context', (message) =>
+            resolve(message.story),
+          )
+          postToContainer(getContextMessage({ uid, callbackId }))
+        })
+      },
     },
     messageCallbacks,
     onHeightChange,
+    initialize: () => {
+      return new Promise((resolve) => {
+        const callbackId = pushCallback('loaded', (message) =>
+          resolve(pluginStateFromStateChangeMessage(message)),
+        )
+        // Request the initial state from the Visual Editor.
+        postToContainer(pluginLoadedMessage({ uid, callbackId }))
+      })
+    },
   }
 }

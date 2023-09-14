@@ -56,7 +56,7 @@ createFieldPlugin((newState) => {
     plugin.actions = {
       ...newState.actions,
       setContent: (newContent: unknown) => {
-        newState.actions.setContent(convertToRaw(newContent))
+        return newState.actions.setContent(convertToRaw(newContent))
       },
     }
   } else {
