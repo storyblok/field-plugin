@@ -7,34 +7,16 @@ import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
 const plugin = useFieldPlugin({
   parseContent: (content: unknown) =>
-    typeof content === 'object' &&
-    content !== null &&
-    'story' in content &&
-    content.story !== null &&
-    'id' in content &&
-    content.id !== null &&
-    typeof content.id === 'number'
-      ? content
-      : { story: null, id: 0 },
+    typeof content === 'number' ? content : 0,
 })
 
 function closeModal() {
   plugin.actions.setModalOpen(false)
 }
-
-const onClick = () => {
-  console.log(plugin.data.content.id)
-  plugin.actions.setContent({
-    story: {},
-    id: plugin.data.content.id + 1,
-  })
-}
 </script>
 
 <template>
   <div v-if="plugin.type === 'loaded'">
-    <pre>{{ plugin }}</pre>
-
     <button
       v-if="plugin.data.isModalOpen"
       type="button"
@@ -56,8 +38,10 @@ const onClick = () => {
       <span class="sr-only">Close Modal</span>
     </button>
     <div class="container">
-      <button @click="() => onClick()">add id to content</button>
-      <!--      <Counter :count="plugin.data.content" :onIncrease="() => plugin.actions.setContent(plugin.data.content + 1)" />-->
+      <Counter
+        :count="plugin.data.content"
+        :onIncrease="() => plugin.actions.setContent(plugin.data.content + 1)"
+      />
       <hr />
       <ModalToggle
         :isModalOpen="plugin.data.isModalOpen"

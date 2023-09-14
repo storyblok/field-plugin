@@ -41,20 +41,16 @@ export const useFieldPlugin = <Content>({
           return
         }
 
-        if (state.actions) {
-          plugin.actions = {
-            ...state.actions,
-            setContent: (newContent: Content) => {
-              return state.actions.setContent(convertToRaw(newContent))
-            },
-          }
-        }
-
         if (state.type === 'loaded' && plugin.type === 'loading') {
           Object.assign(plugin, {
             type: 'loaded',
             data: state.data,
-            actions: state.actions,
+            actions: {
+              ...state.actions,
+              setContent: (newContent: Content) => {
+                return state.actions.setContent(convertToRaw(newContent))
+              },
+            },
           })
           return
         }
