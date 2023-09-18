@@ -1,7 +1,7 @@
 import * as querystring from 'querystring'
 import { bold } from './utils/text'
 import { arrows } from './utils/arrows'
-import { load, fileExists, MANIFEST_FILE_NAME } from './manifest'
+import { load, manifestExists, MANIFEST_FILE_NAME } from './manifest'
 import type { Manifest } from './manifest'
 
 export const SANDBOX_BASE_URL = `https://plugin-sandbox.storyblok.com/field-plugin`
@@ -34,7 +34,7 @@ export const generateSandboxUrl = (fieldPluginUrl: string) => {
 }
 
 const loadManifest = (): Manifest | null => {
-  if (!fileExists()) return null
+  if (!manifestExists()) return null
 
   try {
     return load()
@@ -45,7 +45,7 @@ const loadManifest = (): Manifest | null => {
 }
 
 const displayManifestChecking = () => {
-  if (fileExists()) {
+  if (manifestExists()) {
     displayManifestFileExists()
   } else {
     displayManifestFileNotFound()

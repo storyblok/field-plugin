@@ -13,7 +13,7 @@ export type Manifest = {
   options: ManifestOption[]
 }
 
-export const fileExists = (): boolean => {
+export const manifestExists = (): boolean => {
   return existsSync(MANIFEST_FULL_PATH)
 }
 
