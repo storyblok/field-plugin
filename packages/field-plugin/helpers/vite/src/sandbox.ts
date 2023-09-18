@@ -12,7 +12,7 @@ export type SandboxQueryParams = {
 }
 
 export const buildQueryString = (params: SandboxQueryParams) => {
-  const queryParams: any = {
+  const queryParams = {
     url: params.url,
     manifest: JSON.stringify(params.manifest),
   }
