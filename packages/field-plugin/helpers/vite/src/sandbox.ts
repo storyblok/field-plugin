@@ -46,19 +46,13 @@ const loadManifest = (): Manifest | null => {
 
 const displayManifestChecking = () => {
   if (manifestExists()) {
-    displayManifestFileExists()
+    console.log(
+      `${arrows.green} ${bold(`Loading manifest file: ${MANIFEST_FILE_NAME}`)}`,
+    )
   } else {
-    displayManifestFileNotFound()
+    console.log(`${arrows.gray} ${bold(`Manifest file not found`)}`)
   }
 }
-
-const displayManifestFileExists = () =>
-  console.log(
-    `${arrows.green} ${bold(`Loading manifest file: ${MANIFEST_FILE_NAME}`)}`,
-  )
-
-const displayManifestFileNotFound = () =>
-  console.log(`${arrows.gray} ${bold(`Manifest file not found`)}`)
 
 const displayManifestErrorLoading = (err: Error) =>
   console.log(`${arrows.red} ${bold(`${err.message}`)}`)
