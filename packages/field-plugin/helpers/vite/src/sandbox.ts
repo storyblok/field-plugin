@@ -12,9 +12,12 @@ export type SandboxQueryParams = {
 }
 
 export const buildQueryString = (params: SandboxQueryParams) => {
-  const queryParams = {
+  const queryParams: querystring.ParsedUrlQueryInput = {
     url: params.url,
-    manifest: JSON.stringify(params.manifest),
+  }
+
+  if (params.manifest !== null) {
+    queryParams.manifest = JSON.stringify(params.manifest)
   }
 
   return querystring.stringify(queryParams)
