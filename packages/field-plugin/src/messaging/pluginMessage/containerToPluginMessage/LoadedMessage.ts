@@ -7,7 +7,7 @@ import { isStoryData, StoryData } from './StoryData'
  * The message that the field type wrapper (parent) sends to the
  *  field type (child) via postMessage().
  */
-export type StateChangedMessage = MessageToPlugin<'state-changed'> & {
+export type LoadedMessage = MessageToPlugin<'loaded'> & {
   // If no language is available, for example via the field plugin editor, the language will be an empty string `""`
   language: string
   spaceId: number | null
@@ -22,9 +22,9 @@ export type StateChangedMessage = MessageToPlugin<'state-changed'> & {
 }
 
 // TODO full implementation of validation
-export const isStateMessage = (data: unknown): data is StateChangedMessage =>
+export const isLoadedMessage = (data: unknown): data is LoadedMessage =>
   isMessageToPlugin(data) &&
-  data.action === 'state-changed' &&
+  data.action === 'loaded' &&
   hasKey(data, 'language') &&
   typeof data.language === 'string' &&
   hasKey(data, 'schema') &&

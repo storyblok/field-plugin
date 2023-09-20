@@ -1,4 +1,5 @@
 export * from './ContainerToPlugin'
+export * from './LoadedMessage'
 export * from './StateChangedMessage'
 export * from './FieldPluginSchema'
 export * from './recordFromFieldPluginOptions'

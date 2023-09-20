@@ -3,6 +3,7 @@ import { hasKey } from '../../../utils'
 export type MessageToPlugin<Action extends string> = {
   action: Action
   uid: string
+  callbackId?: string
 }
 
 export const isMessageToPlugin = (

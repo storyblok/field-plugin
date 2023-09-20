@@ -1,11 +1,12 @@
 import { isMessageToContainer } from './MessageToContainer'
 import {
   isPluginLoadedMessage,
-  pluginLoadedMessage,
   PluginLoadedMessage,
+  pluginLoadedMessage,
 } from './PluginLoadedMessage'
 
 const uid = '-preview-abc-123'
+const callbackId = 'test-callback-id'
 const stub: PluginLoadedMessage = {
   action: 'plugin-changed',
   event: 'loaded',
@@ -78,11 +79,16 @@ describe('PluginLoadedMessage', () => {
   })
   describe('constructor', () => {
     it('includes the uid', () => {
-      expect(pluginLoadedMessage(uid)).toHaveProperty('uid', uid)
+      expect(pluginLoadedMessage({ uid, callbackId })).toHaveProperty(
+        'uid',
+        uid,
+      )
     })
     it('sets fullHeight to true', () => {
-      expect(pluginLoadedMessage(uid)).toHaveProperty('fullHeight', true)
-      expect(pluginLoadedMessage(uid)).toHaveProperty('fullHeight', true)
+      expect(pluginLoadedMessage({ uid, callbackId })).toHaveProperty(
+        'fullHeight',
+        true,
+      )
     })
   })
 })

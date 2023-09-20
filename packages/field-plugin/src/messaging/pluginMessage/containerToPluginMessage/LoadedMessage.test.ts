@@ -1,14 +1,12 @@
-import {
-  isStateChangedMessage,
-  StateChangedMessage,
-} from './StateChangedMessage'
+import { isLoadedMessage, LoadedMessage } from './LoadedMessage'
 import { FieldPluginSchema } from './FieldPluginSchema'
 
-const stub: StateChangedMessage = {
+const stub: LoadedMessage = {
   action: 'loaded',
   uid: '-preview',
   spaceId: null,
   model: undefined,
+  isModalOpen: false,
   token: null,
   storyId: undefined,
   blockId: undefined,
@@ -19,12 +17,12 @@ const stub: StateChangedMessage = {
 
 describe('StateChangedMessage', () => {
   it('should validate', () => {
-    expect(isStateChangedMessage(stub)).toEqual(true)
+    expect(isLoadedMessage(stub)).toEqual(true)
   })
   describe('The "action" property', () => {
     it('equals "loaded"', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           action: 'anotherString',
         }),
@@ -34,7 +32,7 @@ describe('StateChangedMessage', () => {
   describe('the "uid" property', () => {
     it('is a string', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           uid: 'anything',
         }),
@@ -42,7 +40,7 @@ describe('StateChangedMessage', () => {
     })
     it('is not undefined', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           uid: undefined,
         }),
@@ -50,7 +48,7 @@ describe('StateChangedMessage', () => {
     })
     it('is not null', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           uid: null,
         }),
@@ -58,7 +56,7 @@ describe('StateChangedMessage', () => {
     })
     it('is not a number', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           uid: 123,
         }),
@@ -69,7 +67,7 @@ describe('StateChangedMessage', () => {
   describe('the "language" property', () => {
     it('is a string', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           language: 'anything',
         }),
@@ -77,7 +75,7 @@ describe('StateChangedMessage', () => {
     })
     it('is not undefined', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           language: undefined,
         }),
@@ -85,7 +83,7 @@ describe('StateChangedMessage', () => {
     })
     it('is not null', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           language: null,
         }),
@@ -93,7 +91,7 @@ describe('StateChangedMessage', () => {
     })
     it('is not a number', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           language: 123,
         }),
@@ -103,7 +101,7 @@ describe('StateChangedMessage', () => {
   describe('The "schema" property', () => {
     it('is required', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           schema: undefined,
         }),
@@ -111,7 +109,7 @@ describe('StateChangedMessage', () => {
     })
     it('must be a schema', () => {
       expect(
-        isStateChangedMessage({
+        isLoadedMessage({
           ...stub,
           schema: {
             field_type: 'my-field',

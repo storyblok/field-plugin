@@ -1,20 +1,28 @@
 import { createPluginActions } from './createPluginActions'
 import { createHeightChangeListener } from './createHeightChangeListener'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
-import { pluginLoadedMessage, pluginUrlParamsFromUrl } from '../messaging'
+import { pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
 import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 import { sandboxUrl } from './sandboxUrl'
 import { isCloneable } from '../utils/isCloneable'
 
-export type CreateFieldPlugin = (
-  onUpdate: (state: FieldPluginResponse) => void,
+export type CreateFieldPluginOptions<Content> = {
+  onUpdateState: (state: FieldPluginResponse<Content>) => void
+  parseContent: (content: unknown) => Content
+}
+
+export type CreateFieldPlugin = <Content = unknown>(
+  options: CreateFieldPluginOptions<Content>,
 ) => () => void
 
 /**
  * @returns cleanup function for side effects
  */
-export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
+export const createFieldPlugin: CreateFieldPlugin = ({
+  onUpdateState,
+  parseContent,
+}) => {
   const isEmbedded = window.parent !== window
 
   if (!isEmbedded) {
@@ -68,22 +76,23 @@ export const createFieldPlugin: CreateFieldPlugin = (onUpdateState) => {
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
-  const { actions, messageCallbacks, onHeightChange } = createPluginActions(
-    uid,
-    postToContainer,
-    (data) => {
-      onUpdateState({
-        type: 'loaded',
-        data,
-        actions,
-      })
-    },
-  )
+  const { actions, messageCallbacks, onHeightChange, initialize } =
+    createPluginActions({
+      uid,
+      postToContainer,
+      onUpdateState: (data) => {
+        onUpdateState({
+          type: 'loaded',
+          data,
+          actions,
+        })
+      },
+      parseContent,
+    })
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
 
-  // Request the initial state from the Visual Editor.
-  postToContainer(pluginLoadedMessage(uid))
+  void initialize()
 
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,

@@ -1,6 +1,7 @@
 import {
   OnAssetSelectMessage,
   OnContextRequestMessage,
+  OnLoadedMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
 } from '../../../messaging'
@@ -8,6 +9,7 @@ import { handlePluginMessage } from './handlePluginMessage'
 
 export type PluginMessageCallbacks = {
   onStateChange: OnStateChangeMessage
+  onLoaded: OnLoadedMessage
   onContextRequest: OnContextRequestMessage
   onAssetSelect: OnAssetSelectMessage
   onUnknownMessage: OnUnknownPluginMessage

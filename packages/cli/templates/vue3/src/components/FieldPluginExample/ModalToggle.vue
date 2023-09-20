@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
+import type { SetModalOpen } from '@storyblok/field-plugin'
 
-const plugin = useFieldPlugin()
+const props = defineProps<{
+  isModalOpen: boolean
+  setModalOpen: SetModalOpen<number>
+}>()
 </script>
 
 <template>
   <div>
     <h2>Modal</h2>
-    <button
-      class="btn w-full"
-      type="button"
-      @click="() => plugin.actions.setModalOpen(!plugin.data.isModalOpen)"
-    >
-      {{ plugin.data.isModalOpen ? 'Close' : 'Open' }} modal
+    <button class="btn w-full" type="button" @click="() => props.setModalOpen(!props.isModalOpen)">
+      {{ props.isModalOpen ? 'Close' : 'Open' }} modal
     </button>
   </div>
 </template>

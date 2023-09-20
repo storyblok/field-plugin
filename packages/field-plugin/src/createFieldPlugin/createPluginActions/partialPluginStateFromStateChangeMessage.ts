@@ -1,14 +1,14 @@
 import { FieldPluginData } from '../FieldPluginData'
 import {
-  ContextRequestMessage,
+  LoadedMessage,
   recordFromFieldPluginOptions,
   StateChangedMessage,
 } from '../../messaging'
 
-//TODO: create a test
-export const partialPluginStateFromStateChangeMessage = (
-  message: StateChangedMessage,
-): Omit<FieldPluginData, 'isModalOpen'> => ({
+export const pluginStateFromStateChangeMessage = <Content>(
+  message: LoadedMessage | StateChangedMessage,
+  parseContent: (content: unknown) => Content,
+): FieldPluginData<Content> => ({
   spaceId: message.spaceId ?? undefined,
   story: message.story ?? undefined,
   storyId: message.storyId ?? undefined,
@@ -17,11 +17,6 @@ export const partialPluginStateFromStateChangeMessage = (
   token: message.token ?? undefined,
   options: recordFromFieldPluginOptions(message.schema.options),
   uid: message.uid ?? undefined,
-  content: message.model ?? undefined,
-})
-
-export const partialPluginStateFromContextRequestMessage = (
-  message: ContextRequestMessage,
-): Pick<FieldPluginData, 'story'> => ({
-  story: message.story ?? undefined,
+  content: parseContent(message.model),
+  isModalOpen: message.isModalOpen,
 })

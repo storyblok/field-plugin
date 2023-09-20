@@ -6,7 +6,14 @@ import { FunctionComponent } from 'react'
 import { useFieldPlugin } from '@storyblok/field-plugin/react'
 
 const FieldPlugin: FunctionComponent = () => {
-  const { data, actions } = useFieldPlugin()
+  const { type, data, actions } = useFieldPlugin({
+    parseContent: (content: unknown) =>
+      typeof content === 'number' ? content : 0,
+  })
+
+  if (type !== 'loaded') {
+    return null
+  }
 
   const closeModal = () => {
     actions.setModalOpen(false)
@@ -38,11 +45,17 @@ const FieldPlugin: FunctionComponent = () => {
         </button>
       )}
       <div className="container">
-        <Counter />
+        <Counter
+          count={data.content}
+          onIncrease={() => actions.setContent(data.content + 1)}
+        />
         <hr />
-        <ModalToggle />
+        <ModalToggle
+          isModalOpen={data.isModalOpen}
+          setModalOpen={actions.setModalOpen}
+        />
         <hr />
-        <AssetSelector />
+        <AssetSelector selectAsset={actions.selectAsset} />
       </div>
     </div>
   )

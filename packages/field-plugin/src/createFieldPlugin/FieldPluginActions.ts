@@ -1,13 +1,19 @@
-import { Asset } from '../messaging'
+import { Asset, StoryData } from '../messaging'
+import { FieldPluginData } from './FieldPluginData'
 
-export type SetContent = <C>(content: C) => void
-export type SetModalOpen = (isModalOpen: boolean) => void
-export type RequestContext = () => void
+export type SetContent<Content> = (
+  content: Content,
+) => Promise<FieldPluginData<Content>>
+export type SetModalOpen<Content> = (
+  isModalOpen: boolean,
+) => Promise<FieldPluginData<Content>>
+export type RequestContext = () => Promise<StoryData>
 export type SelectAsset = () => Promise<Asset>
+export type Initialize<Content> = () => Promise<FieldPluginData<Content>>
 
-export type FieldPluginActions = {
-  setContent: SetContent
-  setModalOpen: SetModalOpen
+export type FieldPluginActions<Content> = {
+  setContent: SetContent<Content>
+  setModalOpen: SetModalOpen<Content>
   requestContext: RequestContext
   selectAsset: SelectAsset
 }

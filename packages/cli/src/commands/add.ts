@@ -54,9 +54,9 @@ export const add: AddFunc = async (args) => {
     typeof args.name !== 'undefined' && args.name !== ''
       ? args.name
       : await promptName({
-        message:
-          'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
-      })
+          message:
+            'What is your package name?\n  (Lowercase alphanumeric and dash are allowed.)',
+        })
 
   const template =
     typeof args.template !== 'undefined'

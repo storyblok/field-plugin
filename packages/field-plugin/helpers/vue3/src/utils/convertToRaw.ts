@@ -1,27 +1,35 @@
-import { toRaw, isProxy, isRef, unref } from 'vue'
+import { isProxy, isRef, toRaw, unref } from 'vue'
+
+//TODO: improve types
+
+/* This is necessary in case we have nested reactive elements like Ref(Proxy(value)) to recursively unwrap until the value is neither */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const rawify = (value: unknown): any => {
+  if (isProxy(value)) {
+    const rawValue = toRaw(value)
+    return rawify(rawValue)
+  }
+  if (isRef(value)) {
+    const unrefValue = unref(value)
+    return rawify(unrefValue)
+  }
+
+  return value
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function convertToRaw(value: any): any {
-  let rawValue = value
-  if (isProxy(rawValue)) {
-    rawValue = toRaw(rawValue)
-  }
-  if (isRef(rawValue)) {
-    rawValue = unref(rawValue)
-  }
+  const rawValue = rawify(value)
 
-  if (isObject(rawValue)) {
+  if (typeof rawValue === 'object' && rawValue !== null) {
     return Object.keys(rawValue).reduce((result, key) => {
       result[key] = convertToRaw(rawValue[key])
       return result
     }, rawValue)
-  } else if (Array.isArray(rawValue)) {
-    return rawValue.map(convertToRaw)
-  } else {
-    return rawValue
   }
-}
 
-function isObject(value: unknown) {
-  return Object.prototype.toString.call(value) === '[object Object]'
+  if (Array.isArray(rawValue)) {
+    return rawValue.map(convertToRaw)
+  }
+  return rawValue
 }

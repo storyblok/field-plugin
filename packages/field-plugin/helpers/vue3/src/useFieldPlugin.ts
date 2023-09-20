@@ -1,22 +1,96 @@
-import { inject } from 'vue'
-import { type FieldPluginResponse } from '@storyblok/field-plugin'
+import {
+  createFieldPlugin,
+  CreateFieldPluginOptions,
+  FieldPluginData,
+  FieldPluginResponse,
+} from '@storyblok/field-plugin'
+import { onMounted, reactive, UnwrapRef } from 'vue'
+import { convertToRaw } from './utils'
 
-export const useFieldPlugin = () => {
-  const plugin = inject<FieldPluginResponse>(
-    'field-plugin',
-    () => {
-      throw new Error(
-        `You need to wrap your app with \`<FieldPluginProvider>\` component.`,
-      )
-    },
-    true,
-  )
+const updateObjectWithoutChangingReference = (
+  originalObject: Record<string, unknown>,
+  newObject: Record<string, unknown>,
+) => {
+  // Delete keys that do not exist anymore
+  Object.keys(originalObject).forEach((key) => {
+    if (newObject[key] === undefined) {
+      delete originalObject[key]
+    }
+  })
+  // Update the original object with the new one
+  Object.assign(originalObject, newObject)
+}
 
-  if (plugin.type !== 'loaded') {
-    throw new Error(
-      'The plugin is not loaded, yet `useFieldPlugin()` was invoked. Ensure that the component that invoked `useFieldPlugin()` is wrapped within `<FieldPluginProvider>`, and that it is placed within the default slot.',
-    )
-  }
+export const useFieldPlugin = <Content>({
+  parseContent,
+}: Omit<CreateFieldPluginOptions<Content>, 'onUpdateState'>): UnwrapRef<
+  FieldPluginResponse<Content>
+> => {
+  const plugin = reactive<FieldPluginResponse<Content>>({
+    type: 'loading',
+  })
+
+  onMounted(() => {
+    createFieldPlugin<Content>({
+      onUpdateState: (state) => {
+        if (state.type === 'error') {
+          Object.assign(plugin, {
+            type: 'error',
+            error: state.error,
+          })
+          return
+        }
+
+        if (state.type === 'loaded' && plugin.type === 'loading') {
+          Object.assign(plugin, {
+            type: 'loaded',
+            data: state.data,
+            actions: {
+              ...state.actions,
+              setContent: (newContent: Content) => {
+                return state.actions.setContent(convertToRaw(newContent))
+              },
+            },
+          })
+          return
+        }
+
+        if (state.type === 'loaded' && plugin.type === 'loaded') {
+          const keys = Object.keys(state.data) as Array<
+            keyof FieldPluginData<unknown>
+          >
+
+          keys.forEach((key) => {
+            const hasValueChanged =
+              JSON.stringify(plugin.data[key]) !==
+              JSON.stringify(state.data[key])
+
+            if (!hasValueChanged) {
+              return
+            }
+
+            if (
+              typeof plugin.data[key] === 'object' &&
+              plugin.data[key] !== null
+            ) {
+              updateObjectWithoutChangingReference(
+                plugin.data[key] as Record<string, unknown>,
+                state.data[key] as Record<string, unknown>,
+              )
+              return
+            }
+
+            Object.assign(plugin.data, {
+              [key]: state.data[key],
+            })
+          })
+
+          return
+        }
+      },
+      parseContent,
+    })
+  })
 
   return plugin
 }
