@@ -1,12 +1,8 @@
-const styles = {
-  reset: '\u001b[0m',
-  green: '\u001b[32m',
-  gray: '\u001b[30;1m',
-  red: '\u001b[31m',
-  bold: '\u001b[1m',
-}
+import { Chalk } from 'chalk'
 
-export const green = (text: string) => `${styles.green}${text}${styles.reset}`
-export const bold = (text: string) => `${styles.bold}${text}${styles.reset}`
-export const gray = (text: string) => `${styles.gray}${text}${styles.reset}`
-export const red = (text: string) => `${styles.red}${text}${styles.reset}`
+const chalk = new Chalk({ level: 1 })
+
+export const green = (text: string) => chalk.green(text)
+export const gray = (text: string) => chalk.gray(text)
+export const red = (text: string) => chalk.red(text)
+export const bold = (text: string) => chalk.bold(text)

@@ -14,7 +14,7 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: ['querystring', 'fs', 'path'],
+      external: ['querystring', 'fs', 'path', 'chalk'],
     },
   },
 })
