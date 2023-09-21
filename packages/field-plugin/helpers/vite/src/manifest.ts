@@ -19,7 +19,7 @@ export const manifestExists = (): boolean => {
 
 export const load = (): Manifest => {
   try {
-    const content: string = readFileSync(MANIFEST_FULL_PATH)
+    const content: string = readFileSync(MANIFEST_FULL_PATH, 'utf8')
 
     return JSON.parse(content) as Manifest
   } catch (err: any) {
