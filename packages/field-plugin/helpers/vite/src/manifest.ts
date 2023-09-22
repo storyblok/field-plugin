@@ -48,8 +48,8 @@ const validateSchema = (manifest: Manifest): void => {
     throw new Error(`When declared, the 'options' property should be an array`)
   }
 
-  manifest.options?.forEach((o) => {
-    if (!('name' in o && 'value' in o)) {
+  manifest.options?.forEach((option) => {
+    if (!('name' in option && 'value' in option)) {
       throw new Error(
         `Some of the defined 'options' are invalid. ` +
           `Please, make sure they contain a 'name' and 'value' properties`,
