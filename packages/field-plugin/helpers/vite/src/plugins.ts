@@ -1,26 +1,7 @@
 import type { PluginOption } from 'vite'
-import * as querystring from 'querystring'
-
-const sandboxBaseUrl = `https://plugin-sandbox.storyblok.com/field-plugin`
-const sandboxUrl = (fieldPluginUrl: string) => {
-  const urlQuery = querystring.stringify({
-    url: fieldPluginUrl,
-  })
-  return `${sandboxBaseUrl}?${urlQuery}`
-}
-
-const styles = {
-  reset: '\u001b[0m',
-  green: '\u001b[32m',
-  bold: '\u001b[1m',
-}
-
-// Utility functions for printing to terminal
-
-const green = (text: string) => `${styles.green}${text}${styles.reset}`
-const bold = (text: string) => `${styles.bold}${text}${styles.reset}`
-
-const arrow = green('➜')
+import { generateSandboxUrl } from './sandbox'
+import { bold, green } from './utils/text'
+import { arrows } from './utils/arrows'
 
 export function printProd(): PluginOption {
   return {
@@ -54,17 +35,19 @@ export function printDev(): PluginOption {
         const networkUrl = server.resolvedUrls.network[0]
 
         console.log(`
-    ${arrow}  ${bold(
+    ${arrows.green}  ${bold(
           'Partner Portal',
         )}:  https://app.storyblok.com/#/partner/fields
-    ${arrow}  ${bold('My plugins')}:      https://app.storyblok.com/#/me/plugins
+    ${arrows.green}  ${bold(
+          'My plugins',
+        )}:      https://app.storyblok.com/#/me/plugins
      
-    ${arrow}  ${bold('Local')}:    ${localUrl}
-    ${arrow}  ${bold('Network')}:  ${networkUrl}
+    ${arrows.green}  ${bold('Local')}:    ${localUrl}
+    ${arrows.green}  ${bold('Network')}:  ${networkUrl}
         
   See the plugin in action on 
      
-    ${arrow}  ${bold('Sandbox')}: ${sandboxUrl(localUrl)}
+    ${arrows.green}  ${bold('Sandbox')}: ${generateSandboxUrl(localUrl)}
           `)
       }
     },
