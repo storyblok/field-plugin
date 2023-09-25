@@ -11,6 +11,7 @@ import {
   AssetSelectedMessage,
   ContextRequestMessage,
   FieldPluginData,
+  FieldPluginOption,
   FieldPluginSchema,
   HeightChangeMessage,
   LoadedMessage,
@@ -41,7 +42,12 @@ import { FieldTypePreview } from './FieldTypePreview'
 import { createContainerMessageListener } from '../dom/createContainerMessageListener'
 import { useDebounce } from 'use-debounce'
 import { ContentView } from './ContentView'
-import { StringParam, useQueryParam, withDefault } from 'use-query-params'
+import {
+  StringParam,
+  JsonParam,
+  useQueryParam,
+  withDefault,
+} from 'use-query-params'
 import { ObjectView } from './ObjectView'
 import { UrlView } from './UrlView'
 import { usePluginParams } from './usePluginParams'
@@ -53,8 +59,10 @@ const initialStory: StoryData = {
 }
 const initialContent = ''
 const initialHeight = 300
+const defaultManifest = { options: [] }
 
-const UrlQueryParam = withDefault(StringParam, defaultUrl)
+const urlQueryParam = withDefault(StringParam, defaultUrl)
+const manifestQueryParam = withDefault(JsonParam, defaultManifest)
 
 const useSandbox = (
   onError: (message: { title: string; message?: string }) => void,
@@ -63,7 +71,10 @@ const useSandbox = (
   const { uid } = pluginParams
 
   const fieldTypeIframe = useRef<HTMLIFrameElement>(null)
-  const [url, setUrl] = useQueryParam('url', UrlQueryParam)
+  const [url, setUrl] = useQueryParam('url', urlQueryParam)
+  const [manifest] = useQueryParam<{
+    options: FieldPluginOption[]
+  }>('manifest', manifestQueryParam)
 
   // Fall back to defaultUrl when the url is an empty string; otherwise, the iframe will embed the same origin, which will look strange.
   const [debouncedUrl] = useDebounce(url, 1000)
@@ -84,8 +95,9 @@ const useSandbox = (
       return undefined
     }
     // Omitting query parameters from the user-provided URL in a safe way
-    return `${fieldPluginURL.origin}${fieldPluginURL.pathname
-      }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
+    return `${fieldPluginURL.origin}${
+      fieldPluginURL.pathname
+    }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
   const [iframeKey, setIframeKey] = useState(0)
 
@@ -98,7 +110,7 @@ const useSandbox = (
   const [fullHeight, setFullHeight] = useState(false)
   const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
-    options: [],
+    options: manifest.options,
   })
   const [content, setContent] = useState<unknown>(initialContent)
   const [language, setLanguage] = useState<string>('')
