@@ -1,5 +1,5 @@
 import { createFieldPlugin } from '@storyblok/field-plugin'
-import { updateData, renderFieldPlugin } from './components'
+import { renderFieldPlugin, updateData } from './components'
 import './style.css'
 
 let rootElement = document.querySelector('#app')
@@ -14,21 +14,24 @@ rootElement.innerHTML = `<span>Loading...</span>`
 let previousType = 'loading'
 
 // Establish communication with the Visual Editor
-createFieldPlugin((response) => {
-  // Re-render the button element when messages
-  const { data, actions, type } = response
-  // #region DELETE THIS BOILERPLATE
-  if (previousType === 'loading') {
-    previousType = type
-    if (type === 'error') {
-      rootElement.innerHTML = `<span>Error</span>`
-    } else if (type === 'loaded') {
-      renderFieldPlugin({ data, actions, container: rootElement })
+createFieldPlugin({
+  parseContent: (content) => (typeof content === 'number' ? content : 0),
+  onUpdateState: (response) => {
+    // Re-render the button element when messages
+    const { data, actions, type } = response
+    // #region DELETE THIS BOILERPLATE
+    if (previousType === 'loading') {
+      previousType = type
+      if (type === 'error') {
+        rootElement.innerHTML = `<span>Error</span>`
+      } else if (type === 'loaded') {
+        renderFieldPlugin({ data, actions, container: rootElement })
+      }
+    } else {
+      updateData({ data, container: rootElement })
     }
-  } else {
-    updateData({ data, container: rootElement })
-  }
-  // #endregion
+    // #endregion
+  },
 })
 
 // This error replaces another error which message is harder to understand and impossible to avoid util the issue https://github.com/storyblok/field-plugin/issues/107 has been resolved.
