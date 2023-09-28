@@ -1,5 +1,5 @@
 import { readFileSync, lstatSync } from 'fs'
-import { bold, cyan } from 'kleur/colors'
+import { bold, cyan, red } from 'kleur/colors'
 import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
@@ -13,6 +13,13 @@ import {
   Scope,
   StoryblokClient,
 } from '../../storyblok/storyblok-client'
+import { getErrorMessage } from 'common/src/utils'
+import {
+  load,
+  Manifest,
+  MANIFEST_FILE_NAME,
+  manifestExists,
+} from 'common/src/manifest'
 
 const packageNameMessage =
   'How would you like to call the deployed field-plugin?\n  (Lowercase alphanumeric and dash are allowed.)'
@@ -73,10 +80,23 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
     (fieldPlugin) => fieldPlugin.name === packageName,
   )
 
+  const manifest = handleManifestLoad()
+
   if (fieldPlugin) {
     // update flow
     const mode = skipPrompts ? 'update' : await selectUpsertMode()
     if (mode === 'update') {
+      if (manifest?.options !== undefined) {
+        const confirmed = await confirmOptionsUpdate()
+
+        if (!confirmed) {
+          console.log(cyan(bold('[info]')), 'Aborting plugin update.')
+          process.exit(1)
+        }
+      }
+
+      //TODO: if manifest was loaded and options defined,
+      //pass options when calling `updateFieldType`
       await storyblokClient.updateFieldType({
         id: fieldPlugin.id,
         field_type: {
@@ -186,6 +206,18 @@ export const promptNewName = async (allFieldPlugins: FieldType[]) => {
   return name
 }
 
+export const confirmOptionsUpdate = async () => {
+  const { confirmed } = await betterPrompts<{
+    confirmed: boolean
+  }>({
+    type: 'confirm',
+    name: 'agree',
+    message: `Are you aware all options found in your manifest file are going to be also deployed?`,
+    initial: true,
+  })
+  return confirmed
+}
+
 export const selectApiScope = async (
   token: string,
 ): Promise<Scope | undefined> => {
@@ -253,3 +285,38 @@ export const createDefaultOutputPath = (dir: string) =>
 
 export const isOutputValid = (output?: string): output is string =>
   typeof output === 'string' && output !== ''
+
+export const handleManifestLoad = (): Manifest | undefined => {
+  if (!manifestExists()) {
+    return
+  }
+
+  try {
+    console.log(
+      bold(cyan('[info]')),
+      `Loading manifest from: ${MANIFEST_FILE_NAME}...`,
+    )
+
+    const manifest = load()
+
+    console.log(bold(cyan('[info]')), `manifest loaded`)
+
+    if (manifest.options !== undefined) {
+      console.log(
+        bold(cyan('[info]')),
+        `${manifest.options.length} options were found in your manifest`,
+      )
+    }
+
+    return manifest
+  } catch (err) {
+    console.log(
+      bold(red('[ERROR]')),
+      `Error while loading manifest`,
+      `file: ${MANIFEST_FILE_NAME}`,
+      `error: ${getErrorMessage(err)}`,
+    )
+
+    process.exit(1)
+  }
+}
