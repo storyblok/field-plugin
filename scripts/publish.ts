@@ -5,7 +5,7 @@ import { $ } from 'zx'
 import fs from 'fs/promises'
 import semver from 'semver'
 
-const packageFolder = process.argv[3] ?? ''
+const packageFolder = process.argv[2] ?? ''
 if (!['cli', 'field-plugin'].includes(packageFolder)) {
   console.error(
     "[ERROR] You must specify which package to publish: ('cli' | 'field-plugin')",
