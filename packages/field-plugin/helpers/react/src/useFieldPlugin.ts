@@ -10,7 +10,7 @@ export const useFieldPlugin = <Content>({
 }: Omit<
   CreateFieldPluginOptions<Content>,
   'onUpdateState'
->): FieldPluginResponse<Content> => {
+> = {}): FieldPluginResponse<Content> => {
   const [plugin, setPlugin] = useState<FieldPluginResponse<Content>>({
     type: 'loading',
   })
