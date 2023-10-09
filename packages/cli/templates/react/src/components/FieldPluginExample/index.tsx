@@ -7,8 +7,9 @@ import { useFieldPlugin } from '@storyblok/field-plugin/react'
 
 const FieldPlugin: FunctionComponent = () => {
   const { type, data, actions } = useFieldPlugin({
-    parseContent: (content: unknown) =>
-      typeof content === 'number' ? content : 0,
+    validateContent: (content: unknown) => ({
+      content: typeof content === 'number' ? content : 0,
+    }),
   })
 
   if (type !== 'loaded') {

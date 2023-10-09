@@ -9,7 +9,10 @@ import { isCloneable } from '../utils/isCloneable'
 
 export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
-  parseContent: (content: unknown) => Content
+  validateContent?: (content: unknown) => {
+    content: Content
+    error?: string
+  }
 }
 
 export type CreateFieldPlugin = <Content = unknown>(
@@ -21,7 +24,7 @@ export type CreateFieldPlugin = <Content = unknown>(
  */
 export const createFieldPlugin: CreateFieldPlugin = ({
   onUpdateState,
-  parseContent,
+  validateContent,
 }) => {
   const isEmbedded = window.parent !== window
 
@@ -76,8 +79,13 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
+  // This is basically the `Content` inferred from the `validateContent`.
+  type InferredContent = ReturnType<
+    Exclude<typeof validateContent, undefined>
+  >['content']
+
   const { actions, messageCallbacks, onHeightChange, initialize } =
-    createPluginActions({
+    createPluginActions<InferredContent>({
       uid,
       postToContainer,
       onUpdateState: (data) => {
@@ -87,7 +95,9 @@ export const createFieldPlugin: CreateFieldPlugin = ({
           actions,
         })
       },
-      parseContent,
+      validateContent:
+        validateContent ||
+        ((content) => ({ content: content as InferredContent })),
     })
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)

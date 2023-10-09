@@ -6,8 +6,9 @@ import AssetSelector from './AssetSelector.vue'
 import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
 const plugin = useFieldPlugin({
-  parseContent: (content: unknown) =>
-    typeof content === 'number' ? content : 0,
+  validateContent: (content: unknown) => ({
+    content: typeof content === 'number' ? content : 0,
+  }),
 })
 
 function closeModal() {

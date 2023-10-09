@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
-const plugin = useFieldPlugin({ parseContent: (content: unknown) => content })
+const plugin = useFieldPlugin()
 </script>
 
 <template>
