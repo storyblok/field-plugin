@@ -9,6 +9,7 @@ const FieldPlugin: FunctionComponent = () => {
       - make changes before sending it to the Storyblok Visual Editor
       - provide type-safety
 
+    // For example,
     validateContent: (content: unknown) => {
       if (typeof content === 'string') {
         return {
@@ -17,7 +18,7 @@ const FieldPlugin: FunctionComponent = () => {
       } else {
         return {
           content,
-          error: `content is expected to be a string (actual: ${JSON.stringify(content)})`,
+          error: `content is expected to be a string (actual value: ${JSON.stringify(content)})`,
         }
       }
     }
