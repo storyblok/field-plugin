@@ -63,13 +63,13 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = async ({
   dotEnvPath,
   skipPrompts,
 }) => {
-  if (isToken(token)) {
+  if (isTokenValid(token)) {
     return {
       token,
     }
   }
 
-  if (isToken(process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN)) {
+  if (isTokenValid(process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN)) {
     return { token: process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN }
   }
 
@@ -84,7 +84,7 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = async ({
     }
   }
 
-  if (tokenFromEnvFiles === undefined && skipPrompts) {
+  if (skipPrompts) {
     return {
       error: true,
       message: [
@@ -306,7 +306,7 @@ const getExistingEnvironmentFiles = (paths: string[]) =>
     return acc
   }, [])
 
-const isToken = (token: unknown): token is string =>
+const isTokenValid = (token: unknown): token is string =>
   token !== undefined &&
   token !== null &&
   typeof token === 'string' &&
@@ -361,7 +361,7 @@ const getTokenFromFiles = (envPaths: string[]): string | undefined => {
 
   const token = process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
 
-  if (!isToken(token)) {
+  if (!isTokenValid(token)) {
     return undefined
   }
 
