@@ -19,14 +19,16 @@ import { FieldPluginActions, Initialize } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
 import { callbackQueue } from './callbackQueue'
 
+export type ValidateContent<Content> = (content: unknown) => {
+  content: Content
+  error?: string
+}
+
 export type CreatePluginActions = <Content>(options: {
   uid: string
   postToContainer: (message: unknown) => void
   onUpdateState: (state: FieldPluginData<Content>) => void
-  validateContent: (content: unknown) => {
-    content: Content
-    error?: string
-  }
+  validateContent: ValidateContent<Content>
 }) => {
   // These functions are to be called by the field plugin when the user performs actions in the UI
   actions: FieldPluginActions<Content>

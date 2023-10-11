@@ -1,4 +1,4 @@
-import { createPluginActions } from './createPluginActions'
+import { createPluginActions, ValidateContent } from './createPluginActions'
 import { createHeightChangeListener } from './createHeightChangeListener'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
@@ -9,10 +9,7 @@ import { isCloneable } from '../utils/isCloneable'
 
 export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
-  validateContent?: (content: unknown) => {
-    content: Content
-    error?: string
-  }
+  validateContent?: ValidateContent<Content>
 }
 
 export type CreateFieldPlugin = <Content = unknown>(
