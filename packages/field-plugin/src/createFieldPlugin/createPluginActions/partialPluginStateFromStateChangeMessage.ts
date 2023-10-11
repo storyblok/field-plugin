@@ -13,10 +13,11 @@ export const pluginStateFromStateChangeMessage = <Content>(
   },
 ): FieldPluginData<Content> => {
   const validateResult = validateContent(message.model)
-  if ('error' in validateResult) {
+  if ('error' in validateResult && typeof validateResult.error === 'string') {
     console.warn(
       `[Warning] The provided content is not valid, but it's still sent to the Visual Editor.`,
     )
+    console.warn(`  > ${validateResult.error}`)
   }
 
   return {
