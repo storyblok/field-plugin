@@ -1955,13 +1955,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@npm:0.0.1-beta.4":
-  version: 0.0.1-beta.4
-  resolution: "@storyblok/field-plugin@npm:0.0.1-beta.4"
-  checksum: cccc08f5ed8ea61def21ccb59bfb207cbfe1bf94b61ba5b9f0971791bdeff323dbe55c25dc2cf1e340f2a2117e8c98a7c91a72ee19064ca4d1b3e44aba9e94fe
-  languageName: node
-  linkType: hard
-
 "@storyblok/mui@npm:0.0.19-alpha":
   version: 0.0.19-alpha
   resolution: "@storyblok/mui@npm:0.0.19-alpha"
@@ -4169,7 +4162,7 @@ __metadata:
     "@emotion/styled": 11.10.5
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
-    "@storyblok/field-plugin": 0.0.1-beta.4
+    "@storyblok/field-plugin": 1.0.0-rc.0
     "@storyblok/mui": 0.2.0
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.0.0
