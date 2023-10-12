@@ -1938,7 +1938,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@0.0.1-beta.4, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@npm:0.0.1-beta.4":
+  version: 0.0.1-beta.4
+  resolution: "@storyblok/field-plugin@npm:0.0.1-beta.4"
+  checksum: cccc08f5ed8ea61def21ccb59bfb207cbfe1bf94b61ba5b9f0971791bdeff323dbe55c25dc2cf1e340f2a2117e8c98a7c91a72ee19064ca4d1b3e44aba9e94fe
+  languageName: node
+  linkType: hard
+
+"@storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
