@@ -15,7 +15,9 @@ let previousType = 'loading'
 
 // Establish communication with the Visual Editor
 createFieldPlugin({
-  parseContent: (content) => (typeof content === 'number' ? content : 0),
+  validateContent: (content) => ({
+    content: typeof content === 'number' ? content : 0,
+  }),
   onUpdateState: (response) => {
     // Re-render the button element when messages
     const { data, actions, type } = response

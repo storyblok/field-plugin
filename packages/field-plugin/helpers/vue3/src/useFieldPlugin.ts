@@ -22,8 +22,8 @@ const updateObjectWithoutChangingReference = (
 }
 
 export const useFieldPlugin = <Content>({
-  parseContent,
-}: Omit<CreateFieldPluginOptions<Content>, 'onUpdateState'>): UnwrapRef<
+  validateContent,
+}: Omit<CreateFieldPluginOptions<Content>, 'onUpdateState'> = {}): UnwrapRef<
   FieldPluginResponse<Content>
 > => {
   const plugin = reactive<FieldPluginResponse<Content>>({
@@ -88,7 +88,7 @@ export const useFieldPlugin = <Content>({
           return
         }
       },
-      parseContent,
+      validateContent,
     })
   })
 
