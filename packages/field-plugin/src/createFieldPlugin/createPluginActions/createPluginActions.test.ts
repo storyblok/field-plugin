@@ -31,7 +31,9 @@ const wait = async (ms: number) => {
   })
 }
 
-const parseContent = (content: unknown) => content
+const validateContent = (content: unknown) => ({
+  content,
+})
 
 describe('createPluginActions', () => {
   describe('initial call', () => {
@@ -41,7 +43,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       expect(postToContainer).not.toHaveBeenCalled()
     })
@@ -53,7 +55,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       const randomString = '3490ruieo4jf984ej89q32jd0i2k3w09k3902'
       onLoaded({
@@ -85,7 +87,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       setModalOpen(false)
 
@@ -110,7 +112,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       setModalOpen(false)
 
@@ -139,7 +141,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       const content = '409fjk340wo9jkc0954ij0943iu09c43*&(YT-0c43'
       setContent(content)
@@ -157,7 +159,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       const content = '0932ui2foiuerhjv98453jeh09c34jwk-0c43'
       setContent(content)
@@ -178,7 +180,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       requestContext()
       expect(postToContainer).toHaveBeenLastCalledWith(
@@ -197,7 +199,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       selectAsset()
@@ -216,7 +218,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       const promise = selectAsset()
       const filename = 'hello.jpg'
@@ -240,7 +242,7 @@ describe('createPluginActions', () => {
         uid,
         postToContainer,
         onUpdateState,
-        parseContent,
+        validateContent,
       })
       const promise = selectAsset()
       const filename = 'hello.jpg'

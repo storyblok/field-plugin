@@ -19,11 +19,16 @@ import { FieldPluginActions, Initialize } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
 import { callbackQueue } from './callbackQueue'
 
+export type ValidateContent<Content> = (content: unknown) => {
+  content: Content
+  error?: string
+}
+
 export type CreatePluginActions = <Content>(options: {
   uid: string
   postToContainer: (message: unknown) => void
   onUpdateState: (state: FieldPluginData<Content>) => void
-  parseContent: (content: unknown) => Content
+  validateContent: ValidateContent<Content>
 }) => {
   // These functions are to be called by the field plugin when the user performs actions in the UI
   actions: FieldPluginActions<Content>
@@ -39,17 +44,17 @@ export const createPluginActions: CreatePluginActions = ({
   uid,
   postToContainer,
   onUpdateState,
-  parseContent,
+  validateContent,
 }) => {
   const { pushCallback, popCallback } = callbackQueue()
 
   const onStateChange: OnStateChangeMessage = (data) => {
     popCallback('stateChanged', data.callbackId)?.(data)
-    onUpdateState(pluginStateFromStateChangeMessage(data, parseContent))
+    onUpdateState(pluginStateFromStateChangeMessage(data, validateContent))
   }
   const onLoaded: OnLoadedMessage = (data) => {
     popCallback('loaded', data.callbackId)?.(data)
-    onUpdateState(pluginStateFromStateChangeMessage(data, parseContent))
+    onUpdateState(pluginStateFromStateChangeMessage(data, validateContent))
   }
   const onContextRequest: OnContextRequestMessage = (data) => {
     popCallback('context', data.callbackId)?.(data)
@@ -86,7 +91,9 @@ export const createPluginActions: CreatePluginActions = ({
       setContent: (content) => {
         return new Promise((resolve) => {
           const callbackId = pushCallback('stateChanged', (message) =>
-            resolve(pluginStateFromStateChangeMessage(message, parseContent)),
+            resolve(
+              pluginStateFromStateChangeMessage(message, validateContent),
+            ),
           )
           postToContainer(
             valueChangeMessage({ uid, callbackId, model: content }),
@@ -96,7 +103,9 @@ export const createPluginActions: CreatePluginActions = ({
       setModalOpen: (isModalOpen) => {
         return new Promise((resolve) => {
           const callbackId = pushCallback('stateChanged', (message) =>
-            resolve(pluginStateFromStateChangeMessage(message, parseContent)),
+            resolve(
+              pluginStateFromStateChangeMessage(message, validateContent),
+            ),
           )
           postToContainer(
             modalChangeMessage({ uid, callbackId, status: isModalOpen }),
@@ -125,7 +134,7 @@ export const createPluginActions: CreatePluginActions = ({
     initialize: () => {
       return new Promise((resolve) => {
         const callbackId = pushCallback('loaded', (message) =>
-          resolve(pluginStateFromStateChangeMessage(message, parseContent)),
+          resolve(pluginStateFromStateChangeMessage(message, validateContent)),
         )
         // Request the initial state from the Visual Editor.
         postToContainer(pluginLoadedMessage({ uid, callbackId }))

@@ -5,7 +5,9 @@ import { createFieldPlugin } from '@storyblok/field-plugin'
 export const fieldPluginMixin = {
   created() {
     createFieldPlugin({
-      parseContent: (content) => (typeof content === 'number' ? content : 0),
+      validateContent: (content) => ({
+        content: typeof content === 'number' ? content : 0,
+      }),
       onUpdateState: (newState) => {
         Vue.set(this.plugin, 'type', newState.type)
         Vue.set(this.plugin, 'error', newState.error)
