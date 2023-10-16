@@ -5,6 +5,7 @@ const externalDependencies = [
   'fs',
   'path',
   'os',
+  'url',
   ...Object.keys(pkg.dependencies),
 ]
 

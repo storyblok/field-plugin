@@ -63,32 +63,22 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = async ({
   dotEnvPath,
   skipPrompts,
 }) => {
-  if (typeof token !== 'undefined' && token !== '') {
+  if (isTokenValid(token)) {
     return {
       token,
     }
   }
 
-  const pathsToLoad =
-    typeof dotEnvPath === 'string' ? [dotEnvPath] : ['.env', '.env.local']
-
-  const noneOfThemExists = pathsToLoad.every(
-    (path: string) => !existsSync(path),
-  )
-  if (skipPrompts && noneOfThemExists) {
-    return {
-      error: true,
-      message: [
-        `Environment variable file doesn't exist at the following path:`,
-        ...pathsToLoad.map((path) => `  > ${resolve(path)}`),
-      ].join('\n'),
-    }
+  if (isTokenValid(process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN)) {
+    return { token: process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN }
   }
 
-  pathsToLoad.forEach((path) => dotenv.config({ path }))
+  const defaultEnvPaths =
+    typeof dotEnvPath === 'string' ? [dotEnvPath] : ['.env', '.env.local']
 
-  const tokenFromEnvFiles = process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
-  if (typeof tokenFromEnvFiles !== 'undefined' && tokenFromEnvFiles !== '') {
+  const tokenFromEnvFiles = getTokenFromFiles(defaultEnvPaths)
+
+  if (tokenFromEnvFiles !== undefined) {
     return {
       token: tokenFromEnvFiles,
     }
@@ -98,43 +88,16 @@ export const getPersonalAccessToken: GetPersonalAccessTokenFunc = async ({
     return {
       error: true,
       message: [
-        `Could't find the environment variable \`STORYBLOK_PERSONAL_ACCESS_TOKEN\` at the following paths:`,
-        ...pathsToLoad.map((path) => `  > ${resolve(path)}`),
+        `Couldn't find the environment variable \`STORYBLOK_PERSONAL_ACCESS_TOKEN\` at the following paths:`,
+        ...defaultEnvPaths.map((path) => `  > ${resolve(path)}`),
       ].join('\n'),
     }
-  } else {
-    console.log(
-      cyan(bold('[info]')),
-      'Please enter your personal access token to deploy the field plugin.',
-    )
-    console.log('  > https://app.storyblok.com/#/me/account?tab=token')
-    console.log('')
-    const { token } = await betterPrompts<{ token: string }>({
-      type: 'text',
-      name: 'token',
-      message: 'Personal access token:',
-    })
-
-    console.log(
-      cyan(`Do you want to save this token in this file for future use?`),
-    )
-    console.log(`  > ${resolve(dotEnvPath ?? '.env.local')}`)
-    const { save } = await betterPrompts<{ save: boolean }>({
-      type: 'confirm',
-      name: 'save',
-      message: 'Save?',
-      initial: true,
-    })
-
-    if (save) {
-      appendFileSync(
-        dotEnvPath ?? '.env.local',
-        `\nSTORYBLOK_PERSONAL_ACCESS_TOKEN=${token}\n`,
-      )
-    }
-
-    return { token }
   }
+
+  const inputToken = await inputPersonalAccessToken()
+  await savePersonalAccessToken(inputToken, dotEnvPath)
+
+  return { token: inputToken }
 }
 
 export const isValidPackageName = (name: string | undefined): name is string =>
@@ -332,4 +295,75 @@ export const expandTilde = (folderPath: string) => {
     return homedir + folderPath.slice(1)
   }
   return folderPath
+}
+
+const getExistingEnvironmentFiles = (paths: string[]) =>
+  paths.reduce((acc: string[], path: string) => {
+    if (existsSync(path)) {
+      return [...acc, path]
+    }
+
+    return acc
+  }, [])
+
+const isTokenValid = (token: unknown): token is string =>
+  token !== undefined &&
+  token !== null &&
+  typeof token === 'string' &&
+  token !== ''
+
+const inputPersonalAccessToken = async () => {
+  console.log(
+    cyan(bold('[info]')),
+    'Please enter your personal access token to deploy the field plugin.',
+  )
+  console.log('  > https://app.storyblok.com/#/me/account?tab=token')
+  console.log('')
+  const { token } = await betterPrompts<{ token: string }>({
+    type: 'text',
+    name: 'token',
+    message: 'Personal access token:',
+  })
+
+  return token
+}
+
+const savePersonalAccessToken = async (
+  token: string,
+  location?: string,
+): Promise<void> => {
+  console.log(
+    cyan(`Do you want to save this token in this file for future use?`),
+  )
+  console.log(`  > ${resolve(location ?? '.env.local')}`)
+  const { save } = await betterPrompts<{ save: boolean }>({
+    type: 'confirm',
+    name: 'save',
+    message: 'Save?',
+    initial: true,
+  })
+
+  if (save) {
+    appendFileSync(
+      location ?? '.env.local',
+      `\nSTORYBLOK_PERSONAL_ACCESS_TOKEN=${token}\n`,
+    )
+  }
+}
+const getTokenFromFiles = (envPaths: string[]): string | undefined => {
+  const envPathsToLoad = getExistingEnvironmentFiles(envPaths)
+
+  if (envPathsToLoad.length === 0) {
+    return undefined
+  }
+
+  envPathsToLoad.forEach((path) => dotenv.config({ path }))
+
+  const token = process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
+
+  if (!isTokenValid(token)) {
+    return undefined
+  }
+
+  return token
 }

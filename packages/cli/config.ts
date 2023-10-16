@@ -1,4 +1,5 @@
-import { resolve } from 'path'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
 
 export const TEMPLATES = [
   {
@@ -35,10 +36,11 @@ export const TEMPLATES = [
   
   If we move this file to another folder, then we need to put correct value conditionally to `TEMPLATES_PATH`.
 */
-export const TEMPLATES_PATH = resolve(__dirname, 'templates')
+const currentDirectory = dirname(fileURLToPath(import.meta.url))
+export const TEMPLATES_PATH = resolve(currentDirectory, 'templates')
 
 export const MONOREPO_TEMPLATE_PATH = resolve(
-  __dirname,
+  currentDirectory,
   'templates',
   'monorepo',
 )

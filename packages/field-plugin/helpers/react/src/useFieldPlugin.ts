@@ -6,11 +6,11 @@ import {
 import { useEffect, useState } from 'react'
 
 export const useFieldPlugin = <Content>({
-  parseContent,
+  validateContent,
 }: Omit<
   CreateFieldPluginOptions<Content>,
   'onUpdateState'
->): FieldPluginResponse<Content> => {
+> = {}): FieldPluginResponse<Content> => {
   const [plugin, setPlugin] = useState<FieldPluginResponse<Content>>({
     type: 'loading',
   })
@@ -31,7 +31,7 @@ export const useFieldPlugin = <Content>({
           })
         }
       },
-      parseContent,
+      validateContent,
     })
   }, [])
 

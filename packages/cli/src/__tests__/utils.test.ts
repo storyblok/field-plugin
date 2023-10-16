@@ -49,7 +49,7 @@ describe('utils', () => {
       expect(result).toEqual({
         error: true,
         message:
-          "Environment variable file doesn't exist at the following path:" +
+          "Couldn't find the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` at the following paths:" +
           '\n  > <current-directory>/.env.local',
       })
     })
@@ -67,7 +67,7 @@ describe('utils', () => {
         expect(result).toEqual({
           error: true,
           message:
-            "Could't find the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` at the following paths:" +
+            "Couldn't find the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` at the following paths:" +
             '\n  > <current-directory>/.env.local',
         })
       })
@@ -100,7 +100,7 @@ describe('utils', () => {
         expect(result).toEqual({
           error: true,
           message:
-            "Could't find the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` at the following paths:" +
+            "Couldn't find the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN` at the following paths:" +
             '\n  > <current-directory>/.env' +
             '\n  > <current-directory>/.env.local',
         })
