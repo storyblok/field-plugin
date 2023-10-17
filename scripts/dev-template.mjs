@@ -18,6 +18,9 @@ import { $ } from 'zx'
 import fs from 'fs/promises'
 import path from 'path'
 
+// eslint-disable-next-line functional/immutable-data
+process.env.FORCE_COLOR = '1'
+
 const template = process.argv[3]
 if (!template) {
   console.error('[ERROR] This script requires a template name as an argument.')
@@ -35,21 +38,21 @@ file = file.replace(
     alias: [{
       find: /^@storyblok\\/field-plugin$/,
       replacement: '${path.resolve(
-    __dirname,
-    '../packages/field-plugin/src/index.ts',
-  )}'
+        __dirname,
+        '../packages/field-plugin/src/index.ts',
+      )}'
     }, {
       find: /^@storyblok\\/field-plugin\\/vue3$/,
       replacement: '${path.resolve(
-    __dirname,
-    '../packages/field-plugin/helpers/vue3/src/index.ts',
-  )}'
+        __dirname,
+        '../packages/field-plugin/helpers/vue3/src/index.ts',
+      )}'
     }, {
       find: /^@storyblok\\/field-plugin\\/react$/,
       replacement: '${path.resolve(
-    __dirname,
-    '../packages/field-plugin/helpers/react/src/index.ts',
-  )}'
+        __dirname,
+        '../packages/field-plugin/helpers/react/src/index.ts',
+      )}'
     }]
   },
   plugins:`,
