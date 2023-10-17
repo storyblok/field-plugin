@@ -212,7 +212,7 @@ export const confirmOptionsUpdate = async () => {
   }>({
     type: 'confirm',
     name: 'agree',
-    message: `Are you aware all options found in your manifest file are going to be also deployed?`,
+    message: `Are you aware all options found in your manifest file are going to be also updated?`,
     initial: true,
   })
   return confirmed
