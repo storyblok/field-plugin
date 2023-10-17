@@ -13,13 +13,13 @@ import {
   Scope,
   StoryblokClient,
 } from '../../storyblok/storyblok-client'
-import { getErrorMessage } from 'common/src/utils'
+import { getErrorMessage } from 'manifest-helper/src/utils'
 import {
   load,
   Manifest,
   MANIFEST_FILE_NAME,
   manifestExists,
-} from 'common/src/manifest'
+} from 'manifest-helper/src/manifest'
 
 const packageNameMessage =
   'How would you like to call the deployed field-plugin?\n  (Lowercase alphanumeric and dash are allowed.)'
