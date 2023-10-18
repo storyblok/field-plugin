@@ -95,20 +95,21 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
         }
       }
 
-      //TODO: if manifest was loaded and options defined,
-      //pass options when calling `updateFieldType`
       await storyblokClient.updateFieldType({
         id: fieldPlugin.id,
         field_type: {
           body: output,
+          options: manifest?.options,
         },
       })
+
       return { id: fieldPlugin.id }
     } else if (mode === 'create') {
       const newName = await promptNewName(allFieldPlugins)
       const newFieldPlugin = await storyblokClient.createFieldType({
         name: newName,
         body: output,
+        options: manifest?.options,
       })
       if (await confirmUpdatingName()) {
         await runCommand(`npm pkg set name=${newName}`, { cwd: dir })
@@ -125,10 +126,13 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
     console.log(cyan(bold('[info]')), 'Not creating a new field plugin.')
     process.exit(1)
   }
+
   const newFieldPlugin = await storyblokClient.createFieldType({
     name: packageName,
     body: output,
+    options: manifest?.options,
   })
+
   return { id: newFieldPlugin.id }
 }
 
@@ -211,7 +215,7 @@ export const confirmOptionsUpdate = async () => {
     confirmed: boolean
   }>({
     type: 'confirm',
-    name: 'agree',
+    name: 'confirmed',
     message: `Are you aware all options found in your manifest file are going to be also updated?`,
     initial: true,
   })
@@ -304,7 +308,7 @@ export const handleManifestLoad = (): Manifest | undefined => {
     if (manifest.options !== undefined) {
       console.log(
         bold(cyan('[info]')),
-        `${manifest.options.length} options were found in your manifest`,
+        `${manifest.options.length} option(s) were found in your manifest file`,
       )
     }
 

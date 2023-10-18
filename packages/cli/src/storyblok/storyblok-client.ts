@@ -1,7 +1,13 @@
 import { red } from 'kleur/colors'
 import type { Response } from 'node-fetch'
+import { ManifestOption } from 'packages/manifest-helper/src/manifest'
 
-export type FieldType = { id: number; name: string; body: string }
+export type FieldType = {
+  id: number
+  name: string
+  body: string
+  options?: ManifestOption[]
+}
 
 export type Scope = 'my-plugins' | 'partner-portal' | 'organization'
 
@@ -10,6 +16,7 @@ type IsAuthenticatedFunc = () => Promise<boolean>
 type CreateFieldTypeFunc = (body: {
   name: string
   body?: unknown
+  options?: ManifestOption[]
 }) => Promise<FieldType>
 
 type UpdateFieldTypeFunc = (args: {
