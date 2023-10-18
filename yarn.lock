@@ -1938,7 +1938,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@1.0.0-rc.0, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@1.0.0-rc.1, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
@@ -1954,6 +1954,13 @@ __metadata:
     vite-plugin-dts: "*"
   languageName: unknown
   linkType: soft
+
+"@storyblok/field-plugin@npm:1.0.0-rc.0":
+  version: 1.0.0-rc.0
+  resolution: "@storyblok/field-plugin@npm:1.0.0-rc.0"
+  checksum: 242fe553b2aa26f18046fb66a5808851e98d9ea53097f83d4d7e737a00f00fe93645163ed0efd5441a38168d50219f37a3f556fb56dba9339ce0878261cd6071
+  languageName: node
+  linkType: hard
 
 "@storyblok/mui@npm:0.0.19-alpha":
   version: 0.0.19-alpha
@@ -3925,13 +3932,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:5.3.0, chalk@npm:^5.0.0, chalk@npm:^5.2.0":
-  version: 5.3.0
-  resolution: "chalk@npm:5.3.0"
-  checksum: 623922e077b7d1e9dedaea6f8b9e9352921f8ae3afe739132e0e00c275971bdd331268183b2628cf4ab1727c45ea1f28d7e24ac23ce1db1eb653c414ca8a5a80
-  languageName: node
-  linkType: hard
-
 "chalk@npm:^2.0.0":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
@@ -3950,6 +3950,13 @@ __metadata:
     ansi-styles: ^4.1.0
     supports-color: ^7.1.0
   checksum: fe75c9d5c76a7a98d45495b91b2172fa3b7a09e0cc9370e5c8feb1c567b85c4288e2b3fded7cfdd7359ac28d6b3844feb8b82b8686842e93d23c827c417e83fc
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^5.0.0, chalk@npm:^5.2.0":
+  version: 5.3.0
+  resolution: "chalk@npm:5.3.0"
+  checksum: 623922e077b7d1e9dedaea6f8b9e9352921f8ae3afe739132e0e00c275971bdd331268183b2628cf4ab1727c45ea1f28d7e24ac23ce1db1eb653c414ca8a5a80
   languageName: node
   linkType: hard
 
@@ -5673,7 +5680,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-js-template@workspace:packages/cli/templates/js"
   dependencies:
-    "@storyblok/field-plugin": 1.0.0-rc.0
+    "@storyblok/field-plugin": 1.0.0-rc.1
     eslint: latest
     vite: ^4.2.2
     vite-plugin-css-injected-by-js: 2.4.0
@@ -5699,7 +5706,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-react-template@workspace:packages/cli/templates/react"
   dependencies:
-    "@storyblok/field-plugin": 1.0.0-rc.0
+    "@storyblok/field-plugin": 1.0.0-rc.1
     "@types/react": ^18.0.28
     "@types/react-dom": ^18.0.11
     "@typescript-eslint/eslint-plugin": 6.1.0
@@ -5721,7 +5728,7 @@ __metadata:
   dependencies:
     "@rollup/plugin-node-resolve": 15.1.0
     "@rollup/plugin-replace": 5.0.2
-    "@storyblok/field-plugin": 1.0.0-rc.0
+    "@storyblok/field-plugin": 1.0.0-rc.1
     "@vitejs/plugin-vue2": 2.2.0
     rollup: 3.26.3
     typescript: 5.1.6
@@ -5735,7 +5742,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-vue3-template@workspace:packages/cli/templates/vue3"
   dependencies:
-    "@storyblok/field-plugin": 1.0.0-rc.0
+    "@storyblok/field-plugin": 1.0.0-rc.1
     "@vitejs/plugin-vue": ^4.1.0
     typescript: 5.1.6
     vite: ^4.2.2
@@ -6305,7 +6312,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "helper-vite@workspace:packages/field-plugin/helpers/vite"
   dependencies:
-    chalk: 5.3.0
+    kleur: 4.1.5
     typescript: ^5.0.2
     vite: ^4.4.5
     vite-plugin-dts: 3.5.0
