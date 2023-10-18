@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getErrorMessage = (err: any) => {
+export const getErrorMessage = (err: unknown) => {
   if (err instanceof Error) return err.message
 
   return String(err)
