@@ -18,6 +18,7 @@ import {
   load,
   Manifest,
   MANIFEST_FILE_NAME,
+  MANIFEST_FULL_PATH,
   manifestExists,
 } from 'manifest-helper/src/manifest'
 
@@ -72,6 +73,8 @@ export const getPackageName: GetPackageName = async ({
 export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   const { packageName, skipPrompts, token, output, dir, scope } = args
 
+  const manifest = handleManifestLoad()
+
   const storyblokClient = StoryblokClient({ token, scope })
 
   console.log(bold(cyan('[info] Checking existing field plugins...')))
@@ -79,8 +82,6 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   const fieldPlugin = allFieldPlugins.find(
     (fieldPlugin) => fieldPlugin.name === packageName,
   )
-
-  const manifest = handleManifestLoad()
 
   if (fieldPlugin) {
     // update flow
@@ -216,7 +217,7 @@ export const confirmOptionsUpdate = async () => {
   }>({
     type: 'confirm',
     name: 'confirmed',
-    message: `Are you aware all options found in your manifest file are going to be also updated?`,
+    message: `The plugin's options is going to also be updated based on the ones found in your manifest file. Do you want to proceed?`,
     initial: true,
   })
   return confirmed
@@ -291,35 +292,39 @@ export const isOutputValid = (output?: string): output is string =>
   typeof output === 'string' && output !== ''
 
 export const handleManifestLoad = (): Manifest | undefined => {
+  console.log(
+    bold(
+      cyan(`[info] Looking for a manifest file at ${MANIFEST_FULL_PATH}...`),
+    ),
+  )
+
   if (!manifestExists()) {
+    console.log(bold(cyan('[info] No manifest file was found')))
     return
   }
 
   try {
-    console.log(
-      bold(cyan('[info]')),
-      `Loading manifest from: ${MANIFEST_FILE_NAME}...`,
-    )
+    console.log(bold(cyan('[info] Loading data from the manifest file...')))
 
     const manifest = load()
 
-    console.log(bold(cyan('[info]')), `manifest loaded`)
+    console.log(bold(cyan('[info] Manifest data was loaded')))
 
     if (manifest.options !== undefined) {
       console.log(
-        bold(cyan('[info]')),
-        `${manifest.options.length} option(s) were found in your manifest file`,
+        bold(
+          cyan(
+            `[info] ${manifest.options.length} option(s) were found in your manifest file`,
+          ),
+        ),
       )
     }
 
     return manifest
   } catch (err) {
-    console.log(
-      bold(red('[ERROR]')),
-      `Error while loading manifest`,
-      `file: ${MANIFEST_FILE_NAME}`,
-      `error: ${getErrorMessage(err)}`,
-    )
+    console.log(bold(red('[ERROR]')), `Error while loading the manifest file`)
+    console.log(`path: ${MANIFEST_FILE_NAME}`)
+    console.log(`error: ${getErrorMessage(err)}`)
 
     process.exit(1)
   }
