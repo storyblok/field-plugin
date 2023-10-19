@@ -329,7 +329,7 @@ export const handleManifestLoad = (): Manifest | undefined => {
     console.log(bold(red('[ERROR]')), `Error while loading the manifest file`)
     console.log(`path: ${MANIFEST_FILE_NAME}`)
     console.log(`error: ${getErrorMessage(err)}`)
-
-    process.exit(1)
   }
+
+  return undefined
 }
