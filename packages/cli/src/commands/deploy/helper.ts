@@ -11,6 +11,7 @@ import {
 import {
   FieldType,
   Scope,
+  StoryClientType,
   StoryblokClient,
 } from '../../storyblok/storyblok-client'
 import { getErrorMessage } from '@storyblok/manifest-helper/src/utils'
@@ -103,13 +104,18 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
       return { id: fieldPlugin.id }
     } else if (mode === 'create') {
       const newName = await promptNewName(allFieldPlugins)
-      const newFieldPlugin = await storyblokClient.createFieldType({
+
+      const newFieldPlugin = await createFieldType({
         name: newName,
         body: output,
+        client: storyblokClient,
+        options: manifest?.options,
       })
+
       if (await confirmUpdatingName()) {
         await runCommand(`npm pkg set name=${newName}`, { cwd: dir })
       }
+
       return { id: newFieldPlugin.id }
     }
   }
@@ -123,9 +129,11 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
     process.exit(1)
   }
 
-  const newFieldPlugin = await storyblokClient.createFieldType({
+  const newFieldPlugin = await createFieldType({
     name: packageName,
     body: output,
+    client: storyblokClient,
+    options: manifest?.options,
   })
 
   return { id: newFieldPlugin.id }
@@ -315,4 +323,32 @@ export const loadManifest = (): Manifest | undefined => {
 
     return undefined
   }
+}
+
+export const createFieldType = async ({
+  name,
+  body,
+  client,
+  options,
+}: {
+  name: string
+  body: unknown
+  client: StoryClientType
+  options: ManifestOption[] | undefined
+}) => {
+  const newFieldPlugin = await client.createFieldType({ name, body })
+
+  //since the API doesn't accept options during creation time,
+  //we need to force an update in case options were found in
+  //the manifest file.
+  if (options !== undefined && options.length > 0) {
+    await client.updateFieldType({
+      id: newFieldPlugin.id,
+      field_type: {
+        options,
+      },
+    })
+  }
+
+  return newFieldPlugin
 }
