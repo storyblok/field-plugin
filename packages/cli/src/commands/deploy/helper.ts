@@ -106,7 +106,6 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
       const newFieldPlugin = await storyblokClient.createFieldType({
         name: newName,
         body: output,
-        options: manifest?.options,
       })
       if (await confirmUpdatingName()) {
         await runCommand(`npm pkg set name=${newName}`, { cwd: dir })
@@ -127,7 +126,6 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   const newFieldPlugin = await storyblokClient.createFieldType({
     name: packageName,
     body: output,
-    options: manifest?.options,
   })
 
   return { id: newFieldPlugin.id }

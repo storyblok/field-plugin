@@ -16,7 +16,6 @@ type IsAuthenticatedFunc = () => Promise<boolean>
 type CreateFieldTypeFunc = (body: {
   name: string
   body?: unknown
-  options?: ManifestOption[]
 }) => Promise<FieldType>
 
 type UpdateFieldTypeFunc = (args: {
