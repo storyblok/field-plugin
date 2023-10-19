@@ -296,14 +296,7 @@ export const isOutputValid = (output?: string): output is string =>
   typeof output === 'string' && output !== ''
 
 export const handleManifestLoad = (): Manifest | undefined => {
-  console.log(
-    bold(
-      cyan(`[info] Looking for a manifest file at ${MANIFEST_FULL_PATH}...`),
-    ),
-  )
-
   if (!manifestExists()) {
-    console.log(bold(cyan('[info] No manifest file was found')))
     return
   }
 
@@ -311,8 +304,6 @@ export const handleManifestLoad = (): Manifest | undefined => {
     console.log(bold(cyan('[info] Loading data from the manifest file...')))
 
     const manifest = load()
-
-    console.log(bold(cyan('[info] Manifest data was loaded')))
 
     if (manifest.options !== undefined) {
       console.log(
@@ -329,7 +320,7 @@ export const handleManifestLoad = (): Manifest | undefined => {
     console.log(bold(red('[ERROR]')), `Error while loading the manifest file`)
     console.log(`path: ${MANIFEST_FILE_NAME}`)
     console.log(`error: ${getErrorMessage(err)}`)
-  }
 
-  return undefined
+    return undefined
+  }
 }
