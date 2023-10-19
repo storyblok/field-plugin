@@ -49,7 +49,7 @@ const validateSchema = (manifest: Manifest): void => {
   })
 
   if (manifest.options !== undefined && !Array.isArray(manifest.options)) {
-    throw new Error(`When declared, the 'options' property should be an array`)
+    throw new Error(`The 'options' property should be an array`)
   }
 
   manifest.options?.forEach((option) => {
