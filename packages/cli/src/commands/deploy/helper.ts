@@ -40,6 +40,14 @@ type GetPackageName = (params: {
   skipPrompts: boolean
   dir: string
 }) => Promise<{ error: false; name: string } | { error: true }>
+
+type CreateFieldTypeFunc = (params: {
+  name: string
+  body: unknown
+  client: StoryClientType
+  options: ManifestOption[] | undefined
+}) => Promise<FieldType>
+
 export const getPackageName: GetPackageName = async ({
   name,
   skipPrompts,
@@ -325,16 +333,11 @@ export const loadManifest = (): Manifest | undefined => {
   }
 }
 
-export const createFieldType = async ({
+export const createFieldType: CreateFieldTypeFunc = async ({
   name,
   body,
   client,
   options,
-}: {
-  name: string
-  body: unknown
-  client: StoryClientType
-  options: ManifestOption[] | undefined
 }) => {
   const newFieldPlugin = await client.createFieldType({ name, body })
 
