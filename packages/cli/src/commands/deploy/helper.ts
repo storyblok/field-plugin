@@ -20,6 +20,7 @@ import {
   MANIFEST_FILE_NAME,
   MANIFEST_FULL_PATH,
   manifestExists,
+  ManifestOption,
 } from 'manifest-helper/src/manifest'
 
 const packageNameMessage =
@@ -87,14 +88,7 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
     // update flow
     const mode = skipPrompts ? 'update' : await selectUpsertMode()
     if (mode === 'update') {
-      if (manifest?.options !== undefined) {
-        const confirmed = await confirmOptionsUpdate()
-
-        if (!confirmed) {
-          console.log(cyan(bold('[info]')), 'Aborting plugin update.')
-          process.exit(1)
-        }
-      }
+      await confirmOptionsUpdate(manifest?.options)
 
       await storyblokClient.updateFieldType({
         id: fieldPlugin.id,
@@ -211,7 +205,13 @@ export const promptNewName = async (allFieldPlugins: FieldType[]) => {
   return name
 }
 
-export const confirmOptionsUpdate = async () => {
+export const confirmOptionsUpdate = async (
+  options: ManifestOption[] | undefined,
+) => {
+  if (options === undefined) {
+    return
+  }
+
   const { confirmed } = await betterPrompts<{
     confirmed: boolean
   }>({
@@ -220,7 +220,11 @@ export const confirmOptionsUpdate = async () => {
     message: `The plugin's options is going to also be updated based on the ones found in your manifest file. Do you want to proceed?`,
     initial: true,
   })
-  return confirmed
+
+  if (!confirmed) {
+    console.log(cyan(bold('[info]')), 'Aborting plugin update.')
+    process.exit(1)
+  }
 }
 
 export const selectApiScope = async (
