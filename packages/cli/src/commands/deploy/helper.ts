@@ -73,7 +73,7 @@ export const getPackageName: GetPackageName = async ({
 export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   const { packageName, skipPrompts, token, output, dir, scope } = args
 
-  const manifest = handleManifestLoad()
+  const manifest = loadManifest()
 
   const storyblokClient = StoryblokClient({ token, scope })
 
@@ -297,7 +297,7 @@ export const createDefaultOutputPath = (dir: string) =>
 export const isOutputValid = (output?: string): output is string =>
   typeof output === 'string' && output !== ''
 
-export const handleManifestLoad = (): Manifest | undefined => {
+export const loadManifest = (): Manifest | undefined => {
   if (!manifestExists()) {
     return
   }
