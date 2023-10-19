@@ -18,7 +18,6 @@ import {
   load,
   Manifest,
   MANIFEST_FILE_NAME,
-  MANIFEST_FULL_PATH,
   manifestExists,
   ManifestOption,
 } from '@storyblok/manifest-helper/src/manifest'
