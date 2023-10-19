@@ -86,8 +86,11 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   if (fieldPlugin) {
     // update flow
     const mode = skipPrompts ? 'update' : await selectUpsertMode()
+
     if (mode === 'update') {
-      await confirmOptionsUpdate(manifest?.options)
+      if (!skipPrompts) {
+        await confirmOptionsUpdate(manifest?.options)
+      }
 
       await storyblokClient.updateFieldType({
         id: fieldPlugin.id,
