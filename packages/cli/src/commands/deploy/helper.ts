@@ -217,7 +217,7 @@ export const confirmOptionsUpdate = async () => {
   }>({
     type: 'confirm',
     name: 'confirmed',
-    message: `The plugin's options is going to also be updated based on the ones found in your manifest file. Do you want to proceed?`,
+    message: `The plugin options are going to be replaced by the options specified inside the manifest file. Do you want to proceed?`,
     initial: true,
   })
   return confirmed
