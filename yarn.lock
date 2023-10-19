@@ -1962,6 +1962,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storyblok/manifest-helper@workspace:packages/manifest-helper":
+  version: 0.0.0-use.local
+  resolution: "@storyblok/manifest-helper@workspace:packages/manifest-helper"
+  languageName: unknown
+  linkType: soft
+
 "@storyblok/mui@npm:0.0.19-alpha":
   version: 0.0.19-alpha
   resolution: "@storyblok/mui@npm:0.0.19-alpha"
@@ -7724,12 +7730,6 @@ __metadata:
   checksum: b38a025a12c8146d6eeea5a7f2bf27d51d8ad6064da8ca9405fcf7bf9b54acd43e3b30ddd7abb9b1bfa4ddb266019133313482570ddb207de568f71ecfcf6060
   languageName: node
   linkType: hard
-
-"manifest-helper@workspace:packages/manifest-helper":
-  version: 0.0.0-use.local
-  resolution: "manifest-helper@workspace:packages/manifest-helper"
-  languageName: unknown
-  linkType: soft
 
 "map-stream@npm:~0.1.0":
   version: 0.1.0

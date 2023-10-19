@@ -1,6 +1,6 @@
 import { red } from 'kleur/colors'
 import type { Response } from 'node-fetch'
-import { ManifestOption } from 'packages/manifest-helper/src/manifest'
+import { ManifestOption } from '@storyblok/manifest-helper/src/manifest'
 
 export type FieldType = {
   id: number
