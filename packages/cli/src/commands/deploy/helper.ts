@@ -1,5 +1,5 @@
 import { readFileSync, lstatSync } from 'fs'
-import { bold, cyan, red } from 'kleur/colors'
+import { bold, cyan, red, underline } from 'kleur/colors'
 import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
@@ -212,12 +212,16 @@ export const confirmOptionsUpdate = async (
     return
   }
 
+  const optionsNames = options.map((option) => option.name).join(', ')
+  const optionsNamesFormatted =
+    optionsNames !== '' ? optionsNames : underline('none')
+
   const { confirmed } = await betterPrompts<{
     confirmed: boolean
   }>({
     type: 'confirm',
     name: 'confirmed',
-    message: `The plugin options are going to be replaced by the options specified inside the manifest file. Do you want to proceed?`,
+    message: `The plugin options are going to be replaced by the ones found in your manifest file: ${optionsNamesFormatted}. Do you want to proceed?`,
     initial: true,
   })
 
@@ -303,19 +307,7 @@ export const loadManifest = (): Manifest | undefined => {
   try {
     console.log(bold(cyan('[info] Loading data from the manifest file...')))
 
-    const manifest = load()
-
-    if (manifest.options !== undefined) {
-      console.log(
-        bold(
-          cyan(
-            `[info] ${manifest.options.length} option(s) were found in your manifest file`,
-          ),
-        ),
-      )
-    }
-
-    return manifest
+    return load()
   } catch (err) {
     console.log(bold(red('[ERROR]')), `Error while loading the manifest file`)
     console.log(`path: ${MANIFEST_FILE_NAME}`)
