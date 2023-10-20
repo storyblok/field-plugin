@@ -1,5 +1,5 @@
 import { readFileSync, lstatSync } from 'fs'
-import { bold, cyan, red, underline } from 'kleur/colors'
+import { bold, cyan, green, red, underline } from 'kleur/colors'
 import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
@@ -228,16 +228,21 @@ export const confirmOptionsUpdate = async (
     return
   }
 
-  const optionsNames = options.map((option) => option.name).join(', ')
-  const optionsNamesFormatted =
-    optionsNames !== '' ? optionsNames : underline('none')
+  if (options.length > 0) {
+    console.log(green('> '), options.map((option) => option.name).join(', '))
+  }
+
+  const message =
+    options.length === 0
+      ? 'The plugin options will be reset because your manifest file contains an empty array for options. Do you want to proceed?'
+      : `The options above found in your manifest file are going to replace the plugin options. Do you want to proceed?`
 
   const { confirmed } = await betterPrompts<{
     confirmed: boolean
   }>({
     type: 'confirm',
     name: 'confirmed',
-    message: `The plugin options are going to be replaced by the ones found in your manifest file: ${optionsNamesFormatted}. Do you want to proceed?`,
+    message: message,
     initial: true,
   })
 
