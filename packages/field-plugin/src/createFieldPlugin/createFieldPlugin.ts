@@ -24,7 +24,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   validateContent,
 }) => {
   const isEmbedded = window.parent !== window
-
+  // dummy
   if (!isEmbedded) {
     onUpdateState({
       type: 'error',
