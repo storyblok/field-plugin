@@ -15,12 +15,12 @@ export type Manifest = {
   options: ManifestOption[]
 }
 
-export const manifestExists = (): boolean => {
-  return existsSync(MANIFEST_FULL_PATH)
-}
-
-export const load = (): Manifest => {
+export const load = (): Manifest | undefined => {
   try {
+    if (!existsSync(MANIFEST_FULL_PATH)) {
+      return undefined
+    }
+
     const content: string = readFileSync(MANIFEST_FULL_PATH, 'utf8')
 
     const manifest = JSON.parse(content) as Manifest

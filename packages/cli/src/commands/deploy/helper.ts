@@ -19,7 +19,6 @@ import {
   load,
   Manifest,
   MANIFEST_FILE_NAME,
-  manifestExists,
   ManifestOption,
 } from '@storyblok/manifest-helper/src/manifest'
 
@@ -321,12 +320,8 @@ export const isOutputValid = (output?: string): output is string =>
   typeof output === 'string' && output !== ''
 
 export const loadManifest = (): Manifest | undefined => {
-  if (!manifestExists()) {
-    return
-  }
-
   try {
-    console.log(bold(cyan('[info] Loading data from the manifest file...')))
+    console.log(bold(cyan('[info] Looking for a manifest file...')))
 
     return load()
   } catch (err) {
