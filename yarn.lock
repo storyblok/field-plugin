@@ -1962,6 +1962,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storyblok/manifest-helper@workspace:packages/manifest-helper":
+  version: 0.0.0-use.local
+  resolution: "@storyblok/manifest-helper@workspace:packages/manifest-helper"
+  languageName: unknown
+  linkType: soft
+
 "@storyblok/mui@npm:0.0.19-alpha":
   version: 0.0.19-alpha
   resolution: "@storyblok/mui@npm:0.0.19-alpha"

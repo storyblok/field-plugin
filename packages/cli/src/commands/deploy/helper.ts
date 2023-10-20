@@ -1,5 +1,5 @@
 import { readFileSync, lstatSync } from 'fs'
-import { bold, cyan } from 'kleur/colors'
+import { bold, cyan, green, red, underline } from 'kleur/colors'
 import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
@@ -11,8 +11,16 @@ import {
 import {
   FieldType,
   Scope,
+  StoryClientType,
   StoryblokClient,
 } from '../../storyblok/storyblok-client'
+import { getErrorMessage } from '@storyblok/manifest-helper/src/utils'
+import {
+  load,
+  Manifest,
+  MANIFEST_FILE_NAME,
+  ManifestOption,
+} from '@storyblok/manifest-helper/src/manifest'
 
 const packageNameMessage =
   'How would you like to call the deployed field-plugin?\n  (Lowercase alphanumeric and dash are allowed.)'
@@ -31,6 +39,14 @@ type GetPackageName = (params: {
   skipPrompts: boolean
   dir: string
 }) => Promise<{ error: false; name: string } | { error: true }>
+
+type CreateFieldTypeFunc = (params: {
+  name: string
+  body: unknown
+  client: StoryClientType
+  options: ManifestOption[] | undefined
+}) => Promise<FieldType>
+
 export const getPackageName: GetPackageName = async ({
   name,
   skipPrompts,
@@ -65,6 +81,8 @@ export const getPackageName: GetPackageName = async ({
 export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   const { packageName, skipPrompts, token, output, dir, scope } = args
 
+  const manifest = loadManifest()
+
   const storyblokClient = StoryblokClient({ token, scope })
 
   console.log(bold(cyan('[info] Checking existing field plugins...')))
@@ -76,23 +94,35 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
   if (fieldPlugin) {
     // update flow
     const mode = skipPrompts ? 'update' : await selectUpsertMode()
+
     if (mode === 'update') {
+      if (!skipPrompts) {
+        await confirmOptionsUpdate(manifest?.options)
+      }
+
       await storyblokClient.updateFieldType({
         id: fieldPlugin.id,
         field_type: {
           body: output,
+          options: manifest?.options,
         },
       })
+
       return { id: fieldPlugin.id }
     } else if (mode === 'create') {
       const newName = await promptNewName(allFieldPlugins)
-      const newFieldPlugin = await storyblokClient.createFieldType({
+
+      const newFieldPlugin = await createFieldType({
         name: newName,
         body: output,
+        client: storyblokClient,
+        options: manifest?.options,
       })
+
       if (await confirmUpdatingName()) {
         await runCommand(`npm pkg set name=${newName}`, { cwd: dir })
       }
+
       return { id: newFieldPlugin.id }
     }
   }
@@ -105,10 +135,14 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
     console.log(cyan(bold('[info]')), 'Not creating a new field plugin.')
     process.exit(1)
   }
-  const newFieldPlugin = await storyblokClient.createFieldType({
+
+  const newFieldPlugin = await createFieldType({
     name: packageName,
     body: output,
+    client: storyblokClient,
+    options: manifest?.options,
   })
+
   return { id: newFieldPlugin.id }
 }
 
@@ -186,6 +220,37 @@ export const promptNewName = async (allFieldPlugins: FieldType[]) => {
   return name
 }
 
+export const confirmOptionsUpdate = async (
+  options: ManifestOption[] | undefined,
+) => {
+  if (options === undefined) {
+    return
+  }
+
+  if (options.length > 0) {
+    console.log(green('> '), options.map((option) => option.name).join(', '))
+  }
+
+  const message =
+    options.length === 0
+      ? 'The plugin options will be reset because your manifest file contains an empty array for options. Do you want to proceed?'
+      : `The options above found in your manifest file are going to replace the plugin options. Do you want to proceed?`
+
+  const { confirmed } = await betterPrompts<{
+    confirmed: boolean
+  }>({
+    type: 'confirm',
+    name: 'confirmed',
+    message: message,
+    initial: true,
+  })
+
+  if (!confirmed) {
+    console.log(cyan(bold('[info]')), 'Aborting plugin update.')
+    process.exit(1)
+  }
+}
+
 export const selectApiScope = async (
   token: string,
 ): Promise<Scope | undefined> => {
@@ -253,3 +318,40 @@ export const createDefaultOutputPath = (dir: string) =>
 
 export const isOutputValid = (output?: string): output is string =>
   typeof output === 'string' && output !== ''
+
+export const loadManifest = (): Manifest | undefined => {
+  try {
+    console.log(bold(cyan('[info] Looking for a manifest file...')))
+
+    return load()
+  } catch (err) {
+    console.log(bold(red('[ERROR]')), `Error while loading the manifest file`)
+    console.log(`path: ${MANIFEST_FILE_NAME}`)
+    console.log(`error: ${getErrorMessage(err)}`)
+
+    return undefined
+  }
+}
+
+export const createFieldType: CreateFieldTypeFunc = async ({
+  name,
+  body,
+  client,
+  options,
+}) => {
+  const newFieldPlugin = await client.createFieldType({ name, body })
+
+  //since the API doesn't accept options during creation time,
+  //we need to force an update in case options were found in
+  //the manifest file.
+  if (options !== undefined && options.length > 0) {
+    await client.updateFieldType({
+      id: newFieldPlugin.id,
+      field_type: {
+        options,
+      },
+    })
+  }
+
+  return newFieldPlugin
+}
