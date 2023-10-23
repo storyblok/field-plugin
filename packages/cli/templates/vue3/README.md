@@ -32,13 +32,9 @@ npm run deploy
 
 ## Manifest File for Field Plugins
 
-The manifest file is a valuable component that enhances the functionality of your field plugin. This JSON file, named `field-plugin.config.json` and located in your project's root folder, is optional but highly recommended.
+The manifest file is a configuration that enhances the functionality of your field plugin. This JSON file, named `field-plugin.config.json` and located in your project's root folder, is optional but highly recommended.
 
-When this file is present, it empowers our CLI and build tools to efficiently access its contents, resulting in smoother deployment experiences.
-
-Moreover, during the development phase, this manifest file plays a crucial role in the [Sandbox](https://plugin-sandbox.storyblok.com/field-plugin/). All the `options` defined within this file are automatically integrated, simplifying your workflow.
-
-While most field plugins created using our templates include this manifest file, you may find that your custom plugin lacks it. In such cases, follow the steps below to easily set it up.
+The manifest file allows you to configure options for your field plugin. When developing your field plugin with the [Sandbox](https://plugin-sandbox.storyblok.com/field-plugin/), the options are applied by default. Also, the deploy command automatically applies the options in production. So, you no longer need to configure the options manually.
 
 ### Creating a Manifest File
 
@@ -68,7 +64,13 @@ The options list within this file should consist of key-value objects representi
 }
 ```
 
-By creating and maintaining this manifest file, you ensure that the CLI can effortlessly read and synchronize these options during each deployment. This streamlines the entire process, making your field plugin development more efficient and hassle-free.
+Now, you just need to access these options in your code like in the example below:
+
+```js
+const { type, data, actions } = useFieldPlugin()
+
+console.log(data.options.myPluginInitialValue)
+```
 
 ## Next Steps
 
