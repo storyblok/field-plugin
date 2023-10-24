@@ -9,7 +9,7 @@
     "build:post": "rollup --config rollup.postbuild.config.js",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "deploy": "npm run build && npx @storyblok/field-plugin-cli@beta deploy"
+    "deploy": "npm run build && npx @storyblok/field-plugin-cli@rc deploy"
   },
   "dependencies": {
     "@storyblok/field-plugin": "1.0.0-rc.2",
