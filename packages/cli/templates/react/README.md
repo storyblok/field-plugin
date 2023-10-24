@@ -34,22 +34,9 @@ The manifest file is a configuration that enhances the functionality of your fie
 
 The manifest file allows you to configure [options](https://www.storyblok.com/docs/plugins/field-plugins/introduction#options) for your field plugin. When developing your field plugin with the [Sandbox](https://plugin-sandbox.storyblok.com/field-plugin/), the options are applied by default. Also, the deploy command automatically applies the options in production. So, you no longer need to configure the options manually.
 
-### Creating a Manifest File
+### Configuring a Manifest File
 
-If your field plugin doesn't already contain a manifest file, you can create one yourself at any time by following these steps:
-
-1. Begin by creating a `field-plugin.config.json` file in the root folder of your project.
-2. Populate the file with the following content:
-
-```json
-{
-  "options": []
-}
-```
-
-That's all there is to it.
-
-The options list within this file should consist of key-value objects representing the essential options required for your field plugin to function correctly, along with their corresponding values. This is an example of how it should be structured:
+The options list within the file `field-plugin.config.json` should consist of key-value objects representing the essential options required for your field plugin to function correctly, along with their corresponding values. This is an example of how it should be structured:
 
 ```json
 {
