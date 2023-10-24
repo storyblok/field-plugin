@@ -48,9 +48,19 @@ The options list within the file `field-plugin.config.json` should consist of ke
 Now, you just need to access these options in your code like in the example below:
 
 ```js
-const { type, data, actions } = useFieldPlugin()
+<script>
+export default {
+  ...
+  mixins: [fieldPluginMixin],
+  ...
+}
+</script>
 
-console.log(data.options.myPluginInitialValue)
+<template>
+  <div v-if="plugin.type === 'loaded'">
+    <pre>{{ plugin.data.options.myPluginInitialValue }}</pre>
+  </div>
+</template>
 ```
 
 ## Next Steps
