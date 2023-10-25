@@ -9,3 +9,14 @@ npx @storyblok/field-plugin-cli@beta create
 ```
 
 For more details, please refer to the [documentation](https://www.storyblok.com/docs/plugins/field-plugins/introduction).
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
