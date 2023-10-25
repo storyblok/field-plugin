@@ -1,4 +1,21 @@
 {
   "projectName": "field-plugin",
-  "projectOwner": "storyblok"
+  "projectOwner": "storyblok",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "BibiSebi",
+      "name": "Bibiana Sebestianova",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17590227?v=4",
+      "profile": "https://bibidev.vercel.app/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ]
 }
