@@ -6,8 +6,35 @@
   ],
   "commitType": "docs",
   "commitConvention": "angular",
-  "contributorsPerLine": 7,
+  "contributorsPerLine": 6,
   "contributors": [
+    {
+      "login": "BibiSebi",
+      "name": "Bibiana Sebestianova",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17590227?v=4",
+      "profile": "https://bibidev.vercel.app/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "johannes-lindgren",
+      "name": "Johannes Lindgren",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14206504?v=4",
+      "profile": "https://github.com/johannes-lindgren",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "eunjae-lee",
+      "name": "Eunjae Lee",
+      "avatar_url": "https://avatars.githubusercontent.com/u/499898?v=4",
+      "profile": "https://twitter.com/eunjae_lee",
+      "contributions": [
+        "code"
+      ]
+    },
     {
       "login": "demetriusfeijoo",
       "name": "Demetrius Feijóo",
