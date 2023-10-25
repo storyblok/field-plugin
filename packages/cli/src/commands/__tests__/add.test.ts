@@ -33,9 +33,7 @@ describe('add', () => {
     const packageJson = JSON.parse(
       (await readFile(`${dir}/${name}/package.json`)).toString(),
     ) as PackageJson
-    expect(packageJson['scripts']['deploy']).toMatchInlineSnapshot(
-      '"npm run build && npx @storyblok/field-plugin-cli@beta deploy"',
-    )
+    expect(packageJson['scripts']['deploy']).toMatchInlineSnapshot('"npm run build && npx @storyblok/field-plugin-cli@rc deploy"')
     expect(files).toMatchInlineSnapshot(`
       [
         ".env.local.example",
@@ -73,9 +71,7 @@ describe('add', () => {
     const packageJson = JSON.parse(
       (await readFile(`${dir}/${name}/package.json`)).toString(),
     ) as PackageJson
-    expect(packageJson['scripts']['deploy']).toMatchInlineSnapshot(
-      '"npm run build && npx @storyblok/field-plugin-cli@beta deploy --dotEnvPath \'../../.env\'"',
-    )
+    expect(packageJson['scripts']['deploy']).toMatchInlineSnapshot('"npm run build && npx @storyblok/field-plugin-cli@rc deploy --dotEnvPath \'../../.env\'"')
     expect(files).toMatchInlineSnapshot(`
       [
         ".eslintrc.cjs",
