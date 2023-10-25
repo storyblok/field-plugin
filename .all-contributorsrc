@@ -1,4 +1,21 @@
 {
   "projectName": "field-plugin",
-  "projectOwner": "storyblok"
+  "projectOwner": "storyblok",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "demetriusfeijoo",
+      "name": "Demetrius Feijóo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1240591?v=4",
+      "profile": "https://www.linkedin.com/in/demetriusfeijoo/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ]
 }
