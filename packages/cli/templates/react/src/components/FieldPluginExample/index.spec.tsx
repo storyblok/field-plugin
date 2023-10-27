@@ -33,7 +33,9 @@ const fieldPluginDefault: FieldPluginResponse<number | undefined> = {
 
 describe('FieldPluginExammple', () => {
   test('should work', () => {
-    vi.mocked(useFieldPlugin).mockReturnValue(fieldPluginDefault)
+    vi.mocked(useFieldPlugin<number | undefined>).mockReturnValue(
+      fieldPluginDefault,
+    )
     render(<FieldPlugin />)
     const headline = screen.getByText('Field Value')
     expect(headline).toBeInTheDocument()
