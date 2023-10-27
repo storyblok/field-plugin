@@ -47,6 +47,8 @@
     "test:cli:watch": "yarn workspace @storyblok/field-plugin-cli test:watch",
     "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
+    "dev:demo": "yarn workspace demo dev",
+    "dev:lib": "yarn workspace @storyblok/field-plugin dev",
     "dev:container": "yarn workspace container dev",
     "dev:template": "yarn workspace field-plugin-${0}-template dev --config node_modules/.${0}-vite.config.ts",
     "dev:react": "yarn dev:template react",
@@ -58,8 +60,6 @@
     "test:js": "yarn test:template js",
     "test:vue2": "yarn test:template vue2",
     "test:vue3": "yarn test:template vue3",
-    "dev:demo": "yarn workspace demo dev",
-    "dev:lib": "yarn workspace @storyblok/field-plugin dev",
     "bump-version": "./scripts/bump-version.ts"
   },
   "devDependencies": {
