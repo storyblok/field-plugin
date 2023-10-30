@@ -2393,10 +2393,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@storyblok/field-plugin@npm:1.0.0-rc.0"
-  checksum: 242fe553b2aa26f18046fb66a5808851e98d9ea53097f83d4d7e737a00f00fe93645163ed0efd5441a38168d50219f37a3f556fb56dba9339ce0878261cd6071
+"@storyblok/field-plugin@npm:latest":
+  version: 1.0.0
+  resolution: "@storyblok/field-plugin@npm:1.0.0"
+  checksum: 432d2284d61aaef8f63efb4db66161031fe0ba8c75edea84f32825f473c561c84c068f392af2a9df9d684da060885dd13d4d82d7401e3d5d4998d433aa179fb4
   languageName: node
   linkType: hard
 
@@ -4822,7 +4822,7 @@ __metadata:
     "@emotion/styled": 11.10.5
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.11.0
-    "@storyblok/field-plugin": 1.0.0-rc.0
+    "@storyblok/field-plugin": latest
     "@storyblok/mui": 0.2.0
     "@types/react-dom": ^18.0.10
     "@vitejs/plugin-react": ^3.0.0
