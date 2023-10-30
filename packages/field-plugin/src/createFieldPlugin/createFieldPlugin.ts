@@ -53,6 +53,10 @@ export const createFieldPlugin: CreateFieldPlugin = ({
     try {
       // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
       const origin = '*'
+      console.log('💡 sending post message!', {
+        postMessage: window.parent.postMessage.toString(),
+        message,
+      })
       window.parent.postMessage(message, origin)
     } catch (err) {
       if (isCloneable(message)) {
@@ -99,12 +103,13 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
 
-  void initialize()
-
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
     messageCallbacks,
   )
+
+  console.log('💡 initialize')
+  void initialize()
 
   return () => {
     cleanupMessageListenerSideEffects()
