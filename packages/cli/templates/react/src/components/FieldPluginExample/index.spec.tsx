@@ -1,17 +1,10 @@
 import {
-  AssetModalChangeMessage,
-  GetContextMessage,
-  HeightChangeMessage,
   isAssetModalChangeMessage,
   isGetContextMessage,
   isHeightChangeMessage,
-  isMessageToContainer,
   isModalChangeMessage,
   isPluginLoadedMessage,
   isValueChangeMessage,
-  ModalChangeMessage,
-  PluginLoadedMessage,
-  ValueChangeMessage,
 } from '@storyblok/field-plugin'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -53,7 +46,6 @@ const fakeContainer = (listener) => {
 
   return {
     got: ({ data, origin }) => {
-      console.log('💡 container got message', { data, origin })
       if (isPluginLoadedMessage(data)) {
         listener(
           stateMessage({
@@ -116,7 +108,6 @@ const fakeContainer = (listener) => {
 const setup = () => {
   let messageCallback
   const listener = (data) => {
-    console.log('💡 listener!!', { data, messageCallback })
     messageCallback({ data })
   }
   const container = fakeContainer(listener)
@@ -145,7 +136,6 @@ const setup = () => {
   const addEventListenerFallback = global.addEventListener
 
   vi.stubGlobal('addEventListener', (name: string, callback: EventListener) => {
-    console.log('💡 addevent listener', { name, callback })
     if (name === 'message') {
       messageCallback = callback
     }
@@ -169,8 +159,8 @@ describe('FieldPluginExammple', () => {
     setup()
     const user = userEvent.setup()
     render(<FieldPlugin />)
-    const button = screen.getByTestId('count')
-    await user.click(button)
-    screen.getByText('1')
+    expect(screen.getByTestId('count').textContent).toEqual('0')
+    await user.click(screen.getByText('Increment'))
+    expect(screen.getByTestId('count').textContent).toEqual('1')
   })
 })

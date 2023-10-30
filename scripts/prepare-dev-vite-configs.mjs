@@ -29,7 +29,6 @@ const templates = (await fs.readdir('packages/cli/templates')).filter(
 for (const template of templates) {
   const templatePath = `packages/cli/templates/${template}`
   const newConfigPath = `${templatePath}/node_modules/.${template}-vite.config.ts`
-  console.log('💡 newConfigPath', newConfigPath)
   await $`cp ${templatePath}/vite.config.ts ${newConfigPath}`
 
   // eslint-disable-next-line functional/no-let

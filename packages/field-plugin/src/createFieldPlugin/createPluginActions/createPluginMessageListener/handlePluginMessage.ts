@@ -33,7 +33,6 @@ export const handlePluginMessage = (
   } else if (isAssetSelectedMessage(data)) {
     callbacks.onAssetSelect(data)
   } else {
-    console.log('💡 data!', data)
     callbacks.onUnknownMessage(data)
   }
 }
