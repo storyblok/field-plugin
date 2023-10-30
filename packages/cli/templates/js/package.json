@@ -8,10 +8,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "check:types": "tsc --noEmit",
-    "deploy": "npm run build && npx @storyblok/field-plugin-cli@rc deploy"
+    "deploy": "npm run build && npx @storyblok/field-plugin-cli@latest deploy"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "1.0.0-rc.2"
+    "@storyblok/field-plugin": "1.0.0"
   },
   "devDependencies": {
     "eslint": "latest",
