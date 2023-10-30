@@ -11,7 +11,7 @@ In case no command is present the CLI will default to the `create` command.
 [//]: # 'TBD: add yarn create as soon as it is implemented'
 
 ```bash
-npx @storyblok/field-plugin-cli@rc [command] [options]
+npx @storyblok/field-plugin-cli@latest [command] [options]
 ```
 
 Available options and commands:
@@ -170,15 +170,15 @@ npx @storyblok/field-plugin-cli deploy --token=<TOKEN> --dir=<PATH_TO_DIR>
 You can add the CLI to an existing field plugin project by running:
 
 ```bash
-yarn add --dev @storyblok/field-plugin-cli@rc
+yarn add --dev @storyblok/field-plugin-cli@latest
 ```
 
 In case you want to access the dependency globally use:
 
 ```bash
-yarn global add @storyblok/field-plugin-cli@rc
+yarn global add @storyblok/field-plugin-cli@latest
 # or
-npm install @storyblok/field-plugin-cli@rc --global
+npm install @storyblok/field-plugin-cli@latest --global
 ```
 
 [//]: # 'TBD Add GIF with interactive mode'
@@ -208,7 +208,7 @@ Please see our [contributing guidelines](https://github.com/storyblok/.github/bl
 When adding a new template to this repository, think of the following:
 
 - `.gitignore` files must be named `gitignore`. Otherwise, NPM will exclude the file from the release. The `@storyblok/field-plugin-cli` will automatically rename the file to `.gitignore`.
-- Add `"deploy": "npm run build && npx @storyblok/field-plugin-cli@rc deploy"` to the `package.json`
+- Add `"deploy": "npm run build && npx @storyblok/field-plugin-cli@latest deploy"` to the `package.json`
 
 ## :1st_place_medal: Credits
 
