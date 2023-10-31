@@ -51,7 +51,6 @@ describe('add', () => {
         "tsconfig.json",
         "tsconfig.node.json",
         "vite.config.ts",
-        "vitest.config.ts",
       ]
     `)
   })
@@ -91,7 +90,6 @@ describe('add', () => {
         "tsconfig.json",
         "tsconfig.node.json",
         "vite.config.ts",
-        "vitest.config.ts",
       ]
     `)
   })
