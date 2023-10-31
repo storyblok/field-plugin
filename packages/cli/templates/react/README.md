@@ -57,18 +57,18 @@ const { type, data, actions } = useFieldPlugin()
 console.log(data.options.myPluginInitialValue)
 ```
 
-## Next Steps
+## Clean up the boilerplate
 
-Read more about field plugins [on GitHub](https://github.com/storyblok/field-plugin).
+To start from a blank state, remove the example component `<FieldPluginExample />` from `src/App.tsx` with `<FieldPlugin />`.
 
-Set up continuous integration with the [CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli). Define an environmental variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`, and use the `--name` and `--skipPrompts` options as such:
+## Continuous delivery
+
+Set up [continuous delivery](https://www.storyblok.com/docs/plugins/field-plugins/continuous-delivery) with the CLI. Define an environmental variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`, and use the `--name` and `--skipPrompts` options as such:
 
 ```shell
 npm run deploy --name $NAME --skipPrompts
 ```
 
-[@storyblok/mui](https://www.npmjs.com/package/@storyblok/mui) contains a component library and theme for [MUI](https://mui.com/). To add it to this project, follow the instructions in the [readme](https://github.com/storyblok/mui).
+## Design system
 
-## Clean up the boilerplate
-
-To start from a blank state, remove the example component `<FieldPluginExample />` from `src/App.tsx` with `<FieldPlugin />`.
+[@storyblok/mui](https://www.npmjs.com/package/@storyblok/mui) contains components and a Storyblok theme for [MUI](https://mui.com/). To add it to this project, follow the instructions in the [README](https://github.com/storyblok/mui).

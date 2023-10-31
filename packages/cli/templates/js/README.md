@@ -51,16 +51,6 @@ Now, you just need to access these options in your code like in the example belo
 console.log(data.options.myPluginInitialValue)
 ```
 
-## Next Steps
-
-Read more about field plugins [on GitHub](https://github.com/storyblok/field-plugin).
-
-Set up continuous integration with the [CLI](https://www.npmjs.com/package/@storyblok/field-plugin-cli). Define an environmental variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`, and use the `--name` and `--skipPrompts` options as such:
-
-```shell
-npm run deploy --name $NAME --skipPrompts
-```
-
 ## Clean up the boilerplate
 
 To start from a blank state, delete the following files:
@@ -68,3 +58,11 @@ To start from a blank state, delete the following files:
 - src/components/components.js
 
 And search for comments `DELETE THIS BOILERPLATE` comments and delete the code around them.
+
+## Continuous delivery
+
+Set up [continuous delivery](https://www.storyblok.com/docs/plugins/field-plugins/continuous-delivery) with the CLI. Define an environmental variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`, and use the `--name` and `--skipPrompts` options as such:
+
+```shell
+npm run deploy --name $NAME --skipPrompts
+```
