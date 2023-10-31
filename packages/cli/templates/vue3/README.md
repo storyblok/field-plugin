@@ -74,3 +74,15 @@ npm run deploy --name $NAME --skipPrompts
 ## Clean up the boilerplate
 
 To start from a blank state, replace the example component `<FieldPluginExample />` from `src/App.vue` with `<FieldPlugin />`.
+
+## Continuous delivery
+
+Set up [continuous delivery](https://www.storyblok.com/docs/plugins/field-plugins/continuous-delivery) with the CLI. Define an environmental variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`, and use the `--name` and `--skipPrompts` options as such:
+
+```shell
+npm run deploy --name $NAME --skipPrompts
+```
+
+## Design system
+
+We created our [blok.ink](https://www.storyblok.com/docs/guide/in-depth/design-system) design system to allow our customers to build great integrated experiences while maintaining Storyblok's overall design.
