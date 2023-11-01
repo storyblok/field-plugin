@@ -15,6 +15,7 @@ export default defineConfig({
       entry: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
       name: 'FieldPlugin',
       fileName: 'field-plugin',
+      formats: ['es', 'cjs'],
     },
     emptyOutDir: false,
   },

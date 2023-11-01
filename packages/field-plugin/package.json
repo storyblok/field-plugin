@@ -6,30 +6,18 @@
   "files": [
     "dist"
   ],
-  "type": "module",
-  "module": "./dist/field-plugin.js",
-  "main": "./dist/field-plugin.umd.cjs",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/field-plugin.js",
+  "module": "./dist/field-plugin.mjs",
   "exports": {
     ".": {
-      "import": "./dist/field-plugin.js",
-      "require": "./dist/field-plugin.umd.cjs",
-      "types": "./dist/index.d.ts"
-    },
-    "./react": {
-      "import": "./dist/react/index.js",
-      "require": "./dist/react/index.umd.cjs",
-      "types": "./dist/react/index.d.ts"
-    },
-    "./vue3": {
-      "import": "./dist/vue3/index.js",
-      "require": "./dist/vue3/index.umd.cjs",
-      "types": "./dist/vue3/index.d.ts"
-    },
-    "./vite": {
-      "import": "./dist/vite/index.js",
-      "require": "./dist/vite/index.umd.cjs",
-      "types": "./dist/vite/index.d.ts"
+      "require": {
+        "types": "./dist/field-plugin.d.ts",
+        "default": "./dist/field-plugin.js"
+      },
+      "import": {
+        "types": "./dist/field-plugin.d.ts",
+        "default": "./dist/field-plugin.mjs"
+      }
     }
   },
   "repository": {
