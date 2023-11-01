@@ -6,17 +6,18 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/field-plugin.js",
-  "module": "./dist/field-plugin.mjs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "require": {
-        "types": "./dist/field-plugin.d.ts",
-        "default": "./dist/field-plugin.js"
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       },
       "import": {
-        "types": "./dist/field-plugin.d.ts",
-        "default": "./dist/field-plugin.mjs"
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
       }
     }
   },
