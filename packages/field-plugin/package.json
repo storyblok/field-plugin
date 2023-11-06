@@ -17,6 +17,14 @@
     "./react": {
       "import": "./dist/react/index.mjs",
       "require": "./dist/react/index.cjs"
+    },
+    "./vue3": {
+      "import": "./dist/vue3/index.mjs",
+      "require": "./dist/vue3/index.cjs"
+    },
+    "./vite": {
+      "import": "./dist/vite/index.mjs",
+      "require": "./dist/vite/index.cjs"
     }
   },
   "repository": {

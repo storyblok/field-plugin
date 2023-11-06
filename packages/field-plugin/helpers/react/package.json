@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && unbuild",
+    "build": "unbuild",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives"
   },
   "dependencies": {
