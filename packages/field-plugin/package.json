@@ -7,29 +7,16 @@
     "dist"
   ],
   "type": "module",
-  "module": "./dist/field-plugin.js",
-  "main": "./dist/field-plugin.umd.cjs",
   "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs",
   "exports": {
     ".": {
-      "import": "./dist/field-plugin.js",
-      "require": "./dist/field-plugin.umd.cjs",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./react": {
-      "import": "./dist/react/index.js",
-      "require": "./dist/react/index.umd.cjs",
-      "types": "./dist/react/index.d.ts"
-    },
-    "./vue3": {
-      "import": "./dist/vue3/index.js",
-      "require": "./dist/vue3/index.umd.cjs",
-      "types": "./dist/vue3/index.d.ts"
-    },
-    "./vite": {
-      "import": "./dist/vite/index.js",
-      "require": "./dist/vite/index.umd.cjs",
-      "types": "./dist/vite/index.d.ts"
+      "import": "./dist/react/index.mjs",
+      "require": "./dist/react/index.cjs"
     }
   },
   "repository": {
@@ -41,7 +28,7 @@
     "check:types": "tsc --noEmit",
     "dev": "vite build --watch",
     "test": "jest",
-    "build": "rm -rf dist && vite build && yarn build:helpers"
+    "build": "rm -rf dist && unbuild && yarn build:helpers"
   },
   "devDependencies": {
     "@types/core-js": "2.5.5",
@@ -52,6 +39,7 @@
     "jest-environment-jsdom": "29.4.2",
     "ts-jest": "29.0.1",
     "typescript": "*",
+    "unbuild": "2.0.0",
     "vite": "*",
     "vite-plugin-dts": "*"
   }
