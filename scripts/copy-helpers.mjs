@@ -2,7 +2,7 @@
 
 import { $ } from 'zx'
 
-const helpers = ['react', 'vue3', 'vite']
+const helpers = ['react']
 
 // eslint-disable-next-line functional/no-loop-statement
 for (const helper of helpers) {

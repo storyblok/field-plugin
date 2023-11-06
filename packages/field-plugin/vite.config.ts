@@ -12,7 +12,7 @@ export default defineConfig({
         outFile: 'index.js',
       },
       afterBuild: () => {
-        copyFileSync('dist/index.d.ts', 'dist/index.d.mts')
+        copyFileSync('dist/index.d.ts', 'dist/index.d.cts')
       },
     }),
   ],
