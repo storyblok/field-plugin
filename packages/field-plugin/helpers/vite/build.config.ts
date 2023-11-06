@@ -7,6 +7,5 @@ export default {
     },
     emitCJS: true,
   },
-  externals: ['querystring', 'fs', 'path'],
-
+  externals: ['querystring', 'fs', 'path', 'vite'],
 }
