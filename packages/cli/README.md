@@ -195,7 +195,7 @@ We are working on providing templates for the popular frontend frameworks. Curre
 
 Now that everything is set up you can go ahead and checkout Storyblok's resource on field plugins:
 
-🔗 [Field Plugin Documentation](https://www.storyblok.com/docs/plugins/field-type)
+🔗 [Field Plugin Documentation](https://www.storyblok.com/docs/plugins/field-plugins/introduction)
 
 🔗 [Field Plugin Examples](https://github.com/storyblok/field-type-examples)
 
