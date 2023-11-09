@@ -36,13 +36,15 @@
     "check:types": "tsc --noEmit",
     "dev": "vite build --watch",
     "test": "jest",
-    "build": "rm -rf dist && unbuild && yarn build:helpers"
+    "build": "unbuild && yarn build:helpers",
+    "build:helpers": "cd helpers && unbuild"
   },
   "devDependencies": {
     "@types/core-js": "2.5.5",
     "@types/jest": "29.0.3",
     "@types/node": "*",
     "core-js": "3.32.1",
+    "execa": "8.0.1",
     "jest": "29.3.1",
     "jest-environment-jsdom": "29.4.2",
     "ts-jest": "29.0.1",
