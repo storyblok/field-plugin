@@ -12,7 +12,7 @@ import { describe, test, expect, vi } from 'vitest'
 
 import FieldPlugin from '.'
 
-const fakeContainer = (listener) => {
+const fakeContainer = (sendToFieldPlugin) => {
   const schema = {
     field_type: 'test-field-plugin',
     options: [],
@@ -45,9 +45,9 @@ const fakeContainer = (listener) => {
   })
 
   return {
-    got: ({ data, origin }) => {
+    receive: ({ data, origin }) => {
       if (isPluginLoadedMessage(data)) {
-        listener(
+        sendToFieldPlugin(
           stateMessage({
             action: 'loaded',
             callbackId: data.callbackId,
@@ -55,7 +55,7 @@ const fakeContainer = (listener) => {
         )
       } else if (isValueChangeMessage(data)) {
         model = data.model
-        listener(
+        sendToFieldPlugin(
           stateMessage({
             action: 'state-changed',
             callbackId: data.callbackId,
@@ -63,7 +63,7 @@ const fakeContainer = (listener) => {
         )
       } else if (isModalChangeMessage(data)) {
         isModalOpen = data.status
-        listener(
+        sendToFieldPlugin(
           stateMessage({
             action: 'state-changed',
             callbackId: data.callbackId,
@@ -71,14 +71,14 @@ const fakeContainer = (listener) => {
         )
       } else if (isHeightChangeMessage(data)) {
         height = data.height
-        listener(
+        sendToFieldPlugin(
           stateMessage({
             action: 'state-changed',
             callbackId: data.callbackId,
           }),
         )
       } else if (isAssetModalChangeMessage(data)) {
-        listener({
+        sendToFieldPlugin({
           action: 'asset-selected',
           uid,
           filename: 'https://...',
@@ -86,7 +86,7 @@ const fakeContainer = (listener) => {
           callbackId: data.callbackId,
         })
       } else if (isGetContextMessage(data)) {
-        listener({
+        sendToFieldPlugin({
           action: 'get-context',
           uid,
           callbackId: data.callbackId,
@@ -106,9 +106,9 @@ const fakeContainer = (listener) => {
 }
 
 const setup = () => {
-  let messageCallback
+  let handleEvent
   const listener = (data) => {
-    messageCallback({ data })
+    handleEvent({ data })
   }
   const container = fakeContainer(listener)
   global.ResizeObserver = class ResizeObserver {
@@ -125,7 +125,7 @@ const setup = () => {
   vi.stubGlobal('parent', {
     ...global.parent,
     postMessage: vi.mocked((data: unknown, origin: string) => {
-      container.got({ data, origin })
+      container.receive({ data, origin })
     }),
   })
   vi.stubGlobal('location', {
@@ -137,9 +137,10 @@ const setup = () => {
 
   vi.stubGlobal('addEventListener', (name: string, callback: EventListener) => {
     if (name === 'message') {
-      messageCallback = callback
+      handleEvent = callback
+    } else {
+      addEventListenerFallback.call(global, name, callback)
     }
-    addEventListenerFallback.call(global, name, callback)
   })
 }
 
