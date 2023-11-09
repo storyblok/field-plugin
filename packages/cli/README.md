@@ -11,7 +11,7 @@ In case no command is present the CLI will default to the `create` command.
 [//]: # 'TBD: add yarn create as soon as it is implemented'
 
 ```bash
-npx @storyblok/field-plugin-cli@beta [command] [options]
+npx @storyblok/field-plugin-cli@latest [command] [options]
 ```
 
 Available options and commands:
@@ -48,16 +48,16 @@ The `create` command allows a set of **optional** options for customization.
 
 ```bash
 # Run this simple command and you will be prompted to provide all required information
-npx @storyblok/field-plugin-cli
+npx @storyblok/field-plugin-cli@latest
 
 # Create a single field plugin with Vue 3 template inside a specific directory with a specific named
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=standalone --packageManager=npm
+npx @storyblok/field-plugin-cli@latest create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=standalone --packageManager=npm
 
 # Create a single field plugin with React template inside a specific directory with a specific named
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=react --structure=standalone --packageManager=npm
+npx @storyblok/field-plugin-cli@latest create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=react --structure=standalone --packageManager=npm
 
 # Create a monorepo with field plugin with a specific named inside a specific directory with Vue 2 template
-npx @storyblok/field-plugin-cli create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=monorepo --packageManager=npm
+npx @storyblok/field-plugin-cli@latest create --dir=<PATH_TO_DIR> --pluginName=<FIELD_PLUGIN_NAME> --template=vue3 --structure=monorepo --packageManager=npm
 ```
 
 #### Structure
@@ -115,13 +115,13 @@ The options for the `add` command are the following:
 
 ```bash
 # Run this simple command and you will be prompted to provide all required information
-npx @storyblok/field-plugin-cli add
+npx @storyblok/field-plugin-cli@latest add
 
 # Add field plugin with Vue 3 template to a project outside of the current directory
-npx @storyblok/field-plugin-cli add --name=<FIELD_PLUGIN_NAME> --template=vue3 --dir=<PATH_TO_DIR> --packageManager=npm
+npx @storyblok/field-plugin-cli@latest add --name=<FIELD_PLUGIN_NAME> --template=vue3 --dir=<PATH_TO_DIR> --packageManager=npm
 
 # Add field plugin with React template to a project outside of the current directory
-npx @storyblok/field-plugin-cli add --name=<FIELD_PLUGIN_NAME> --template=react --dir=<PATH_TO_DIR> --packageManager=npm
+npx @storyblok/field-plugin-cli@latest add --name=<FIELD_PLUGIN_NAME> --template=react --dir=<PATH_TO_DIR> --packageManager=npm
 ```
 
 [//]: # 'TBD Add GIF with interactive mode'
@@ -151,16 +151,16 @@ For additional customizations you can add the following options to the command:
 
 ```bash
 # Run this simple command and you will be prompted to provide all required information. NOTE: This command will work only if you have created STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable inside .env or .env.local!
-npx @storyblok/field-plugin-cli deploy
+npx @storyblok/field-plugin-cli@latest deploy
 
 # Deploy your field plugin by providing a token
-npx @storyblok/field-plugin-cli deploy --token=<TOKEN>
+npx @storyblok/field-plugin-cli@latest deploy --token=<TOKEN>
 
 # When used in a CI/CD one might want to skip the input prompts. This can be achieved with the --skipPrompts flag
-npx @storyblok/field-plugin-cli deploy --token=<TOKEN> --skipPrompts
+npx @storyblok/field-plugin-cli@latest deploy --token=<TOKEN> --skipPrompts
 
 # Deploy your field plugin from outside of the project
-npx @storyblok/field-plugin-cli deploy --token=<TOKEN> --dir=<PATH_TO_DIR>
+npx @storyblok/field-plugin-cli@latest deploy --token=<TOKEN> --dir=<PATH_TO_DIR>
 ```
 
 [//]: # 'Add snippet for root script to deploy a package'
@@ -170,15 +170,15 @@ npx @storyblok/field-plugin-cli deploy --token=<TOKEN> --dir=<PATH_TO_DIR>
 You can add the CLI to an existing field plugin project by running:
 
 ```bash
-yarn add --dev @storyblok/field-plugin-cli@beta
+yarn add --dev @storyblok/field-plugin-cli@latest
 ```
 
 In case you want to access the dependency globally use:
 
 ```bash
-yarn global add @storyblok/field-plugin-cli@beta
+yarn global add @storyblok/field-plugin-cli@latest
 # or
-npm install @storyblok/field-plugin-cli@beta --global
+npm install @storyblok/field-plugin-cli@latest --global
 ```
 
 [//]: # 'TBD Add GIF with interactive mode'
@@ -195,7 +195,7 @@ We are working on providing templates for the popular frontend frameworks. Curre
 
 Now that everything is set up you can go ahead and checkout Storyblok's resource on field plugins:
 
-🔗 [Field Plugin Documentation](https://www.storyblok.com/docs/plugins/field-type)
+🔗 [Field Plugin Documentation](https://www.storyblok.com/docs/plugins/field-plugins/introduction)
 
 🔗 [Field Plugin Examples](https://github.com/storyblok/field-type-examples)
 
@@ -208,7 +208,7 @@ Please see our [contributing guidelines](https://github.com/storyblok/.github/bl
 When adding a new template to this repository, think of the following:
 
 - `.gitignore` files must be named `gitignore`. Otherwise, NPM will exclude the file from the release. The `@storyblok/field-plugin-cli` will automatically rename the file to `.gitignore`.
-- Add `"deploy": "npm run build && npx @storyblok/field-plugin-cli@beta deploy"` to the `package.json`
+- Add `"deploy": "npm run build && npx @storyblok/field-plugin-cli@latest deploy"` to the `package.json`
 
 ## :1st_place_medal: Credits
 

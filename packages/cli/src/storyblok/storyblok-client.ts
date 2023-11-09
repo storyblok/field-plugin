@@ -1,7 +1,13 @@
 import { red } from 'kleur/colors'
 import type { Response } from 'node-fetch'
+import { ManifestOption } from '@storyblok/manifest-helper/src/manifest'
 
-export type FieldType = { id: number; name: string; body: string }
+export type FieldType = {
+  id: number
+  name: string
+  body: string
+  options?: ManifestOption[]
+}
 
 export type Scope = 'my-plugins' | 'partner-portal' | 'organization'
 
@@ -24,12 +30,17 @@ type FieldPluginResponse = {
   field_type: FieldType
 }
 
-type StoryblokClientFunc = (params: { token: string; scope: Scope }) => {
+export type StoryClientType = {
   isAuthenticated: IsAuthenticatedFunc
   fetchAllFieldTypes: FetchFieldTypesFunc
   createFieldType: CreateFieldTypeFunc
   updateFieldType: UpdateFieldTypeFunc
 }
+
+type StoryblokClientFunc = (params: {
+  token: string
+  scope: Scope
+}) => StoryClientType
 
 export const StoryblokClient: StoryblokClientFunc = ({ token, scope }) => {
   const FIELD_TYPES_API_ENDPOINT = getFieldPluginAPIEndpoint(scope)

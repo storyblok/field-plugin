@@ -165,3 +165,19 @@ Once a release is created, one of the two GitHub Actions - [.github/workflows/np
 ### Order of releases
 
 Typically, you should release `@storyblok/field-plugin` first. Then, upgrade the version within all the templates and release `@storyblok/field-plugin-cli` afterwards.
+
+## Add someone as a contributor
+
+This repository utilizes [all-contributors](https://allcontributors.org/) to acknowledge all contributors, regardless of the type of their contributions. In any Issue or Pull Request, you can leave comments in the following format:
+
+```
+@all-contributors please add @<username> for <contributions>
+```
+
+For instance:
+
+```
+@all-contributors please add @eunjae-lee for code.
+```
+
+The contribution types include `bug`, `code`, `example`, `ideas`, `test`, and more. You can find the complete list [in their documentation](https://allcontributors.org/docs/en/emoji-key).

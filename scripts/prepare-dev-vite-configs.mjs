@@ -1,5 +1,5 @@
 #!/usr/bin/env zx
-
+/* eslint-disable no-undef */
 /*
   It's totally okay to run `yarn workspace field-plugin-react-template dev`.
   However, if you want to test changes in `@storyblok/field-plugin` library (under `packages/field-plugin/` folder),
@@ -21,20 +21,22 @@ import path from 'path'
 // eslint-disable-next-line functional/immutable-data
 process.env.FORCE_COLOR = '1'
 
-const template = process.argv[3]
-if (!template) {
-  console.error('[ERROR] This script requires a template name as an argument.')
-  console.error('  > e.g. ./scripts/dev-template.mjs react')
-  process.exit(1)
-}
-const templatePath = `packages/cli/templates/${template}`
-const newConfigPath = `${templatePath}/node_modules/.${template}-vite.config.ts`
-await $`cp ${templatePath}/vite.config.ts ${newConfigPath}`
+const templates = (await fs.readdir('packages/cli/templates')).filter(
+  (template) => template !== 'monorepo',
+)
 
-let file = (await fs.readFile(newConfigPath)).toString()
-file = file.replace(
-  'plugins:',
-  `resolve: {
+// eslint-disable-next-line functional/no-loop-statement
+for (const template of templates) {
+  const templatePath = `packages/cli/templates/${template}`
+  const newConfigPath = `${templatePath}/node_modules/.${template}-vite.config.ts`
+  console.log('💡 newConfigPath', newConfigPath)
+  await $`cp ${templatePath}/vite.config.ts ${newConfigPath}`
+
+  // eslint-disable-next-line functional/no-let
+  let file = (await fs.readFile(newConfigPath)).toString()
+  file = file.replace(
+    'plugins:',
+    `resolve: {
     alias: [{
       find: /^@storyblok\\/field-plugin$/,
       replacement: '${path.resolve(
@@ -56,9 +58,7 @@ file = file.replace(
     }]
   },
   plugins:`,
-)
+  )
 
-await fs.writeFile(newConfigPath, file)
-
-const newConfigFullPath = path.resolve(newConfigPath)
-await $`yarn workspace field-plugin-${template}-template dev --config ${newConfigFullPath}`
+  await fs.writeFile(newConfigPath, file)
+}

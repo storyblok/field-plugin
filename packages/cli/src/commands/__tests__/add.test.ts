@@ -34,7 +34,7 @@ describe('add', () => {
       (await readFile(`${dir}/${name}/package.json`)).toString(),
     ) as PackageJson
     expect(packageJson['scripts']['deploy']).toMatchInlineSnapshot(
-      '"npm run build && npx @storyblok/field-plugin-cli@beta deploy"',
+      '"npm run build && npx @storyblok/field-plugin-cli@latest deploy"',
     )
     expect(files).toMatchInlineSnapshot(`
       [
@@ -74,7 +74,7 @@ describe('add', () => {
       (await readFile(`${dir}/${name}/package.json`)).toString(),
     ) as PackageJson
     expect(packageJson['scripts']['deploy']).toMatchInlineSnapshot(
-      '"npm run build && npx @storyblok/field-plugin-cli@beta deploy --dotEnvPath \'../../.env\'"',
+      '"npm run build && npx @storyblok/field-plugin-cli@latest deploy --dotEnvPath \'../../.env\'"',
     )
     expect(files).toMatchInlineSnapshot(`
       [
