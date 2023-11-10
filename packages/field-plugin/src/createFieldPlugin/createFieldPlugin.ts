@@ -3,9 +3,9 @@ import { createHeightChangeListener } from './createHeightChangeListener'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
-import { createPluginMessageListener } from './createPluginActions/createPluginMessageListener'
 import { sandboxUrl } from './sandboxUrl'
 import { isCloneable } from '../utils/isCloneable'
+import { handlePluginMessage } from './createPluginActions/createPluginMessageListener/handlePluginMessage'
 
 export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
@@ -16,12 +16,67 @@ export type CreateFieldPlugin = <Content = unknown>(
   options: CreateFieldPluginOptions<Content>,
 ) => () => void
 
-/**
- * @returns cleanup function for side effects
- */
 export const createFieldPlugin: CreateFieldPlugin = ({
   onUpdateState,
   validateContent,
+}) =>
+  internalCreateFieldPlugin({
+    onUpdateState,
+    validateContent,
+    listenToContainer: (handleMessage) => {
+      const handleEvent = (event: MessageEvent<unknown>) => {
+        handleMessage(event.data)
+      }
+      window.addEventListener('message', handleEvent, false)
+
+      return () => {
+        window.removeEventListener('message', handleEvent, false)
+      }
+    },
+    postToContainer: (message: unknown) => {
+      try {
+        // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
+        const origin = '*'
+        window.parent.postMessage(message, origin)
+      } catch (err) {
+        if (isCloneable(message)) {
+          // eslint-disable-next-line functional/no-throw-statement
+          throw err
+        }
+
+        // eslint-disable-next-line functional/no-throw-statement
+        throw new Error(
+          'The argument could not be cloned. ' +
+            'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +
+            'Does your object contain functions, getters, setters, proxies, or any other value that is not cloneable? Did you try to pass a reactive object? ' +
+            'For a full description on the structuredClone algorithm, see: ' +
+            'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm',
+          {
+            cause: err,
+          },
+        )
+      }
+    },
+  })
+
+type InternalCreateFieldPlugin = <Content = unknown>(
+  options: InternalCreateFieldPluginOptions<Content>,
+) => () => void
+
+type InternalCreateFieldPluginOptions<Content> =
+  CreateFieldPluginOptions<Content> & {
+    listenToContainer: (handleMessage: (data: unknown) => void) => () => void
+    postToContainer: (message: unknown) => void
+  }
+
+/**
+ * @returns cleanup function for side effects
+ */
+export const internalCreateFieldPlugin: InternalCreateFieldPlugin = ({
+  onUpdateState,
+  validateContent,
+  listenToContainer,
+  postToContainer,
 }) => {
   const isEmbedded = window.parent !== window
 
@@ -49,31 +104,6 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const { uid } = params
 
-  const postToContainer = (message: unknown) => {
-    try {
-      // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
-      const origin = '*'
-      window.parent.postMessage(message, origin)
-    } catch (err) {
-      if (isCloneable(message)) {
-        // eslint-disable-next-line functional/no-throw-statement
-        throw err
-      }
-
-      // eslint-disable-next-line functional/no-throw-statement
-      throw new Error(
-        'The argument could not be cloned. ' +
-          'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +
-          'Does your object contain functions, getters, setters, proxies, or any other value that is not cloneable? Did you try to pass a reactive object? ' +
-          'For a full description on the structuredClone algorithm, see: ' +
-          'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm',
-        {
-          cause: err,
-        },
-      )
-    }
-  }
-
   const cleanupStyleSideEffects = disableDefaultStoryblokStyles()
 
   // This is basically the `Content` inferred from the `validateContent`.
@@ -99,10 +129,9 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
 
-  const cleanupMessageListenerSideEffects = createPluginMessageListener(
-    params.uid,
-    messageCallbacks,
-  )
+  const cleanupMessageListenerSideEffects = listenToContainer((data) => {
+    handlePluginMessage(data, params.uid, messageCallbacks)
+  })
 
   void initialize()
 

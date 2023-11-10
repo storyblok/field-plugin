@@ -1,11 +1,23 @@
 import {
+  OnAssetSelectMessage,
+  OnContextRequestMessage,
+  OnLoadedMessage,
+  OnStateChangeMessage,
+  OnUnknownPluginMessage,
   isAssetSelectedMessage,
   isMessageToPlugin,
   isLoadedMessage,
 } from '../../../messaging'
 import { isContextRequestMessage } from '../../../messaging'
-import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { isStateMessage } from '../../../messaging/pluginMessage/containerToPluginMessage/StateChangedMessage'
+
+export type PluginMessageCallbacks = {
+  onStateChange: OnStateChangeMessage
+  onLoaded: OnLoadedMessage
+  onContextRequest: OnContextRequestMessage
+  onAssetSelect: OnAssetSelectMessage
+  onUnknownMessage: OnUnknownPluginMessage
+}
 
 export const handlePluginMessage = (
   data: unknown,

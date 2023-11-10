@@ -5,6 +5,7 @@ import {
   isModalChangeMessage,
   isPluginLoadedMessage,
   isValueChangeMessage,
+  type CreateFieldPlugin,
 } from '@storyblok/field-plugin'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -12,7 +13,7 @@ import { describe, test, expect, vi } from 'vitest'
 
 import FieldPlugin from '.'
 
-const fakeContainer = (sendToFieldPlugin) => {
+function fakeContainer() {
   const schema = {
     field_type: 'test-field-plugin',
     options: [],
@@ -26,6 +27,8 @@ const fakeContainer = (sendToFieldPlugin) => {
   let storyId = 'test-story-id'
   let spaceId = 'test-space-id'
   let token = 'test-token'
+
+  let onMessage
 
   const stateMessage = ({ action, callbackId }) => ({
     callbackId: callbackId,
@@ -44,8 +47,13 @@ const fakeContainer = (sendToFieldPlugin) => {
     action,
   })
 
+  const sendToFieldPlugin = (message) => {
+    onMessage!(message)
+  }
+
   return {
-    receive: ({ data, origin }) => {
+    setOnMessage: (_onMessage) => (onMessage = _onMessage),
+    receive: (data) => {
       if (isPluginLoadedMessage(data)) {
         sendToFieldPlugin(
           stateMessage({
@@ -105,12 +113,35 @@ const fakeContainer = (sendToFieldPlugin) => {
   }
 }
 
-const setup = () => {
-  let handleEvent
-  const listener = (data) => {
-    handleEvent({ data })
+vi.mock('@storyblok/field-plugin', async () => {
+  const mod = await vi.importActual<typeof import('@storyblok/field-plugin')>(
+    '@storyblok/field-plugin',
+  )
+  const container = fakeContainer()
+  const mockedCreateFieldPlugin: CreateFieldPlugin = ({
+    onUpdateState,
+    validateContent,
+  }) =>
+    mod.internalCreateFieldPlugin({
+      onUpdateState,
+      validateContent,
+      postToContainer: (message) => {
+        return container.receive(message)
+      },
+      listenToContainer: (handleMessage) => {
+        container.setOnMessage((message) => {
+          return handleMessage(message)
+        })
+        return () => {}
+      },
+    })
+  return {
+    ...mod,
+    createFieldPlugin: mockedCreateFieldPlugin,
   }
-  const container = fakeContainer(listener)
+})
+
+const setup = () => {
   global.ResizeObserver = class ResizeObserver {
     observe() {
       // do nothing
@@ -124,23 +155,11 @@ const setup = () => {
   }
   vi.stubGlobal('parent', {
     ...global.parent,
-    postMessage: vi.mocked((data: unknown, origin: string) => {
-      container.receive({ data, origin })
-    }),
   })
   vi.stubGlobal('location', {
     ...window.location,
     search:
       '?protocol=https%3A&host=plugin-sandbox.storyblok.com&uid=test-uid&preview=1',
-  })
-  const addEventListenerFallback = global.addEventListener
-
-  vi.stubGlobal('addEventListener', (name: string, callback: EventListener) => {
-    if (name === 'message') {
-      handleEvent = callback
-    } else {
-      addEventListenerFallback.call(global, name, callback)
-    }
   })
 }
 
