@@ -17,7 +17,6 @@ export default defineBuildConfig({
   },
 })
 
-
 const copyHelpersToRootDist = async () => {
   const cwd = path.resolve(__dirname)
 
