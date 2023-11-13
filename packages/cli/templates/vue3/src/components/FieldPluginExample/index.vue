@@ -10,10 +10,6 @@ const plugin = useFieldPlugin({
     content: typeof content === 'number' ? content : 0,
   }),
 })
-
-function closeModal() {
-  plugin.actions.setModalOpen(false)
-}
 </script>
 
 <template>
@@ -22,7 +18,7 @@ function closeModal() {
       v-if="plugin.data.isModalOpen"
       type="button"
       class="btn btn-close"
-      @click="closeModal"
+      @click="plugin.actions.setModalOpen(false)"
     >
       <svg
         width="14"
@@ -41,7 +37,7 @@ function closeModal() {
     <div class="container">
       <Counter
         :count="plugin.data.content"
-        :onIncrease="() => plugin.actions.setContent(plugin.data.content + 1)"
+        @onIncrease="plugin.actions.setContent(plugin.data.content + 1)"
       />
       <hr />
       <ModalToggle

@@ -1,5 +1,12 @@
 <script setup lang="ts">
-const props = defineProps<{ count: number; onIncrease: () => void }>()
+const emit = defineEmits<{
+  (e: 'onIncrease'): void
+}>()
+const props = defineProps<{ count: number }>()
+
+const onClick = () => {
+  emit('onIncrease')
+}
 </script>
 
 <template>
@@ -8,7 +15,10 @@ const props = defineProps<{ count: number; onIncrease: () => void }>()
     <div class="counter-value">
       {{ props.count }}
     </div>
-    <button class="btn w-full" @click="props.onIncrease">
+    <button
+      class="btn w-full"
+      @click="onClick"
+    >
       Increment
     </button>
   </div>
