@@ -13,15 +13,19 @@ export default defineBuildConfig({
   externals: ['vue', 'react', 'react-dom', '@storyblok/field-plugin', 'vite'],
   failOnWarn: false,
   hooks: {
-    'build:done': async () => {
-      const cwd = path.resolve(__dirname)
-      for (const mod of SUBMODULES) {
-        await execaCommand(`cd ../dist && mkdir ${mod}`, { cwd, shell: true })
-        await execaCommand(`cp ./dist/${mod}/src/* ../dist/${mod}/`, {
-          cwd,
-          shell: true,
-        })
-      }
-    },
+    'build:done': async () => copyHelpersToRootDist(),
   },
 })
+
+
+const copyHelpersToRootDist = async () => {
+  const cwd = path.resolve(__dirname)
+
+  for (const mod of SUBMODULES) {
+    await execaCommand(`cd ../dist && mkdir ${mod}`, { cwd, shell: true })
+    await execaCommand(`cp ./dist/${mod}/src/* ../dist/${mod}/`, {
+      cwd,
+      shell: true,
+    })
+  }
+}
