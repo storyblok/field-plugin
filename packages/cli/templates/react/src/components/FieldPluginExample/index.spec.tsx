@@ -30,7 +30,7 @@ function fakeContainer() {
 
   let onMessage
 
-  const stateMessage = ({ action, callbackId }) => ({
+  const stateMessage = ({ action, callbackId }: any) => ({
     callbackId: callbackId,
     schema,
     model,
@@ -47,13 +47,13 @@ function fakeContainer() {
     action,
   })
 
-  const sendToFieldPlugin = (message) => {
-    onMessage!(message)
+  const sendToFieldPlugin = (data: unknown) => {
+    onMessage!(data)
   }
 
   return {
-    setOnMessage: (_onMessage) => (onMessage = _onMessage),
-    receive: (data) => {
+    setListener: (handleMessage: (data: unknown) => void) => (onMessage = handleMessage),
+    onReceive: (data: unknown) => {
       if (isPluginLoadedMessage(data)) {
         sendToFieldPlugin(
           stateMessage({
@@ -61,7 +61,10 @@ function fakeContainer() {
             callbackId: data.callbackId,
           }),
         )
-      } else if (isValueChangeMessage(data)) {
+        return
+      }
+
+      if (isValueChangeMessage(data)) {
         model = data.model
         sendToFieldPlugin(
           stateMessage({
@@ -69,7 +72,10 @@ function fakeContainer() {
             callbackId: data.callbackId,
           }),
         )
-      } else if (isModalChangeMessage(data)) {
+        return
+      }
+
+      if (isModalChangeMessage(data)) {
         isModalOpen = data.status
         sendToFieldPlugin(
           stateMessage({
@@ -77,7 +83,10 @@ function fakeContainer() {
             callbackId: data.callbackId,
           }),
         )
-      } else if (isHeightChangeMessage(data)) {
+        return
+      }
+
+      if (isHeightChangeMessage(data)) {
         height = data.height
         sendToFieldPlugin(
           stateMessage({
@@ -85,7 +94,10 @@ function fakeContainer() {
             callbackId: data.callbackId,
           }),
         )
-      } else if (isAssetModalChangeMessage(data)) {
+
+        return
+      }
+      if (isAssetModalChangeMessage(data)) {
         sendToFieldPlugin({
           action: 'asset-selected',
           uid,
@@ -93,7 +105,10 @@ function fakeContainer() {
           field: '',
           callbackId: data.callbackId,
         })
-      } else if (isGetContextMessage(data)) {
+
+        return
+      }
+      if (isGetContextMessage(data)) {
         sendToFieldPlugin({
           action: 'get-context',
           uid,
@@ -102,13 +117,17 @@ function fakeContainer() {
             content: {},
           },
         })
-      } else {
-        console.warn(
-          `Container received unknown message from plugin: ${JSON.stringify(
-            data,
-          )}`,
-        )
+
+        return
       }
+
+
+      console.warn(
+        `Container received unknown message from plugin: ${JSON.stringify(
+          data,
+        )}`,
+      )
+
     },
   }
 }
@@ -119,20 +138,22 @@ vi.mock('@storyblok/field-plugin', async () => {
   )
   const container = fakeContainer()
   const mockedCreateFieldPlugin: CreateFieldPlugin = ({
-    onUpdateState,
-    validateContent,
-  }) =>
+                                                        onUpdateState,
+                                                        validateContent,
+                                                      }) =>
     mod.internalCreateFieldPlugin({
       onUpdateState,
       validateContent,
       postToContainer: (message) => {
-        return container.receive(message)
+        return container.onReceive(message)
       },
       listenToContainer: (handleMessage) => {
-        container.setOnMessage((message) => {
+        container.setListener((message) => {
           return handleMessage(message)
         })
-        return () => {}
+        // cleanup
+        return () => {
+        }
       },
     })
   return {
@@ -146,9 +167,11 @@ const setup = () => {
     observe() {
       // do nothing
     }
+
     unobserve() {
       // do nothing
     }
+
     disconnect() {
       // do nothing
     }
