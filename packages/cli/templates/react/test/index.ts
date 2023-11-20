@@ -8,6 +8,7 @@ import {
 } from '@storyblok/field-plugin'
 import { vi } from 'vitest'
 
+// These testing utility functions will be moved to field-plugin/test package
 const mockStateMessage = (args: any) => {
   return {
     callbackId: undefined,

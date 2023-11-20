@@ -20,3 +20,4 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn workspace field-plugin-vue2-template build
+#      - run: yarn test:template vue2

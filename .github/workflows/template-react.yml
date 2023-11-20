@@ -20,3 +20,5 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn workspace field-plugin-react-template build
+#      - run: yarn test:template react
+
