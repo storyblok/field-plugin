@@ -8,6 +8,34 @@ import {
 } from '@storyblok/field-plugin'
 import { vi } from 'vitest'
 
+export const setupFieldPlugin = () => {
+  const mockContainer = createMockContainer()
+
+  mockResizeObserver()
+
+  vi.stubGlobal('parent', {
+    ...global.parent,
+    postMessage: vi.mocked((data: unknown, origin: string) =>
+      mockContainer.onReceive({ data, origin })),
+  })
+
+  vi.stubGlobal('location', {
+    ...window.location,
+    search:
+      '?protocol=https%3A&host=plugin-sandbox.storyblok.com&uid=test-uid&preview=1',
+  })
+
+  const addEventListenerFallback = global.addEventListener
+  vi.stubGlobal('addEventListener', (name: string, callback: (data: unknown) => void) => {
+    if (name === 'message') {
+      mockContainer.setListener(callback)
+      return
+    }
+    addEventListenerFallback.call(global, name, callback)
+
+  })
+}
+
 // These testing utility functions will be moved to field-plugin/test package
 const mockStateMessage = (args: any) => {
   return {
@@ -89,7 +117,6 @@ const createMessageToFieldPlugin = (data: unknown) => {
   return undefined
 }
 
-
 function createMockContainer() {
   let onMessage
 
@@ -116,9 +143,7 @@ function createMockContainer() {
   }
 }
 
-
-export const setupFieldPlugin = () => {
-  const mockContainer = createMockContainer()
+const mockResizeObserver = () => {
   global.ResizeObserver = class ResizeObserver {
     observe() {
       // do nothing
@@ -132,30 +157,8 @@ export const setupFieldPlugin = () => {
       // do nothing
     }
   }
-
-  vi.stubGlobal('parent', {
-    ...global.parent,
-    postMessage: vi.mocked((data: unknown, origin: string) =>
-      mockContainer.onReceive({ data, origin })),
-  })
-
-  vi.stubGlobal('location', {
-    ...window.location,
-    search:
-      '?protocol=https%3A&host=plugin-sandbox.storyblok.com&uid=test-uid&preview=1',
-  })
-
-
-  const addEventListenerFallback = global.addEventListener
-  vi.stubGlobal('addEventListener', (name: string, callback: (data: unknown) => void) => {
-    if (name === 'message') {
-      mockContainer.setListener(callback)
-      return
-    }
-    addEventListenerFallback.call(global, name, callback)
-
-  })
 }
+
 
 
 
