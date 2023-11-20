@@ -8,7 +8,7 @@ import {
 } from '@storyblok/field-plugin'
 import { vi } from 'vitest'
 
-export const mockStateMessage = (args: any) => {
+const mockStateMessage = (args: any) => {
   return {
     callbackId: undefined,
     schema: {
@@ -31,7 +31,7 @@ export const mockStateMessage = (args: any) => {
   }
 }
 
-export const createMessageToFieldPlugin = (data: unknown) => {
+const createMessageToFieldPlugin = (data: unknown) => {
   if (isPluginLoadedMessage(data)) {
     return mockStateMessage({
       action: 'loaded',
@@ -89,7 +89,7 @@ export const createMessageToFieldPlugin = (data: unknown) => {
 }
 
 
-export function createMockContainer() {
+function createMockContainer() {
   let onMessage
 
   const sendToFieldPlugin = (data: unknown) => {
@@ -116,8 +116,7 @@ export function createMockContainer() {
 }
 
 
-export const setup = () => {
-  console.log('setup')
+export const setupFieldPlugin = () => {
   const mockContainer = createMockContainer()
   global.ResizeObserver = class ResizeObserver {
     observe() {
@@ -135,10 +134,8 @@ export const setup = () => {
 
   vi.stubGlobal('parent', {
     ...global.parent,
-    postMessage: vi.mocked((data: unknown, origin: string) => {
-      console.log(data, origin)
-      mockContainer.onReceive({ data, origin })
-    }),
+    postMessage: vi.mocked((data: unknown, origin: string) =>
+      mockContainer.onReceive({ data, origin })),
   })
 
   vi.stubGlobal('location', {
@@ -152,9 +149,10 @@ export const setup = () => {
   vi.stubGlobal('addEventListener', (name: string, callback: (data: unknown) => void) => {
     if (name === 'message') {
       mockContainer.setListener(callback)
-    } else {
-      addEventListenerFallback.call(global, name, callback)
+      return
     }
+    addEventListenerFallback.call(global, name, callback)
+
   })
 }
 
