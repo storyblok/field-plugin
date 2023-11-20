@@ -8,6 +8,26 @@ import {
 } from '@storyblok/field-plugin'
 import { vi } from 'vitest'
 
+type StateMessage = {
+  callbackId: string,
+  schema: {
+    field_type: string,
+    options: [],
+  },
+  uid: string,
+  model: unknown,
+  isModalOpen: boolean,
+  blockId: string,
+  story: {
+    content: unknown,
+  },
+  language: string,
+  storyId: string,
+  spaceId: string,
+  token: string,
+  action: string,
+}
+type MockStateMessage = (args: Partial<StateMessage>) => StateMessage
 export const setupFieldPlugin = () => {
   const mockContainer = createMockContainer()
 
@@ -36,8 +56,9 @@ export const setupFieldPlugin = () => {
   })
 }
 
+
 // These testing utility functions will be moved to field-plugin/test package
-const mockStateMessage = (args: any) => {
+const mockStateMessage: MockStateMessage = (args) => {
   return {
     callbackId: undefined,
     schema: {
@@ -126,7 +147,7 @@ function createMockContainer() {
 
   return {
     setListener: (handleMessage: (data: unknown) => void) => (onMessage = handleMessage),
-    onReceive: ({ data }: any) => {
+    onReceive: ({ data }: { data: unknown, origin: string }) => {
       const message = createMessageToFieldPlugin(data)
       if (message) {
         sendToFieldPlugin(message)
