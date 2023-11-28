@@ -10,7 +10,11 @@ const props = defineProps<{
 <template>
   <div>
     <h2>Modal</h2>
-    <button class="btn w-full" type="button" @click="() => props.setModalOpen(!props.isModalOpen)">
+    <button
+      class="btn w-full"
+      type="button"
+      @click="() => props.setModalOpen(!props.isModalOpen)"
+    >
       {{ props.isModalOpen ? 'Close' : 'Open' }} modal
     </button>
   </div>
