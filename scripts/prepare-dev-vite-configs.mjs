@@ -21,9 +21,9 @@ import path from 'path'
 // eslint-disable-next-line functional/immutable-data
 process.env.FORCE_COLOR = '1'
 
-const templates = (await fs.readdir('packages/cli/templates')).filter(
-  (template) => template !== 'monorepo',
-)
+const templates = (await fs.readdir('packages/cli/templates', { withFileTypes: true })).filter(
+  (dir) => dir.isDirectory() && dir.name !== 'monorepo',
+).map(dir => dir.name)
 
 // eslint-disable-next-line functional/no-loop-statement
 for (const template of templates) {
@@ -40,21 +40,21 @@ for (const template of templates) {
     alias: [{
       find: /^@storyblok\\/field-plugin$/,
       replacement: '${path.resolve(
-        __dirname,
-        '../packages/field-plugin/src/index.ts',
-      )}'
+      __dirname,
+      '../packages/field-plugin/src/index.ts',
+    )}'
     }, {
       find: /^@storyblok\\/field-plugin\\/vue3$/,
       replacement: '${path.resolve(
-        __dirname,
-        '../packages/field-plugin/helpers/vue3/src/index.ts',
-      )}'
+      __dirname,
+      '../packages/field-plugin/helpers/vue3/src/index.ts',
+    )}'
     }, {
       find: /^@storyblok\\/field-plugin\\/react$/,
       replacement: '${path.resolve(
-        __dirname,
-        '../packages/field-plugin/helpers/react/src/index.ts',
-      )}'
+      __dirname,
+      '../packages/field-plugin/helpers/react/src/index.ts',
+    )}'
     }]
   },
   plugins:`,
