@@ -21,6 +21,7 @@ type CreateFieldTypeFunc = (body: {
 type UpdateFieldTypeFunc = (args: {
   id: number
   field_type: Partial<FieldType>
+  publish: boolean
 }) => Promise<void>
 
 type FetchFieldTypesFunc = (page?: number) => Promise<FieldType[]>
@@ -88,13 +89,18 @@ export const StoryblokClient: StoryblokClientFunc = ({ token, scope }) => {
     return results
   }
 
-  const updateFieldType: UpdateFieldTypeFunc = async ({ id, field_type }) => {
+  const updateFieldType: UpdateFieldTypeFunc = async ({
+    id,
+    field_type,
+    publish,
+  }) => {
     const fetch = (await import('node-fetch')).default
     const response = await fetch(`${FIELD_TYPES_API_ENDPOINT}${id}`, {
       method: 'PUT',
       headers: headers,
       body: JSON.stringify({
         field_type,
+        publish,
       }),
     })
     // The Update API returns an empty string as response body

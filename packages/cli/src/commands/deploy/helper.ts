@@ -102,6 +102,7 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
 
       await storyblokClient.updateFieldType({
         id: fieldPlugin.id,
+        publish: true,
         field_type: {
           body: output,
           options: manifest?.options,
