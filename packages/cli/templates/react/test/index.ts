@@ -9,31 +9,39 @@ import {
 
 import { vi } from 'vitest'
 
-const fakeContainer = (sendToFieldPlugin) => {
+const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
   const schema = {
     field_type: 'test-field-plugin',
     options: [],
   }
+  // @ts-ignore `height` is not used anywhere, but we keep it here.
   let height = undefined
   let uid = 'test-uid'
-  let model = undefined
+  let model: any = undefined
   let isModalOpen = false
   let blockId = 'test-block-id'
   let language = 'default'
   let storyId = 'test-story-id'
   let spaceId = 'test-space-id'
   let token = 'test-token'
+  let story = {
+    content: {},
+  }
 
-  const stateMessage = ({ action, callbackId }) => ({
+  const stateMessage = ({
+    action,
+    callbackId,
+  }: {
+    action: 'loaded' | 'state-changed'
+    callbackId: string
+  }) => ({
     callbackId: callbackId,
     schema,
     model,
     isModalOpen,
     uid,
     blockId,
-    story: {
-      content: {},
-    },
+    story,
     language,
     storyId,
     spaceId,
@@ -42,7 +50,12 @@ const fakeContainer = (sendToFieldPlugin) => {
   })
 
   return {
-    receive: ({ data, origin }) => {
+    receive: ({
+      data,
+    }: {
+      data: { callbackId: string } & Record<string, any>
+      origin: string
+    }) => {
       if (isPluginLoadedMessage(data)) {
         sendToFieldPlugin(
           stateMessage({
@@ -68,18 +81,11 @@ const fakeContainer = (sendToFieldPlugin) => {
         )
       } else if (isHeightChangeMessage(data)) {
         height = data.height
-        sendToFieldPlugin(
-          stateMessage({
-            action: 'state-changed',
-            callbackId: data.callbackId,
-          }),
-        )
       } else if (isAssetModalChangeMessage(data)) {
         sendToFieldPlugin({
           action: 'asset-selected',
           uid,
-          filename: 'https://...',
-          field: '',
+          filename: 'https://plugin-sandbox.storyblok.com/icon.svg',
           callbackId: data.callbackId,
         })
       } else if (isGetContextMessage(data)) {
@@ -87,9 +93,7 @@ const fakeContainer = (sendToFieldPlugin) => {
           action: 'get-context',
           uid,
           callbackId: data.callbackId,
-          story: {
-            content: {},
-          },
+          story,
         })
       } else {
         console.warn(
@@ -103,11 +107,11 @@ const fakeContainer = (sendToFieldPlugin) => {
 }
 
 export const setupFieldPlugin = () => {
-  let handleEvent
-  const listener = (data) => {
+  let handleEvent: (event: MessageEvent<unknown>) => void
+  const container = getContainer((data: unknown) => {
+    // @ts-ignore
     handleEvent({ data })
-  }
-  const container = fakeContainer(listener)
+  })
   global.ResizeObserver = class ResizeObserver {
     observe() {
       // do nothing
@@ -121,17 +125,18 @@ export const setupFieldPlugin = () => {
   }
   vi.stubGlobal('parent', {
     ...global.parent,
-    postMessage: vi.mocked((data: unknown, origin: string) => {
-      container.receive({ data, origin })
-    }),
+    postMessage: vi.mocked(
+      (data: { callbackId: string } & Record<string, any>, origin: string) => {
+        container.receive({ data, origin })
+      },
+    ),
   })
   vi.stubGlobal('location', {
     ...window.location,
-    search:
-      '?protocol=https%3A&host=plugin-sandbox.storyblok.com&uid=test-uid&preview=1',
+    search: `?protocol=https%3A&host=plugin-sandbox.storyblok.com&uid=test-uid&preview=1`,
   })
-  const addEventListenerFallback = global.addEventListener
 
+  const addEventListenerFallback = global.addEventListener
   vi.stubGlobal('addEventListener', (name: string, callback: EventListener) => {
     if (name === 'message') {
       handleEvent = callback
