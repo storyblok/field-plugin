@@ -1,43 +1,27 @@
 import { render, screen } from '@testing-library/react'
-import { describe, test, expect, vi } from 'vitest'
-
+import userEvent from '@testing-library/user-event'
+import { describe, test, expect } from 'vitest'
 import FieldPlugin from '.'
-import { useFieldPlugin } from '@storyblok/field-plugin/react'
-import { FieldPluginResponse } from '@storyblok/field-plugin'
+import { setupFieldPlugin } from '../../../test'
 
-vi.mock('@storyblok/field-plugin/react')
-
-const fieldPluginDefault: FieldPluginResponse<number | undefined> = {
-  type: 'loaded',
-  data: {
-    isModalOpen: false,
-    content: undefined,
-    options: {},
-    spaceId: undefined,
-    storyLang: '',
-    story: {
-      content: {},
-    },
-    storyId: undefined,
-    blockUid: undefined,
-    token: undefined,
-    uid: '',
-  },
-  actions: {
-    setContent: vi.fn(),
-    setModalOpen: vi.fn(),
-    requestContext: vi.fn(),
-    selectAsset: vi.fn(),
-  },
-}
-
-describe('FieldPluginExammple', () => {
-  test('should work', () => {
-    vi.mocked(useFieldPlugin<number | undefined>).mockReturnValue(
-      fieldPluginDefault,
-    )
+describe('FieldPluginExample', () => {
+  test('should render the component', () => {
+    const { cleanUp } = setupFieldPlugin()
     render(<FieldPlugin />)
     const headline = screen.getByText('Field Value')
     expect(headline).toBeInTheDocument()
+    cleanUp()
+  })
+
+  test('should increase the counter', async () => {
+    const { cleanUp } = setupFieldPlugin()
+    const user = userEvent.setup()
+    render(<FieldPlugin />)
+    expect(screen.getByTestId('count').textContent).toEqual('0')
+    await user.click(screen.getByText('Increment'))
+    expect(screen.getByTestId('count').textContent).toEqual('1')
+    await user.click(screen.getByText('Increment'))
+    expect(screen.getByTestId('count').textContent).toEqual('2')
+    cleanUp()
   })
 })

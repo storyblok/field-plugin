@@ -4,7 +4,10 @@
     <div class="counter-value">
       {{ count }}
     </div>
-    <button class="btn w-full" @click="onIncrease">
+    <button
+      class="btn w-full"
+      @click="onIncrease"
+    >
       Increment
     </button>
   </div>
