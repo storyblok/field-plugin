@@ -99,12 +99,12 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
 
-  void initialize()
-
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
     messageCallbacks,
   )
+
+  void initialize()
 
   return () => {
     cleanupMessageListenerSideEffects()

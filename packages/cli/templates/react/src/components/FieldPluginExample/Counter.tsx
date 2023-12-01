@@ -7,7 +7,12 @@ const Counter: FunctionComponent<{
   return (
     <div>
       <h2>Field Value</h2>
-      <div className="counter-value">{count}</div>
+      <div
+        className="counter-value"
+        data-testid="count"
+      >
+        {count}
+      </div>
       <button
         className="btn w-full"
         onClick={onIncrease}

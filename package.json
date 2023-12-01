@@ -54,7 +54,7 @@
     "dev:js": "yarn dev:template js",
     "dev:vue2": "yarn dev:template vue2",
     "dev:vue3": "yarn dev:template vue3",
-    "test:template": "yarn workspace field-plugin-${0}-template test --config node_modules/.${0}-vite.config.ts",
+    "test:template": "yarn workspace field-plugin-${0}-template test --config node_modules/.${0}-vite.config.ts --ui",
     "test:react": "yarn test:template react",
     "test:js": "yarn test:template js",
     "test:vue2": "yarn test:template vue2",
