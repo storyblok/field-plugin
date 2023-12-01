@@ -145,7 +145,11 @@ export const setupFieldPlugin = () => {
     }
   })
 
+  const cleanUp = () => {
+    vi.unstubAllGlobals()
+  }
+
   return {
-    cleanUp: () => vi.unstubAllGlobals(),
+    cleanUp,
   }
 }

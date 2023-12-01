@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, test, expect } from 'vitest'
+import { setupFieldPlugin } from '@storyblok/field-plugin/test'
 import FieldPlugin from '.'
-import { setupFieldPlugin } from '../../../test'
 
 describe('FieldPluginExample', () => {
   test('should render the component', () => {
