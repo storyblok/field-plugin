@@ -102,6 +102,7 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
 
       await storyblokClient.updateFieldType({
         id: fieldPlugin.id,
+        publish: true,
         field_type: {
           body: output,
           options: manifest?.options,
@@ -341,17 +342,17 @@ export const createFieldType: CreateFieldTypeFunc = async ({
 }) => {
   const newFieldPlugin = await client.createFieldType({ name, body })
 
-  //since the API doesn't accept options during creation time,
-  //we need to force an update in case options were found in
-  //the manifest file.
-  if (options !== undefined && options.length > 0) {
-    await client.updateFieldType({
-      id: newFieldPlugin.id,
-      field_type: {
-        options,
-      },
-    })
-  }
+  //since `options` and `publish` properties are only accepted during updates,
+  //we need to force an update call right after the creation.
+  //If no options is found, it's not going to be sent to the API since undefined
+  //properties are not encoded.
+  await client.updateFieldType({
+    id: newFieldPlugin.id,
+    publish: true,
+    field_type: {
+      options,
+    },
+  })
 
   return newFieldPlugin
 }
