@@ -7,7 +7,7 @@ on:
 jobs:
   check-if-releasing-library:
     uses: ./.github/workflows/check-if-releasing-library.yml
-  build:
+  test-and-build:
     needs: check-if-releasing-library
     if: ${{ needs.check-if-releasing-library.outputs.result == 'false' }}
     runs-on: ubuntu-latest
