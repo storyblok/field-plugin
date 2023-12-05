@@ -12,7 +12,10 @@ const onClick = () => {
 <template>
   <div>
     <h2>Field Value</h2>
-    <div class="counter-value">
+    <div
+      class="counter-value"
+      data-testid="count"
+    >
       {{ props.count }}
     </div>
     <button

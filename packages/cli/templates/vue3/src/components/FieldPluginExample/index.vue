@@ -48,4 +48,5 @@ const plugin = useFieldPlugin({
       <AssetSelector :selectAsset="plugin.actions.selectAsset" />
     </div>
   </div>
+  <div v-else>hey: {{ plugin }}</div>
 </template>
