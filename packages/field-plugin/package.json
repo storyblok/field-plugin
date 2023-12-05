@@ -25,6 +25,10 @@
     "./vite": {
       "import": "./dist/vite/index.mjs",
       "require": "./dist/vite/index.cjs"
+    },
+    "./test": {
+      "import": "./dist/test/index.mjs",
+      "require": "./dist/test/index.cjs"
     }
   },
   "repository": {
