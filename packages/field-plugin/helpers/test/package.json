@@ -1,0 +1,13 @@
+{
+  "name": "helper-test",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "@storyblok/field-plugin": "workspace:*",
+    "vitest": "0.34.6"
+  }
+}

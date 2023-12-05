@@ -6644,6 +6644,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"helper-test@workspace:packages/field-plugin/helpers/test":
+  version: 0.0.0-use.local
+  resolution: "helper-test@workspace:packages/field-plugin/helpers/test"
+  dependencies:
+    "@storyblok/field-plugin": "workspace:*"
+    typescript: ^5.0.2
+    vitest: 0.34.6
+  languageName: unknown
+  linkType: soft
+
 "helper-vite@workspace:packages/field-plugin/helpers/vite":
   version: 0.0.0-use.local
   resolution: "helper-vite@workspace:packages/field-plugin/helpers/vite"
