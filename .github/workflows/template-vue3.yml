@@ -7,7 +7,7 @@ on:
 jobs:
   check-if-releasing-library:
     uses: ./.github/workflows/check-if-releasing-library.yml
-  build:
+  test-and-build:
     needs: check-if-releasing-library
     if: ${{ needs.check-if-releasing-library.outputs.result == 'false' }}
     runs-on: ubuntu-latest
@@ -18,5 +18,9 @@ jobs:
         with:
           node-version: 18.16.0
           cache: 'yarn'
-      - run: yarn install
-      - run: yarn workspace field-plugin-vue3-template build
+      - name: Install Dependencies
+        run: yarn install
+      - name: Build the template
+        run: yarn workspace field-plugin-vue3-template build
+      - name: Unit Tests
+        run: yarn workspace field-plugin-vue3-template test
