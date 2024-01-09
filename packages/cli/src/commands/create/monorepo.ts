@@ -100,6 +100,11 @@ export const createMonorepo: CreateMonorepoFunc = async ({
       return
     }
 
+    // skip yarn files if yarn is not the package manager
+    if (file.includes('.yarn') && packageManager !== 'yarn') {
+      return
+    }
+
     const destFilePath = resolve(repoDir, file.slice(templatePath.length))
 
     mkdirSync(dirname(destFilePath), {
