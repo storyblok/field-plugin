@@ -7,7 +7,7 @@ import {
   writeFileSync,
 } from 'fs'
 import { bold, cyan } from 'kleur/colors'
-import { dirname, resolve } from 'path'
+import { dirname, resolve, basename } from 'path'
 import { MONOREPO_TEMPLATE_PATH } from '../../../config'
 import {
   betterPrompts,
@@ -101,7 +101,11 @@ export const createMonorepo: CreateMonorepoFunc = async ({
     }
 
     // skip yarn files if yarn is not the package manager
-    if (file.includes('.yarn') && packageManager !== 'yarn') {
+    const fileBasename = basename(file)
+    if (
+      (fileBasename === '.yarn' || fileBasename === '.yarnrc') &&
+      packageManager !== 'yarn'
+    ) {
       return
     }
 
