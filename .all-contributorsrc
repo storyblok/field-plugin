@@ -52,6 +52,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "hoersamu",
+      "name": "Samuel Höra",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14295796?v=4",
+      "profile": "https://hoera.dev",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ]
 }
