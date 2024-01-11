@@ -7,7 +7,7 @@ import {
   writeFileSync,
 } from 'fs'
 import { bold, cyan } from 'kleur/colors'
-import { dirname, resolve } from 'path'
+import { dirname, resolve, basename } from 'path'
 import { MONOREPO_TEMPLATE_PATH } from '../../../config'
 import {
   betterPrompts,
@@ -61,7 +61,8 @@ const specifyPackageManager = ({
     // eslint-disable-next-line functional/immutable-data
     json['scripts']['add-plugin'] += ` --packageManager ${packageManager}`
     // eslint-disable-next-line functional/immutable-data
-    json['packageManager'] = packageManager === 'yarn' ? 'yarn@3.2.4' : 'pnpm'
+    json['packageManager'] =
+      packageManager === 'yarn' ? 'yarn@3.2.4' : 'pnpm@8.14.0'
 
     writeFileSync(
       resolve(repoDir, 'package.json'),
@@ -96,6 +97,15 @@ export const createMonorepo: CreateMonorepoFunc = async ({
   //TODO: make reusable with code inside add command
   walk.sync(templatePath, { filter: filterPathsToInclude }, (file, stat) => {
     if (!stat.isFile()) {
+      return
+    }
+
+    // skip yarn files if yarn is not the package manager
+    const fileBasename = basename(file)
+    if (
+      (fileBasename === 'yarn-3.2.4.cjs' || fileBasename === '.yarnrc.yml') &&
+      packageManager !== 'yarn'
+    ) {
       return
     }
 
