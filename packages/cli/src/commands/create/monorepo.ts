@@ -103,7 +103,7 @@ export const createMonorepo: CreateMonorepoFunc = async ({
     // skip yarn files if yarn is not the package manager
     const fileBasename = basename(file)
     if (
-      (fileBasename === '.yarn' || fileBasename === '.yarnrc') &&
+      (fileBasename === 'yarn-3.2.4.cjs' || fileBasename === '.yarnrc.yml') &&
       packageManager !== 'yarn'
     ) {
       return
