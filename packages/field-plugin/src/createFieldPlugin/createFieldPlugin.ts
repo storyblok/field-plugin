@@ -47,12 +47,11 @@ export const createFieldPlugin: CreateFieldPlugin = ({
     return () => undefined
   }
 
-  const { uid } = params
+  const { uid, secure, host } = params
+  const origin = `${secure ? 'https://' : 'http://'}${host}`
 
   const postToContainer = (message: unknown) => {
     try {
-      // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
-      const origin = '*'
       window.parent.postMessage(message, origin)
     } catch (err) {
       if (isCloneable(message)) {
@@ -101,6 +100,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
+    origin,
     messageCallbacks,
   )
 

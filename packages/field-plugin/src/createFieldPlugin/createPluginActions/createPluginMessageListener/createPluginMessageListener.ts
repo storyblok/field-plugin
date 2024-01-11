@@ -17,6 +17,7 @@ export type PluginMessageCallbacks = {
 
 export type CreatePluginMessageListener = (
   uid: string,
+  origin: string,
   callbacks: PluginMessageCallbacks,
 ) => () => void
 
@@ -26,10 +27,13 @@ export type CreatePluginMessageListener = (
  */
 export const createPluginMessageListener: CreatePluginMessageListener = (
   uid,
+  origin,
   callbacks,
 ) => {
   const handleEvent = (event: MessageEvent<unknown>) => {
-    handlePluginMessage(event.data, uid, callbacks)
+    if (event.origin === origin) {
+      handlePluginMessage(event.data, uid, callbacks)
+    }
   }
   window.addEventListener('message', handleEvent, false)
 
