@@ -47,8 +47,11 @@ export const createFieldPlugin: CreateFieldPlugin = ({
     return () => undefined
   }
 
-  const { uid, secure, host } = params
-  const origin = `${secure ? 'https://' : 'http://'}${host}`
+  const { uid, host } = params
+  const origin =
+    host === 'plugin-sandbox.storyblok.com'
+      ? 'https://plugin-sandbox.storyblok.com'
+      : 'https://app.storyblok.com'
 
   const postToContainer = (message: unknown) => {
     try {
