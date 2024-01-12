@@ -47,12 +47,14 @@ export const createFieldPlugin: CreateFieldPlugin = ({
     return () => undefined
   }
 
-  const { uid } = params
+  const { uid, host } = params
+  const origin =
+    host === 'plugin-sandbox.storyblok.com'
+      ? 'https://plugin-sandbox.storyblok.com'
+      : 'https://app.storyblok.com'
 
   const postToContainer = (message: unknown) => {
     try {
-      // TODO specify https://app.storyblok.com/ in production mode, * in dev mode
-      const origin = '*'
       window.parent.postMessage(message, origin)
     } catch (err) {
       if (isCloneable(message)) {
@@ -101,6 +103,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
+    origin,
     messageCallbacks,
   )
 
