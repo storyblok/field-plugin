@@ -23,6 +23,8 @@ jobs:
           yarn eslint packages/field-plugin
           yarn workspaces foreach --include "helper-*" run lint
       - name: Test
-        run: yarn workspace @storyblok/field-plugin test
+        run: |
+          yarn workspace @storyblok/field-plugin test
+          yarn workspace @storyblok/manifest-helper test
       - name: Build
         run: yarn workspace @storyblok/field-plugin build
