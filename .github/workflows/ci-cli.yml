@@ -15,7 +15,9 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn eslint packages/cli
-      - run: yarn workspace @storyblok/field-plugin-cli test
+      - run: |
+          yarn workspace @storyblok/field-plugin-cli test
+          yarn workspace @storyblok/manifest-helper test
       - run: yarn workspace @storyblok/field-plugin-cli build
   standalone-vue2:
     runs-on: ubuntu-latest
