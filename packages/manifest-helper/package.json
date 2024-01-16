@@ -2,10 +2,13 @@
   "name": "@storyblok/manifest-helper",
   "version": "0.0.1",
   "type": "module",
-  "description": "",
+  "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "watch": "vitest watch"
   },
-  "author": "",
-  "license": "MIT"
+  "devDependencies": {
+    "vite": "^5.0.8",
+    "vitest": "1.2.0"
+  }
 }
