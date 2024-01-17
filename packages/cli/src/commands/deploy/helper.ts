@@ -1,14 +1,5 @@
 import { readFileSync, lstatSync } from 'fs'
-import {
-  bold,
-  cyan,
-  gray,
-  green,
-  grey,
-  red,
-  underline,
-  yellow,
-} from 'kleur/colors'
+import { bold, cyan, green, grey, red } from 'kleur/colors'
 import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
