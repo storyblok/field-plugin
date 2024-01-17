@@ -1,5 +1,14 @@
 import { readFileSync, lstatSync } from 'fs'
-import { bold, cyan, green, red, underline } from 'kleur/colors'
+import {
+  bold,
+  cyan,
+  gray,
+  green,
+  grey,
+  red,
+  underline,
+  yellow,
+} from 'kleur/colors'
 import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
@@ -85,7 +94,10 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
 
   const storyblokClient = StoryblokClient({ token, scope })
 
+  lookForManifestOptions(manifest?.options)
+
   console.log(bold(cyan('[info] Checking existing field plugins...')))
+
   const allFieldPlugins = await storyblokClient.fetchAllFieldTypes()
   const fieldPlugin = allFieldPlugins.find(
     (fieldPlugin) => fieldPlugin.name === packageName,
@@ -228,14 +240,10 @@ export const confirmOptionsUpdate = async (
     return
   }
 
-  if (options.length > 0) {
-    console.log(green('> '), options.map((option) => option.name).join(', '))
-  }
-
   const message =
     options.length === 0
       ? 'The plugin options will be reset because your manifest file contains an empty array for options. Do you want to proceed?'
-      : `The options above found in your manifest file are going to replace the plugin options. Do you want to proceed?`
+      : `The options found in your manifest file are going to replace the plugin options. Do you want to proceed?`
 
   const { confirmed } = await betterPrompts<{
     confirmed: boolean
@@ -250,6 +258,29 @@ export const confirmOptionsUpdate = async (
     console.log(cyan(bold('[info]')), 'Aborting plugin update.')
     process.exit(1)
   }
+}
+
+export const lookForManifestOptions = (
+  options: ManifestOption[] | undefined,
+) => {
+  if (options?.length === 0) {
+    return
+  }
+
+  const concatenatedOptions =
+    options !== undefined
+      ? options?.map((option) => option.name).join(', ')
+      : ''
+
+  console.log(cyan(bold('[info] Options found:')), green(concatenatedOptions))
+
+  console.log(
+    grey(
+      bold(
+        `[info] Please note that the option values won't be shared with a real Field but they'll be available only inside the Field Plugin Editor`,
+      ),
+    ),
+  )
 }
 
 export const selectApiScope = async (
