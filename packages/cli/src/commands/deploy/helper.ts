@@ -1,5 +1,5 @@
 import { readFileSync, lstatSync } from 'fs'
-import { bold, cyan, green, grey, red } from 'kleur/colors'
+import { bold, cyan, green, grey, red, yellow } from 'kleur/colors'
 import { resolve } from 'path'
 import { type Choice } from 'prompts'
 import {
@@ -85,7 +85,7 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
 
   const storyblokClient = StoryblokClient({ token, scope })
 
-  lookForManifestOptions(manifest?.options)
+  printManifestOptions(manifest?.options)
 
   console.log(bold(cyan('[info] Checking existing field plugins...')))
 
@@ -251,9 +251,7 @@ export const confirmOptionsUpdate = async (
   }
 }
 
-export const lookForManifestOptions = (
-  options: ManifestOption[] | undefined,
-) => {
+export const printManifestOptions = (options: ManifestOption[] | undefined) => {
   if (options?.length === 0) {
     return
   }
@@ -266,9 +264,10 @@ export const lookForManifestOptions = (
   console.log(cyan(bold('[info] Options found:')), green(concatenatedOptions))
 
   console.log(
-    grey(
+    yellow(
       bold(
-        `[info] Please note that the option values will not be shared when this field plugin is added to a story. Only keys are configured for security reasons.`,
+        `[info] Please note that the option values will not be shared when this field plugin is added to a story. Only keys are configured for security reasons.\n` +
+          `[info] Learn more: https://www.storyblok.com/docs/plugins/field-plugins/storyblok-field-plugin#manifest-file-for-field-plugins`,
       ),
     ),
   )
