@@ -268,7 +268,7 @@ export const lookForManifestOptions = (
   console.log(
     grey(
       bold(
-        `[info] Please note that the option values won't be shared with a real Field but they'll be available only inside the Field Plugin Editor`,
+        `[info] Please note that the option values will not be shared when this field plugin is added to a story. Only keys are configured for security reasons.`,
       ),
     ),
   )
