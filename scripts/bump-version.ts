@@ -106,6 +106,23 @@ const { version: currentVersion, name: packageName } = JSON.parse(
   readFileSync(`packages/${packageFolder}/package.json`).toString(),
 ) as { version: string; name: PackageName }
 
+const latestVersionTag = `${packageName}@${currentVersion}`
+print('')
+print(
+  bold(cyan(`🏷️  Fetch latest version tag:`)),
+  bold(green(`${latestVersionTag}`)),
+)
+print('')
+try {
+  await $`git fetch origin tag ${latestVersionTag} --no-tags`.quiet()
+} catch {
+  print(
+    bold(red('[Error]')),
+    `Error while fetching the latest version tag ${latestVersionTag}`,
+  )
+  exit(1)
+}
+
 print('')
 print(bold(cyan('💡 Commits since last release')))
 print('')
