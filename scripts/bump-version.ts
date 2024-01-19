@@ -112,7 +112,6 @@ print(
   bold(cyan(`🏷️  Fetch latest version tag:`)),
   bold(green(`${latestVersionTag}`)),
 )
-print('')
 try {
   await $`git fetch origin tag ${latestVersionTag} --no-tags`.quiet()
 } catch {
@@ -125,7 +124,6 @@ try {
 
 print('')
 print(bold(cyan('💡 Commits since last release')))
-print('')
 const commits = (
   await $`git log ${packageName}@${currentVersion}..HEAD --oneline -- packages/${packageFolder}/`.quiet()
 ).toString()
