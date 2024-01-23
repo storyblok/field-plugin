@@ -9,6 +9,8 @@ import {
 
 import { vi } from 'vitest'
 
+const sandboxOrigin: string = 'https://plugin-sandbox.storyblok.com'
+
 const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
   const schema = {
     field_type: 'test-field-plugin',
@@ -110,15 +112,20 @@ export const setupFieldPlugin = () => {
   let handleEvent: (event: MessageEvent<unknown>) => void
   const container = getContainer((data: unknown) => {
     // @ts-ignore
-    handleEvent({ data })
+    handleEvent({
+      data,
+      origin: sandboxOrigin,
+    })
   })
   global.ResizeObserver = class ResizeObserver {
     observe() {
       // do nothing
     }
+
     unobserve() {
       // do nothing
     }
+
     disconnect() {
       // do nothing
     }
