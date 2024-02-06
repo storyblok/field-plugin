@@ -21,6 +21,7 @@ export const pluginStateFromStateChangeMessage = <Content>(
   }
 
   return {
+    interfaceLang: message.interfaceLanguage,
     spaceId: message.spaceId ?? undefined,
     story: message.story ?? undefined,
     storyId: message.storyId ?? undefined,
@@ -31,5 +32,6 @@ export const pluginStateFromStateChangeMessage = <Content>(
     uid: message.uid ?? undefined,
     content: validateResult.content,
     isModalOpen: message.isModalOpen,
+    releases: message.releases,
   }
 }

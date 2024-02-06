@@ -67,9 +67,11 @@ describe('createPluginActions', () => {
         token: null,
         schema: { options: [], field_type: 'abc' },
         language: '',
+        interfaceLanguage: 'en',
         model: randomString,
         spaceId: null,
         blockId: undefined,
+        releases: [],
       })
       expect(onUpdateState).toHaveBeenCalledWith(
         expect.objectContaining({

@@ -56,6 +56,7 @@ describe('handlePluginMessage', () => {
       uid,
       blockId: '093jd',
       language: '',
+      interfaceLanguage: 'en',
       model: 123,
       spaceId: 1234,
       story: { content: {} },
@@ -63,6 +64,7 @@ describe('handlePluginMessage', () => {
       storyId: 1344,
       token: 'rfwreff2435wewff43',
       isModalOpen: false,
+      releases: [],
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)
