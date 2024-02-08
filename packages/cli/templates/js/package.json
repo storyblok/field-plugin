@@ -11,7 +11,7 @@
     "deploy": "npm run build && npx @storyblok/field-plugin-cli@latest deploy"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "1.0.1"
+    "@storyblok/field-plugin": "1.0.2"
   },
   "devDependencies": {
     "eslint": "latest",
