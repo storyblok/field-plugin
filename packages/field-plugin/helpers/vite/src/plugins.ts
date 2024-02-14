@@ -36,11 +36,11 @@ export function printDev(): PluginOption {
 
         console.log(`
     ${arrows.green}  ${bold(
-          'Partner Portal',
-        )}:  https://app.storyblok.com/#/partner/fields
+      'Partner Portal',
+    )}:  https://app.storyblok.com/#/partner/fields
     ${arrows.green}  ${bold(
-          'My plugins',
-        )}:      https://app.storyblok.com/#/me/plugins
+      'My plugins',
+    )}:      https://app.storyblok.com/#/me/plugins
      
     ${arrows.green}  ${bold('Local')}:    ${localUrl}
     ${arrows.green}  ${bold('Network')}:  ${networkUrl}
