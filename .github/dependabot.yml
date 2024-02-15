@@ -10,7 +10,7 @@ updates:
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
-    reviwers:
+    reviewers:
       - 'storyblok/plugins-team'
     # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#example-1
     groups:
