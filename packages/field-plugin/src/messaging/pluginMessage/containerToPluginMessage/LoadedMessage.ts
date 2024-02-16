@@ -22,6 +22,7 @@ export type LoadedMessage = MessageToPlugin<'loaded'> & {
   model: unknown
   isModalOpen: boolean
   releases: Release[]
+  releaseId: number | undefined
 }
 
 // TODO full implementation of validation

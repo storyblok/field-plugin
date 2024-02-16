@@ -72,6 +72,7 @@ describe('createPluginActions', () => {
         spaceId: null,
         blockId: undefined,
         releases: [],
+        releaseId: undefined,
       })
       expect(onUpdateState).toHaveBeenCalledWith(
         expect.objectContaining({

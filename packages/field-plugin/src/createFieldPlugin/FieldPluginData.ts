@@ -16,6 +16,7 @@ export type FieldPluginData<Content> = {
   token: string | undefined
   uid: string
   releases: Release[]
+  releaseId: number | undefined
 }
 
 export type Release = {

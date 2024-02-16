@@ -15,6 +15,7 @@ const stub: LoadedMessage = {
   interfaceLanguage: 'en',
   schema: { options: [], field_type: 'blah' },
   releases: [],
+  releaseId: undefined,
 }
 
 describe('StateChangedMessage', () => {

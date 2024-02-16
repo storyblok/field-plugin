@@ -22,6 +22,7 @@ export type StateChangedMessage = MessageToPlugin<'state-changed'> & {
   model: unknown
   isModalOpen: boolean
   releases: Release[]
+  releaseId: number | undefined
 }
 
 // TODO full implementation of validation

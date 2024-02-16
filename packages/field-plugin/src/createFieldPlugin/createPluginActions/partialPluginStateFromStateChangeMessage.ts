@@ -33,5 +33,6 @@ export const pluginStateFromStateChangeMessage = <Content>(
     content: validateResult.content,
     isModalOpen: message.isModalOpen,
     releases: message.releases,
+    releaseId: message.releaseId,
   }
 }

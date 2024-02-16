@@ -65,6 +65,7 @@ describe('handlePluginMessage', () => {
       token: 'rfwreff2435wewff43',
       isModalOpen: false,
       releases: [],
+      releaseId: undefined,
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)
