@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@storyblok/field-plugin": "workspace:*",
-    "prettier": "3.0.0",
+    "prettier": "2.8.8",
     "vue": "^3.3.4"
   },
   "devDependencies": {
@@ -16,6 +16,6 @@
     "@typescript-eslint/parser": "latest",
     "eslint": "latest",
     "eslint-plugin-vue": "latest",
-    "typescript": "^5.0.2"
+    "typescript": "^4.9.5"
   }
 }
