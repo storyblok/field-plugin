@@ -2,6 +2,7 @@ import { FieldPluginSchema, isFieldPluginSchema } from './FieldPluginSchema'
 import { hasKey } from '../../../utils'
 import { isMessageToPlugin, MessageToPlugin } from './MessageToPlugin'
 import { isStoryData, StoryData } from './StoryData'
+import { Release } from '../../../createFieldPlugin/FieldPluginData'
 
 /**
  * The message that the field type wrapper (parent) sends to the
@@ -10,6 +11,7 @@ import { isStoryData, StoryData } from './StoryData'
 export type LoadedMessage = MessageToPlugin<'loaded'> & {
   // If no language is available, for example via the field plugin editor, the language will be an empty string `""`
   language: string
+  interfaceLanguage: string
   spaceId: number | null
   story: StoryData
   storyId: number | undefined
@@ -19,6 +21,8 @@ export type LoadedMessage = MessageToPlugin<'loaded'> & {
   schema: FieldPluginSchema
   model: unknown
   isModalOpen: boolean
+  releases: Release[]
+  releaseId: number | undefined
 }
 
 // TODO full implementation of validation

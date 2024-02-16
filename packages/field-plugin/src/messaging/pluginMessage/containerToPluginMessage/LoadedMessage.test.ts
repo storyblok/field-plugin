@@ -12,7 +12,10 @@ const stub: LoadedMessage = {
   blockId: undefined,
   story: { content: {} },
   language: '',
+  interfaceLanguage: 'en',
   schema: { options: [], field_type: 'blah' },
+  releases: [],
+  releaseId: undefined,
 }
 
 describe('StateChangedMessage', () => {
