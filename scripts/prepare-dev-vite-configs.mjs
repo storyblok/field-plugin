@@ -28,7 +28,9 @@ const templates = (await fs.readdir('packages/cli/templates', { withFileTypes: t
 // eslint-disable-next-line functional/no-loop-statement
 for (const template of templates) {
   const templatePath = `packages/cli/templates/${template}`
-  const newConfigPath = `${templatePath}/node_modules/.${template}-vite.config.ts`
+  const newConfigDir = `${templatePath}/node_modules`
+  const newConfigPath = `${newConfigDir}/.${template}-vite.config.ts`
+  await $`mkdir -p ${newConfigDir}`
   await $`cp ${templatePath}/vite.config.ts ${newConfigPath}`
 
   // eslint-disable-next-line functional/no-let
