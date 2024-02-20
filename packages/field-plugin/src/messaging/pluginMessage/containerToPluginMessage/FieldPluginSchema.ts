@@ -6,6 +6,7 @@ import { hasKey } from '../../../utils'
 export type FieldPluginSchema = {
   field_type: string
   options: FieldPluginOption[]
+  translatable: boolean
 }
 
 export type FieldPluginOption = { name: string; value: string }
@@ -21,4 +22,6 @@ export const isFieldPluginSchema = (it: unknown): it is FieldPluginSchema =>
   typeof it.field_type === 'string' &&
   hasKey(it, 'options') &&
   Array.isArray(it.options) &&
-  it.options.every(isFieldPluginOption)
+  it.options.every(isFieldPluginOption) &&
+  hasKey(it, 'translatable') &&
+  typeof it.translatable === 'boolean'

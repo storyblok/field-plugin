@@ -29,6 +29,7 @@ export const pluginStateFromStateChangeMessage = <Content>(
     blockUid: message.blockId ?? undefined,
     token: message.token ?? undefined,
     options: recordFromFieldPluginOptions(message.schema.options),
+    translatable: message.schema.translatable ?? false,
     uid: message.uid ?? undefined,
     content: validateResult.content,
     isModalOpen: message.isModalOpen,
