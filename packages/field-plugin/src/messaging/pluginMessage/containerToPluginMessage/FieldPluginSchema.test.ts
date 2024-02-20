@@ -127,6 +127,7 @@ describe('field plugin schema', () => {
         isFieldPluginSchema({
           field_type: 'field-type-name',
           options: [],
+          translatable: false,
         }),
       ).toEqual(true)
       expect(
@@ -140,6 +141,7 @@ describe('field plugin schema', () => {
         isFieldPluginSchema({
           field_type: 'field-type-name',
           options: [],
+          translatable: false,
         }),
       ).toEqual(true)
       expect(
@@ -184,6 +186,7 @@ describe('field plugin schema', () => {
         isFieldPluginSchema({
           field_type: 'field-type-name',
           options: [],
+          translatable: false,
         }),
       ).toEqual(true)
       expect(
@@ -197,6 +200,7 @@ describe('field plugin schema', () => {
         isFieldPluginSchema({
           field_type: 'field-type-name',
           options: [],
+          translatable: false,
         }),
       ).toEqual(true)
       expect(
@@ -245,6 +249,7 @@ describe('field plugin schema', () => {
         isFieldPluginSchema({
           field_type: 'name',
           options: [option],
+          translatable: false,
         }),
       ).toEqual(true)
       expect(

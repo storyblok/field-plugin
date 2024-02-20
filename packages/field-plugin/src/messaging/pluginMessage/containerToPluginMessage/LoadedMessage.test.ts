@@ -13,7 +13,7 @@ const stub: LoadedMessage = {
   story: { content: {} },
   language: '',
   interfaceLanguage: 'en',
-  schema: { options: [], field_type: 'blah' },
+  schema: { options: [], field_type: 'blah', translatable: false },
   releases: [],
   releaseId: undefined,
 }
@@ -122,6 +122,7 @@ describe('StateChangedMessage', () => {
                 value: 'ab',
               },
             ],
+            translatable: false,
           } as FieldPluginSchema,
         }),
       ).toEqual(true)

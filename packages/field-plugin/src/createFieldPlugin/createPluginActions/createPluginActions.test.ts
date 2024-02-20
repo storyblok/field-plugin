@@ -65,7 +65,7 @@ describe('createPluginActions', () => {
         story: { content: {} },
         storyId: 123,
         token: null,
-        schema: { options: [], field_type: 'abc' },
+        schema: { options: [], field_type: 'abc', translatable: false },
         language: '',
         interfaceLanguage: 'en',
         model: randomString,
