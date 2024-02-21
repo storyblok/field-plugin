@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "@storyblok/field-plugin": "workspace:*",
-    "vitest": "1.2.2"
+    "vitest": "1.3.1"
   }
 }
