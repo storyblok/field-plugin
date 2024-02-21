@@ -50,23 +50,14 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
 
   const storyblokClient = StoryblokClient({ token, scope })
 
+  console.log(bold(cyan('[info] Checking existing field plugins...')))
+
   const allFieldPlugins = await storyblokClient.fetchAllFieldTypes()
   const fieldPluginFound = allFieldPlugins.find(
     (fieldPlugin) => fieldPlugin.name === packageName,
   )
 
-  if (!fieldPluginFound) {
-    const fieldPlugin = await createFieldPlugin(
-      storyblokClient,
-      packageName,
-      output,
-      manifest?.options,
-      dir,
-      allFieldPlugins,
-    )
-
-    return { id: fieldPlugin.id }
-  } else {
+  if (fieldPluginFound) {
     const mode = skipPrompts ? 'update' : await selectUpsertMode()
 
     if (mode === 'create') {
@@ -97,6 +88,27 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
 
     return { id: fieldPluginFound.id }
   }
+
+  // create flow
+  const create = skipPrompts
+    ? true
+    : await confirmCreatingFieldPlugin(packageName)
+
+  if (!create) {
+    console.log(cyan(bold('[info]')), 'Not creating a new field plugin.')
+    process.exit(1)
+  }
+
+  const fieldPlugin = await createFieldPlugin(
+    storyblokClient,
+    packageName,
+    output,
+    manifest?.options,
+    dir,
+    allFieldPlugins,
+  )
+
+  return { id: fieldPlugin.id }
 }
 
 export const getPackageName: GetPackageName = async ({
@@ -166,6 +178,16 @@ export const selectUpsertMode = async () => {
   ])
 
   return mode
+}
+
+export const confirmCreatingFieldPlugin = async (name: string) => {
+  const { create } = await betterPrompts<{ create: boolean }>({
+    type: 'confirm',
+    name: 'create',
+    message: `You want to deploy a new field plugin \`${name}\`?`,
+    initial: true,
+  })
+  return create
 }
 
 export const confirmUpdatingNameInPackageJson = async () => {
@@ -323,13 +345,9 @@ export const isOutputValid = (output?: string): output is string =>
 
 export const loadManifest = (): Manifest | undefined => {
   try {
-    const manifest = load()
+    console.log(bold(cyan('[info] Looking for a manifest file...')))
 
-    if (manifest !== undefined) {
-      console.log(bold(cyan('[info] Manifest file loaded')))
-    }
-
-    return manifest
+    return load()
   } catch (err) {
     console.log(bold(red('[ERROR]')), `Error while loading the manifest file`)
     console.log(`path: ${MANIFEST_FILE_NAME}`)
@@ -356,8 +374,10 @@ export const createFieldPlugin = async (
       body: content,
     })
 
-    //Dummy update just to pass the options and `publish` true
-    //right after its creation since both are not accept during creation time
+    //since `options` and `publish` properties are only accepted during updates,
+    //we need to force an update call right after the creation.
+    //If no options is found, it's not going to be sent to the API since undefined
+    //properties are not encoded.
     await client.updateFieldType({
       id: fieldPlugin.id,
       publish: true,
@@ -377,9 +397,9 @@ export const createFieldPlugin = async (
       throw err
     }
 
-    const isRenameConfirmed = await confirmNewName(name)
+    const isRenamingConfirmed = await confirmNewName(name)
 
-    if (!isRenameConfirmed) {
+    if (!isRenamingConfirmed) {
       console.log(cyan(bold('[info]')), 'Aborting the deployment')
       process.exit(1)
     }
