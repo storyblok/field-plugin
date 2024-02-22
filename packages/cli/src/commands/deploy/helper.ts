@@ -68,6 +68,7 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
         manifest?.options,
         dir,
         allFieldPlugins,
+        skipPrompts,
       )
 
       return { id: fieldPlugin.id }
@@ -106,6 +107,7 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
     manifest?.options,
     dir,
     allFieldPlugins,
+    skipPrompts,
   )
 
   return { id: fieldPlugin.id }
@@ -364,6 +366,7 @@ export const createFieldPlugin = async (
   options: ManifestOption[] | undefined,
   dir: string,
   allFieldPlugins: FieldType[],
+  skipPrompts: boolean,
 ): Promise<FieldType> => {
   const name =
     packageName !== '' ? packageName : await promptNewName(allFieldPlugins)
@@ -392,7 +395,7 @@ export const createFieldPlugin = async (
 
     return fieldPlugin
   } catch (err) {
-    if (getErrorMessage(err) !== 'DUPLICATED_NAME') {
+    if (skipPrompts || getErrorMessage(err) !== 'DUPLICATED_NAME') {
       // eslint-disable-next-line functional/no-throw-statement
       throw err
     }
@@ -411,6 +414,7 @@ export const createFieldPlugin = async (
       options,
       dir,
       allFieldPlugins,
+      skipPrompts,
     )
   }
 }
