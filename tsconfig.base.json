@@ -24,8 +24,7 @@
     "noImplicitThis": true,
     "noPropertyAccessFromIndexSignature": true,
     "useUnknownInCatchVariables": true,
-    "allowJs": false,
-    "skipLibCheck": true
+    "allowJs": false
   },
   "exclude": [
     "node_modules",
