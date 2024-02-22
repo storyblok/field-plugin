@@ -1,4 +1,5 @@
 import {
+  FieldPluginSchema,
   isAssetModalChangeMessage,
   isGetContextMessage,
   isHeightChangeMessage,
@@ -12,9 +13,10 @@ import { vi } from 'vitest'
 const sandboxOrigin: string = 'https://plugin-sandbox.storyblok.com'
 
 const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
-  const schema = {
+  const schema: FieldPluginSchema = {
     field_type: 'test-field-plugin',
     options: [],
+    translatable: false,
   }
   // @ts-ignore `height` is not used anywhere, but we keep it here.
   let height = undefined
