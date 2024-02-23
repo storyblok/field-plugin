@@ -15,6 +15,7 @@ export type FieldPluginData<Content> = {
   blockUid: string | undefined
   token: string | undefined
   uid: string
+  translatable: boolean
   releases: Release[]
   releaseId: number | undefined
 }

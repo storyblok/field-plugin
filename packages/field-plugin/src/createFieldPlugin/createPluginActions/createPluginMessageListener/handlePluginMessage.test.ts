@@ -60,7 +60,7 @@ describe('handlePluginMessage', () => {
       model: 123,
       spaceId: 1234,
       story: { content: {} },
-      schema: { options: [], field_type: 'avh' },
+      schema: { options: [], field_type: 'avh', translatable: false },
       storyId: 1344,
       token: 'rfwreff2435wewff43',
       isModalOpen: false,
