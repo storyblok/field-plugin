@@ -52,8 +52,8 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
 
   console.log(bold(cyan('[info] Checking existing field plugins...')))
 
-  const allFieldPlugins = await storyblokClient.fetchAllFieldTypes()
-  const fieldPluginFound = allFieldPlugins.find(
+  const scopeFieldPlugins = await storyblokClient.fetchAllFieldTypes()
+  const fieldPluginFound = scopeFieldPlugins.find(
     (fieldPlugin) => fieldPlugin.name === packageName,
   )
 
@@ -67,7 +67,7 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
         output,
         manifest?.options,
         dir,
-        allFieldPlugins,
+        scopeFieldPlugins,
         skipPrompts,
       )
 
@@ -106,7 +106,7 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
     output,
     manifest?.options,
     dir,
-    allFieldPlugins,
+    scopeFieldPlugins,
     skipPrompts,
   )
 
@@ -212,7 +212,7 @@ export const confirmNewName = async (currentName: string) => {
   return rename
 }
 
-export const promptNewName = async (allFieldPlugins: FieldType[]) => {
+export const promptNewName = async (scopeFieldPlugins: FieldType[]) => {
   const { name } = await betterPrompts<{ name: string }>({
     type: 'text',
     name: 'name',
@@ -222,7 +222,7 @@ export const promptNewName = async (allFieldPlugins: FieldType[]) => {
         return false
       }
 
-      return allFieldPlugins.every((plugin) => plugin.name !== name)
+      return scopeFieldPlugins.every((plugin) => plugin.name !== name)
     },
   })
   return name
@@ -365,11 +365,11 @@ export const createFieldPlugin = async (
   content: string,
   options: ManifestOption[] | undefined,
   dir: string,
-  allFieldPlugins: FieldType[],
-  skipPrompts: boolean,
+  scopeFieldPlugins: FieldType[],
+  skipPrompts?: boolean,
 ): Promise<FieldType> => {
   const name =
-    packageName !== '' ? packageName : await promptNewName(allFieldPlugins)
+    packageName !== '' ? packageName : await promptNewName(scopeFieldPlugins)
 
   try {
     const fieldPlugin = await client.createFieldType({
@@ -413,7 +413,7 @@ export const createFieldPlugin = async (
       content,
       options,
       dir,
-      allFieldPlugins,
+      scopeFieldPlugins,
       skipPrompts,
     )
   }
