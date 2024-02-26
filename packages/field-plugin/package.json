@@ -44,7 +44,7 @@
     "build:helpers": "cd helpers && unbuild"
   },
   "devDependencies": {
-    "@types/core-js": "2.5.5",
+    "@types/core-js": "2.5.8",
     "@types/jest": "29.5.12",
     "@types/node": "*",
     "core-js": "3.36.0",
