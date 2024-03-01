@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 
 export const useFieldPlugin = <Content>({
   validateContent,
+  allowAllOrigins,
 }: Omit<
   CreateFieldPluginOptions<Content>,
   'onUpdateState'
@@ -32,6 +33,7 @@ export const useFieldPlugin = <Content>({
         }
       },
       validateContent,
+      allowAllOrigins,
     })
   }, [])
 

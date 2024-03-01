@@ -10,6 +10,7 @@ import { isCloneable } from '../utils/isCloneable'
 export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
   validateContent?: ValidateContent<Content>
+  allowAllOrigins?: boolean
 }
 
 export type CreateFieldPlugin = <Content = unknown>(
@@ -22,6 +23,7 @@ export type CreateFieldPlugin = <Content = unknown>(
 export const createFieldPlugin: CreateFieldPlugin = ({
   onUpdateState,
   validateContent,
+  allowAllOrigins = false,
 }) => {
   const isEmbedded = window.parent !== window
 
@@ -49,9 +51,11 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const { uid, host } = params
   const origin =
-    host === 'plugin-sandbox.storyblok.com'
-      ? 'https://plugin-sandbox.storyblok.com'
-      : 'https://app.storyblok.com'
+    allowAllOrigins === true
+      ? '*'
+      : host === 'plugin-sandbox.storyblok.com'
+        ? 'https://plugin-sandbox.storyblok.com'
+        : 'https://app.storyblok.com'
 
   const postToContainer = (message: unknown) => {
     try {
@@ -104,6 +108,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
     origin,
+    allowAllOrigins,
     messageCallbacks,
   )
 
