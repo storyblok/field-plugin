@@ -6,7 +6,7 @@ import {
   NotificationProvider,
 } from '@storyblok/mui'
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import { FieldPluginContainer } from './FieldPluginContainer'
+import { FieldPluginSandbox } from './FieldPluginSandbox'
 import { SandboxAppHeader } from './SandboxAppHeader'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6'
@@ -29,7 +29,7 @@ export const App: FunctionComponent = () => (
                 <AppContainer>
                   <SandboxAppHeader />
                   <AppContent>
-                    <FieldPluginContainer />
+                    <FieldPluginSandbox />
                   </AppContent>
                 </AppContainer>
               }
