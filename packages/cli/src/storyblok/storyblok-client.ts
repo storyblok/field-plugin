@@ -97,7 +97,7 @@ export const StoryblokClient: StoryblokClientFunc = ({ token, scope }) => {
     const fetch = (await import('node-fetch')).default
     const response = await fetch(`${FIELD_TYPES_API_ENDPOINT}${id}`, {
       method: 'PUT',
-      headers: headers,
+      headers,
       body: JSON.stringify({
         field_type,
         publish,
@@ -135,31 +135,37 @@ const handleErrorIfExists = (
   response: Response,
   json: { error?: string } & Record<string, unknown>,
 ) => {
-  if (!response.ok) {
-    console.log(red('[ERROR]'))
-    console.log(`  > status: ${response.status}`)
-    console.log(`  > statusText: ${response.statusText}`)
-    console.log('')
-    console.log(JSON.stringify(json, null, 2))
-    process.exit(1)
+  if (response.ok) {
+    return
   }
 
-  if (typeof json.error !== 'undefined' && json.error !== null) {
-    if (json.error === 'Unauthorized') {
-      console.log(
-        red('[ERROR]'),
-        'Token to access Storyblok is undefined or invalid.',
-      )
-      console.log(
-        'Please provide a valid --token option value or STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable',
-      )
-    } else {
-      console.log(red('[ERROR]'), 'Failed to fetch field types.')
-      console.log(`  > ${json.error}`)
-    }
-    process.exit(1)
+  if (isDuplicatedNameError(json)) {
+    // eslint-disable-next-line functional/no-throw-statement
+    throw new Error('DUPLICATED_NAME')
   }
+
+  console.log(red('[ERROR]'))
+  console.log(`  > status: ${response.status}`)
+  console.log(`  > statusText: ${response.statusText}`)
+
+  if (response.status === 401) {
+    console.log(
+      '  > message: Token to access Storyblok is undefined or invalid.',
+    )
+
+    console.log(
+      '  > message: Please provide a valid --token option value or STORYBLOK_PERSONAL_ACCESS_TOKEN as an environmental variable',
+    )
+  }
+
+  console.log(' ')
+  console.log(JSON.stringify(json, null, 2))
+
+  process.exit(1)
 }
+
+const isDuplicatedNameError = (json: Record<string, unknown>) =>
+  Array.isArray(json['name']) && json['name'].includes('has already been taken')
 
 const getFieldPluginAPIEndpoint = (scope: Scope) => {
   if (scope === 'partner-portal') {
