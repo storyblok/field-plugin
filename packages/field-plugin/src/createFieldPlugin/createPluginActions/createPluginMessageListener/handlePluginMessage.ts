@@ -17,7 +17,7 @@ export const handlePluginMessage = (
     return
   }
 
-  // TODO check origin https://app.storyblok.com/ in production mode, * in dev mode
+  // TODO check origin https://plugins.storyblok.com/ in production mode, * in dev mode
 
   if (data.uid !== uid) {
     // Not intended for this field plugin
