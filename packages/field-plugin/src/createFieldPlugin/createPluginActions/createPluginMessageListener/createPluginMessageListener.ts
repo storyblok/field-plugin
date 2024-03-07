@@ -35,6 +35,7 @@ export const createPluginMessageListener: CreatePluginMessageListener = (
       handlePluginMessage(event.data, uid, callbacks)
     }
   }
+
   window.addEventListener('message', handleEvent, false)
 
   return () => {
