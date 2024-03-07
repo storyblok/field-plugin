@@ -23,6 +23,7 @@ const updateObjectWithoutChangingReference = (
 
 export const useFieldPlugin = <Content>({
   validateContent,
+  allowAllOrigins,
 }: Omit<CreateFieldPluginOptions<Content>, 'onUpdateState'> = {}): UnwrapRef<
   FieldPluginResponse<Content>
 > => {
@@ -89,6 +90,7 @@ export const useFieldPlugin = <Content>({
         }
       },
       validateContent,
+      allowAllOrigins,
     })
   })
 
