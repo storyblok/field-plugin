@@ -52,6 +52,7 @@ import { ObjectView } from './ObjectView'
 import { UrlView } from './UrlView'
 import { usePluginParams } from './usePluginParams'
 import { LanguageView } from './LanguageView'
+import { TranslatableCheckbox } from './TranslatableCheckbox'
 
 const defaultUrl = 'http://localhost:8080'
 const initialStory: StoryData = {
@@ -111,15 +112,17 @@ const useSandbox = (
   const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
     options: manifest.options,
+    translatable: false,
   })
   const [content, setContent] = useState<unknown>(initialContent)
-  const [language, setLanguage] = useState<string>('')
+  const [language, setLanguage] = useState<string>('default')
   const [stateChangedCallbackId, setStateChangedCallbackId] = useState<string>()
 
   const stateChangedData = useMemo<StateChangedMessage>(
     () => ({
       model: content,
       schema: schema,
+      interfaceLanguage: 'en',
       action: 'state-changed',
       uid,
       blockId: undefined,
@@ -130,6 +133,8 @@ const useSandbox = (
       token: null,
       isModalOpen,
       callbackId: stateChangedCallbackId,
+      releases: [],
+      releaseId: undefined,
     }),
     [
       uid,
@@ -371,13 +376,29 @@ export const FieldPluginContainer: FunctionComponent = () => {
       </Accordion>
       <Accordion defaultExpanded>
         <AccordionSummary>
-          <Typography variant="h3">Options</Typography>
+          <Typography variant="h3">Settings</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <SchemaEditor
-            schema={schema}
-            setSchema={setSchema}
-          />
+          <Stack
+            width="xs"
+            gap={5}
+          >
+            <SchemaEditor
+              schema={schema}
+              setSchema={setSchema}
+            />
+            <TranslatableCheckbox
+              isTranslatable={schema.translatable}
+              setTranslatable={(e) => setSchema({ ...schema, translatable: e })}
+            />
+            <LanguageView
+              sx={{
+                alignSelf: 'flex-start',
+              }}
+              language={language}
+              setLanguage={setLanguage}
+            />
+          </Stack>
         </AccordionDetails>
       </Accordion>
       <Accordion defaultExpanded>
@@ -392,13 +413,6 @@ export const FieldPluginContainer: FunctionComponent = () => {
             <ContentView
               content={content}
               setContent={setContent}
-            />
-            <LanguageView
-              sx={{
-                alignSelf: 'flex-start',
-              }}
-              language={language}
-              setLanguage={setLanguage}
             />
           </Stack>
         </AccordionDetails>
@@ -418,6 +432,8 @@ export const FieldPluginContainer: FunctionComponent = () => {
               {
                 content,
                 isModalOpen,
+                translatable: schema.translatable,
+                storyLang: language,
                 options: recordFromFieldPluginOptions(schema.options),
               } satisfies Partial<FieldPluginData<unknown>>
             }
