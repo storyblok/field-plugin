@@ -2028,14 +2028,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@npm:1.0.2, @storyblok/field-plugin@npm:latest":
-  version: 1.0.2
-  resolution: "@storyblok/field-plugin@npm:1.0.2"
-  checksum: 46f35acdd927abb9f063d9306932b6e14c7285d1dcec646a7a3d23d474f53018297bbd6bd85d1bd04dbc5bdf12d3d9647408a621b7f327a0e83295533b2511ee
-  languageName: node
-  linkType: hard
-
-"@storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@1.1.0, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
@@ -2053,6 +2046,13 @@ __metadata:
     vite-plugin-dts: "*"
   languageName: unknown
   linkType: soft
+
+"@storyblok/field-plugin@npm:latest":
+  version: 1.0.2
+  resolution: "@storyblok/field-plugin@npm:1.0.2"
+  checksum: 46f35acdd927abb9f063d9306932b6e14c7285d1dcec646a7a3d23d474f53018297bbd6bd85d1bd04dbc5bdf12d3d9647408a621b7f327a0e83295533b2511ee
+  languageName: node
+  linkType: hard
 
 "@storyblok/manifest-helper@workspace:packages/manifest-helper":
   version: 0.0.0-use.local
@@ -5679,7 +5679,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-js-template@workspace:packages/cli/templates/js"
   dependencies:
-    "@storyblok/field-plugin": 1.0.2
+    "@storyblok/field-plugin": 1.1.0
     eslint: latest
     vite: ^5.1.3
     vite-plugin-css-injected-by-js: 2.4.0
@@ -5705,7 +5705,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-react-template@workspace:packages/cli/templates/react"
   dependencies:
-    "@storyblok/field-plugin": 1.0.2
+    "@storyblok/field-plugin": 1.1.0
     "@testing-library/jest-dom": 6.4.2
     "@testing-library/react": 14.2.1
     "@testing-library/user-event": 14.5.2
@@ -5733,7 +5733,7 @@ __metadata:
   dependencies:
     "@rollup/plugin-node-resolve": 15.2.3
     "@rollup/plugin-replace": 5.0.5
-    "@storyblok/field-plugin": 1.0.2
+    "@storyblok/field-plugin": 1.1.0
     "@vitejs/plugin-vue2": 2.3.1
     rollup: 3.29.4
     typescript: 5.3.3
@@ -5747,7 +5747,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-vue3-template@workspace:packages/cli/templates/vue3"
   dependencies:
-    "@storyblok/field-plugin": 1.0.2
+    "@storyblok/field-plugin": 1.1.0
     "@testing-library/jest-dom": 6.4.2
     "@testing-library/user-event": 14.5.2
     "@testing-library/vue": 8.0.2
