@@ -24,7 +24,7 @@ This repository is a monorepo that includes multiple packages. We use Yarn Works
 
 - Library (`packages/field-plugin`): This is the core library. It exports the `createFieldPlugin()` function, which sends and receives events between Storyblok's Visual Editor and your Field Plugin.
 - Demo (`packages/demo`): This is a demo Field Plugin that covers the basic functionalities of the Field Plugin SDK.
-- Container (`packages/container`): In production, a Field Plugin is hosted within Storyblok's Visual Editor, and they exchange events. Similarly, our demo Field Plugin needs an environment like the Visual Editor. That's what Container is - a simulated environment to test your Field Plugin.
+- Sandbox (`packages/sandbox`): In production, a Field Plugin is hosted within Storyblok's Visual Editor, and they exchange events. Similarly, our demo Field Plugin needs an environment like the Visual Editor. That's what the Sandbox is - a simulated container environment to test your Field Plugin.
 - CLI (`packages/cli`): This is a CLI package that helps you create and deploy Field Plugins. It can be accessed with `npx @storyblok/field-plugin@beta`.
 - Templates (`packages/cli/templates/*`): We maintain templates to create Field Plugin in React, Vue 3, Vue 2, and plain JavaScript.
 - Helpers (`packages/helper-*`): While `createFieldPlugin` from `@storyblok/field-plugin` is framework-agnostic, we provide framework-specific helpers such as the `useFieldPlugin` hook. These helpers are not released independently to NPM, but are included within the library and accessible as a submodule, for example, `import { useFieldPlugin } from '@storyblok/field-plugin/react'`.
@@ -75,15 +75,15 @@ At the root of this repository, run the following command to run unit tests:
 yarn test:lib
 ```
 
-#### Test with demo and Container
+#### Test with demo and Sandbox
 
 To test the library with a demo, you need to run three commands in parallel:
 
 - `yarn dev:lib`: Watches file changes in the library and updates the bundle output.
 - `yarn dev:demo`: Runs the demo Field Plugin located at `packages/demo`. Update it to test changes to the library.
-- `yarn dev:container`: Runs Container locally.
+- `yarn dev:sandbox`: Runs the Sandbox locally.
 
-Run all the commands in three separate terminals, then open the Container at `http://localhost:7070/`. This Container hosts the demo Field Plugin. Whenever you change a file in the library, the bundle output updates automatically and the demo app does Hot-Module Replacement (HMR). You can then seamlessly test it in the Container.
+Run all the commands in three separate terminals, then open the Sandbox at `http://localhost:7070/`. This Container hosts the demo Field Plugin. Whenever you change a file in the library, the bundle output updates automatically and the demo app does Hot-Module Replacement (HMR). You can then seamlessly test it in the running Sandbox application.
 
 ### CLI
 

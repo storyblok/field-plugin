@@ -14,7 +14,7 @@ import {
   ValueChangeMessage,
 } from '@storyblok/field-plugin'
 
-type ContainerActions = {
+type SandboxActions = {
   setHeight: (message: HeightChangeMessage) => void
   setContent: (message: ValueChangeMessage) => void
   setModalOpen: (message: ModalChangeMessage) => void
@@ -23,8 +23,8 @@ type ContainerActions = {
   selectAsset: (message: AssetModalChangeMessage) => void
 }
 
-export type CreateContainerListener = (
-  eventHandlers: ContainerActions,
+export type CreateSandboxListener = (
+  eventHandlers: SandboxActions,
   options: {
     window: Window
     iframeOrigin: string | undefined
@@ -32,7 +32,7 @@ export type CreateContainerListener = (
   },
 ) => () => void
 
-export const createContainerMessageListener: CreateContainerListener = (
+export const createSandboxMessageListener: CreateSandboxListener = (
   eventHandlers,
   options,
 ) => {
@@ -62,7 +62,7 @@ export const createContainerMessageListener: CreateContainerListener = (
       eventHandlers.requestContext(message)
     } else {
       console.warn(
-        `Container received unknown message from plugin: ${JSON.stringify(
+        `The Sandbox received unknown message from plugin: ${JSON.stringify(
           message,
         )}`,
       )

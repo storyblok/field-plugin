@@ -39,7 +39,7 @@ import {
 import { CenteredContent, useNotifications } from '@storyblok/mui'
 import { SchemaEditor } from './SchemaEditor'
 import { FieldTypePreview } from './FieldTypePreview'
-import { createContainerMessageListener } from '../dom/createContainerMessageListener'
+import { createSandboxMessageListener } from '../dom/createSandboxMessageListener'
 import { useDebounce } from 'use-debounce'
 import { ContentView } from './ContentView'
 import {
@@ -259,7 +259,7 @@ const useSandbox = (
 
   useEffect(
     () =>
-      createContainerMessageListener(
+      createSandboxMessageListener(
         {
           setContent: onUpdate,
           setPluginReady: onLoaded,
@@ -311,7 +311,7 @@ const useSandbox = (
   ] as const
 }
 
-export const FieldPluginContainer: FunctionComponent = () => {
+export const FieldPluginSandbox: FunctionComponent = () => {
   const { error } = useNotifications()
   const [
     {

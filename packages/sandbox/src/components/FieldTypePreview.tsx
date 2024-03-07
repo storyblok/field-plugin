@@ -36,7 +36,7 @@ const FieldTypeModal: FunctionComponent<
   </Box>
 )
 
-const FieldTypeContainer: FunctionComponent<
+const FieldTypeSandbox: FunctionComponent<
   PropsWithChildren<{
     isModal: boolean
   }>
@@ -89,7 +89,7 @@ export const FieldTypePreview = forwardRef<
         sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
       />
       <FieldTypeModal isModal={props.isModal}>
-        <FieldTypeContainer isModal={props.isModal}>
+        <FieldTypeSandbox isModal={props.isModal}>
           {typeof props.src !== 'undefined' ? (
             <Box
               ref={ref}
@@ -115,7 +115,7 @@ export const FieldTypePreview = forwardRef<
               <Typography>Please enter a valid URL.</Typography>
             </Alert>
           )}
-        </FieldTypeContainer>
+        </FieldTypeSandbox>
       </FieldTypeModal>
     </Box>
   )

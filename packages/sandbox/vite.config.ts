@@ -18,14 +18,14 @@ export default defineConfig({
       process.env.NODE_ENV === 'production'
         ? []
         : [
-          {
-            find: /^@storyblok\/field-plugin$/,
-            replacement: path.resolve(
-              __dirname,
-              '../field-plugin/src/index.ts',
-            ),
-          },
-        ],
+            {
+              find: /^@storyblok\/field-plugin$/,
+              replacement: path.resolve(
+                __dirname,
+                '../field-plugin/src/index.ts',
+              ),
+            },
+          ],
   },
   server: {
     port: 7070,
