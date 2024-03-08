@@ -2,7 +2,7 @@ import { Checkbox, FormControl, FormLabel } from '@mui/material'
 import { FunctionComponent } from 'react'
 
 export const TranslatableCheckbox: FunctionComponent<{
-  isTranslatable: boolean
+  isTranslatable: boolean | undefined
   setTranslatable: (value: boolean) => void
 }> = (props) => {
   return (
@@ -13,7 +13,7 @@ export const TranslatableCheckbox: FunctionComponent<{
           alignSelf: 'flex-start',
         }}
         aria-describedby="translatable-checkbox"
-        value={props.isTranslatable}
+        value={props.isTranslatable ?? false}
         onChange={(e) => props.setTranslatable(e.target.checked)}
       />
     </FormControl>
