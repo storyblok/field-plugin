@@ -16,6 +16,6 @@
     "@typescript-eslint/parser": "latest",
     "eslint": "latest",
     "eslint-plugin-vue": "latest",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   }
 }
