@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
+import { isEmpty, isOptionObject, isString } from './validation/manifest.ts'
 
 export const MANIFEST_FILE_NAME = 'field-plugin.config.json'
 export const MANIFEST_FULL_PATH = resolve(process.cwd(), MANIFEST_FILE_NAME)
@@ -48,12 +49,40 @@ const validateSchema = (manifest: Manifest): void => {
     throw new Error(`When declared, the 'options' property should be an array`)
   }
 
-  manifest.options?.forEach((option) => {
-    if (!('name' in option && 'value' in option)) {
-      throw new Error(
-        `Some of the defined 'options' are invalid. ` +
-          `Please, make sure they contain a 'name' and 'value' properties`,
+  validateOptions(manifest.options)
+  return
+}
+
+const validateOptions = (options: unknown[]): void => {
+  const incorrectValues: string[] = []
+
+  for (const option of options) {
+    if (!isOptionObject(option)) {
+      incorrectValues.push(
+        `${JSON.stringify(option)} --> Incorrect object value. Must be of type {"name": string, "value": string}.`,
       )
+      continue
     }
-  })
+
+    if (!isString(option.value)) {
+      incorrectValues.push(
+        `${JSON.stringify(option)} --> Incorrect value type. Must be of type string.`,
+      )
+      continue
+    }
+
+    if (isEmpty(option.value)) {
+      incorrectValues.push(
+        `${JSON.stringify(option)} --> Incorrect value. Must not be empty.`,
+      )
+      continue
+    }
+  }
+
+  if (incorrectValues.length > 0) {
+    throw new Error(
+      'ERROR: Each option must be an object with string properties "name" and "value". The following values need to be corrected: \n ' +
+        incorrectValues.join('\n '),
+    )
+  }
 }
