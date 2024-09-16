@@ -3,6 +3,15 @@ import { AssetSelectedMessage } from './AssetSelectedMessage'
 
 export type Asset = {
   filename: string
+  fieldtype: 'asset'
+  name: string
+  meta_data: Record<string, string>
+  title: string
+  copyright: string
+  focus: string
+  alt: string
+  source: string
+  is_private: boolean
 }
 
 export const isAsset = (data: unknown): data is Asset =>
