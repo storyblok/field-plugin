@@ -10,6 +10,15 @@ const stub: AssetSelectedMessage = {
   field: 'dummy-field',
   callbackId: 'test-callback-id',
   filename: 'https://somthing.com/myimage.jpg',
+  fieldtype: 'asset',
+  name: '',
+  meta_data: {},
+  title: '',
+  copyright: '',
+  focus: '',
+  alt: '',
+  source: '',
+  is_private: false,
 }
 
 describe('AssetSelectedMessage', function () {

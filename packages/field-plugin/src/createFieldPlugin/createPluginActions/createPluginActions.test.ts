@@ -231,9 +231,29 @@ describe('createPluginActions', () => {
         field: 'dummy',
         callbackId: TEST_CALLBACK_ID,
         filename,
+        fieldtype: 'asset',
+        name: '',
+        meta_data: {},
+        title: '',
+        copyright: '',
+        focus: '',
+        alt: '',
+        source: '',
+        is_private: false,
       })
       const result = await promise
-      expect(result).toEqual({ filename })
+      expect(result).toEqual({
+        filename,
+        fieldtype: 'asset',
+        name: '',
+        meta_data: {},
+        title: '',
+        copyright: '',
+        focus: '',
+        alt: '',
+        source: '',
+        is_private: false,
+      })
     })
     it('does not call the callack function when callbackId does not match', async () => {
       const WRONG_CALLBACK_ID = TEST_CALLBACK_ID + '_wrong'
@@ -255,6 +275,15 @@ describe('createPluginActions', () => {
         field: 'dummy',
         callbackId: WRONG_CALLBACK_ID,
         filename,
+        fieldtype: 'asset',
+        name: '',
+        meta_data: {},
+        title: '',
+        copyright: '',
+        focus: '',
+        alt: '',
+        source: '',
+        is_private: false,
       })
       const resolvedFn = jest.fn()
       const rejectedFn = jest.fn()

@@ -95,6 +95,15 @@ describe('handlePluginMessage', () => {
       filename: '/my-file.jpg',
       field: 'callback-uid',
       callbackId: 'test-callback-id',
+      fieldtype: 'asset',
+      name: '',
+      meta_data: {},
+      title: '',
+      copyright: '',
+      focus: '',
+      alt: '',
+      source: '',
+      is_private: false,
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)

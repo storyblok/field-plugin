@@ -3,6 +3,15 @@ import { AssetSelectedMessage } from './AssetSelectedMessage'
 
 const stub: Asset = {
   filename: 'https://somthing.com/myimage.jpg',
+  fieldtype: 'asset',
+  name: '',
+  meta_data: {},
+  title: '',
+  copyright: '',
+  focus: '',
+  alt: '',
+  source: '',
+  is_private: false,
 }
 
 const assetSelectedMessage: AssetSelectedMessage = {
@@ -11,6 +20,15 @@ const assetSelectedMessage: AssetSelectedMessage = {
   callbackId: 'test-callback-id',
   action: 'asset-selected',
   filename: 'https://somthing.com/myimage.jpg',
+  fieldtype: 'asset',
+  name: '',
+  meta_data: {},
+  title: '',
+  copyright: '',
+  focus: '',
+  alt: '',
+  source: '',
+  is_private: false,
 }
 
 describe('Asset', function () {
