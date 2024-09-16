@@ -1,5 +1,5 @@
 import * as querystring from 'querystring'
-import { bold, red } from './utils/text'
+import { bold } from './utils/text'
 import { arrows } from './utils/arrows'
 import { load, manifestExists, MANIFEST_FILE_NAME } from './manifest'
 import type { Manifest } from './manifest'
@@ -16,11 +16,11 @@ export const buildQueryString = (params: SandboxQueryParams) => {
     url: params.url,
   }
 
-  if (params.manifest === null) {
-    return querystring.stringify(queryParams)
+  if (params.manifest !== null) {
+    queryParams.manifest = JSON.stringify(params.manifest)
   }
 
-  queryParams.manifest = JSON.stringify(params.manifest)
+  return querystring.stringify(queryParams)
 }
 
 export const generateSandboxUrl = (fieldPluginUrl: string) => {
@@ -58,4 +58,4 @@ const displayManifestChecking = () => {
 }
 
 const displayManifestErrorLoading = (err: Error) =>
-  console.log(`${arrows.red} ${red(`${err.message}`)}`)
+  console.log(`${arrows.red} ${bold(`${err.message}`)}`)
