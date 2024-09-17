@@ -46,7 +46,7 @@ describe('manifest', () => {
     )
 
     expect(() => load()).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Error while loading the manifest file: The 'options' property should be an array]`,
+      `[Error: Error while loading the manifest file: When declared, the 'options' property should be an array]`,
     )
   })
 
@@ -65,7 +65,7 @@ describe('manifest', () => {
     )
 
     expect(() => load()).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Error while loading the manifest file: Some of the defined 'options' are invalid. Please, make sure they contain a 'name' and 'value' properties]`,
+      `[Error: Error while loading the manifest file: Each option must be an object with string properties "name" and "value". The following values need to be corrected: \n {"value":""} --> Incorrect object value. Must be of type {"name": string, "value": string}.]`,
     )
   })
 
@@ -84,7 +84,7 @@ describe('manifest', () => {
     )
 
     expect(() => load()).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Error while loading the manifest file: Some of the defined 'options' are invalid. Please, make sure they contain a 'name' and 'value' properties]`,
+      `[Error: Error while loading the manifest file: Each option must be an object with string properties "name" and "value". The following values need to be corrected: \n {"name":""} --> Incorrect object value. Must be of type {"name": string, "value": string}.]`,
     )
   })
 
