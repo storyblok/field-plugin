@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
-import { isEmpty, isOptionObject, isString } from './validation/manifest.ts'
+import { isOptionObject, isString } from './validation/manifest.ts'
 
 export const MANIFEST_FILE_NAME = 'field-plugin.config.json'
 export const MANIFEST_FULL_PATH = resolve(process.cwd(), MANIFEST_FILE_NAME)
@@ -67,13 +67,6 @@ const validateOptions = (options: unknown[]): void => {
     if (!isString(option.value)) {
       incorrectValues.push(
         `${JSON.stringify(option)} --> Incorrect value type. Must be of type string.`,
-      )
-      continue
-    }
-
-    if (isEmpty(option.value)) {
-      incorrectValues.push(
-        `${JSON.stringify(option)} --> Incorrect value. Must not be empty.`,
       )
       continue
     }
