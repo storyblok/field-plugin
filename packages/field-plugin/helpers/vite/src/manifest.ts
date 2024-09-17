@@ -74,7 +74,7 @@ const validateOptions = (options: unknown[]): void => {
 
   if (incorrectValues.length > 0) {
     throw new Error(
-      'ERROR: Each option must be an object with string properties "name" and "value". The following values need to be corrected: \n ' +
+      'Each option must be an object with string properties "name" and "value". The following values need to be corrected: \n ' +
         incorrectValues.join('\n '),
     )
   }
