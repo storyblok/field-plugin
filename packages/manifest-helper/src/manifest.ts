@@ -48,12 +48,19 @@ const validateSchema = (manifest: Manifest): void => {
     }
   })
 
-  if (manifest.options !== undefined && !Array.isArray(manifest.options)) {
-    throw new Error(`The 'options' property should be an array`)
+  //NOTE: accepted empty options case
+  if (
+    manifest.options === undefined ||
+    Object.keys(manifest.options).length === 0
+  ) {
+    return
+  }
+
+  if (!Array.isArray(manifest.options)) {
+    throw new Error(`When declared, the 'options' property should be an array`)
   }
 
   validateOptions(manifest.options)
-  return
 }
 
 //NOTE: There is a duplicate of this function in the field-plugin/helpers/vite/src/manifest.ts file
