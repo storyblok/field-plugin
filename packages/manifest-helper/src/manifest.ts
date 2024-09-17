@@ -49,10 +49,7 @@ const validateSchema = (manifest: Manifest): void => {
   })
 
   //NOTE: accepted empty options case
-  if (
-    manifest.options === undefined ||
-    Object.keys(manifest.options).length === 0
-  ) {
+  if (manifest.options === undefined) {
     return
   }
 
