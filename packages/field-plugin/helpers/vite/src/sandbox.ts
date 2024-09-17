@@ -1,5 +1,5 @@
 import * as querystring from 'querystring'
-import { bold } from './utils/text'
+import { red, bold } from './utils/text'
 import { arrows } from './utils/arrows'
 import { load, manifestExists, MANIFEST_FILE_NAME } from './manifest'
 import type { Manifest } from './manifest'
@@ -58,4 +58,4 @@ const displayManifestChecking = () => {
 }
 
 const displayManifestErrorLoading = (err: Error) =>
-  console.log(`${arrows.red} ${bold(`${err.message}`)}`)
+  console.log(`${arrows.red} ${red(`${err.message}`)}`)
