@@ -52,6 +52,7 @@ const validateSchema = (manifest: Manifest): void => {
     throw new Error(`The 'options' property should be an array`)
   }
 
+  //TODO: update this to use the new validation functions
   manifest.options?.forEach((option) => {
     if (!('name' in option && 'value' in option)) {
       throw new Error(
