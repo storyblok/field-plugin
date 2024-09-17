@@ -37,7 +37,7 @@ describe('manifest', () => {
     )
   })
 
-  it('should raises an exception when `options` is not an array', () => {
+  it('should raise an exception when `options` is not an array', () => {
     vi.mocked(existsSync).mockReturnValue(true)
     vi.mocked(readFileSync).mockReturnValue(
       JSON.stringify({
@@ -50,7 +50,55 @@ describe('manifest', () => {
     )
   })
 
-  it('should raises an exception when any `options item` has no `name` property', () => {
+  it('should raise an exception when `options` is not an array', () => {
+    vi.mocked(existsSync).mockReturnValue(true)
+    vi.mocked(readFileSync).mockReturnValue(
+      JSON.stringify({
+        options: {},
+      }),
+    )
+
+    expect(() => load()).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Error while loading the manifest file: When declared, the 'options' property should be an array]`,
+    )
+  })
+
+  it('should NOT raise an exception when `options` is an empty array', () => {
+    vi.mocked(existsSync).mockReturnValue(true)
+    vi.mocked(readFileSync).mockReturnValue(
+      JSON.stringify({
+        options: [],
+      }),
+    )
+
+    expect(() => load()).not.toThrowError()
+  })
+
+  it('should NOT raise an exception when `options` is an undefined', () => {
+    vi.mocked(existsSync).mockReturnValue(true)
+    vi.mocked(readFileSync).mockReturnValue(
+      JSON.stringify({
+        options: undefined,
+      }),
+    )
+
+    expect(() => load()).not.toThrowError()
+  })
+
+  it('should raise an exception when `options` is not an array', () => {
+    vi.mocked(existsSync).mockReturnValue(true)
+    vi.mocked(readFileSync).mockReturnValue(
+      JSON.stringify({
+        options: null,
+      }),
+    )
+
+    expect(() => load()).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Error while loading the manifest file: When declared, the 'options' property should be an array]`,
+    )
+  })
+
+  it('should raise an exception when any `options item` has no `name` property', () => {
     vi.mocked(existsSync).mockReturnValue(true)
     vi.mocked(readFileSync).mockReturnValue(
       JSON.stringify({
@@ -69,7 +117,7 @@ describe('manifest', () => {
     )
   })
 
-  it('should raises an exception when any `options item` has no `value` property', () => {
+  it('should raise an exception when any `options item` has no `value` property', () => {
     vi.mocked(existsSync).mockReturnValue(true)
     vi.mocked(readFileSync).mockReturnValue(
       JSON.stringify({
@@ -85,6 +133,24 @@ describe('manifest', () => {
 
     expect(() => load()).toThrowErrorMatchingInlineSnapshot(
       `[Error: Error while loading the manifest file: Each option must be an object with string properties "name" and "value". The following values need to be corrected: \n {"name":""} --> Incorrect object value. Must be of type {"name": string, "value": string}.]`,
+    )
+  })
+
+  it('should raise an exception when any `options item` --> `value` property is not of type string', () => {
+    vi.mocked(existsSync).mockReturnValue(true)
+    vi.mocked(readFileSync).mockReturnValue(
+      JSON.stringify({
+        options: [
+          {
+            name: 'opt1',
+            value: 1,
+          },
+        ],
+      }),
+    )
+
+    expect(() => load()).toThrowErrorMatchingInlineSnapshot(
+      `[Error: Error while loading the manifest file: Each option must be an object with string properties "name" and "value". The following values need to be corrected: \n {"name":"opt1","value":1} --> Incorrect value type. Must be of type string.]`,
     )
   })
 

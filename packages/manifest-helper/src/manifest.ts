@@ -57,6 +57,11 @@ const validateSchema = (manifest: Manifest): void => {
     throw new Error(`When declared, the 'options' property should be an array`)
   }
 
+  //NOTE: accepted empty options case
+  if (manifest.options.length === 0) {
+    return
+  }
+
   validateOptions(manifest.options)
 }
 
