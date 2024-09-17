@@ -45,12 +45,19 @@ const validateSchema = (manifest: Manifest): void => {
     }
   })
 
-  if (manifest.options !== undefined && !Array.isArray(manifest.options)) {
+  //NOTE: accepted empty options case
+  if (
+    manifest.options === undefined ||
+    Object.keys(manifest.options).length === 0
+  ) {
+    return
+  }
+
+  if (!Array.isArray(manifest.options)) {
     throw new Error(`When declared, the 'options' property should be an array`)
   }
 
   validateOptions(manifest.options)
-  return
 }
 
 //NOTE: There is a duplicate of this function in the manifest-helper/src/manifest.ts file
