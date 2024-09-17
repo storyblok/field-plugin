@@ -1,17 +1,21 @@
-import { Asset, assetFromAssetSelectedMessage, isAsset } from './Asset'
+import { AssetWrapper, assetFromAssetSelectedMessage, isAsset } from './Asset'
 import { AssetSelectedMessage } from './AssetSelectedMessage'
 
-const stub: Asset = {
+const stub: AssetWrapper = {
   filename: 'https://somthing.com/myimage.jpg',
-  fieldtype: 'asset',
-  name: '',
-  meta_data: {},
-  title: '',
-  copyright: '',
-  focus: '',
-  alt: '',
-  source: '',
-  is_private: false,
+  asset: {
+    id: 0,
+    fieldtype: 'asset',
+    name: '',
+    filename: '',
+    meta_data: {},
+    title: '',
+    copyright: '',
+    focus: '',
+    alt: '',
+    source: '',
+    is_private: false,
+  },
 }
 
 const assetSelectedMessage: AssetSelectedMessage = {
@@ -20,15 +24,19 @@ const assetSelectedMessage: AssetSelectedMessage = {
   callbackId: 'test-callback-id',
   action: 'asset-selected',
   filename: 'https://somthing.com/myimage.jpg',
-  fieldtype: 'asset',
-  name: '',
-  meta_data: {},
-  title: '',
-  copyright: '',
-  focus: '',
-  alt: '',
-  source: '',
-  is_private: false,
+  asset: {
+    id: 0,
+    fieldtype: 'asset',
+    name: '',
+    filename: '',
+    meta_data: {},
+    title: '',
+    copyright: '',
+    focus: '',
+    alt: '',
+    source: '',
+    is_private: false,
+  },
 }
 
 describe('Asset', function () {
