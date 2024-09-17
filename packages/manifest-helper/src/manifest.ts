@@ -52,13 +52,42 @@ const validateSchema = (manifest: Manifest): void => {
     throw new Error(`The 'options' property should be an array`)
   }
 
-  //TODO: update this to use the new validation functions
-  manifest.options?.forEach((option) => {
-    if (!('name' in option && 'value' in option)) {
-      throw new Error(
-        `Some of the defined 'options' are invalid. ` +
-          `Please, make sure they contain a 'name' and 'value' properties`,
-      )
-    }
-  })
+  validateOptions(manifest.options)
+  return
 }
+
+//NOTE: There is a duplicate of this function in the field-plugin/helpers/vite/src/manifest.ts file
+const validateOptions = (options: unknown[]): void => {
+  const incorrectValues: string[] = []
+
+  for (const option of options) {
+    if (!isOptionObject(option)) {
+      incorrectValues.push(
+        `${JSON.stringify(option)} --> Incorrect object value. Must be of type {"name": string, "value": string}.`,
+      )
+      continue
+    }
+
+    if (!isString(option.value)) {
+      incorrectValues.push(
+        `${JSON.stringify(option)} --> Incorrect value type. Must be of type string.`,
+      )
+      continue
+    }
+  }
+
+  if (incorrectValues.length > 0) {
+    throw new Error(
+      'Each option must be an object with string properties "name" and "value". The following values need to be corrected: \n ' +
+        incorrectValues.join('\n '),
+    )
+  }
+}
+
+export const isString = (value: unknown) => typeof value === 'string'
+
+export const isOptionObject = (option: unknown): option is ManifestOption =>
+  typeof option === 'object' &&
+  option !== null &&
+  'name' in option &&
+  'value' in option

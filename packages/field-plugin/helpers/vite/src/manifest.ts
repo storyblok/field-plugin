@@ -53,6 +53,7 @@ const validateSchema = (manifest: Manifest): void => {
   return
 }
 
+//NOTE: There is a duplicate of this function in the manifest-helper/src/manifest.ts file
 const validateOptions = (options: unknown[]): void => {
   const incorrectValues: string[] = []
 
