@@ -8,7 +8,7 @@ export function watchConfigFile(): PluginOption {
     name: 'storyblok-field-plugin-watch-config-file',
     handleHotUpdate({ file, server }) {
       if (file.endsWith('field-plugin.config.json')) {
-        printServerUrls(server)
+        printSandboxUrl(server)
       }
     },
   }
@@ -40,6 +40,7 @@ export function printDev(): PluginOption {
       // Overrides the message that Vite prints out when the server is started. To reduce complexity, it does not include color
       server.printUrls = () => {
         printServerUrls(server)
+        printSandboxUrl(server)
       }
     },
   }
@@ -62,11 +63,18 @@ function printServerUrls(server: ViteDevServer) {
      
     ${arrows.green}  ${bold('Local')}:    ${localUrl}
     ${arrows.green}  ${bold('Network')}:  ${networkUrl}
-        
-  See the plugin in action on 
-     
-    ${arrows.green}  ${bold('Sandbox')}: ${generateSandboxUrl(localUrl)}
           `)
+}
+
+function printSandboxUrl(server: ViteDevServer) {
+  if (!server.resolvedUrls) {
+    return
+  }
+  const localUrl = server.resolvedUrls.local[0]
+
+  console.log(`  See the plugin in action on 
+     
+    ${arrows.green}  ${bold('Sandbox')}: ${generateSandboxUrl(localUrl)}`)
 }
 
 export const plugins = [printProd(), printDev(), watchConfigFile()]
