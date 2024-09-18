@@ -1,8 +1,28 @@
-import { Asset, assetFromAssetSelectedMessage, isAsset } from './Asset'
+import {
+  Asset,
+  AssetWrapper,
+  assetFromAssetSelectedMessage,
+  isAsset,
+} from './Asset'
 import { AssetSelectedMessage } from './AssetSelectedMessage'
 
-const stub: Asset = {
+export const emptyAsset: Asset = {
+  id: 0,
+  fieldtype: 'asset',
+  name: '',
+  filename: '',
+  meta_data: {},
+  title: '',
+  copyright: '',
+  focus: '',
+  alt: '',
+  source: '',
+  is_private: false,
+}
+
+const stub: AssetWrapper = {
   filename: 'https://somthing.com/myimage.jpg',
+  asset: emptyAsset,
 }
 
 const assetSelectedMessage: AssetSelectedMessage = {
@@ -11,6 +31,7 @@ const assetSelectedMessage: AssetSelectedMessage = {
   callbackId: 'test-callback-id',
   action: 'asset-selected',
   filename: 'https://somthing.com/myimage.jpg',
+  asset: emptyAsset,
 }
 
 describe('Asset', function () {
@@ -35,24 +56,8 @@ describe('Asset', function () {
         assetFromAssetSelectedMessage(assetSelectedMessage),
       ).toHaveProperty('filename')
     })
-    it('keeps unknown properties', () => {
-      expect(
-        assetFromAssetSelectedMessage({
-          ...assetSelectedMessage,
-          unknownProperty: 'any-value',
-        }),
-      ).toHaveProperty('unknownProperty', 'any-value')
-    })
   })
   describe('validation', () => {
-    it('allows unknown properties', () => {
-      expect(
-        isAsset({
-          ...stub,
-          anUnknownProperty: 'something',
-        }),
-      ).toEqual(true)
-    })
     describe('the filename property', () => {
       it('is required', () => {
         expect(

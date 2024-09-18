@@ -1,11 +1,11 @@
 import { isMessageToPlugin, MessageToPlugin } from './MessageToPlugin'
 import { hasKey } from '../../../utils'
-import { Asset, isAsset } from './Asset'
+import { AssetWrapper, isAsset } from './Asset'
 
 export type AssetSelectedMessage = MessageToPlugin<'asset-selected'> & {
   field?: string
   callbackId: string
-} & Asset &
+} & AssetWrapper &
   Record<string, unknown>
 
 export const isAssetSelectedMessage = (
