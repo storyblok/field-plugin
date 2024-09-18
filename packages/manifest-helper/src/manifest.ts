@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-throw-statement */
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
 import { getErrorMessage } from './utils/error'
@@ -17,7 +16,7 @@ export type Manifest = {
 
 export const load = (): Manifest | undefined => {
   try {
-    if (!existsSync(MANIFEST_FULL_PATH)) {
+    if (!manifestExists()) {
       return undefined
     }
 
@@ -91,6 +90,10 @@ const validateOptions = (options: unknown[]): void => {
         incorrectValues.join('\n '),
     )
   }
+}
+
+export const manifestExists = (): boolean => {
+  return existsSync(MANIFEST_FULL_PATH)
 }
 
 export const isString = (value: unknown) => typeof value === 'string'
