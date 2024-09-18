@@ -2028,7 +2028,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@*, @storyblok/field-plugin@1.1.2, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@*, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
@@ -2046,6 +2046,13 @@ __metadata:
     vite-plugin-dts: "*"
   languageName: unknown
   linkType: soft
+
+"@storyblok/field-plugin@npm:1.1.2":
+  version: 1.1.2
+  resolution: "@storyblok/field-plugin@npm:1.1.2"
+  checksum: 8139cfd60c0bea31ba217d33349d9f9ab92f716fb441937f6fa9c99d78cbad1ed9d25280ad4333594cd5c56460526544cbd33477dea68fa5463910df9dc9550e
+  languageName: node
+  linkType: hard
 
 "@storyblok/manifest-helper@workspace:packages/manifest-helper":
   version: 0.0.0-use.local
