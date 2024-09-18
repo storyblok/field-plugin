@@ -49,6 +49,7 @@ const loadManifest = (): Manifest | undefined => {
   }
 }
 
+//TODO check this
 const displayManifestChecking = () => {
   if (manifestExists()) {
     console.log(
