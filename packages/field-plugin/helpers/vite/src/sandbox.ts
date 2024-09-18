@@ -20,7 +20,7 @@ export const buildQueryString = (params: SandboxQueryParams) => {
     url: params.url,
   }
 
-  if (params.manifest !== null) {
+  if (params.manifest !== undefined) {
     queryParams.manifest = JSON.stringify(params.manifest)
   }
 
