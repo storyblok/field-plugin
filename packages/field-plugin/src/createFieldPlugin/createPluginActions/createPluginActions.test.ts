@@ -5,6 +5,7 @@ import {
   ModalChangeMessage,
   ValueChangeMessage,
 } from '../../messaging'
+import { emptyAsset } from '../../messaging/pluginMessage/containerToPluginMessage/Asset.test'
 
 // INFO: The methods like `setContent` is not being resolved in this file because `pushCallback` doesn't resolve.
 // We can also mock `callbackQueue` and make it resolve, and resolve this `no-floating-promises` issue.
@@ -231,33 +232,10 @@ describe('createPluginActions', () => {
         field: 'dummy',
         callbackId: TEST_CALLBACK_ID,
         filename,
-        asset: {
-          id: 0,
-          fieldtype: 'asset',
-          name: '',
-          filename: '',
-          meta_data: {},
-          title: '',
-          copyright: '',
-          focus: '',
-          alt: '',
-          source: '',
-          is_private: false,
-        },
+        asset: emptyAsset,
       })
       const result = await promise
-      expect(result).toEqual({
-        filename,
-        fieldtype: 'asset',
-        name: '',
-        meta_data: {},
-        title: '',
-        copyright: '',
-        focus: '',
-        alt: '',
-        source: '',
-        is_private: false,
-      })
+      expect(result).toEqual(emptyAsset)
     })
     it('does not call the callack function when callbackId does not match', async () => {
       const WRONG_CALLBACK_ID = TEST_CALLBACK_ID + '_wrong'
@@ -279,19 +257,7 @@ describe('createPluginActions', () => {
         field: 'dummy',
         callbackId: WRONG_CALLBACK_ID,
         filename,
-        asset: {
-          id: 0,
-          fieldtype: 'asset',
-          name: '',
-          filename: '',
-          meta_data: {},
-          title: '',
-          copyright: '',
-          focus: '',
-          alt: '',
-          source: '',
-          is_private: false,
-        },
+        asset: emptyAsset,
       })
       const resolvedFn = jest.fn()
       const rejectedFn = jest.fn()

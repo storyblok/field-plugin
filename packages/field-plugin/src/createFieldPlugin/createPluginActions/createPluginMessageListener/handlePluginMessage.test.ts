@@ -6,6 +6,7 @@ import {
   LoadedMessage,
   MessageToPlugin,
 } from '../../../messaging'
+import { emptyAsset } from '../../../messaging/pluginMessage/containerToPluginMessage/Asset.test'
 
 const uid = 'abc123'
 const mockCallbacks = (): PluginMessageCallbacks => ({
@@ -95,19 +96,7 @@ describe('handlePluginMessage', () => {
       filename: '/my-file.jpg',
       field: 'callback-uid',
       callbackId: 'test-callback-id',
-      asset: {
-        id: 0,
-        fieldtype: 'asset',
-        name: '',
-        filename: '',
-        meta_data: {},
-        title: '',
-        copyright: '',
-        focus: '',
-        alt: '',
-        source: '',
-        is_private: false,
-      },
+      asset: emptyAsset,
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)
