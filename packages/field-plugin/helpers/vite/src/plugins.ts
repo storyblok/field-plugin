@@ -1,7 +1,18 @@
-import type { PluginOption } from 'vite'
+import type { PluginOption, ViteDevServer } from 'vite'
 import { generateSandboxUrl } from './sandbox'
 import { bold, green } from './utils/text'
 import { arrows } from './utils/arrows'
+
+export function watchConfigFile(): PluginOption {
+  return {
+    name: 'storyblok-field-plugin-watch-config-file',
+    handleHotUpdate({ file, server }) {
+      if (file.endsWith('field-plugin.config.json')) {
+        printServerUrls(server)
+      }
+    },
+  }
+}
 
 export function printProd(): PluginOption {
   return {
@@ -28,13 +39,20 @@ export function printDev(): PluginOption {
     configureServer(server) {
       // Overrides the message that Vite prints out when the server is started. To reduce complexity, it does not include color
       server.printUrls = () => {
-        if (!server.resolvedUrls) {
-          return
-        }
-        const localUrl = server.resolvedUrls.local[0]
-        const networkUrl = server.resolvedUrls.network[0]
+        printServerUrls(server)
+      }
+    },
+  }
+}
 
-        console.log(`
+function printServerUrls(server: ViteDevServer) {
+  if (!server.resolvedUrls) {
+    return
+  }
+  const localUrl = server.resolvedUrls.local[0]
+  const networkUrl = server.resolvedUrls.network[0]
+
+  console.log(`
     ${arrows.green}  ${bold(
       'Partner Portal',
     )}:  https://app.storyblok.com/#/partner/fields
@@ -49,9 +67,6 @@ export function printDev(): PluginOption {
      
     ${arrows.green}  ${bold('Sandbox')}: ${generateSandboxUrl(localUrl)}
           `)
-      }
-    },
-  }
 }
 
-export const plugins = [printProd(), printDev()]
+export const plugins = [printProd(), printDev(), watchConfigFile()]
