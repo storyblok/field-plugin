@@ -256,7 +256,7 @@ export const confirmOptionsUpdate = async (
 }
 
 export const printManifestOptions = (options: ManifestOption[] | undefined) => {
-  if (options?.length === 0) {
+  if (options?.length === 0 || options === undefined) {
     return
   }
 
@@ -351,10 +351,8 @@ export const loadManifest = (): Manifest | undefined => {
 
     return load()
   } catch (err) {
-    console.log(bold(red('[ERROR]')), `Error while loading the manifest file`)
     console.log(`path: ${MANIFEST_FILE_NAME}`)
-    console.log(`error: ${getErrorMessage(err)}`)
-
+    console.log(red(`${bold('[ERROR]:')} ${getErrorMessage(err)}`))
     return undefined
   }
 }
