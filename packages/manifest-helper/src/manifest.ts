@@ -64,7 +64,6 @@ const validateSchema = (manifest: Manifest): void => {
   validateOptions(manifest.options)
 }
 
-//NOTE: There is a duplicate of this function in the field-plugin/helpers/vite/src/manifest.ts file
 const validateOptions = (options: unknown[]): void => {
   const incorrectValues: string[] = []
 
