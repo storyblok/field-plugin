@@ -3,11 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "devDependencies": {
-    "typescript": "^5.3.3"
-  },
   "dependencies": {
-    "@storyblok/manifest-helper": "workspace:*",
     "kleur": "4.1.5"
+  },
+  "devDependencies": {
+    "@storyblok/manifest-helper": "workspace:*",
+    "typescript": "^5.3.3"
   }
 }
