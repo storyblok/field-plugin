@@ -2047,10 +2047,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/manifest-helper@workspace:packages/manifest-helper":
+"@storyblok/manifest-helper@workspace:*, @storyblok/manifest-helper@workspace:packages/manifest-helper":
   version: 0.0.0-use.local
   resolution: "@storyblok/manifest-helper@workspace:packages/manifest-helper"
   dependencies:
+    unbuild: 2.0.0
     vite: ^5.1.3
     vitest: 1.3.0
   languageName: unknown
@@ -6298,6 +6299,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "helper-vite@workspace:packages/field-plugin/helpers/vite"
   dependencies:
+    "@storyblok/manifest-helper": "workspace:*"
     kleur: 4.1.5
     typescript: ^5.3.3
   languageName: unknown

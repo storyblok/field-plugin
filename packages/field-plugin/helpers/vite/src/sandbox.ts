@@ -1,14 +1,18 @@
 import * as querystring from 'querystring'
 import { red, bold } from './utils/text'
 import { arrows } from './utils/arrows'
-import { load, manifestExists, MANIFEST_FILE_NAME } from './manifest'
-import type { Manifest } from './manifest'
+import {
+  load,
+  manifestExists,
+  MANIFEST_FILE_NAME,
+  Manifest,
+} from '@storyblok/manifest-helper'
 
 export const SANDBOX_BASE_URL = `https://plugin-sandbox.storyblok.com/field-plugin`
 
 export type SandboxQueryParams = {
   url: string
-  manifest: Manifest | null
+  manifest: Manifest | undefined
 }
 
 export const buildQueryString = (params: SandboxQueryParams) => {
@@ -36,17 +40,16 @@ export const generateSandboxUrl = (fieldPluginUrl: string) => {
   return `${SANDBOX_BASE_URL}?${queryString}`
 }
 
-const loadManifest = (): Manifest | null => {
-  if (!manifestExists()) return null
-
+const loadManifest = (): Manifest | undefined => {
   try {
     return load()
   } catch (err) {
     displayManifestErrorLoading(err as Error)
-    return null
+    return undefined
   }
 }
 
+//TODO check this
 const displayManifestChecking = () => {
   if (manifestExists()) {
     console.log(
