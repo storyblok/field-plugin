@@ -14,13 +14,13 @@ import {
   StoryClientType,
   StoryblokClient,
 } from '../../storyblok/storyblok-client'
-import { getErrorMessage } from '@storyblok/manifest-helper/src/utils'
 import {
   load,
   Manifest,
   MANIFEST_FILE_NAME,
   ManifestOption,
-} from '@storyblok/manifest-helper/src/manifest'
+  getErrorMessage,
+} from '@storyblok/manifest-helper'
 
 const packageNameMessage =
   'How would you like to call the deployed field-plugin?\n  (Lowercase alphanumeric and dash are allowed.)'
