@@ -2008,6 +2008,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin-cli@workspace:packages/cli"
   dependencies:
+    "@storyblok/manifest-helper": "workspace:*"
     "@types/execa": 2.0.0
     "@types/fs-extra": 11.0.4
     "@types/prompts": 2.4.9
