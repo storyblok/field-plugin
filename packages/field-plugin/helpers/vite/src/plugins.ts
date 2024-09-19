@@ -82,13 +82,13 @@ function printSandboxUrl(server: ViteDevServer) {
 
 export const plugins = [printProd(), printDev(), watchConfigFile()]
 
-function getFileName(filePath: string) {
-  return path.basename(filePath)
+function getFileName(file: string) {
+  return path.basename(file)
 }
 
-function isFileInSameLevel(fileName: string): boolean {
+function isFileInSameLevel(file: string): boolean {
   const currentDir = process.cwd()
-  const filePath = path.resolve(currentDir, fileName)
+  const filePath = path.resolve(currentDir, file)
   const fileDir = path.dirname(filePath)
   return currentDir === fileDir
 }
