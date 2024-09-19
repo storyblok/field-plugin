@@ -36,6 +36,7 @@
     "walkdir": "^0.4.1"
   },
   "devDependencies": {
+    "@storyblok/manifest-helper": "workspace:*",
     "@types/execa": "2.0.0",
     "@types/fs-extra": "11.0.4",
     "@types/prompts": "2.4.9",

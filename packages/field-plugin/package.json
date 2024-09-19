@@ -40,8 +40,9 @@
     "check:types": "tsc --noEmit",
     "dev": "vite build --watch",
     "test": "jest",
-    "build": "unbuild && yarn build:helpers",
-    "build:helpers": "cd helpers && unbuild"
+    "build": "yarn build:manifest-helper && unbuild && yarn build:helpers",
+    "build:helpers": "cd helpers && unbuild",
+    "build:manifest-helper": "cd ../manifest-helper && yarn build"
   },
   "devDependencies": {
     "@types/core-js": "2.5.8",
