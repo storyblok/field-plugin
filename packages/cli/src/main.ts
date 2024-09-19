@@ -11,6 +11,7 @@ import { TEMPLATES } from '../config'
 import { Command, Option } from 'commander'
 import packageJson from './../package.json'
 import { expandTilde } from './utils'
+import { remove, RemoveArgs } from './commands/remove'
 
 const templateOptions = TEMPLATES.map((template) => template.value)
 const structureOptions = ['standalone', 'monorepo']
@@ -116,6 +117,33 @@ export const createCLI = () => {
     .action(async function (this: Command) {
       const opts = this.opts<AddArgs>()
       await add({ ...opts, dir: expandTilde(opts.dir) })
+    })
+
+  program
+    .command('remove')
+    .alias('rm')
+    .description('removes your selected plugin instance from Storyblok')
+    .option('--token <value>', 'Storyblok personal access token')
+    .option('--skipPrompts', 'deploys without prompts', false)
+    .option(
+      '--name <value>',
+      'name of plugin (Lowercase alphanumeric and dash)',
+    )
+    .addOption(
+      new Option(
+        '--dotEnvPath <value>',
+        'path to the `.env` file which stores the environment variable `STORYBLOK_PERSONAL_ACCESS_TOKEN`',
+      ),
+    )
+    .addOption(
+      new Option(
+        '--scope <value>',
+        `where field plugin should be removed from ('my-plugins' | 'partner-portal' | 'organization')`,
+      ).choices(deployScopeOptions),
+    )
+    .action(async function (this: Command) {
+      const opts = this.opts<RemoveArgs>()
+      await remove(opts)
     })
 
   return program
