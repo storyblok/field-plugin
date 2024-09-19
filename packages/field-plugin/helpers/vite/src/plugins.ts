@@ -2,12 +2,15 @@ import type { PluginOption, ViteDevServer } from 'vite'
 import { generateSandboxUrl } from './sandbox'
 import { bold, green } from './utils/text'
 import { arrows } from './utils/arrows'
+import { MANIFEST_FILE_NAME } from '@storyblok/manifest-helper'
+import path from 'path'
 
 export function watchConfigFile(): PluginOption {
   return {
     name: 'storyblok-field-plugin-watch-config-file',
     handleHotUpdate({ file, server }) {
-      if (file.endsWith('field-plugin.config.json')) {
+      // NOTE: This condition checks if the file is on the same directory level as where the command has been executed and checks the file name
+      if (isFileInSameLevel(file) && getFileName(file) === MANIFEST_FILE_NAME) {
         printSandboxUrl(server)
       }
     },
@@ -78,3 +81,14 @@ function printSandboxUrl(server: ViteDevServer) {
 }
 
 export const plugins = [printProd(), printDev(), watchConfigFile()]
+
+function getFileName(filePath: string) {
+  return path.basename(filePath)
+}
+
+function isFileInSameLevel(fileName: string): boolean {
+  const currentDir = process.cwd()
+  const filePath = path.resolve(currentDir, fileName)
+  const fileDir = path.dirname(filePath)
+  return currentDir === fileDir
+}
