@@ -14,15 +14,15 @@ import { emptyAsset } from '../../messaging/pluginMessage/containerToPluginMessa
 
 const mock = () => ({
   uid: 'abc',
-  postToContainer: jest.fn(),
-  onUpdateState: jest.fn(),
+  postToContainer: vi.fn(),
+  onUpdateState: vi.fn(),
 })
 
 const TEST_CALLBACK_ID = 'test-callback-id'
 
-jest.mock('../../utils/getRandomUid', () => {
+vi.mock('../../utils/getRandomUid', () => {
   return {
-    getRandomUid: jest.fn(() => TEST_CALLBACK_ID),
+    getRandomUid: vi.fn(() => TEST_CALLBACK_ID),
   }
 })
 
@@ -259,8 +259,8 @@ describe('createPluginActions', () => {
         filename,
         asset: emptyAsset,
       })
-      const resolvedFn = jest.fn()
-      const rejectedFn = jest.fn()
+      const resolvedFn = vi.fn()
+      const rejectedFn = vi.fn()
       promise.then(resolvedFn).catch(rejectedFn)
       await wait(100)
       expect(resolvedFn).toHaveBeenCalledTimes(0)
