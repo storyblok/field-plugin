@@ -46,14 +46,14 @@
   },
   "devDependencies": {
     "@types/core-js": "2.5.8",
-    "@types/node": "*",
+    "@types/node": "18.19.17",
     "core-js": "3.36.0",
     "execa": "8.0.1",
     "jsdom": "25.0.0",
-    "typescript": "*",
+    "typescript": "^5.3.3",
     "unbuild": "2.0.0",
-    "vite": "*",
-    "vite-plugin-dts": "*",
+    "vite": "5.4.6",
+    "vite-plugin-dts": "4.2.1",
     "vitest": "2.1.1"
   }
 }

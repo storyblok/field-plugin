@@ -26,12 +26,6 @@
     "useUnknownInCatchVariables": true,
     "allowJs": false
   },
-  "exclude": [
-    "node_modules",
-    "packages/*/node_modules",
-  ],
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "exclude": ["node_modules", "packages/*/node_modules"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }
