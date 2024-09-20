@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "yarn check:types && vite build",
     "lint": "eslint .",
-    "test": "jest",
     "check:types": "tsc --noEmit"
   },
   "dependencies": {

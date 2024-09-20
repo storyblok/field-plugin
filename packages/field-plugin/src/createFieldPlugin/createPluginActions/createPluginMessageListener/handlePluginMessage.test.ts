@@ -10,11 +10,11 @@ import { emptyAsset } from '../../../messaging/pluginMessage/containerToPluginMe
 
 const uid = 'abc123'
 const mockCallbacks = (): PluginMessageCallbacks => ({
-  onStateChange: jest.fn(),
-  onContextRequest: jest.fn(),
-  onAssetSelect: jest.fn(),
-  onUnknownMessage: jest.fn(),
-  onLoaded: jest.fn(),
+  onStateChange: vi.fn(),
+  onContextRequest: vi.fn(),
+  onAssetSelect: vi.fn(),
+  onUnknownMessage: vi.fn(),
+  onLoaded: vi.fn(),
 })
 
 describe('handlePluginMessage', () => {
