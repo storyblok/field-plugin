@@ -10,7 +10,7 @@ import { isCloneable } from '../utils/isCloneable'
 export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
   validateContent?: ValidateContent<Content>
-  origin?: string
+  targetOrigin?: string
 }
 
 export type CreateFieldPlugin = <Content = unknown>(
@@ -23,7 +23,7 @@ export type CreateFieldPlugin = <Content = unknown>(
 export const createFieldPlugin: CreateFieldPlugin = ({
   onUpdateState,
   validateContent,
-  origin,
+  targetOrigin,
 }) => {
   const isEmbedded = window.parent !== window
 
@@ -50,16 +50,16 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   }
 
   const { uid, host } = params
-  const postMessageOrigin =
-    typeof origin === 'string'
-      ? origin
+  const origin =
+    typeof targetOrigin === 'string'
+      ? targetOrigin
       : host === 'plugin-sandbox.storyblok.com'
         ? 'https://plugin-sandbox.storyblok.com'
         : 'https://app.storyblok.com'
 
   const postToContainer = (message: unknown) => {
     try {
-      window.parent.postMessage(message, postMessageOrigin)
+      window.parent.postMessage(message, origin)
     } catch (err) {
       if (isCloneable(message)) {
         // eslint-disable-next-line functional/no-throw-statement
@@ -107,7 +107,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
-    postMessageOrigin,
+    origin,
     messageCallbacks,
   )
 
