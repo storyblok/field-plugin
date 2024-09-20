@@ -3,6 +3,7 @@
   // vite-plugin-dts will output at the root level unless specified here
   "compilerOptions": {
     "types": ["vitest/globals"],
+    "skipLibCheck": true,
     "outDir": "dist"
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
