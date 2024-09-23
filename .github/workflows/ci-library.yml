@@ -21,6 +21,7 @@ jobs:
       - name: Lint
         run: |
           yarn eslint packages/field-plugin
+          yarn eslint packages/manifest-helper
       - name: Test
         run: |
           yarn workspace @storyblok/field-plugin test
