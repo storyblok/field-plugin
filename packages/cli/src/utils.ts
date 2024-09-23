@@ -32,7 +32,6 @@ export const runCommand: RunCommandFunc = async (
     if (spinner) {
       spinner.fail()
     }
-     
     throw err
   }
 }

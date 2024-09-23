@@ -9,6 +9,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
+  // Base configuration
   {
     ignores: ['**/node_modules/', '**/dist/'],
   },
@@ -18,6 +19,7 @@ export default [
   eslintJs.configs.recommended,
   ...tsEslint.configs.recommended,
 
+  // Vue.js configuration
   ...vue.configs['flat/recommended'],
   {
     files: ['**/*.vue'],
@@ -29,6 +31,7 @@ export default [
     },
   },
 
+  // React configuration
   react.configs.flat.recommended,
   react.configs.flat['jsx-runtime'],
   {
@@ -37,6 +40,8 @@ export default [
       'react-refresh': reactRefresh,
     },
   },
+
+  // Custom rules
   {
     rules: {
       '@typescript-eslint/no-unused-vars': [

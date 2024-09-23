@@ -204,7 +204,6 @@ describe('createPluginActions', () => {
         onUpdateState,
         validateContent,
       })
-
       selectAsset()
       expect(postToContainer).toHaveBeenLastCalledWith(
         expect.objectContaining({

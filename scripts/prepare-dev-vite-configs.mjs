@@ -1,5 +1,4 @@
 #!/usr/bin/env zx
- 
 /*
   It's totally okay to run `yarn workspace field-plugin-react-template dev`.
   However, if you want to test changes in `@storyblok/field-plugin` library (under `packages/field-plugin/` folder),

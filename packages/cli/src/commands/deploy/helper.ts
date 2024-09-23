@@ -148,7 +148,6 @@ export const getPackageJsonName = (path: string): string | undefined => {
     return
   }
 
-   
   const json: { name: string } = JSON.parse(
     readFileSync(resolve(path, 'package.json')).toString(),
   )
