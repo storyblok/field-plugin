@@ -1,5 +1,6 @@
 import { createPluginActions, ValidateContent } from './createPluginActions'
 import { createHeightChangeListener } from './createHeightChangeListener'
+import { createKeydownEscListener } from './createKeydownEscListener'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
@@ -48,6 +49,8 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   }
 
   const { uid, host } = params
+
+  // ToDo: In development we need to load localhost:3300
   const origin =
     host === 'plugin-sandbox.storyblok.com'
       ? 'https://plugin-sandbox.storyblok.com'
@@ -65,10 +68,10 @@ export const createFieldPlugin: CreateFieldPlugin = ({
       // eslint-disable-next-line functional/no-throw-statement
       throw new Error(
         'The argument could not be cloned. ' +
-          'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +
-          'Does your object contain functions, getters, setters, proxies, or any other value that is not cloneable? Did you try to pass a reactive object? ' +
-          'For a full description on the structuredClone algorithm, see: ' +
-          'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm',
+        'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +
+        'Does your object contain functions, getters, setters, proxies, or any other value that is not cloneable? Did you try to pass a reactive object? ' +
+        'For a full description on the structuredClone algorithm, see: ' +
+        'https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm',
         {
           cause: err,
         },
@@ -83,7 +86,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
     Exclude<typeof validateContent, undefined>
   >['content']
 
-  const { actions, messageCallbacks, onHeightChange, initialize } =
+  const { actions, messageCallbacks, onHeightChange, onKeydownEsc, initialize } =
     createPluginActions<InferredContent>({
       uid,
       postToContainer,
@@ -101,6 +104,8 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
 
+  const cleanupKeydownEscListener = createKeydownEscListener(onKeydownEsc)
+
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
     origin,
@@ -112,6 +117,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   return () => {
     cleanupMessageListenerSideEffects()
     cleanupHeightChangeListener()
+    cleanupKeydownEscListener()
     cleanupStyleSideEffects()
   }
 }

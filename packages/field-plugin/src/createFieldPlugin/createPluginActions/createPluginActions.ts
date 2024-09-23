@@ -36,6 +36,8 @@ export type CreatePluginActions = <Content>(options: {
   messageCallbacks: PluginMessageCallbacks
   // This function is called whenever the height changes
   onHeightChange: (height: number) => void
+  // This function is called whenever the ESC key is pressed
+  onKeydownEsc: () => void
   // This initiates the plugin
   initialize: Initialize<Content>
 }
@@ -66,8 +68,7 @@ export const createPluginActions: CreatePluginActions = ({
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
     console.debug(
-      `Plugin received a message from container of an unknown action type "${
-        data.action
+      `Plugin received a message from container of an unknown action type "${data.action
       }". You may need to upgrade the version of the @storyblok/field-plugin library. Full message: ${JSON.stringify(
         data,
       )}`,
@@ -84,6 +85,10 @@ export const createPluginActions: CreatePluginActions = ({
 
   const onHeightChange = (height: number) => {
     postToContainer(heightChangeMessage(uid, height))
+  }
+
+  const onKeydownEsc = () => {
+    postToContainer(modalChangeMessage({ uid, status: false }))
   }
 
   return {
@@ -131,6 +136,7 @@ export const createPluginActions: CreatePluginActions = ({
     },
     messageCallbacks,
     onHeightChange,
+    onKeydownEsc,
     initialize: () => {
       return new Promise((resolve) => {
         const callbackId = pushCallback('loaded', (message) =>
