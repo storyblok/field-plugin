@@ -5,9 +5,8 @@ import { randomString } from '../../utils'
 import { vi } from 'vitest'
 
 vi.mock('../../utils', async () => {
-  const actualUtils = await vi.importActual<typeof import('../../utils')>(
-    '../../utils',
-  )
+  const actualUtils =
+    await vi.importActual<typeof import('../../utils')>('../../utils')
 
   return {
     ...actualUtils,
@@ -39,11 +38,11 @@ describe('add', () => {
     expect(files).toMatchInlineSnapshot(`
       [
         ".env.local.example",
-        ".eslintrc.cjs",
         ".gitignore",
         ".nvmrc",
         ".prettierrc",
         "README.md",
+        "eslint.config.js",
         "field-plugin.config.json",
         "index.html",
         "package.json",
@@ -78,11 +77,11 @@ describe('add', () => {
     )
     expect(files).toMatchInlineSnapshot(`
       [
-        ".eslintrc.cjs",
         ".gitignore",
         ".nvmrc",
         ".prettierrc",
         "README.md",
+        "eslint.config.js",
         "field-plugin.config.json",
         "index.html",
         "package.json",
