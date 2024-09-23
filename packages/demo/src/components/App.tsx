@@ -11,7 +11,7 @@ import { GlobalStyles } from '@mui/material'
 export const App: FunctionComponent = () => (
   <ThemeProvider theme={lightTheme}>
     <GlobalStyles
-      styles={(theme) => ({
+      styles={(_theme) => ({
         html: { overflow: 'hidden' },
       })}
     />

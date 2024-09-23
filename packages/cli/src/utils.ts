@@ -32,7 +32,7 @@ export const runCommand: RunCommandFunc = async (
     if (spinner) {
       spinner.fail()
     }
-    // eslint-disable-next-line
+     
     throw err
   }
 }
@@ -123,7 +123,7 @@ export const promptName = async ({
 }
 
 export const filterPathsToInclude = (
-  directory: string,
+  _directory: string,
   files: string[],
 ): string[] | Promise<string[]> =>
   files.filter(
@@ -146,7 +146,7 @@ export const initializeNewRepo = async ({ dir }: { dir: string }) => {
       shell: true,
       cwd: dir,
     })
-  } catch (err) {
+  } catch (_err) {
     // ignore if git commands fail
   }
 }
@@ -155,7 +155,7 @@ export const checkIfInsideRepository = async ({ dir }: { dir: string }) => {
   try {
     await runCommand('git rev-parse --is-inside-work-tree', { cwd: dir })
     return true
-  } catch (err) {
+  } catch (_err) {
     return false
   }
 }
@@ -275,13 +275,10 @@ export const selectTemplate = async () => {
 }
 
 export const randomString = (length = 16) => {
-  // eslint-disable-next-line functional/no-let
   let result = ''
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789-'
   const charactersLength = characters.length
-  // eslint-disable-next-line functional/no-let
   let counter = 0
-  // eslint-disable-next-line functional/no-loop-statement
   while (counter < length) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
     counter += 1

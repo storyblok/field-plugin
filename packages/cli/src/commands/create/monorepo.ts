@@ -58,9 +58,7 @@ const specifyPackageManager = ({
       readFileSync(resolve(repoDir, 'package.json')).toString(),
     ) as Record<string, unknown> & { scripts: Record<string, string> }
 
-    // eslint-disable-next-line functional/immutable-data
     json['scripts']['add-plugin'] += ` --packageManager ${packageManager}`
-    // eslint-disable-next-line functional/immutable-data
     json['packageManager'] =
       packageManager === 'yarn' ? 'yarn@3.2.4' : 'pnpm@8.14.0'
 

@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-this-expression */
 import {
   create,
   add,

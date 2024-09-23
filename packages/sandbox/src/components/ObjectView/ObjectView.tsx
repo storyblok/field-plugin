@@ -49,7 +49,7 @@ const Pre = styled('pre')(({ theme }) => ({
   gap: theme.spacing(4),
 }))
 
-export const Code = styled('code')(({ theme }) => ({
+export const Code = styled('code')(() => ({
   backgroundColor: 'inherit',
   color: 'inherit',
   m: 0,

@@ -1,7 +1,6 @@
 #!/usr/bin/env -S node_modules/.bin/tsx
 // https://github.com/google/zx/issues/467#issuecomment-1577838056
 
-/* eslint-disable no-undef */
 import { $, which } from 'zx'
 import { betterPrompts } from '../packages/cli/src/utils'
 import semver, { type ReleaseType } from 'semver'
@@ -9,12 +8,10 @@ import { readFileSync } from 'fs'
 import { bold, cyan, green, red } from 'kleur/colors'
 
 const print = (...args: string[]) => {
-  // eslint-disable-next-line no-undef, no-console
   console.log(...args)
 }
 
 const exit = (code: number) => {
-  // eslint-disable-next-line no-undef
   process.exit(code)
 }
 
@@ -133,7 +130,6 @@ print(bold(green('✔')), bold('Current version ›'), currentVersion)
 const prerelease = semver.prerelease(currentVersion)
 
 // Get the next version
-// eslint-disable-next-line functional/no-let
 let nextVersion: string
 if (prerelease && typeof prerelease[0] === 'string') {
   // e.g. prerelease === ['alpha', 8]

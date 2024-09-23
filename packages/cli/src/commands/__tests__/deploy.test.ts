@@ -15,7 +15,6 @@ vi.mock('fs')
 
 describe('deploy', () => {
   const exit = vi.fn(() => {
-    // eslint-disable-next-line functional/no-throw-statement
     throw new Error('Exiting Process Error')
   })
 
@@ -128,11 +127,11 @@ const defaultDeployArgs: DeployArgs = {
 }
 
 const mockPersonalAccessTokenSuccess = () =>
-  vi.mocked(getPersonalAccessToken).mockImplementation((params) => {
+  vi.mocked(getPersonalAccessToken).mockImplementation(() => {
     return Promise.resolve({ error: false, token: 'token' })
   })
 const mockPersonalAccessTokenError = () =>
-  vi.mocked(getPersonalAccessToken).mockImplementation((params) => {
+  vi.mocked(getPersonalAccessToken).mockImplementation(() => {
     return Promise.resolve({
       error: true,
       message: 'getPersonalAccessToken Error',
@@ -140,20 +139,20 @@ const mockPersonalAccessTokenError = () =>
   })
 
 const mockPackageJsonNameError = () =>
-  vi.mocked(getPackageName).mockImplementation((name) => {
+  vi.mocked(getPackageName).mockImplementation(() => {
     return Promise.resolve({ error: true })
   })
 const mockPackageJsonNameSuccess = () =>
-  vi.mocked(getPackageName).mockImplementation((name) => {
+  vi.mocked(getPackageName).mockImplementation(() => {
     return Promise.resolve({ error: false, name: 'test name' })
   })
 const mockPackageJsonNameSuccessEmpty = () =>
-  vi.mocked(upsertFieldPlugin).mockImplementation((name) => {
+  vi.mocked(upsertFieldPlugin).mockImplementation(() => {
     return Promise.resolve({ id: 1 })
   })
 
 const mockUpsertFieldPluginSuccess = () =>
-  vi.mocked(upsertFieldPlugin).mockImplementation((name) => {
+  vi.mocked(upsertFieldPlugin).mockImplementation(() => {
     return Promise.resolve({ id: 1 })
   })
 

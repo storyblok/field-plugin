@@ -18,17 +18,17 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
     options: [],
     translatable: false,
   }
-  // @ts-ignore `height` is not used anywhere, but we keep it here.
+  // `height` is not used anywhere, but we keep it here.
   let height = undefined
-  let uid = 'test-uid'
-  let model: any = undefined
+  const uid = 'test-uid'
+  let model: unknown = undefined
   let isModalOpen = false
-  let blockId = 'test-block-id'
-  let language = 'default'
-  let storyId = 'test-story-id'
-  let spaceId = 'test-space-id'
-  let token = 'test-token'
-  let story = {
+  const blockId = 'test-block-id'
+  const language = 'default'
+  const storyId = 'test-story-id'
+  const spaceId = 'test-space-id'
+  const token = 'test-token'
+  const story = {
     content: {},
   }
 
@@ -57,7 +57,7 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
     receive: ({
       data,
     }: {
-      data: { callbackId: string } & Record<string, any>
+      data: { callbackId: string } & Record<string, unknown>
       origin: string
     }) => {
       if (isPluginLoadedMessage(data)) {
@@ -85,6 +85,7 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
         )
       } else if (isHeightChangeMessage(data)) {
         height = data.height
+        console.log('height is set to', height)
       } else if (isAssetModalChangeMessage(data)) {
         sendToFieldPlugin({
           action: 'asset-selected',
@@ -113,7 +114,7 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
 export const setupFieldPlugin = () => {
   let handleEvent: (event: MessageEvent<unknown>) => void
   const container = getContainer((data: unknown) => {
-    // @ts-ignore
+    // @ts-expect-error incomplete payload, but works for testing
     handleEvent({
       data,
       origin: sandboxOrigin,
@@ -135,7 +136,10 @@ export const setupFieldPlugin = () => {
   vi.stubGlobal('parent', {
     ...global.parent,
     postMessage: vi.mocked(
-      (data: { callbackId: string } & Record<string, any>, origin: string) => {
+      (
+        data: { callbackId: string } & Record<string, unknown>,
+        origin: string,
+      ) => {
         container.receive({ data, origin })
       },
     ),
