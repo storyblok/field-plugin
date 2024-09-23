@@ -2,12 +2,22 @@
   "name": "@storyblok/manifest-helper",
   "version": "0.0.1",
   "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
   "license": "MIT",
   "scripts": {
     "test": "vitest run",
-    "watch": "vitest watch"
+    "watch": "vitest watch",
+    "build": "unbuild"
   },
   "devDependencies": {
+    "unbuild": "2.0.0",
     "vite": "^5.1.3",
     "vitest": "1.3.0"
   }

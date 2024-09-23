@@ -11,6 +11,7 @@ import { isCloneable } from '../utils/isCloneable'
 export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
   validateContent?: ValidateContent<Content>
+  targetOrigin?: string
 }
 
 export type CreateFieldPlugin = <Content = unknown>(
@@ -23,6 +24,7 @@ export type CreateFieldPlugin = <Content = unknown>(
 export const createFieldPlugin: CreateFieldPlugin = ({
   onUpdateState,
   validateContent,
+  targetOrigin,
 }) => {
   const isEmbedded = window.parent !== window
 
@@ -52,9 +54,11 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   // ToDo: In development we need to load localhost:3300
   const origin =
-    host === 'plugin-sandbox.storyblok.com'
-      ? 'https://plugin-sandbox.storyblok.com'
-      : 'https://app.storyblok.com'
+    typeof targetOrigin === 'string'
+      ? targetOrigin
+      : host === 'plugin-sandbox.storyblok.com'
+        ? 'https://plugin-sandbox.storyblok.com'
+        : 'https://app.storyblok.com'
 
   const postToContainer = (message: unknown) => {
     try {

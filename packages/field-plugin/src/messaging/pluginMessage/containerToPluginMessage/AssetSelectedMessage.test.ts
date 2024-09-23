@@ -3,6 +3,7 @@ import {
   isAssetSelectedMessage,
 } from './AssetSelectedMessage'
 import { isAsset } from './Asset'
+import { emptyAsset } from './Asset.test'
 
 const stub: AssetSelectedMessage = {
   action: 'asset-selected',
@@ -10,6 +11,7 @@ const stub: AssetSelectedMessage = {
   field: 'dummy-field',
   callbackId: 'test-callback-id',
   filename: 'https://somthing.com/myimage.jpg',
+  asset: emptyAsset,
 }
 
 describe('AssetSelectedMessage', function () {
@@ -18,14 +20,6 @@ describe('AssetSelectedMessage', function () {
   })
   it('is an Asset', () => {
     expect(isAsset(stub)).toEqual(true)
-  })
-  it('allows unknown properties', () => {
-    expect(
-      isAssetSelectedMessage({
-        ...stub,
-        anUnknownProperty: 'something',
-      }),
-    ).toEqual(true)
   })
   describe('the action property', () => {
     it('equals "asset-selected"', () => {
@@ -45,13 +39,8 @@ describe('AssetSelectedMessage', function () {
   })
   describe('the field property', () => {
     it('is optional', () => {
-      expect(
-        isAssetSelectedMessage({
-          action: 'asset-selected',
-          uid: '-preview',
-          filename: 'https://somthing.com/myimage.jpg',
-        }),
-      ).toEqual(true)
+      const { field: _field, ...withoutField } = stub
+      expect(isAssetSelectedMessage(withoutField)).toEqual(true)
     })
     it('can be undefined', () => {
       expect(
