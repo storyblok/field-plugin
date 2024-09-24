@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "@storyblok/field-plugin#build": {
+      "dependsOn": [
+        "@storyblok/manifest-helper#build",
+        "@storyblok/helpers#build"
+      ]
+    },
+    "@storyblok/manifest-helper#build": {},
+    "@storyblok/helpers#build": {}
+  }
+}
