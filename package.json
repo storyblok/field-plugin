@@ -23,7 +23,8 @@
   ],
   "workspaces": [
     "packages/*",
-    "packages/cli/templates/*"
+    "packages/cli/templates/*",
+    "packages/lib-helpers/*"
   ],
   "engines": {
     "yarn": "^3.2.4"

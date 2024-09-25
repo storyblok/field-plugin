@@ -6249,6 +6249,50 @@ __metadata:
   languageName: node
   linkType: hard
 
+"helper-react@workspace:packages/lib-helpers/react":
+  version: 0.0.0-use.local
+  resolution: "helper-react@workspace:packages/lib-helpers/react"
+  dependencies:
+    "@storyblok/field-plugin": "workspace:*"
+    "@types/react": ^18.2.56
+    "@types/react-dom": ^18.2.19
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ^5.3.3
+  languageName: unknown
+  linkType: soft
+
+"helper-test@workspace:packages/lib-helpers/test":
+  version: 0.0.0-use.local
+  resolution: "helper-test@workspace:packages/lib-helpers/test"
+  dependencies:
+    "@storyblok/field-plugin": "workspace:*"
+    typescript: ^5.3.3
+    vitest: 2.1.1
+  languageName: unknown
+  linkType: soft
+
+"helper-vite@workspace:packages/lib-helpers/vite":
+  version: 0.0.0-use.local
+  resolution: "helper-vite@workspace:packages/lib-helpers/vite"
+  dependencies:
+    "@storyblok/manifest-helper": "workspace:*"
+    kleur: 4.1.5
+    typescript: ^5.3.3
+  languageName: unknown
+  linkType: soft
+
+"helper-vue3@workspace:packages/lib-helpers/vue3":
+  version: 0.0.0-use.local
+  resolution: "helper-vue3@workspace:packages/lib-helpers/vue3"
+  dependencies:
+    "@storyblok/field-plugin": "workspace:*"
+    prettier: 3.2.5
+    typescript: ^5.3.3
+    vue: ^3.3.4
+  languageName: unknown
+  linkType: soft
+
 "highlight.js@npm:11.9.0":
   version: 11.9.0
   resolution: "highlight.js@npm:11.9.0"
@@ -10614,7 +10658,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.2.47":
+"vue@npm:^3.2.47, vue@npm:^3.3.4":
   version: 3.5.8
   resolution: "vue@npm:3.5.8"
   dependencies:
