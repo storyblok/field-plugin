@@ -2023,7 +2023,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@*, @storyblok/field-plugin@1.2.1, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@*, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
@@ -2039,6 +2039,13 @@ __metadata:
     vitest: 2.1.1
   languageName: unknown
   linkType: soft
+
+"@storyblok/field-plugin@npm:1.2.1":
+  version: 1.2.1
+  resolution: "@storyblok/field-plugin@npm:1.2.1"
+  checksum: dd68eb5862bb3070f15bfde6e6c2380e027fb25d1942654a28b0de888de109827ff6f7ca550b9d96aaeb73f50293cce0ec8f2c2dd47e4151fc753e113d743bac
+  languageName: node
+  linkType: hard
 
 "@storyblok/manifest-helper@workspace:*, @storyblok/manifest-helper@workspace:packages/manifest-helper":
   version: 0.0.0-use.local
