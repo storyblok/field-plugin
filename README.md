@@ -25,6 +25,9 @@ For more details, please refer to the [documentation](https://www.storyblok.com/
       <td align="center" valign="top" width="16.66%"><a href="https://www.bendcircular.com"><img src="https://avatars.githubusercontent.com/u/2835032?v=4?s=100" width="100px;" alt="Philipp Litzenberger"/><br /><sub><b>Philipp Litzenberger</b></sub></a><br /><a href="#code-plitzenberger" title="Code">💻</a></td>
       <td align="center" valign="top" width="16.66%"><a href="https://hoera.dev"><img src="https://avatars.githubusercontent.com/u/14295796?v=4?s=100" width="100px;" alt="Samuel Höra"/><br /><sub><b>Samuel Höra</b></sub></a><br /><a href="#bug-hoersamu" title="Bug reports">🐛</a> <a href="#code-hoersamu" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="16.66%"><a href="https://links.dawntraoz.com/"><img src="https://avatars.githubusercontent.com/u/36744484?v=4?s=100" width="100px;" alt="Alba Silvente Fuentes"/><br /><sub><b>Alba Silvente Fuentes</b></sub></a><br /><a href="#code-Dawntraoz" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 

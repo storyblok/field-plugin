@@ -1,5 +1,6 @@
 import { createPluginActions, ValidateContent } from './createPluginActions'
 import { createHeightChangeListener } from './createHeightChangeListener'
+import { createKeydownEscListener } from './createKeydownEscListener'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
@@ -50,6 +51,8 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   }
 
   const { uid, host } = params
+
+  // ToDo: In development we need to load localhost:3300
   const origin =
     typeof targetOrigin === 'string'
       ? targetOrigin
@@ -85,23 +88,30 @@ export const createFieldPlugin: CreateFieldPlugin = ({
     Exclude<typeof validateContent, undefined>
   >['content']
 
-  const { actions, messageCallbacks, onHeightChange, initialize } =
-    createPluginActions<InferredContent>({
-      uid,
-      postToContainer,
-      onUpdateState: (data) => {
-        onUpdateState({
-          type: 'loaded',
-          data,
-          actions,
-        })
-      },
-      validateContent:
-        validateContent ||
-        ((content) => ({ content: content as InferredContent })),
-    })
+  const {
+    actions,
+    messageCallbacks,
+    onHeightChange,
+    onKeydownEsc,
+    initialize,
+  } = createPluginActions<InferredContent>({
+    uid,
+    postToContainer,
+    onUpdateState: (data) => {
+      onUpdateState({
+        type: 'loaded',
+        data,
+        actions,
+      })
+    },
+    validateContent:
+      validateContent ||
+      ((content) => ({ content: content as InferredContent })),
+  })
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
+
+  const cleanupKeydownEscListener = createKeydownEscListener(onKeydownEsc)
 
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
@@ -114,6 +124,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   return () => {
     cleanupMessageListenerSideEffects()
     cleanupHeightChangeListener()
+    cleanupKeydownEscListener()
     cleanupStyleSideEffects()
   }
 }

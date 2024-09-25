@@ -9,18 +9,6 @@
   },
   "private": true,
   "license": "UNLICENSED",
-  "contributors": [
-    {
-      "name": "Johannes Lindgren",
-      "email": "johannes.lindgren@storyblok.com",
-      "url": "https://www.storyblok.com/"
-    },
-    {
-      "name": "Bibiana Sebestianova",
-      "email": "bibiana.sebestianova@storyblok.com",
-      "url": "https://www.storyblok.com/"
-    }
-  ],
   "workspaces": [
     "packages/*",
     "packages/cli/templates/*",
