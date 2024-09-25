@@ -9,6 +9,7 @@
     },
     "@storyblok/lib-helpers#build": {
       "outputs": ["dist/**"],
+      "cache": false,
       "dependsOn": [
         "@storyblok/manifest-helper#build",
         "@storyblok/field-plugin#build"
