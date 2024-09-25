@@ -4,6 +4,7 @@
   "description": "SDK for creating Field Plugins for Storyblok.",
   "author": {
     "name": "Storyblok",
+    "email": "it@storyblok.com",
     "url": "https://www.storyblok.com/"
   },
   "private": true,
