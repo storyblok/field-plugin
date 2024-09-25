@@ -10,6 +10,7 @@ import { isCloneable } from '../utils/isCloneable'
 export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
   validateContent?: ValidateContent<Content>
+  targetOrigin?: string
 }
 
 export type CreateFieldPlugin = <Content = unknown>(
@@ -22,6 +23,7 @@ export type CreateFieldPlugin = <Content = unknown>(
 export const createFieldPlugin: CreateFieldPlugin = ({
   onUpdateState,
   validateContent,
+  targetOrigin,
 }) => {
   const isEmbedded = window.parent !== window
 
@@ -49,20 +51,20 @@ export const createFieldPlugin: CreateFieldPlugin = ({
 
   const { uid, host } = params
   const origin =
-    host === 'plugin-sandbox.storyblok.com'
-      ? 'https://plugin-sandbox.storyblok.com'
-      : 'https://app.storyblok.com'
+    typeof targetOrigin === 'string'
+      ? targetOrigin
+      : host === 'plugin-sandbox.storyblok.com'
+        ? 'https://plugin-sandbox.storyblok.com'
+        : 'https://app.storyblok.com'
 
   const postToContainer = (message: unknown) => {
     try {
       window.parent.postMessage(message, origin)
     } catch (err) {
       if (isCloneable(message)) {
-        // eslint-disable-next-line functional/no-throw-statement
         throw err
       }
 
-      // eslint-disable-next-line functional/no-throw-statement
       throw new Error(
         'The argument could not be cloned. ' +
           'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +

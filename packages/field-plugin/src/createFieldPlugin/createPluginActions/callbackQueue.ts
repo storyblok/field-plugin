@@ -18,7 +18,6 @@ type CallbackMap = {
 type CallbackType = keyof CallbackMap
 
 export const callbackQueue = () => {
-  // eslint-disable-next-line functional/no-let
   let callbackMap: CallbackMap = {
     asset: {},
     context: {},
@@ -52,9 +51,7 @@ export const callbackQueue = () => {
         if (id === callbackId) {
           return previousValue
         }
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,functional/immutable-data
+        // @ts-expect-error hard to fix
         previousValue[id] = callback
         return previousValue
       },

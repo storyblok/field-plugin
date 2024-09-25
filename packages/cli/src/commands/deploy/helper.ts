@@ -148,7 +148,6 @@ export const getPackageJsonName = (path: string): string | undefined => {
     return
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const json: { name: string } = JSON.parse(
     readFileSync(resolve(path, 'package.json')).toString(),
   )
@@ -394,7 +393,6 @@ export const createFieldPlugin = async (
     return fieldPlugin
   } catch (err) {
     if (skipPrompts || getErrorMessage(err) !== 'DUPLICATED_NAME') {
-      // eslint-disable-next-line functional/no-throw-statement
       throw err
     }
 

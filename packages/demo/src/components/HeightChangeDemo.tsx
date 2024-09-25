@@ -6,7 +6,7 @@ import { CenteredContent, HelpIcon } from '@storyblok/mui'
 const step = 5
 const minHeight = step
 
-export const HeightChangeDemo: PluginComponent = (props) => {
+export const HeightChangeDemo: PluginComponent = (_props) => {
   const [height, setHeight] = useState(minHeight)
   const increaseHeight = () => setHeight((height) => height + step)
   const decreaseHeight = () =>

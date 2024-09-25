@@ -21,17 +21,16 @@ const updateObjectWithoutChangingReference = (
   Object.assign(originalObject, newObject)
 }
 
-export const useFieldPlugin = <Content>({
-  validateContent,
-}: Omit<CreateFieldPluginOptions<Content>, 'onUpdateState'> = {}): UnwrapRef<
-  FieldPluginResponse<Content>
-> => {
+export const useFieldPlugin = <Content>(
+  options: Omit<CreateFieldPluginOptions<Content>, 'onUpdateState'> = {},
+): UnwrapRef<FieldPluginResponse<Content>> => {
   const plugin = reactive<FieldPluginResponse<Content>>({
     type: 'loading',
   })
 
   onMounted(() => {
     createFieldPlugin<Content>({
+      ...options,
       onUpdateState: (state) => {
         if (state.type === 'error') {
           Object.assign(plugin, {
@@ -88,7 +87,6 @@ export const useFieldPlugin = <Content>({
           return
         }
       },
-      validateContent,
     })
   })
 
