@@ -39,12 +39,12 @@ const plugin = useFieldPlugin({
         :count="plugin.data.content"
         @on-increase="plugin.actions.setContent(plugin.data.content + 1)"
       />
-      <hr>
+      <hr />
       <ModalToggle
         :is-modal-open="plugin.data.isModalOpen"
         :set-modal-open="plugin.actions.setModalOpen"
       />
-      <hr>
+      <hr />
       <AssetSelector :select-asset="plugin.actions.selectAsset" />
     </div>
   </div>
