@@ -19,7 +19,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install --immutable
       - name: Build the library
-        run: yarn workspace @storyblok/field-plugin build
+        run: yarn build:lib
       - name: Copy the root's readme file
         run: cp README.md packages/field-plugin/
       - name: Publish the package to NPM

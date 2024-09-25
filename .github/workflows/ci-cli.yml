@@ -18,7 +18,7 @@ jobs:
       - run: |
           yarn workspace @storyblok/field-plugin-cli test
           yarn workspace @storyblok/manifest-helper test
-      - run: yarn workspace @storyblok/field-plugin-cli build
+      - run: yarn build:cli
   standalone-vue2:
     runs-on: ubuntu-latest
     steps:
