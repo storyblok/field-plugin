@@ -1,18 +1,26 @@
 {
   "tasks": {
     "@storyblok/field-plugin#build": {
-      "outputs": ["packages/field-plugin/dist/**"],
+      "outputs": ["dist/**"],
       "dependsOn": ["@storyblok/manifest-helper#build"]
     },
     "@storyblok/manifest-helper#build": {
-      "outputs": ["packages/manifest-helper/dist/**"]
+      "outputs": ["dist/**"]
     },
     "@storyblok/lib-helpers#build": {
-      "outputs": ["packages/lib-helpers/dist/**"],
+      "outputs": ["dist/**"],
       "dependsOn": [
         "@storyblok/manifest-helper#build",
         "@storyblok/field-plugin#build"
       ]
+    },
+    "@storyblok/field-plugin-cli#build": {
+      "outputs": ["dist/**", "bin.js"],
+      "dependsOn": ["@storyblok/field-plugin#build"]
+    },
+    "sandbox#build": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["@storyblok/field-plugin#build"]
     }
   }
 }
