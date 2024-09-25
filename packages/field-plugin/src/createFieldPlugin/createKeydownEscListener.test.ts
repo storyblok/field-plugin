@@ -1,9 +1,10 @@
 /* eslint-disable functional/immutable-data */
 import { createKeydownEscListener } from './createKeydownEscListener'
+import { MockInstance } from 'vitest'
 
 describe('createKeydownEscListener', () => {
-  let addEventListenerSpy: vi.SpyInstance
-  let removeEventListenerSpy: vi.SpyInstance
+  let addEventListenerSpy: MockInstance
+  let removeEventListenerSpy: MockInstance
   const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' })
 
   beforeEach(() => {
