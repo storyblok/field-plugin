@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-let */
 import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { FieldPluginData } from '../FieldPluginData'
 import {
@@ -36,6 +35,8 @@ export type CreatePluginActions = <Content>(options: {
   messageCallbacks: PluginMessageCallbacks
   // This function is called whenever the height changes
   onHeightChange: (height: number) => void
+  // This function is called whenever the ESC key is pressed
+  onKeydownEsc: () => void
   // This initiates the plugin
   initialize: Initialize<Content>
 }
@@ -86,6 +87,10 @@ export const createPluginActions: CreatePluginActions = ({
     postToContainer(heightChangeMessage(uid, height))
   }
 
+  const onKeydownEsc = () => {
+    postToContainer(modalChangeMessage({ uid, status: false }))
+  }
+
   return {
     actions: {
       setContent: (content) => {
@@ -131,6 +136,7 @@ export const createPluginActions: CreatePluginActions = ({
     },
     messageCallbacks,
     onHeightChange,
+    onKeydownEsc,
     initialize: () => {
       return new Promise((resolve) => {
         const callbackId = pushCallback('loaded', (message) =>

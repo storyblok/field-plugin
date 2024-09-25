@@ -1,5 +1,6 @@
 import { createPluginActions, ValidateContent } from './createPluginActions'
 import { createHeightChangeListener } from './createHeightChangeListener'
+import { createKeydownEscListener } from './createKeydownEscListener'
 import { disableDefaultStoryblokStyles } from './disableDefaultStoryblokStyles'
 import { pluginUrlParamsFromUrl } from '../messaging'
 import { FieldPluginResponse } from './FieldPluginResponse'
@@ -10,6 +11,7 @@ import { isCloneable } from '../utils/isCloneable'
 export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
   validateContent?: ValidateContent<Content>
+  targetOrigin?: string
 }
 
 export type CreateFieldPlugin = <Content = unknown>(
@@ -22,6 +24,7 @@ export type CreateFieldPlugin = <Content = unknown>(
 export const createFieldPlugin: CreateFieldPlugin = ({
   onUpdateState,
   validateContent,
+  targetOrigin,
 }) => {
   const isEmbedded = window.parent !== window
 
@@ -48,21 +51,23 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   }
 
   const { uid, host } = params
+
+  // ToDo: In development we need to load localhost:3300
   const origin =
-    host === 'plugin-sandbox.storyblok.com'
-      ? 'https://plugin-sandbox.storyblok.com'
-      : 'https://app.storyblok.com'
+    typeof targetOrigin === 'string'
+      ? targetOrigin
+      : host === 'plugin-sandbox.storyblok.com'
+        ? 'https://plugin-sandbox.storyblok.com'
+        : 'https://app.storyblok.com'
 
   const postToContainer = (message: unknown) => {
     try {
       window.parent.postMessage(message, origin)
     } catch (err) {
       if (isCloneable(message)) {
-        // eslint-disable-next-line functional/no-throw-statement
         throw err
       }
 
-      // eslint-disable-next-line functional/no-throw-statement
       throw new Error(
         'The argument could not be cloned. ' +
           'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +
@@ -83,23 +88,30 @@ export const createFieldPlugin: CreateFieldPlugin = ({
     Exclude<typeof validateContent, undefined>
   >['content']
 
-  const { actions, messageCallbacks, onHeightChange, initialize } =
-    createPluginActions<InferredContent>({
-      uid,
-      postToContainer,
-      onUpdateState: (data) => {
-        onUpdateState({
-          type: 'loaded',
-          data,
-          actions,
-        })
-      },
-      validateContent:
-        validateContent ||
-        ((content) => ({ content: content as InferredContent })),
-    })
+  const {
+    actions,
+    messageCallbacks,
+    onHeightChange,
+    onKeydownEsc,
+    initialize,
+  } = createPluginActions<InferredContent>({
+    uid,
+    postToContainer,
+    onUpdateState: (data) => {
+      onUpdateState({
+        type: 'loaded',
+        data,
+        actions,
+      })
+    },
+    validateContent:
+      validateContent ||
+      ((content) => ({ content: content as InferredContent })),
+  })
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)
+
+  const cleanupKeydownEscListener = createKeydownEscListener(onKeydownEsc)
 
   const cleanupMessageListenerSideEffects = createPluginMessageListener(
     params.uid,
@@ -112,6 +124,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   return () => {
     cleanupMessageListenerSideEffects()
     cleanupHeightChangeListener()
+    cleanupKeydownEscListener()
     cleanupStyleSideEffects()
   }
 }

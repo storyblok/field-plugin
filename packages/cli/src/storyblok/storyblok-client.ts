@@ -1,6 +1,6 @@
 import { red } from 'kleur/colors'
 import type { Response } from 'node-fetch'
-import { ManifestOption } from '@storyblok/manifest-helper/src/manifest'
+import { ManifestOption } from '@storyblok/manifest-helper'
 
 export type FieldType = {
   id: number
@@ -77,13 +77,11 @@ export const StoryblokClient: StoryblokClientFunc = ({ token, scope }) => {
   const fetchAllFieldTypes = async () => {
     const results: FieldType[] = []
 
-    // eslint-disable-next-line functional/no-loop-statement, functional/no-let
     for (let page = 1; page <= 100; page++) {
       const fieldTypes = await fetchFieldTypes(page)
       if (fieldTypes.length === 0) {
         break
       }
-      // eslint-disable-next-line functional/immutable-data
       results.push(...fieldTypes)
     }
     return results
@@ -140,7 +138,6 @@ const handleErrorIfExists = (
   }
 
   if (isDuplicatedNameError(json)) {
-    // eslint-disable-next-line functional/no-throw-statement
     throw new Error('DUPLICATED_NAME')
   }
 

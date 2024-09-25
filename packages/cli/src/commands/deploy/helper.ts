@@ -14,13 +14,13 @@ import {
   StoryClientType,
   StoryblokClient,
 } from '../../storyblok/storyblok-client'
-import { getErrorMessage } from '@storyblok/manifest-helper/src/utils'
 import {
   load,
   Manifest,
   MANIFEST_FILE_NAME,
   ManifestOption,
-} from '@storyblok/manifest-helper/src/manifest'
+  getErrorMessage,
+} from '@storyblok/manifest-helper'
 
 const packageNameMessage =
   'How would you like to call the deployed field-plugin?\n  (Lowercase alphanumeric and dash are allowed.)'
@@ -148,7 +148,6 @@ export const getPackageJsonName = (path: string): string | undefined => {
     return
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const json: { name: string } = JSON.parse(
     readFileSync(resolve(path, 'package.json')).toString(),
   )
@@ -256,7 +255,7 @@ export const confirmOptionsUpdate = async (
 }
 
 export const printManifestOptions = (options: ManifestOption[] | undefined) => {
-  if (options?.length === 0) {
+  if (options?.length === 0 || options === undefined) {
     return
   }
 
@@ -351,10 +350,8 @@ export const loadManifest = (): Manifest | undefined => {
 
     return load()
   } catch (err) {
-    console.log(bold(red('[ERROR]')), `Error while loading the manifest file`)
     console.log(`path: ${MANIFEST_FILE_NAME}`)
-    console.log(`error: ${getErrorMessage(err)}`)
-
+    console.log(red(`${bold('[ERROR]:')} ${getErrorMessage(err)}`))
     return undefined
   }
 }
@@ -396,7 +393,6 @@ export const createFieldPlugin = async (
     return fieldPlugin
   } catch (err) {
     if (skipPrompts || getErrorMessage(err) !== 'DUPLICATED_NAME') {
-      // eslint-disable-next-line functional/no-throw-statement
       throw err
     }
 

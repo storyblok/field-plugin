@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-throw-statement */
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
 import { getErrorMessage } from './utils/error'
@@ -17,7 +16,7 @@ export type Manifest = {
 
 export const load = (): Manifest | undefined => {
   try {
-    if (!existsSync(MANIFEST_FULL_PATH)) {
+    if (!manifestExists()) {
       return undefined
     }
 
@@ -48,16 +47,58 @@ const validateSchema = (manifest: Manifest): void => {
     }
   })
 
-  if (manifest.options !== undefined && !Array.isArray(manifest.options)) {
-    throw new Error(`The 'options' property should be an array`)
+  //NOTE: accepted empty options case
+  if (manifest.options === undefined) {
+    return
   }
 
-  manifest.options?.forEach((option) => {
-    if (!('name' in option && 'value' in option)) {
-      throw new Error(
-        `Some of the defined 'options' are invalid. ` +
-          `Please, make sure they contain a 'name' and 'value' properties`,
-      )
-    }
-  })
+  if (!Array.isArray(manifest.options)) {
+    throw new Error(`When declared, the 'options' property should be an array`)
+  }
+
+  //NOTE: accepted empty options case
+  if (manifest.options.length === 0) {
+    return
+  }
+
+  validateOptions(manifest.options)
 }
+
+const validateOptions = (options: unknown[]): void => {
+  const incorrectValues: string[] = []
+
+  for (const option of options) {
+    if (!isOptionObject(option)) {
+      incorrectValues.push(
+        `${JSON.stringify(option)} --> Incorrect object value. Must be of type {"name": string, "value": string}.`,
+      )
+      continue
+    }
+
+    if (!isString(option.value)) {
+      incorrectValues.push(
+        `${JSON.stringify(option)} --> Incorrect value type. Must be of type string.`,
+      )
+      continue
+    }
+  }
+
+  if (incorrectValues.length > 0) {
+    throw new Error(
+      'Each option must be an object with string properties "name" and "value". The following values need to be corrected: \n ' +
+        incorrectValues.join('\n '),
+    )
+  }
+}
+
+export const manifestExists = (): boolean => {
+  return existsSync(MANIFEST_FULL_PATH)
+}
+
+export const isString = (value: unknown) => typeof value === 'string'
+
+export const isOptionObject = (option: unknown): option is ManifestOption =>
+  typeof option === 'object' &&
+  option !== null &&
+  'name' in option &&
+  'value' in option

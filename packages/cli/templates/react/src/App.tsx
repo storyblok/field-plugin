@@ -1,4 +1,4 @@
-import FieldPlugin from './components/FieldPlugin'
+import _FieldPlugin from './components/FieldPlugin'
 import FieldPluginExample from './components/FieldPluginExample'
 import { FunctionComponent } from 'react'
 

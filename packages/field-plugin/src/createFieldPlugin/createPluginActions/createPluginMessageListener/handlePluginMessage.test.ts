@@ -6,14 +6,15 @@ import {
   LoadedMessage,
   MessageToPlugin,
 } from '../../../messaging'
+import { emptyAsset } from '../../../messaging/pluginMessage/containerToPluginMessage/Asset.test'
 
 const uid = 'abc123'
 const mockCallbacks = (): PluginMessageCallbacks => ({
-  onStateChange: jest.fn(),
-  onContextRequest: jest.fn(),
-  onAssetSelect: jest.fn(),
-  onUnknownMessage: jest.fn(),
-  onLoaded: jest.fn(),
+  onStateChange: vi.fn(),
+  onContextRequest: vi.fn(),
+  onAssetSelect: vi.fn(),
+  onUnknownMessage: vi.fn(),
+  onLoaded: vi.fn(),
 })
 
 describe('handlePluginMessage', () => {
@@ -95,6 +96,7 @@ describe('handlePluginMessage', () => {
       filename: '/my-file.jpg',
       field: 'callback-uid',
       callbackId: 'test-callback-id',
+      asset: emptyAsset,
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)

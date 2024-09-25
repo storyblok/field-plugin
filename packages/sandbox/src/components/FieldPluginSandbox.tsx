@@ -100,7 +100,6 @@ const useSandbox = (
       fieldPluginURL.pathname
     }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
-  const [iframeKey, setIframeKey] = useState(0)
 
   const [story] = useState<StoryData>(initialStory)
 
@@ -150,11 +149,12 @@ const useSandbox = (
   const postToPlugin = useCallback(
     (message: unknown) => {
       try {
-        typeof fieldPluginURL !== 'undefined' &&
+        if (typeof fieldPluginURL !== 'undefined') {
           fieldTypeIframe.current?.contentWindow?.postMessage(
             message,
             fieldPluginURL.origin,
           )
+        }
       } catch (e) {
         onError({
           title: 'Failed to post message to plugin',
@@ -252,6 +252,19 @@ const useSandbox = (
         action: 'asset-selected',
         callbackId: message.callbackId,
         filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
+        asset: {
+          id: 0,
+          filename: `${originFromPluginParams(pluginParams)}/icon.svg`,
+          fieldtype: 'asset',
+          name: '',
+          meta_data: {},
+          title: '',
+          copyright: '',
+          focus: '',
+          alt: '',
+          source: '',
+          is_private: false,
+        },
       })
     },
     [uid, pluginParams, dispatchAssetSelected],
