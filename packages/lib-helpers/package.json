@@ -4,8 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "unbuild",
-    "copy": "tsx copy.ts"
+    "build": "unbuild && tsx copy.ts"
   },
   "devDependencies": {
     "execa": "8.0.1",

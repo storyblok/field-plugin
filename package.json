@@ -34,7 +34,7 @@
   "type": "module",
   "scripts": {
     "postinstall": "yarn build:lib && yarn prepare-dev-configs",
-    "build": "yarn build:lib && yarn workspaces foreach --exclude @storyblok/field-plugin run build",
+    "build": "turbo run build",
     "build:lib": "yarn workspace @storyblok/field-plugin build",
     "build:cli": "yarn workspace @storyblok/field-plugin-cli build",
     "build:sandbox": "yarn build:lib && yarn workspace sandbox build",

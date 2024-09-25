@@ -5,11 +5,13 @@ import { fileURLToPath } from 'url'
 
 const copyHelpersToFieldPluginDist = async () => {
   const cwd = resolve(dirname(fileURLToPath(import.meta.url)))
-  console.log('💡 cwd', cwd)
 
   for (const mod of SUBMODULES) {
-    await execaCommand(`cd ../dist && mkdir -p ${mod}`, { cwd, shell: true })
-    await execaCommand(`cp ./dist/${mod}/src/* ../dist/${mod}/`, {
+    await execaCommand(`cd ../field-plugin/dist && mkdir -p ${mod}`, {
+      cwd,
+      shell: true,
+    })
+    await execaCommand(`cp ./dist/${mod}/src/* ../field-plugin/dist/${mod}/`, {
       cwd,
       shell: true,
     })
