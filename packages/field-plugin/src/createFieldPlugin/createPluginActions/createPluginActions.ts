@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-let */
 import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { FieldPluginData } from '../FieldPluginData'
 import {

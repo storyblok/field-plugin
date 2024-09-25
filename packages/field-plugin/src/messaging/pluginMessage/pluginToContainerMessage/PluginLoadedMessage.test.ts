@@ -54,7 +54,7 @@ describe('PluginLoadedMessage', () => {
             fullHeight: false,
           }),
         ).toEqual(true)
-        const { fullHeight: _, ...subWithoutFullHeight } = stub
+        const { fullHeight: _fullHeight, ...subWithoutFullHeight } = stub
         expect(isPluginLoadedMessage(subWithoutFullHeight)).toEqual(true)
         expect(
           isPluginLoadedMessage({

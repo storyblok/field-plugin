@@ -91,11 +91,9 @@ export const add: AddFunc = async (args) => {
         readFileSync(file).toString(),
       ) as PackageJson
 
-      // eslint-disable-next-line functional/immutable-data
       packageJson['name'] = packageName
 
       if (args.structure === 'monorepo') {
-        // eslint-disable-next-line functional/immutable-data, @typescript-eslint/no-unsafe-member-access
         packageJson['scripts']['deploy'] += " --dotEnvPath '../../.env'"
       }
 

@@ -100,7 +100,6 @@ const useSandbox = (
       fieldPluginURL.pathname
     }?${urlSearchParamsFromPluginUrlParams(pluginParams)}`
   }, [fieldPluginURL, pluginParams])
-  const [iframeKey, setIframeKey] = useState(0)
 
   const [story] = useState<StoryData>(initialStory)
 
@@ -150,11 +149,12 @@ const useSandbox = (
   const postToPlugin = useCallback(
     (message: unknown) => {
       try {
-        typeof fieldPluginURL !== 'undefined' &&
+        if (typeof fieldPluginURL !== 'undefined') {
           fieldTypeIframe.current?.contentWindow?.postMessage(
             message,
             fieldPluginURL.origin,
           )
+        }
       } catch (e) {
         onError({
           title: 'Failed to post message to plugin',

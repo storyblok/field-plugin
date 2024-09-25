@@ -34,7 +34,7 @@ describe('ValueChangeMessage', () => {
       ).toEqual(false)
     })
     test('that the model property is present', () => {
-      const { model: _, ...withoutModel } = stub
+      const { model: _model, ...withoutModel } = stub
       expect(isValueChangeMessage(withoutModel)).toEqual(false)
     })
     test('that the model property can be any value', () => {

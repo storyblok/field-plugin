@@ -5,7 +5,6 @@ export const recordFromFieldPluginOptions = (
 ): Record<string, string> =>
   options.reduce(
     (options, option) => {
-      // eslint-disable-next-line functional/immutable-data
       options[option.name] = option.value
       return options
     },

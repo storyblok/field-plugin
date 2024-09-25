@@ -1,6 +1,0 @@
-node_modules/
-packages/*/node_modules/
-packages/*/dist/
-packages/cli/templates/
-packages/field-plugin/helpers/
-build.config.ts

@@ -1,5 +1,3 @@
-/* eslint-disable functional/immutable-data */
-
 import { createHeightChangeListener } from './createHeightChangeListener'
 
 describe('auto resizer', () => {
@@ -56,7 +54,6 @@ describe('auto resizer', () => {
 const mockResizeObserver = () => {
   const observe = vi.fn()
 
-  // eslint-disable-next-line functional/no-let
   let mockEvents: (() => void)[] = []
   const mockResize = () => mockEvents.forEach((it) => it())
 

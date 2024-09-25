@@ -65,11 +65,9 @@ export const createFieldPlugin: CreateFieldPlugin = ({
       window.parent.postMessage(message, origin)
     } catch (err) {
       if (isCloneable(message)) {
-        // eslint-disable-next-line functional/no-throw-statement
         throw err
       }
 
-      // eslint-disable-next-line functional/no-throw-statement
       throw new Error(
         'The argument could not be cloned. ' +
           'The argument must be cloneable with structuredClone(), so that it can be sent to other windows with window.postMessage(). ' +
