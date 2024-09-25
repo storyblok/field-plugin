@@ -58,6 +58,13 @@ export default [
       ],
       'react/prop-types': 'off',
       'vue/multi-word-component-names': 'off',
+      'vue/html-self-closing': 'off',
+    },
+  },
+  {
+    files: ['!packages/cli/templates/vue2/**'],
+    rules: {
+      'vue/require-prop-types': 'off',
     },
   },
 ]
