@@ -21,7 +21,7 @@ jobs:
       - name: Lint
         run: |
           yarn eslint packages/field-plugin
-          yarn workspaces foreach --include "helper-*" run lint
+          yarn eslint packages/manifest-helper
       - name: Test
         run: |
           yarn workspace @storyblok/field-plugin test

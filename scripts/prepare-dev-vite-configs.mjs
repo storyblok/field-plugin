@@ -1,5 +1,4 @@
 #!/usr/bin/env zx
-/* eslint-disable no-undef */
 /*
   It's totally okay to run `yarn workspace field-plugin-react-template dev`.
   However, if you want to test changes in `@storyblok/field-plugin` library (under `packages/field-plugin/` folder),
@@ -18,14 +17,14 @@ import { $ } from 'zx'
 import fs from 'fs/promises'
 import path from 'path'
 
-// eslint-disable-next-line functional/immutable-data
 process.env.FORCE_COLOR = '1'
 
-const templates = (await fs.readdir('packages/cli/templates', { withFileTypes: true })).filter(
-  (dir) => dir.isDirectory() && dir.name !== 'monorepo',
-).map(dir => dir.name)
+const templates = (
+  await fs.readdir('packages/cli/templates', { withFileTypes: true })
+)
+  .filter((dir) => dir.isDirectory() && dir.name !== 'monorepo')
+  .map((dir) => dir.name)
 
-// eslint-disable-next-line functional/no-loop-statement
 for (const template of templates) {
   const templatePath = `packages/cli/templates/${template}`
   const newConfigDir = `${templatePath}/node_modules`
@@ -33,7 +32,6 @@ for (const template of templates) {
   await $`mkdir -p ${newConfigDir}`
   await $`cp ${templatePath}/vite.config.ts ${newConfigPath}`
 
-  // eslint-disable-next-line functional/no-let
   let file = (await fs.readFile(newConfigPath)).toString()
   file = file.replace(
     'plugins:',
@@ -41,21 +39,21 @@ for (const template of templates) {
     alias: [{
       find: /^@storyblok\\/field-plugin$/,
       replacement: '${path.resolve(
-      __dirname,
-      '../packages/field-plugin/src/index.ts',
-    )}'
+        __dirname,
+        '../packages/field-plugin/src/index.ts',
+      )}'
     }, {
       find: /^@storyblok\\/field-plugin\\/vue3$/,
       replacement: '${path.resolve(
-      __dirname,
-      '../packages/field-plugin/helpers/vue3/src/index.ts',
-    )}'
+        __dirname,
+        '../packages/field-plugin/helpers/vue3/src/index.ts',
+      )}'
     }, {
       find: /^@storyblok\\/field-plugin\\/react$/,
       replacement: '${path.resolve(
-      __dirname,
-      '../packages/field-plugin/helpers/react/src/index.ts',
-    )}'
+        __dirname,
+        '../packages/field-plugin/helpers/react/src/index.ts',
+      )}'
     }]
   },
   plugins:`,

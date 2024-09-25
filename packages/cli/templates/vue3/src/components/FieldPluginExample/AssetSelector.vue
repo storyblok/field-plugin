@@ -22,7 +22,7 @@ const removeAsset = () => {
       v-if="asset"
       :src="asset.filename"
       title="Selected Asset"
-    />
+    >
     <button
       v-if="asset"
       class="btn w-full"

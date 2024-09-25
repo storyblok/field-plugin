@@ -37,15 +37,15 @@ const plugin = useFieldPlugin({
     <div class="container">
       <Counter
         :count="plugin.data.content"
-        @onIncrease="plugin.actions.setContent(plugin.data.content + 1)"
+        @on-increase="plugin.actions.setContent(plugin.data.content + 1)"
       />
       <hr />
       <ModalToggle
-        :isModalOpen="plugin.data.isModalOpen"
-        :setModalOpen="plugin.actions.setModalOpen"
+        :is-modal-open="plugin.data.isModalOpen"
+        :set-modal-open="plugin.actions.setModalOpen"
       />
       <hr />
-      <AssetSelector :selectAsset="plugin.actions.selectAsset" />
+      <AssetSelector :select-asset="plugin.actions.selectAsset" />
     </div>
   </div>
 </template>

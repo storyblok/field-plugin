@@ -57,7 +57,6 @@ describe('utils', () => {
     describe('dotEnvPath is given', () => {
       it('returns error if env file does not have token', async () => {
         vi.mocked(existsSync).mockImplementation(() => true)
-        // eslint-disable-next-line functional/immutable-data
         delete process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
         const result = await getPersonalAccessToken({
           token: undefined,
@@ -74,7 +73,6 @@ describe('utils', () => {
 
       it('returns token if env file has token', async () => {
         vi.mocked(existsSync).mockImplementation(() => true)
-        // eslint-disable-next-line functional/immutable-data
         process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN = 'my-token'
         const result = await getPersonalAccessToken({
           token: undefined,
@@ -90,7 +88,6 @@ describe('utils', () => {
     describe('dotEnvPath is not given', () => {
       it('returns error if env files do not have token', async () => {
         vi.mocked(existsSync).mockImplementation(() => true)
-        // eslint-disable-next-line functional/immutable-data
         delete process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN
         const result = await getPersonalAccessToken({
           token: undefined,
@@ -108,7 +105,6 @@ describe('utils', () => {
 
       it('returns token if env files have token', async () => {
         vi.mocked(existsSync).mockImplementation(() => true)
-        // eslint-disable-next-line functional/immutable-data
         process.env.STORYBLOK_PERSONAL_ACCESS_TOKEN = 'my-token'
         const result = await getPersonalAccessToken({
           token: undefined,

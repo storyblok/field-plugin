@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import { createFieldPlugin } from '@storyblok/field-plugin'
 
-/* eslint-disable functional/no-this-expression */
 export const fieldPluginMixin = {
   created() {
     createFieldPlugin({
