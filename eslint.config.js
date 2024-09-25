@@ -62,7 +62,7 @@ export default [
     },
   },
   {
-    files: ['!packages/cli/templates/vue2/**'],
+    files: ['packages/cli/templates/vue2/**'],
     rules: {
       'vue/require-prop-types': 'off',
     },
