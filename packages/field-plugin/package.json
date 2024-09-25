@@ -40,7 +40,7 @@
     "check:types": "tsc --noEmit",
     "dev": "vite build --watch",
     "test": "vitest",
-    "build": "unbuild && yarn workspace @storyblok/helpers copy"
+    "build": "unbuild && yarn workspace @storyblok/lib-helpers copy"
   },
   "devDependencies": {
     "@types/core-js": "2.5.8",

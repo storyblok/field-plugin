@@ -1,5 +1,5 @@
 {
-  "name": "@storyblok/helpers",
+  "name": "@storyblok/lib-helpers",
   "version": "0.0.1",
   "type": "module",
   "license": "MIT",

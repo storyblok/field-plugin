@@ -24,8 +24,7 @@
   "workspaces": [
     "packages/*",
     "packages/cli/templates/*",
-    "packages/field-plugin/helpers",
-    "packages/field-plugin/helpers/*"
+    "packages/helpers"
   ],
   "engines": {
     "yarn": "^3.2.4"
