@@ -12,7 +12,6 @@ vi.mock('../monorepo')
 vi.mock('../standalone')
 
 describe('create', () => {
-  // eslint-disable-next-line functional/no-let
   let utils: typeof import('../../../utils')
 
   beforeAll(async () => {

@@ -10,7 +10,6 @@ import { emptyAsset } from '../../messaging/pluginMessage/containerToPluginMessa
 // INFO: The methods like `setContent` is not being resolved in this file because `pushCallback` doesn't resolve.
 // We can also mock `callbackQueue` and make it resolve, and resolve this `no-floating-promises` issue.
 //
-/* eslint-disable @typescript-eslint/no-floating-promises */
 
 const mock = () => ({
   uid: 'abc',
@@ -205,7 +204,6 @@ describe('createPluginActions', () => {
         onUpdateState,
         validateContent,
       })
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       selectAsset()
       expect(postToContainer).toHaveBeenLastCalledWith(
         expect.objectContaining({
