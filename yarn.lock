@@ -2037,7 +2037,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@*, @storyblok/field-plugin@1.2.1, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@1.2.1, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
@@ -9064,7 +9064,7 @@ __metadata:
     "@emotion/styled": 11.11.0
     "@fontsource/roboto": 4.5.8
     "@mui/material": 5.15.10
-    "@storyblok/field-plugin": "*"
+    "@storyblok/field-plugin": "workspace:*"
     "@storyblok/mui": 0.2.0
     "@types/react-dom": ^18.2.19
     "@vitejs/plugin-react": ^3.0.0
