@@ -1,4 +1,3 @@
-/* eslint-disable functional/immutable-data */
 import { createKeydownEscListener } from './createKeydownEscListener'
 import { MockInstance } from 'vitest'
 
