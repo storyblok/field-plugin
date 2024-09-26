@@ -35,6 +35,7 @@
     "check:types": "yarn workspaces foreach run check:types",
     "lint": "eslint .",
     "dev:demo": "yarn workspace demo dev",
+    "dev:cli": "yarn workspace @storyblok/field-plugin-cli dev",
     "dev:lib": "yarn workspace @storyblok/field-plugin dev",
     "dev:sandbox": "yarn workspace sandbox dev",
     "dev:template": "yarn workspace field-plugin-${0}-template dev --config node_modules/.${0}-vite.config.ts",
