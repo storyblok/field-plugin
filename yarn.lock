@@ -2037,7 +2037,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@1.2.1, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@1.3.0, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
@@ -2325,11 +2325,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:>=20":
-  version: 22.7.0
-  resolution: "@types/node@npm:22.7.0"
+  version: 22.7.2
+  resolution: "@types/node@npm:22.7.2"
   dependencies:
     undici-types: ~6.19.2
-  checksum: a40a013afb3d00c2246d6eca39885a5516216785e9c6668191fd836eefd9b3daed0c8865485ebab181838131dbded6b9ee3275b404202261c31a7f9fa51a871a
+  checksum: 5e753a4a7195a05133e1234e6e2eb68d9f002c5566499dc560e1d7efdcad102f10815ea11f8e206a04b7626876c666227535c755a7d77bc71d73278864b0a652
   languageName: node
   linkType: hard
 
@@ -2343,11 +2343,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^18.16.3":
-  version: 18.19.51
-  resolution: "@types/node@npm:18.19.51"
+  version: 18.19.53
+  resolution: "@types/node@npm:18.19.53"
   dependencies:
     undici-types: ~5.26.4
-  checksum: edc6ac7a1804e042299f4244aece9bbf048b5fe6dbe10a669d076614bf364bb833ae50f9f05a296fe94ffa5f39aa75c3d4644be41128bf051e1cd86d4f010ec7
+  checksum: 53a5a480998967f45e243f35413152f2f67c3bbe517a51e6aaba239fe1ec14be7b302538e9c17bfda4a317fcea41cb09d09764286e0341fcea37a5de5a98d54b
   languageName: node
   linkType: hard
 
@@ -3692,9 +3692,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001646, caniuse-lite@npm:^1.0.30001663":
-  version: 1.0.30001663
-  resolution: "caniuse-lite@npm:1.0.30001663"
-  checksum: 489a642feb6826a0fc7cfd7dbc35a3341cc1439eafdf0dae79338cf9033c5d9eddaedacbef7935acaddbb3c226a51097ed53d66dc6d8128cd6938c6763e1bbc4
+  version: 1.0.30001664
+  resolution: "caniuse-lite@npm:1.0.30001664"
+  checksum: cee25b4ea8a84779b7c9a60c1f9e304f6d99b79ef622b25fbc7873b4e55e8722a1091dd6c8b77bd7723e9f26a84b4a820a50a864989dd477e7ee51dc30461dca
   languageName: node
   linkType: hard
 
@@ -4489,9 +4489,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.28":
-  version: 1.5.28
-  resolution: "electron-to-chromium@npm:1.5.28"
-  checksum: f997385e8f8a25900c6b04a666b65550b1592c5d2a11db94b4eebcc8921e942c7249b87e0eb33229ea156d79b5e0d5f3e0e1b0ac548c2de51d9e1d6fda097335
+  version: 1.5.29
+  resolution: "electron-to-chromium@npm:1.5.29"
+  checksum: c1de62aaea88c9b3ba32f8f2703b9d77a81633099a8f61365eaf9855d36e72189dcd99b9c3b8b2804afa403ac2ce0b00c23affa6f19d17b04ce0076f66a546b6
   languageName: node
   linkType: hard
 
@@ -5596,7 +5596,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-js-template@workspace:packages/cli/templates/js"
   dependencies:
-    "@storyblok/field-plugin": 1.2.1
+    "@storyblok/field-plugin": 1.3.0
     vite: ^5.1.3
     vite-plugin-css-injected-by-js: 2.4.0
   languageName: unknown
@@ -5622,7 +5622,7 @@ __metadata:
   resolution: "field-plugin-react-template@workspace:packages/cli/templates/react"
   dependencies:
     "@eslint/js": ^9.9.0
-    "@storyblok/field-plugin": 1.2.1
+    "@storyblok/field-plugin": 1.3.0
     "@testing-library/jest-dom": 6.4.2
     "@testing-library/react": 14.2.1
     "@testing-library/user-event": 14.5.2
@@ -5651,7 +5651,7 @@ __metadata:
   dependencies:
     "@rollup/plugin-node-resolve": 15.2.3
     "@rollup/plugin-replace": 5.0.5
-    "@storyblok/field-plugin": 1.2.1
+    "@storyblok/field-plugin": 1.3.0
     "@vitejs/plugin-vue2": 2.3.1
     rollup: 3.29.4
     typescript: 5.3.3
@@ -5665,7 +5665,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-vue3-template@workspace:packages/cli/templates/vue3"
   dependencies:
-    "@storyblok/field-plugin": 1.2.1
+    "@storyblok/field-plugin": 1.3.0
     "@testing-library/jest-dom": 6.4.2
     "@testing-library/user-event": 14.5.2
     "@testing-library/vue": 8.0.2
