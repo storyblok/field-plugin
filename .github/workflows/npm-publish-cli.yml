@@ -19,7 +19,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install --immutable
       - name: Build the CLI
-        run: yarn workspace @storyblok/field-plugin-cli build
+        run: yarn build:cli
       - name: Publish the package to NPM
         run: ./scripts/publish.ts cli
         env:

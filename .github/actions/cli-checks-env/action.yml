@@ -12,9 +12,9 @@ runs:
       shell: bash
     - run: yarn install
       shell: bash
-    - run: yarn workspace @storyblok/field-plugin build
+    - run: yarn build:lib
       shell: bash
     - run: cd packages/field-plugin && npm link
       shell: bash
-    - run: yarn workspace @storyblok/field-plugin-cli build
+    - run: yarn build:cli
       shell: bash

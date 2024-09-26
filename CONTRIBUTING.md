@@ -93,10 +93,10 @@ To test the CLI, make any changes under `packages/cli` and then run the followin
 yarn build:cli
 ```
 
-To test the local version of the CLI, run `npx field-plugin <command>`. It is recommended to test the CLI outside of the Field Plugin SDK repository. To do this, run the following:
+To test the local version of the CLI, run `yarn dev:cli <command>`. It is recommended to test the CLI outside of the Field Plugin SDK repository. To do this, run the following:
 
 ```sh
-npx field-plugin create --dir ../<SOME-TEST-DIRECTORY>
+yarn dev:cli create --dir ../<SOME-TEST-DIRECTORY>
 ```
 
 A plugin will be created under the test directory.
