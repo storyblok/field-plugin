@@ -11,7 +11,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/setupTests.ts'],
   },
-  // @ts-expect-error unknown type error
   plugins: [react(), cssInjectedByJs(), ...plugins],
   build: {
     rollupOptions: {
