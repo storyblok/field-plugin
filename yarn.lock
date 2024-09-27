@@ -5701,7 +5701,7 @@ __metadata:
     semver: 7.6.0
     tsx: 3.14.0
     turbo: 2.1.2
-    typescript: ^5.3.3
+    typescript: 5.3.3
     typescript-eslint: 8.6.0
     vite: 5.4.8
     vite-plugin-dts: 1.7.3
@@ -6267,7 +6267,7 @@ __metadata:
   resolution: "helper-test@workspace:packages/lib-helpers/test"
   dependencies:
     "@storyblok/field-plugin": "workspace:*"
-    typescript: ^5.3.3
+    typescript: 5.3.3
     vitest: 2.1.1
   languageName: unknown
   linkType: soft
@@ -6278,7 +6278,7 @@ __metadata:
   dependencies:
     "@storyblok/manifest-helper": "workspace:*"
     kleur: 4.1.5
-    typescript: ^5.3.3
+    typescript: 5.3.3
   languageName: unknown
   linkType: soft
 
@@ -6288,7 +6288,7 @@ __metadata:
   dependencies:
     "@storyblok/field-plugin": "workspace:*"
     prettier: 3.2.5
-    typescript: ^5.3.3
+    typescript: 5.3.3
     vue: ^3.3.4
   languageName: unknown
   linkType: soft
@@ -9126,7 +9126,7 @@ __metadata:
     react-dom: 18.2.0
     react-router-dom: ^6.22.1
     sass: ^1.71.0
-    typescript: ^5.3.3
+    typescript: 5.3.3
     use-debounce: ^9.0.3
     use-query-params: ^2.2.1
     usehooks-ts: 2.14.0
@@ -10092,16 +10092,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.3.3":
-  version: 5.6.2
-  resolution: "typescript@npm:5.6.2"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 48777e1dabd9044519f56cd012b0296e3b72bafe12b7e8e34222751d45c67e0eba5387ecdaa6c14a53871a29361127798df6dc8d1d35643a0a47cb0b1c65a33a
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@5.3.3#~builtin<compat/typescript>":
   version: 5.3.3
   resolution: "typescript@patch:typescript@npm%3A5.3.3#~builtin<compat/typescript>::version=5.3.3&hash=701156"
@@ -10119,16 +10109,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: c1b669146bca5529873aae60870e243fa8140c85f57ca32c42f898f586d73ce4a6b4f6bb02ae312729e214d7f5859a0c70da3e527a116fdf5ad00c9fc733ecc6
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
-  version: 5.6.2
-  resolution: "typescript@patch:typescript@npm%3A5.6.2#~builtin<compat/typescript>::version=5.6.2&hash=701156"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: c084ee1ab865f108c787e6233a5f63c126c482c0c8e87ec998ac5288a2ad54b603e1ea8b8b272355823b833eb31b9fabb99e8c6152283e1cb47e3a76bd6faf6c
   languageName: node
   linkType: hard
 
