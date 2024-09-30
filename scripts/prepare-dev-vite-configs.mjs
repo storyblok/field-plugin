@@ -46,13 +46,13 @@ for (const template of templates) {
       find: /^@storyblok\\/field-plugin\\/vue3$/,
       replacement: '${path.resolve(
         __dirname,
-        '../packages/field-plugin/helpers/vue3/src/index.ts',
+        '../packages/lib-helpers/vue3/src/index.ts',
       )}'
     }, {
       find: /^@storyblok\\/field-plugin\\/react$/,
       replacement: '${path.resolve(
         __dirname,
-        '../packages/field-plugin/helpers/react/src/index.ts',
+        '../packages/lib-helpers/react/src/index.ts',
       )}'
     }]
   },
