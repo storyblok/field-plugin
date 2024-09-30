@@ -18,21 +18,21 @@ export default defineConfig({
       process.env.NODE_ENV === 'production'
         ? []
         : [
-          {
-            find: /^@storyblok\/field-plugin$/,
-            replacement: path.resolve(
-              __dirname,
-              '../field-plugin/src/index.ts',
-            ),
-          },
-          {
-            find: /^@storyblok\/field-plugin\/react$/,
-            replacement: path.resolve(
-              __dirname,
-              '../field-plugin/helpers/react/src/index.ts',
-            ),
-          },
-        ],
+            {
+              find: /^@storyblok\/field-plugin$/,
+              replacement: path.resolve(
+                __dirname,
+                '../field-plugin/src/index.ts',
+              ),
+            },
+            {
+              find: /^@storyblok\/field-plugin\/react$/,
+              replacement: path.resolve(
+                __dirname,
+                '../lib-helpers/react/src/index.ts',
+              ),
+            },
+          ],
   },
   server: {
     port: 8080,
