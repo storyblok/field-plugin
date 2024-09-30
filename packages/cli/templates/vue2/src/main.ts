@@ -2,6 +2,14 @@ import Vue from 'vue'
 import './style.css'
 import App from './App.vue'
 
+if (import.meta.env.DEV && window.self === window.top) {
+  console.log('Redirecting to the Field Plugin Sandbox...')
+  const url = `https://plugin-sandbox.storyblok.com/field-plugin?${new URLSearchParams(
+    { url: location.href },
+  ).toString()}`
+  location.href = url
+}
+
 if (!document.querySelector('#app')) {
   // In production, `#app` may or may not exist.
   const rootElement = document.createElement('div')
