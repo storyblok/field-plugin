@@ -381,6 +381,7 @@ export const createFieldPlugin = async (
     //we need to force an update call right after the creation.
     //If no options is found, it's not going to be sent to the API since undefined
     //properties are not encoded.
+    //NOTE: The `publish` property is set to true here because it is a part of the creation process and should provide a consistent flow.
     await client.updateFieldType({
       id: fieldPlugin.id,
       publish: true,
