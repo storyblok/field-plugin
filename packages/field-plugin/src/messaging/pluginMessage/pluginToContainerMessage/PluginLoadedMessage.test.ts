@@ -76,6 +76,94 @@ describe('PluginLoadedMessage', () => {
         ).toEqual(false)
       })
     })
+    describe('subscribeState', () => {
+      it('is optional', () => {
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: undefined,
+          }),
+        ).toEqual(true)
+      })
+      it('is a boolean', () => {
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: true,
+          }),
+        ).toEqual(true)
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: false,
+          }),
+        ).toEqual(true)
+        const { subscribeState: _subscribeState, ...subWithoutSubscribeState } = stub
+        expect(isPluginLoadedMessage(subWithoutSubscribeState)).toEqual(true)
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: 'false',
+          }),
+        ).toEqual(false)
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: 123,
+          }),
+        ).toEqual(false)
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: null,
+          }),
+        ).toEqual(false)
+      })
+    })
+    describe('usePortalModal', () => {
+      it('is optional', () => {
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: undefined,
+          }),
+        ).toEqual(true)
+      })
+      it('is a boolean', () => {
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: true,
+          }),
+        ).toEqual(true)
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: false,
+          }),
+        ).toEqual(true)
+        const { subscribeState: _subscribeState, ...subWithoutSubscribeState } = stub
+        expect(isPluginLoadedMessage(subWithoutSubscribeState)).toEqual(true)
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: 'false',
+          }),
+        ).toEqual(false)
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: 123,
+          }),
+        ).toEqual(false)
+        expect(
+          isPluginLoadedMessage({
+            ...stub,
+            subscribeState: null,
+          }),
+        ).toEqual(false)
+      })
+    })
   })
   describe('constructor', () => {
     it('includes the uid', () => {
@@ -87,6 +175,18 @@ describe('PluginLoadedMessage', () => {
     it('sets fullHeight to true', () => {
       expect(pluginLoadedMessage({ uid, callbackId })).toHaveProperty(
         'fullHeight',
+        true,
+      )
+    })
+    it('sets subscribeState to true', () => {
+      expect(pluginLoadedMessage({ uid, callbackId })).toHaveProperty(
+        'subscribeState',
+        true,
+      )
+    })
+    it('sets usePortalModal to true', () => {
+      expect(pluginLoadedMessage({ uid, callbackId })).toHaveProperty(
+        'usePortalModal',
         true,
       )
     })
