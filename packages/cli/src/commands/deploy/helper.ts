@@ -26,12 +26,13 @@ const packageNameMessage =
   'How would you like to call the deployed field-plugin?\n  (Lowercase alphanumeric and dash are allowed.)'
 
 type UpsertFieldPluginFunc = (args: {
+  scope: Scope
+  token: string
   dir: string
   packageName: string
-  skipPrompts?: boolean
-  token: string
   output: string
-  scope: Scope
+  skipPrompts: undefined | boolean
+  publish: undefined | boolean
 }) => Promise<{ id: number }>
 
 type GetPackageName = (params: {
@@ -42,7 +43,7 @@ type GetPackageName = (params: {
 
 // TODO: move all side effects to the deploy function
 export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
-  const { packageName, skipPrompts, token, output, dir, scope } = args
+  const { packageName, skipPrompts, token, output, dir, scope, publish } = args
 
   const manifest = loadManifest()
 
@@ -78,9 +79,11 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
       await confirmOptionsUpdate(manifest?.options)
     }
 
+    const shouldPublish = await checkPublish({ publish, skipPrompts })
+
     await storyblokClient.updateFieldType({
       id: fieldPluginFound.id,
-      publish: true,
+      publish: shouldPublish,
       field_type: {
         body: output,
         options: manifest?.options,
@@ -413,4 +416,38 @@ export const createFieldPlugin = async (
       skipPrompts,
     )
   }
+}
+
+// Publish Logic
+
+type CheckPublish = (params: {
+  publish: undefined | boolean
+  skipPrompts: undefined | boolean
+}) => Promise<boolean>
+
+export const checkPublish: CheckPublish = async ({ publish, skipPrompts }) => {
+  if (skipPrompts === true) {
+    //NOTE: Publish true is the default value
+    return publish || true
+  }
+
+  if (publish !== undefined) {
+    return publish
+  }
+
+  const publishConfirmation = await confirmPublish()
+  return publishConfirmation
+}
+
+const confirmPublish = async (): Promise<boolean> => {
+  const { publish } = await betterPrompts<{
+    publish: boolean
+  }>({
+    type: 'confirm',
+    name: 'publish',
+    message: 'Do you want to publish a new version of the field plugin?',
+    initial: false,
+  })
+
+  return publish
 }
