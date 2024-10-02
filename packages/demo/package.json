@@ -9,14 +9,14 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@emotion/react": "11.11.3",
-    "@emotion/styled": "11.11.0",
+    "@emotion/react": "11.13.3",
+    "@emotion/styled": "11.13.0",
     "@fontsource/roboto": "4.5.8",
-    "@mui/material": "5.15.10",
+    "@mui/material": "5.16.7",
     "@storyblok/field-plugin": "workspace:*",
     "@storyblok/mui": "0.2.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
     "@types/react-dom": "^18.2.19",
