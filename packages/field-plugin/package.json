@@ -1,6 +1,6 @@
 {
   "name": "@storyblok/field-plugin",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "SDK for creating Field Plugins for Storyblok.",
   "sideEffects": false,
   "files": [
@@ -40,19 +40,17 @@
     "check:types": "tsc --noEmit",
     "dev": "vite build --watch",
     "test": "vitest",
-    "build": "yarn build:manifest-helper && unbuild && yarn build:helpers",
-    "build:helpers": "cd helpers && unbuild",
-    "build:manifest-helper": "cd ../manifest-helper && yarn build"
+    "build": "unbuild"
   },
   "devDependencies": {
     "@types/core-js": "2.5.8",
-    "@types/node": "18.19.17",
-    "core-js": "3.36.0",
+    "@types/node": "18.19.54",
+    "core-js": "3.38.1",
     "execa": "8.0.1",
     "jsdom": "25.0.0",
-    "typescript": "^5.3.3",
+    "typescript": "5.6.2",
     "unbuild": "2.0.0",
-    "vite": "5.4.6",
+    "vite": "5.4.8",
     "vite-plugin-dts": "4.2.1",
     "vitest": "2.1.1"
   }

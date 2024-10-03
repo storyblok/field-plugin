@@ -1,6 +1,6 @@
 {
   "name": "@storyblok/field-plugin-cli",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "type": "module",
   "bin": {
     "field-plugin": "./bin.js"
@@ -16,9 +16,10 @@
   },
   "scripts": {
     "prepare": "yarn build",
-    "create": "yarn build && node bin.js create",
-    "deploy": "yarn build && node bin.js deploy",
-    "build": "vite build && cp -r templates dist/ && yarn clean:dist",
+    "dev": "node bin.js",
+    "create": "yarn build && yarn dev create",
+    "deploy": "yarn build && yarn dev deploy",
+    "build": "vite build && cp -rP templates dist/ && yarn clean:dist",
     "clean:dist": "cd dist && find . \\( -name 'node_modules' -o -name 'dist' \\) -type d -prune -exec rm -rf '{}' \\;",
     "test": "vitest run",
     "test:watch": "vitest watch"
@@ -32,7 +33,7 @@
     "node-fetch": "^3.3.0",
     "ora": "6.3.1",
     "prompts": "^2.4.2",
-    "vite": "^5.1.3",
+    "vite": "5.4.8",
     "walkdir": "^0.4.1"
   },
   "devDependencies": {

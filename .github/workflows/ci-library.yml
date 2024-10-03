@@ -27,4 +27,4 @@ jobs:
           yarn workspace @storyblok/field-plugin test
           yarn workspace @storyblok/manifest-helper test
       - name: Build
-        run: yarn workspace @storyblok/field-plugin build
+        run: yarn build:lib

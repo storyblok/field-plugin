@@ -15,6 +15,7 @@ import { Scope } from '../../storyblok/storyblok-client'
 export type DeployArgs = {
   skipPrompts: boolean
   dir: string
+  publish: boolean
   name: undefined | string
   token: undefined | string
   output: undefined | string
@@ -25,7 +26,8 @@ export type DeployArgs = {
 type DeployFunc = (args: DeployArgs) => Promise<void>
 
 export const deploy: DeployFunc = async (params) => {
-  const { skipPrompts, token, name, dir, output, dotEnvPath, scope } = params
+  const { skipPrompts, token, name, dir, output, publish, dotEnvPath, scope } =
+    params
 
   console.log(bold(cyan('\nWelcome!')))
   console.log("Let's deploy a field-plugin.\n")
@@ -106,6 +108,7 @@ export const deploy: DeployFunc = async (params) => {
     token: personalAccessTokenResult.token,
     output: outputFile,
     scope: apiScope,
+    publish,
   })
 
   console.log(
