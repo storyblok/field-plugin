@@ -32,7 +32,7 @@ type UpsertFieldPluginFunc = (args: {
   packageName: string
   output: string
   skipPrompts: undefined | boolean
-  publish: undefined | boolean
+  publish: boolean
 }) => Promise<{ id: number }>
 
 type GetPackageName = (params: {
@@ -422,20 +422,16 @@ export const createFieldPlugin = async (
 // Publish Logic
 
 type CheckPublish = (params: {
-  publish: undefined | boolean
+  publish: boolean
   skipPrompts: undefined | boolean
 }) => Promise<boolean>
 
 export const checkPublish: CheckPublish = async ({ publish, skipPrompts }) => {
-  if (skipPrompts === true) {
-    //NOTE: Publish true is the default value
-    return publish || true
-  }
-
-  if (publish !== undefined) {
+  if (skipPrompts === true || publish === false) {
     return publish
   }
 
+  //NOTE: In interactive mode where --no-publish is not provided, the user is asked to confirm the publish action.
   const publishConfirmation = await confirmPublish()
   return publishConfirmation
 }

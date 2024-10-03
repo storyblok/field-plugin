@@ -15,7 +15,7 @@ import { Scope } from '../../storyblok/storyblok-client'
 export type DeployArgs = {
   skipPrompts: boolean
   dir: string
-  publish: undefined | boolean
+  publish: boolean
   name: undefined | string
   token: undefined | string
   output: undefined | string
