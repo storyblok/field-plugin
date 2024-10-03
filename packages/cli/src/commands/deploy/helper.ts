@@ -26,12 +26,13 @@ const packageNameMessage =
   'How would you like to call the deployed field-plugin?\n  (Lowercase alphanumeric and dash are allowed.)'
 
 type UpsertFieldPluginFunc = (args: {
+  scope: Scope
+  token: string
   dir: string
   packageName: string
-  skipPrompts?: boolean
-  token: string
   output: string
-  scope: Scope
+  skipPrompts: undefined | boolean
+  publish: boolean
 }) => Promise<{ id: number }>
 
 type GetPackageName = (params: {
@@ -42,7 +43,7 @@ type GetPackageName = (params: {
 
 // TODO: move all side effects to the deploy function
 export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
-  const { packageName, skipPrompts, token, output, dir, scope } = args
+  const { packageName, skipPrompts, token, output, dir, scope, publish } = args
 
   const manifest = loadManifest()
 
@@ -78,9 +79,11 @@ export const upsertFieldPlugin: UpsertFieldPluginFunc = async (args) => {
       await confirmOptionsUpdate(manifest?.options)
     }
 
+    const shouldPublish = await checkPublish({ publish, skipPrompts })
+
     await storyblokClient.updateFieldType({
       id: fieldPluginFound.id,
-      publish: true,
+      publish: shouldPublish,
       field_type: {
         body: output,
         options: manifest?.options,
@@ -378,6 +381,7 @@ export const createFieldPlugin = async (
     //we need to force an update call right after the creation.
     //If no options is found, it's not going to be sent to the API since undefined
     //properties are not encoded.
+    //NOTE: The `publish` property is set to true here because it is a part of the creation process and should provide a consistent flow.
     await client.updateFieldType({
       id: fieldPlugin.id,
       publish: true,
@@ -413,4 +417,34 @@ export const createFieldPlugin = async (
       skipPrompts,
     )
   }
+}
+
+// Publish Logic
+
+type CheckPublish = (params: {
+  publish: boolean
+  skipPrompts: undefined | boolean
+}) => Promise<boolean>
+
+export const checkPublish: CheckPublish = async ({ publish, skipPrompts }) => {
+  if (skipPrompts === true || publish === false) {
+    return publish
+  }
+
+  //NOTE: In interactive mode where --no-publish is not provided, the user is asked to confirm the publish action.
+  const publishConfirmation = await confirmPublish()
+  return publishConfirmation
+}
+
+const confirmPublish = async (): Promise<boolean> => {
+  const { publish } = await betterPrompts<{
+    publish: boolean
+  }>({
+    type: 'confirm',
+    name: 'publish',
+    message: 'Do you want to publish a new version of the field plugin?',
+    initial: false,
+  })
+
+  return publish
 }
