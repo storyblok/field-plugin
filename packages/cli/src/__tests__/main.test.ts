@@ -23,7 +23,11 @@ describe('main', () => {
     it('deploy command', () => {
       const cli = createCLI()
       cli.parse([...DEFAULT_ARGS, 'deploy'])
-      expect(deploy).toHaveBeenCalledWith({ dir: '.', skipPrompts: false })
+      expect(deploy).toHaveBeenCalledWith({
+        dir: '.',
+        skipPrompts: false,
+        publish: true,
+      })
     })
   })
 
@@ -100,6 +104,7 @@ describe('main', () => {
         name: 'my-test-plugin',
         output: './dist/index.js',
         dir: 'my-directory',
+        publish: true,
         dotEnvPath: '.',
         scope: 'my-plugins',
       })
