@@ -323,6 +323,7 @@ const useSandbox = (
       setSchema,
       setUrl,
       randomizeUid,
+      setModalOpen,
     },
   ] as const
 }
@@ -342,7 +343,7 @@ export const FieldPluginSandbox: FunctionComponent = () => {
       fieldTypeIframe,
       iframeSrc,
     },
-    { setContent, setLanguage, setSchema, setUrl, randomizeUid },
+    { setModalOpen, setContent, setLanguage, setSchema, setUrl, randomizeUid },
   ] = useSandbox(error)
 
   return (
@@ -378,6 +379,7 @@ export const FieldPluginSandbox: FunctionComponent = () => {
               enablePortalModal={enablePortalModal}
               fullHeight={fullHeight}
               ref={fieldTypeIframe}
+              onModalChange={setModalOpen}
             />
           </CenteredContent>
           <Stack alignSelf="flex-start">

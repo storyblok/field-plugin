@@ -10,10 +10,12 @@ import {
   Backdrop,
   Box,
   Dialog,
+  IconButton,
   SxProps,
   Typography,
 } from '@mui/material'
 import { DisableShieldsNotification } from './DisableShieldsNotification'
+import { CloseIcon } from '@storyblok/mui'
 
 const NonPortalModal: FunctionComponent<
   PropsWithChildren<{
@@ -136,9 +138,11 @@ export const FieldTypePreview = forwardRef<
     // Allows the iframe to be refreshed
     iframeKey?: number
     sx?: SxProps
+    onModalChange: (isModal: boolean) => void
   }
 >(function FieldTypePreview(props, ref) {
-  const { height, isModal, fullHeight, enablePortalModal } = props
+  const { height, isModal, fullHeight, enablePortalModal, onModalChange } =
+    props
 
   const isNonPortalModalOpen = !enablePortalModal && isModal
   const isPortalModalOpen = enablePortalModal && isModal
@@ -152,6 +156,10 @@ export const FieldTypePreview = forwardRef<
     if (!isPortalModalOpen) {
       setRef(ref, el)
     }
+  }
+
+  const handleClose = () => {
+    onModalChange(false)
   }
 
   return (
@@ -169,7 +177,21 @@ export const FieldTypePreview = forwardRef<
             overflow: 'hidden',
           },
         }}
+        onClose={handleClose}
       >
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="flex-end"
+          padding={1}
+        >
+          <IconButton
+            onClick={handleClose}
+            color="secondary"
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
         <FieldPluginIframe
           key={props.iframeKey}
           src={props.src}
