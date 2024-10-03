@@ -1,9 +1,15 @@
-import { forwardRef, FunctionComponent, PropsWithChildren } from 'react'
+import {
+  ForwardedRef,
+  forwardRef,
+  FunctionComponent,
+  PropsWithChildren,
+} from 'react'
 import {
   Alert,
   AlertTitle,
   Backdrop,
   Box,
+  Dialog,
   SxProps,
   Typography,
 } from '@mui/material'
@@ -68,6 +74,57 @@ const FieldTypeSandbox: FunctionComponent<
   </Box>
 )
 
+const FieldPluginIframe = forwardRef<
+  HTMLIFrameElement,
+  {
+    src: string | undefined
+    fullHeight: boolean
+    modal: boolean
+    height: number
+  }
+>(function FieldPluginIframe(props, ref) {
+  const { src, fullHeight, modal, height } = props
+
+  if (typeof src === 'undefined') {
+    return (
+      <Alert
+        severity="error"
+        sx={{
+          width: '100%',
+        }}
+      >
+        <AlertTitle>Unable to Load Field Plugin</AlertTitle>
+        <Typography>Please enter a valid URL.</Typography>
+      </Alert>
+    )
+  }
+
+  return (
+    <Box
+      ref={ref}
+      component="iframe"
+      src={src}
+      title="Field Plugin Preview"
+      style={{
+        height: fullHeight && modal ? 'auto' : height,
+        width: '100%',
+        flex: 1,
+        border: 'none',
+      }}
+    />
+  )
+})
+
+const setRef = <T,>(ref: ForwardedRef<T>, value: T | null) => {
+  if (ref === null) {
+    return
+  } else if (typeof ref === 'function') {
+    ref(value)
+  } else {
+    ref.current = value
+  }
+}
+
 export const FieldTypePreview = forwardRef<
   HTMLIFrameElement,
   {
@@ -86,39 +143,57 @@ export const FieldTypePreview = forwardRef<
   const isNonPortalModalOpen = !enablePortalModal && isModal
   const isPortalModalOpen = enablePortalModal && isModal
 
+  const setTeleported = (el: HTMLIFrameElement | null) => {
+    if (isPortalModalOpen) {
+      setRef(ref, el)
+    }
+  }
+  const setNonTeleported = (el: HTMLIFrameElement | null) => {
+    if (!isPortalModalOpen) {
+      setRef(ref, el)
+    }
+  }
+
   return (
     <Box sx={props.sx}>
       <DisableShieldsNotification />
+      <Dialog
+        open={isPortalModalOpen}
+        fullScreen
+        sx={{
+          padding: 10,
+        }}
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            overflow: 'hidden',
+          },
+        }}
+      >
+        <FieldPluginIframe
+          key={props.iframeKey}
+          src={props.src}
+          ref={setTeleported}
+          fullHeight={fullHeight}
+          modal={isModal}
+          height={height}
+        />
+      </Dialog>
       <Backdrop
-        open={props.isModal}
+        open={isNonPortalModalOpen}
         sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
       />
       <NonPortalModal isNonPortalModalOpen={isNonPortalModalOpen}>
         <FieldTypeSandbox isNonPortalModalOpen={isNonPortalModalOpen}>
-          {typeof props.src !== 'undefined' ? (
-            <Box
-              ref={ref}
+          {!isPortalModalOpen && (
+            <FieldPluginIframe
               key={props.iframeKey}
-              component="iframe"
               src={props.src}
-              title="Field Plugin Preview"
-              style={{
-                height: fullHeight && isModal ? 'auto' : height,
-                width: '100%',
-                flex: 1,
-                border: 'none',
-              }}
+              ref={setNonTeleported}
+              fullHeight={fullHeight}
+              modal={isModal}
+              height={height}
             />
-          ) : (
-            <Alert
-              severity="error"
-              sx={{
-                width: '100%',
-              }}
-            >
-              <AlertTitle>Unable to Load Field Plugin</AlertTitle>
-              <Typography>Please enter a valid URL.</Typography>
-            </Alert>
           )}
         </FieldTypeSandbox>
       </NonPortalModal>
