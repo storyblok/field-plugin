@@ -108,6 +108,7 @@ const useSandbox = (
   const [isModalOpen, setModalOpen] = useState(false)
   const [height, setHeight] = useState(initialHeight)
   const [fullHeight, setFullHeight] = useState(false)
+  const [enablePortalModal, setEnablePortalModal] = useState(false)
   const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
     options: manifest.options,
@@ -218,6 +219,7 @@ const useSandbox = (
     (message: PluginLoadedMessage) => {
       setSubscribeState(Boolean(message.subscribeState))
       setFullHeight(Boolean(message.fullHeight))
+      setEnablePortalModal(Boolean(message.enablePortalModal))
       dispatchLoadedChanged({
         ...stateChangedData,
         action: 'loaded',
@@ -309,6 +311,7 @@ const useSandbox = (
       isModalOpen,
       height,
       fullHeight,
+      enablePortalModal,
       schema,
       url,
       fieldTypeIframe,
@@ -332,6 +335,7 @@ export const FieldPluginSandbox: FunctionComponent = () => {
       language,
       isModalOpen,
       fullHeight,
+      enablePortalModal,
       height,
       schema,
       url,
@@ -371,6 +375,7 @@ export const FieldPluginSandbox: FunctionComponent = () => {
               src={iframeSrc}
               height={height}
               isModal={isModalOpen}
+              enablePortalModal={enablePortalModal}
               fullHeight={fullHeight}
               ref={fieldTypeIframe}
             />

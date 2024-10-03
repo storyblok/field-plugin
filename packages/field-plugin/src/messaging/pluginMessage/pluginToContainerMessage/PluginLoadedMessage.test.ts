@@ -120,7 +120,7 @@ describe('PluginLoadedMessage', () => {
         ).toEqual(false)
       })
     })
-    describe('usePortalModal', () => {
+    describe('enablePortalModal', () => {
       it('is optional', () => {
         expect(
           isPluginLoadedMessage({
@@ -184,9 +184,9 @@ describe('PluginLoadedMessage', () => {
         true,
       )
     })
-    it('sets usePortalModal to true', () => {
+    it('sets enablePortalModal to true', () => {
       expect(pluginLoadedMessage({ uid, callbackId })).toHaveProperty(
-        'usePortalModal',
+        'enablePortalModal',
         true,
       )
     })

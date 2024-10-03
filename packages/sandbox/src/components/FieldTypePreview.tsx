@@ -9,14 +9,14 @@ import {
 } from '@mui/material'
 import { DisableShieldsNotification } from './DisableShieldsNotification'
 
-const FieldTypeModal: FunctionComponent<
+const NonPortalModal: FunctionComponent<
   PropsWithChildren<{
-    isModal: boolean
+    isNonPortalModalOpen: boolean
   }>
 > = (props) => (
   <Box
     sx={
-      props.isModal
+      props.isNonPortalModalOpen
         ? {
             position: 'fixed',
             left: 0,
@@ -38,12 +38,12 @@ const FieldTypeModal: FunctionComponent<
 
 const FieldTypeSandbox: FunctionComponent<
   PropsWithChildren<{
-    isModal: boolean
+    isNonPortalModalOpen: boolean
   }>
 > = (props) => (
   <Box
     sx={
-      props.isModal
+      props.isNonPortalModalOpen
         ? {
             bgcolor: 'background.paper',
             p: 6,
@@ -61,7 +61,7 @@ const FieldTypeSandbox: FunctionComponent<
     style={{
       display: 'flex',
       margin: 'auto',
-      width: props.isModal ? '90%' : '100%',
+      width: props.isNonPortalModalOpen ? '90%' : '100%',
     }}
   >
     {props.children}
@@ -74,13 +74,18 @@ export const FieldTypePreview = forwardRef<
     src: string | undefined
     height: number
     isModal: boolean
+    enablePortalModal: boolean
     fullHeight: boolean
     // Allows the iframe to be refreshed
     iframeKey?: number
     sx?: SxProps
   }
 >(function FieldTypePreview(props, ref) {
-  const { height, isModal, fullHeight } = props
+  const { height, isModal, fullHeight, enablePortalModal } = props
+
+  const isNonPortalModalOpen = !enablePortalModal && isModal
+  const isPortalModalOpen = enablePortalModal && isModal
+
   return (
     <Box sx={props.sx}>
       <DisableShieldsNotification />
@@ -88,8 +93,8 @@ export const FieldTypePreview = forwardRef<
         open={props.isModal}
         sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
       />
-      <FieldTypeModal isModal={props.isModal}>
-        <FieldTypeSandbox isModal={props.isModal}>
+      <NonPortalModal isNonPortalModalOpen={isNonPortalModalOpen}>
+        <FieldTypeSandbox isNonPortalModalOpen={isNonPortalModalOpen}>
           {typeof props.src !== 'undefined' ? (
             <Box
               ref={ref}
@@ -116,7 +121,7 @@ export const FieldTypePreview = forwardRef<
             </Alert>
           )}
         </FieldTypeSandbox>
-      </FieldTypeModal>
+      </NonPortalModal>
     </Box>
   )
 })
