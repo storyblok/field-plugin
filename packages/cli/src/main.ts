@@ -65,7 +65,7 @@ export const createCLI = () => {
       'This flag is only applied when a plugin is being updated! Publishes a new version of the plugin.',
     )
     .option(
-      ' --no-publish',
+      '--no-publish',
       'This flag is only applied when a plugin is being updated! Uploads field plugin but does not publish a new version.',
     )
     .addOption(
