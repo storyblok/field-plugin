@@ -12,25 +12,27 @@ export const useFieldPlugin = <Content>(
     type: 'loading',
   })
 
-  useEffect(() => {
-    createFieldPlugin<Content>({
-      ...options,
-      onUpdateState: (state) => {
-        if (state.type === 'error') {
-          setPlugin({
-            type: 'error',
-            error: state.error,
-          })
-        } else if (state.type === 'loaded') {
-          setPlugin({
-            type: 'loaded',
-            data: state.data,
-            actions: state.actions,
-          })
-        }
-      },
-    })
-  }, [])
+  useEffect(
+    () =>
+      createFieldPlugin<Content>({
+        ...options,
+        onUpdateState: (state) => {
+          if (state.type === 'error') {
+            setPlugin({
+              type: 'error',
+              error: state.error,
+            })
+          } else if (state.type === 'loaded') {
+            setPlugin({
+              type: 'loaded',
+              data: state.data,
+              actions: state.actions,
+            })
+          }
+        },
+      }),
+    [],
+  )
 
   return plugin
 }
