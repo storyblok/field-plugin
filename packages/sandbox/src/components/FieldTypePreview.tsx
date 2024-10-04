@@ -16,15 +16,16 @@ import {
 } from '@mui/material'
 import { DisableShieldsNotification } from './DisableShieldsNotification'
 import { CloseIcon } from '@storyblok/mui'
+import { ModalState } from './FieldPluginSandbox'
 
 const NonPortalModal: FunctionComponent<
   PropsWithChildren<{
-    isNonPortalModalOpen: boolean
+    isModal: boolean
   }>
 > = (props) => (
   <Box
     sx={
-      props.isNonPortalModalOpen
+      props.isModal
         ? {
             position: 'fixed',
             left: 0,
@@ -46,12 +47,12 @@ const NonPortalModal: FunctionComponent<
 
 const FieldTypeSandbox: FunctionComponent<
   PropsWithChildren<{
-    isNonPortalModalOpen: boolean
+    isModal: boolean
   }>
 > = (props) => (
   <Box
     sx={
-      props.isNonPortalModalOpen
+      props.isModal
         ? {
             bgcolor: 'background.paper',
             p: 6,
@@ -69,7 +70,7 @@ const FieldTypeSandbox: FunctionComponent<
     style={{
       display: 'flex',
       margin: 'auto',
-      width: props.isNonPortalModalOpen ? '90%' : '100%',
+      width: props.isModal ? '90%' : '100%',
     }}
   >
     {props.children}
@@ -132,8 +133,7 @@ export const FieldTypePreview = forwardRef<
   {
     src: string | undefined
     height: number
-    isModal: boolean
-    enablePortalModal: boolean
+    modalState: ModalState
     fullHeight: boolean
     // Allows the iframe to be refreshed
     iframeKey?: number
@@ -141,19 +141,15 @@ export const FieldTypePreview = forwardRef<
     onModalChange: (isModal: boolean) => void
   }
 >(function FieldTypePreview(props, ref) {
-  const { height, isModal, fullHeight, enablePortalModal, onModalChange } =
-    props
-
-  const isNonPortalModalOpen = !enablePortalModal && isModal
-  const isPortalModalOpen = enablePortalModal && isModal
+  const { height, fullHeight, modalState, onModalChange } = props
 
   const setTeleported = (el: HTMLIFrameElement | null) => {
-    if (isPortalModalOpen) {
+    if (modalState === 'modal-with-portal') {
       setRef(ref, el)
     }
   }
   const setNonTeleported = (el: HTMLIFrameElement | null) => {
-    if (!isPortalModalOpen) {
+    if (modalState !== 'modal-with-portal') {
       setRef(ref, el)
     }
   }
@@ -166,7 +162,7 @@ export const FieldTypePreview = forwardRef<
     <Box sx={props.sx}>
       <DisableShieldsNotification />
       <Dialog
-        open={isPortalModalOpen}
+        open={modalState === 'modal-with-portal'}
         fullScreen
         sx={{
           padding: 10,
@@ -197,28 +193,33 @@ export const FieldTypePreview = forwardRef<
           src={props.src}
           ref={setTeleported}
           fullHeight={fullHeight}
-          modal={isModal}
+          modal={modalState === 'modal-with-portal'}
           height={height}
         />
       </Dialog>
-      <Backdrop
-        open={isNonPortalModalOpen}
-        sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
-      />
-      <NonPortalModal isNonPortalModalOpen={isNonPortalModalOpen}>
-        <FieldTypeSandbox isNonPortalModalOpen={isNonPortalModalOpen}>
-          {!isPortalModalOpen && (
-            <FieldPluginIframe
-              key={props.iframeKey}
-              src={props.src}
-              ref={setNonTeleported}
-              fullHeight={fullHeight}
-              modal={isModal}
-              height={height}
+      {
+        // Always render it unless the modal with portal is open; then we don't want to render thois
+        modalState !== 'modal-with-portal' && (
+          <>
+            <Backdrop
+              open={modalState === 'modal-without-portal'}
+              sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
             />
-          )}
-        </FieldTypeSandbox>
-      </NonPortalModal>
+            <NonPortalModal isModal={modalState === 'modal-without-portal'}>
+              <FieldTypeSandbox isModal={modalState === 'modal-without-portal'}>
+                <FieldPluginIframe
+                  key={props.iframeKey}
+                  src={props.src}
+                  ref={setNonTeleported}
+                  fullHeight={fullHeight}
+                  modal={modalState === 'modal-without-portal'}
+                  height={height}
+                />
+              </FieldTypeSandbox>
+            </NonPortalModal>
+          </>
+        )
+      }
     </Box>
   )
 })

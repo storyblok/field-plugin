@@ -12,7 +12,6 @@ export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
   validateContent?: ValidateContent<Content>
   targetOrigin?: string
-//   TODO add enablePortalModal
 }
 
 export type CreateFieldPlugin = <Content = unknown>(
