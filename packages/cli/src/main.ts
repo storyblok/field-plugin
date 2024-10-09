@@ -60,6 +60,10 @@ export const createCLI = () => {
       '--name <value>',
       'name of plugin (Lowercase alphanumeric and dash)',
     )
+    .option(
+      '--no-publish',
+      'This flag is only applied when a plugin is being updated! Uploads field plugin but does not publish a new version.',
+    )
     .addOption(
       new Option(
         '--output <value>',
