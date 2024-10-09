@@ -28,7 +28,7 @@ export type CreatePluginActions = <Content>(options: {
   postToContainer: (message: unknown) => void
   onUpdateState: (state: FieldPluginData<Content>) => void
   validateContent: ValidateContent<Content>
-  enablePortalModal: boolean | undefined
+  enablePortalModal?: boolean
 }) => {
   // These functions are to be called by the field plugin when the user performs actions in the UI
   actions: FieldPluginActions<Content>
