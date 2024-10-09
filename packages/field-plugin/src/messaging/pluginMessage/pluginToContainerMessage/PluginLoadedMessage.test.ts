@@ -98,7 +98,8 @@ describe('PluginLoadedMessage', () => {
             subscribeState: false,
           }),
         ).toEqual(true)
-        const { subscribeState: _subscribeState, ...subWithoutSubscribeState } = stub
+        const { subscribeState: _subscribeState, ...subWithoutSubscribeState } =
+          stub
         expect(isPluginLoadedMessage(subWithoutSubscribeState)).toEqual(true)
         expect(
           isPluginLoadedMessage({
@@ -142,7 +143,8 @@ describe('PluginLoadedMessage', () => {
             subscribeState: false,
           }),
         ).toEqual(true)
-        const { subscribeState: _subscribeState, ...subWithoutSubscribeState } = stub
+        const { subscribeState: _subscribeState, ...subWithoutSubscribeState } =
+          stub
         expect(isPluginLoadedMessage(subWithoutSubscribeState)).toEqual(true)
         expect(
           isPluginLoadedMessage({
@@ -184,11 +186,21 @@ describe('PluginLoadedMessage', () => {
         true,
       )
     })
-    it('sets enablePortalModal to true', () => {
-      expect(pluginLoadedMessage({ uid, callbackId })).toHaveProperty(
+    it('does not define enablePortalModal by default', () => {
+      expect(pluginLoadedMessage({ uid, callbackId })).not.toHaveProperty(
         'enablePortalModal',
-        true,
       )
+    })
+    it('lets you define enablePortalModal', () => {
+      expect(
+        pluginLoadedMessage({ uid, callbackId, enablePortalModal: true }),
+      ).toHaveProperty('enablePortalModal', true)
+      expect(
+        pluginLoadedMessage({ uid, callbackId, enablePortalModal: false }),
+      ).toHaveProperty('enablePortalModal', false)
+      expect(
+        pluginLoadedMessage({ uid, callbackId, enablePortalModal: undefined }),
+      ).toHaveProperty('enablePortalModal', undefined)
     })
   })
 })

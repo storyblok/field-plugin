@@ -12,6 +12,7 @@ export type CreateFieldPluginOptions<Content> = {
   onUpdateState: (state: FieldPluginResponse<Content>) => void
   validateContent?: ValidateContent<Content>
   targetOrigin?: string
+  enablePortalModal?: boolean
 }
 
 export type CreateFieldPlugin = <Content = unknown>(
@@ -25,6 +26,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   onUpdateState,
   validateContent,
   targetOrigin,
+  enablePortalModal,
 }) => {
   const isEmbedded = window.parent !== window
 
@@ -107,6 +109,7 @@ export const createFieldPlugin: CreateFieldPlugin = ({
     validateContent:
       validateContent ||
       ((content) => ({ content: content as InferredContent })),
+    enablePortalModal,
   })
 
   const cleanupHeightChangeListener = createHeightChangeListener(onHeightChange)

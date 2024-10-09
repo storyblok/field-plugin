@@ -23,12 +23,14 @@ export const isPluginLoadedMessage = (
     typeof obj.enablePortalModal === 'boolean')
 
 export const pluginLoadedMessage = (
-  options: Pick<PluginLoadedMessage, 'uid' | 'callbackId'>,
+  options: Pick<
+    PluginLoadedMessage,
+    'uid' | 'callbackId' | 'enablePortalModal'
+  >,
 ): PluginLoadedMessage => ({
   action: 'plugin-changed',
   event: 'loaded',
   fullHeight: true,
   subscribeState: true,
-  enablePortalModal: true,
   ...options,
 })
