@@ -4,6 +4,7 @@ import { createFieldPlugin } from '@storyblok/field-plugin'
 export const fieldPluginMixin = {
   created() {
     createFieldPlugin({
+      enablePortalModal: true,
       validateContent: (content) => ({
         content: typeof content === 'number' ? content : 0,
       }),

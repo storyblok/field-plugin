@@ -1,15 +1,24 @@
-import { forwardRef, FunctionComponent, PropsWithChildren } from 'react'
+import {
+  ForwardedRef,
+  forwardRef,
+  FunctionComponent,
+  PropsWithChildren,
+} from 'react'
 import {
   Alert,
   AlertTitle,
   Backdrop,
   Box,
+  Dialog,
+  IconButton,
   SxProps,
   Typography,
 } from '@mui/material'
 import { DisableShieldsNotification } from './DisableShieldsNotification'
+import { CloseIcon } from '@storyblok/mui'
+import { ModalState } from './FieldPluginSandbox'
 
-const FieldTypeModal: FunctionComponent<
+const NonPortalModal: FunctionComponent<
   PropsWithChildren<{
     isModal: boolean
   }>
@@ -68,55 +77,149 @@ const FieldTypeSandbox: FunctionComponent<
   </Box>
 )
 
+const FieldPluginIframe = forwardRef<
+  HTMLIFrameElement,
+  {
+    src: string | undefined
+    fullHeight: boolean
+    modal: boolean
+    height: number
+  }
+>(function FieldPluginIframe(props, ref) {
+  const { src, fullHeight, modal, height } = props
+
+  if (typeof src === 'undefined') {
+    return (
+      <Alert
+        severity="error"
+        sx={{
+          width: '100%',
+        }}
+      >
+        <AlertTitle>Unable to Load Field Plugin</AlertTitle>
+        <Typography>Please enter a valid URL.</Typography>
+      </Alert>
+    )
+  }
+
+  return (
+    <Box
+      ref={ref}
+      component="iframe"
+      src={src}
+      title="Field Plugin Preview"
+      style={{
+        height: fullHeight && modal ? 'auto' : height,
+        width: '100%',
+        flex: 1,
+        border: 'none',
+      }}
+    />
+  )
+})
+
+const setRef = <T,>(ref: ForwardedRef<T>, value: T | null) => {
+  if (ref === null) {
+    return
+  } else if (typeof ref === 'function') {
+    ref(value)
+  } else {
+    ref.current = value
+  }
+}
+
 export const FieldTypePreview = forwardRef<
   HTMLIFrameElement,
   {
     src: string | undefined
     height: number
-    isModal: boolean
+    modalState: ModalState
     fullHeight: boolean
     // Allows the iframe to be refreshed
     iframeKey?: number
     sx?: SxProps
+    onModalChange: (isModal: boolean) => void
   }
 >(function FieldTypePreview(props, ref) {
-  const { height, isModal, fullHeight } = props
+  const { height, fullHeight, modalState, onModalChange } = props
+
+  const setTeleported = (el: HTMLIFrameElement | null) => {
+    if (modalState === 'modal-with-portal') {
+      setRef(ref, el)
+    }
+  }
+  const setNonTeleported = (el: HTMLIFrameElement | null) => {
+    if (modalState !== 'modal-with-portal') {
+      setRef(ref, el)
+    }
+  }
+
+  const handleClose = () => {
+    onModalChange(false)
+  }
+
   return (
     <Box sx={props.sx}>
       <DisableShieldsNotification />
-      <Backdrop
-        open={props.isModal}
-        sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
-      />
-      <FieldTypeModal isModal={props.isModal}>
-        <FieldTypeSandbox isModal={props.isModal}>
-          {typeof props.src !== 'undefined' ? (
-            <Box
-              ref={ref}
-              key={props.iframeKey}
-              component="iframe"
-              src={props.src}
-              title="Field Plugin Preview"
-              style={{
-                height: fullHeight && isModal ? 'auto' : height,
-                width: '100%',
-                flex: 1,
-                border: 'none',
-              }}
+      <Dialog
+        open={modalState === 'modal-with-portal'}
+        fullScreen
+        sx={{
+          padding: 10,
+        }}
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            overflow: 'hidden',
+          },
+        }}
+        onClose={handleClose}
+      >
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="flex-end"
+          padding={1}
+        >
+          <IconButton
+            onClick={handleClose}
+            color="secondary"
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+        <FieldPluginIframe
+          key={props.iframeKey}
+          src={props.src}
+          ref={setTeleported}
+          fullHeight={fullHeight}
+          modal={modalState === 'modal-with-portal'}
+          height={height}
+        />
+      </Dialog>
+      {
+        // Always render it unless the modal with portal is open; then we don't want to render thois
+        modalState !== 'modal-with-portal' && (
+          <>
+            <Backdrop
+              open={modalState === 'modal-without-portal'}
+              sx={{ zIndex: ({ zIndex }) => zIndex.drawer }}
             />
-          ) : (
-            <Alert
-              severity="error"
-              sx={{
-                width: '100%',
-              }}
-            >
-              <AlertTitle>Unable to Load Field Plugin</AlertTitle>
-              <Typography>Please enter a valid URL.</Typography>
-            </Alert>
-          )}
-        </FieldTypeSandbox>
-      </FieldTypeModal>
+            <NonPortalModal isModal={modalState === 'modal-without-portal'}>
+              <FieldTypeSandbox isModal={modalState === 'modal-without-portal'}>
+                <FieldPluginIframe
+                  key={props.iframeKey}
+                  src={props.src}
+                  ref={setNonTeleported}
+                  fullHeight={fullHeight}
+                  modal={modalState === 'modal-without-portal'}
+                  height={height}
+                />
+              </FieldTypeSandbox>
+            </NonPortalModal>
+          </>
+        )
+      }
     </Box>
   )
 })

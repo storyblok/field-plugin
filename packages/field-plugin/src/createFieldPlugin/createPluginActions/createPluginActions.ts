@@ -28,6 +28,7 @@ export type CreatePluginActions = <Content>(options: {
   postToContainer: (message: unknown) => void
   onUpdateState: (state: FieldPluginData<Content>) => void
   validateContent: ValidateContent<Content>
+  enablePortalModal?: boolean
 }) => {
   // These functions are to be called by the field plugin when the user performs actions in the UI
   actions: FieldPluginActions<Content>
@@ -46,6 +47,7 @@ export const createPluginActions: CreatePluginActions = ({
   postToContainer,
   onUpdateState,
   validateContent,
+  enablePortalModal,
 }) => {
   const { pushCallback, popCallback } = callbackQueue()
 
@@ -143,7 +145,9 @@ export const createPluginActions: CreatePluginActions = ({
           resolve(pluginStateFromStateChangeMessage(message, validateContent)),
         )
         // Request the initial state from the Visual Editor.
-        postToContainer(pluginLoadedMessage({ uid, callbackId }))
+        postToContainer(
+          pluginLoadedMessage({ uid, callbackId, enablePortalModal }),
+        )
       })
     },
   }
