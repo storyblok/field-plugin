@@ -6,6 +6,7 @@ import AssetSelector from './AssetSelector.vue'
 import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
 const plugin = useFieldPlugin({
+  enablePortalModal: true,
   validateContent: (content: unknown) => ({
     content: typeof content === 'number' ? content : 0,
   }),
