@@ -126,7 +126,6 @@ describe('PluginLoadedMessage', () => {
         expect(
           isPluginLoadedMessage({
             ...stub,
-            subscribeState: undefined,
           }),
         ).toEqual(true)
       })
@@ -134,34 +133,31 @@ describe('PluginLoadedMessage', () => {
         expect(
           isPluginLoadedMessage({
             ...stub,
-            subscribeState: true,
+            enablePortalModal: true,
           }),
         ).toEqual(true)
         expect(
           isPluginLoadedMessage({
             ...stub,
-            subscribeState: false,
+            enablePortalModal: false,
           }),
         ).toEqual(true)
-        const { subscribeState: _subscribeState, ...subWithoutSubscribeState } =
-          stub
-        expect(isPluginLoadedMessage(subWithoutSubscribeState)).toEqual(true)
         expect(
           isPluginLoadedMessage({
             ...stub,
-            subscribeState: 'false',
+            enablePortalModal: 'false',
           }),
         ).toEqual(false)
         expect(
           isPluginLoadedMessage({
             ...stub,
-            subscribeState: 123,
+            enablePortalModal: 123,
           }),
         ).toEqual(false)
         expect(
           isPluginLoadedMessage({
             ...stub,
-            subscribeState: null,
+            enablePortalModal: null,
           }),
         ).toEqual(false)
       })
