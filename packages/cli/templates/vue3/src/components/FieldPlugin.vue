@@ -2,7 +2,6 @@
 import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
 
 const plugin = useFieldPlugin({
-  enablePortalModal: true,
   /*
     The `validateContent` parameter is optional. It allows you to
       - validate the content

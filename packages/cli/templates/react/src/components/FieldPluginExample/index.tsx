@@ -7,7 +7,6 @@ import { useFieldPlugin } from '@storyblok/field-plugin/react'
 
 const FieldPlugin: FunctionComponent = () => {
   const { type, data, actions } = useFieldPlugin({
-    enablePortalModal: true,
     validateContent: (content: unknown) => ({
       content: typeof content === 'number' ? content : 0,
     }),

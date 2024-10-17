@@ -15,7 +15,6 @@ let previousType = 'loading'
 
 // Establish communication with the Visual Editor
 createFieldPlugin({
-  enablePortalModal: true,
   validateContent: (content) => ({
     content: typeof content === 'number' ? content : 0,
   }),
