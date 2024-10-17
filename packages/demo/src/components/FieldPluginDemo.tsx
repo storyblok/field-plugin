@@ -19,6 +19,7 @@ export type PluginComponent = FunctionComponent<{
 export const FieldPluginDemo: FunctionComponent = () => {
   const { type, data, actions } = useFieldPlugin({
     validateContent,
+    enablePortalModal: true,
   })
 
   if (type === 'loading') {

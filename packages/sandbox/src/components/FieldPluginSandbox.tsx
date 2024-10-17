@@ -65,6 +65,11 @@ const defaultManifest = { options: [] }
 const urlQueryParam = withDefault(StringParam, defaultUrl)
 const manifestQueryParam = withDefault(JsonParam, defaultManifest)
 
+export type ModalState =
+  | 'non-modal'
+  | 'modal-with-portal'
+  | 'modal-without-portal'
+
 const useSandbox = (
   onError: (message: { title: string; message?: string }) => void,
 ) => {
@@ -108,6 +113,7 @@ const useSandbox = (
   const [isModalOpen, setModalOpen] = useState(false)
   const [height, setHeight] = useState(initialHeight)
   const [fullHeight, setFullHeight] = useState(false)
+  const [enablePortalModal, setEnablePortalModal] = useState(false)
   const [schema, setSchema] = useState<FieldPluginSchema>({
     field_type: 'preview',
     options: manifest.options,
@@ -218,6 +224,7 @@ const useSandbox = (
     (message: PluginLoadedMessage) => {
       setSubscribeState(Boolean(message.subscribeState))
       setFullHeight(Boolean(message.fullHeight))
+      setEnablePortalModal(Boolean(message.enablePortalModal))
       dispatchLoadedChanged({
         ...stateChangedData,
         action: 'loaded',
@@ -302,13 +309,23 @@ const useSandbox = (
     ],
   )
 
+  const modalState = useMemo<ModalState>(() => {
+    if (!isModalOpen) {
+      return 'non-modal'
+    } else if (enablePortalModal) {
+      return 'modal-with-portal'
+    } else {
+      return 'modal-without-portal'
+    }
+  }, [isModalOpen, enablePortalModal])
+
   return [
     {
       content,
       language,
-      isModalOpen,
       height,
       fullHeight,
+      modalState,
       schema,
       url,
       fieldTypeIframe,
@@ -320,6 +337,7 @@ const useSandbox = (
       setSchema,
       setUrl,
       randomizeUid,
+      setModalOpen,
     },
   ] as const
 }
@@ -330,7 +348,7 @@ export const FieldPluginSandbox: FunctionComponent = () => {
     {
       content,
       language,
-      isModalOpen,
+      modalState,
       fullHeight,
       height,
       schema,
@@ -338,7 +356,7 @@ export const FieldPluginSandbox: FunctionComponent = () => {
       fieldTypeIframe,
       iframeSrc,
     },
-    { setContent, setLanguage, setSchema, setUrl, randomizeUid },
+    { setModalOpen, setContent, setLanguage, setSchema, setUrl, randomizeUid },
   ] = useSandbox(error)
 
   return (
@@ -370,9 +388,10 @@ export const FieldPluginSandbox: FunctionComponent = () => {
             <FieldTypePreview
               src={iframeSrc}
               height={height}
-              isModal={isModalOpen}
+              modalState={modalState}
               fullHeight={fullHeight}
               ref={fieldTypeIframe}
+              onModalChange={setModalOpen}
             />
           </CenteredContent>
           <Stack alignSelf="flex-start">
@@ -444,7 +463,7 @@ export const FieldPluginSandbox: FunctionComponent = () => {
             output={
               {
                 content,
-                isModalOpen,
+                isModalOpen: modalState !== 'non-modal',
                 translatable: schema.translatable,
                 storyLang: language,
                 options: recordFromFieldPluginOptions(schema.options),

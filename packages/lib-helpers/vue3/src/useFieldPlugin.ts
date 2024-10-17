@@ -4,7 +4,7 @@ import {
   FieldPluginData,
   FieldPluginResponse,
 } from '@storyblok/field-plugin'
-import { onMounted, reactive, UnwrapRef } from 'vue'
+import { onMounted, onUnmounted, reactive, UnwrapRef } from 'vue'
 import { convertToRaw } from './utils'
 
 const updateObjectWithoutChangingReference = (
@@ -28,8 +28,10 @@ export const useFieldPlugin = <Content>(
     type: 'loading',
   })
 
+  let cleanup: () => void = () => undefined
+
   onMounted(() => {
-    createFieldPlugin<Content>({
+    cleanup = createFieldPlugin<Content>({
       ...options,
       onUpdateState: (state) => {
         if (state.type === 'error') {
@@ -89,6 +91,8 @@ export const useFieldPlugin = <Content>(
       },
     })
   })
+
+  onUnmounted(cleanup)
 
   return plugin
 }
