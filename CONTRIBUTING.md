@@ -153,14 +153,15 @@ This will prompt you to select which package (`@storyblok/field-plugin` or `@sto
 
 Once this pull request is reviewed and merged, you'll get a commit like [this](https://github.com/storyblok/field-plugin/commit/b4bd948ce3d26f0905352ddbe474ebc9e2f89159).
 
-Then, go to [Releases](https://github.com/storyblok/field-plugin/releases) and create a new release. The title should follow the format `<PACKAGE-NAME>@<VERSION>`. Examples:
+Then, go to [Releases](https://github.com/storyblok/field-plugin/releases) and draft a new release:
 
-- `@storyblok/field-plugin@0.0.1`
-- `@storyblok/field-plugin-cli@1.0.0-beta.2`
+- Create a tag with the format `<PACKAGE-NAME>@<VERSION>`; for example,  `@storyblok/field-plugin@0.0.1` and `@storyblok/field-plugin-cli@1.0.0-beta.2`
+- Set the title to the same name.
+- Generate release notes, and ensure that the content is accurate; for example, check that there are no missing bullet points, and check that library changes should not be listed in CLI release notes.
 
-You can find a sample release [here](https://github.com/storyblok/field-plugin/releases/tag/%40storyblok%2Ffield-plugin-cli%400.0.1-beta.2). Make sure you write accurate changelogs, ensuring that library changes are not included in a CLI release and vice versa.
+You can find a sample release [here](https://github.com/storyblok/field-plugin/releases/tag/%40storyblok%2Ffield-plugin-cli%400.0.1-beta.2).
 
-Once a release is created, one of the two GitHub Actions - [.github/workflows/npm-publish-library.yml](https://github.com/storyblok/field-plugin/blob/main/.github/workflows/npm-publish-library.yml) or [.github/workflows/npm-publish-cli.yml](https://github.com/storyblok/field-plugin/blob/main/.github/workflows/npm-publish-cli.yml) - will run and deploy it to NPM.
+Once a release is created, one of the two GitHub Actions—[.github/workflows/npm-publish-library.yml](https://github.com/storyblok/field-plugin/blob/main/.github/workflows/npm-publish-library.yml) or [.github/workflows/npm-publish-cli.yml](https://github.com/storyblok/field-plugin/blob/main/.github/workflows/npm-publish-cli.yml)—will run and deploy the corresponding package to npm.
 
 ### Order of releases
 
