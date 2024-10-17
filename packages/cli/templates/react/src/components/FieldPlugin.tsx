@@ -10,7 +10,7 @@ const FieldPlugin: FunctionComponent = () => {
       - make changes before sending it to the Storyblok Visual Editor
       - provide type-safety
 
-    // For example,
+    // For example:
     validateContent: (content: unknown) => {
       if (typeof content === 'string') {
         return {
