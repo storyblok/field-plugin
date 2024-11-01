@@ -15,7 +15,7 @@ jobs:
         uses: jwalton/gh-find-current-pr@v1
       - id: validation
         run: |
-          if [[ "${{ steps.PR.outputs.title }}" == "chore(lib): release @storyblok/field-plugin@"* ]]; then
+          if [[ "${{ steps.PR.outputs.title }}" == "@storyblok/field-plugin@"* ]]; then
             echo "releasing library"
             echo "result=true" >> $GITHUB_OUTPUT
           else
