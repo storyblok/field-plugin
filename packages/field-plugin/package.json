@@ -2,6 +2,7 @@
   "name": "@storyblok/field-plugin",
   "version": "1.4.0",
   "description": "SDK for creating Field Plugins for Storyblok.",
+  "license": "MIT",
   "sideEffects": false,
   "files": [
     "dist"
