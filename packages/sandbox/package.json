@@ -18,16 +18,16 @@
     "highlight.js": "11.10.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router-dom": "^6.22.1",
+    "react-router-dom": "^6.27.0",
     "use-debounce": "^9.0.3",
     "use-query-params": "^2.2.1",
     "usehooks-ts": "2.16.0"
   },
   "devDependencies": {
-    "@types/react-dom": "^18.2.19",
+    "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^3.0.0",
-    "sass": "^1.79.4",
-    "typescript": "5.6.2",
-    "vite": "5.4.8"
+    "sass": "^1.80.6",
+    "typescript": "5.6.3",
+    "vite": "5.4.10"
   }
 }
