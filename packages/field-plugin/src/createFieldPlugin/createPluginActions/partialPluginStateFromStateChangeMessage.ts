@@ -23,6 +23,7 @@ export const pluginStateFromStateChangeMessage = <Content>(
   return {
     interfaceLang: message.interfaceLanguage,
     spaceId: message.spaceId ?? undefined,
+    userId: message.userId ?? undefined,
     story: message.story ?? undefined,
     storyId: message.storyId ?? undefined,
     storyLang: message.language === '' ? 'default' : message.language,

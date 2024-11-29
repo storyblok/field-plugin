@@ -60,6 +60,7 @@ describe('handlePluginMessage', () => {
       interfaceLanguage: 'en',
       model: 123,
       spaceId: 1234,
+      userId: 2345,
       story: { content: {} },
       schema: { options: [], field_type: 'avh', translatable: false },
       storyId: 1344,

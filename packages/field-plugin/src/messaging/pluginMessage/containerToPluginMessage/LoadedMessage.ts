@@ -13,6 +13,7 @@ export type LoadedMessage = MessageToPlugin<'loaded'> & {
   language: string
   interfaceLanguage: string
   spaceId: number | null
+  userId: number | undefined
   story: StoryData
   storyId: number | undefined
   blockId: string | undefined

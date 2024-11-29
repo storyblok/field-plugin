@@ -5,6 +5,7 @@ const stub: LoadedMessage = {
   action: 'loaded',
   uid: '-preview',
   spaceId: null,
+  userId: undefined,
   model: undefined,
   isModalOpen: false,
   token: null,

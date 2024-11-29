@@ -27,6 +27,7 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
   const language = 'default'
   const storyId = 'test-story-id'
   const spaceId = 'test-space-id'
+  const userId = 'test-user-id'
   const token = 'test-token'
   const story = {
     content: {},
@@ -49,6 +50,7 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
     language,
     storyId,
     spaceId,
+    userId,
     token,
     action,
   })
