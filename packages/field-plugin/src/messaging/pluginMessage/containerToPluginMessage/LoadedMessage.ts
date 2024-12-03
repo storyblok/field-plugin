@@ -34,6 +34,8 @@ export const isLoadedMessage = (data: unknown): data is LoadedMessage =>
   typeof data.language === 'string' &&
   hasKey(data, 'schema') &&
   isFieldPluginSchema(data.schema) &&
+  hasKey(data, 'userId') &&
+  (typeof data.userId === 'number' || typeof data.userId === 'undefined') &&
   hasKey(data, 'story') &&
   isStoryData(data.story) &&
   hasKey(data, 'isModalOpen') &&

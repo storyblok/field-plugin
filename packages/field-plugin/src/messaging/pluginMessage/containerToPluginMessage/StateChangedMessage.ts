@@ -34,6 +34,8 @@ export const isStateMessage = (data: unknown): data is StateChangedMessage =>
   typeof data.language === 'string' &&
   hasKey(data, 'schema') &&
   isFieldPluginSchema(data.schema) &&
+  hasKey(data, 'userId') &&
+  (typeof data.userId === 'number' || typeof data.userId === 'undefined') &&
   hasKey(data, 'story') &&
   isStoryData(data.story) &&
   hasKey(data, 'isModalOpen') &&
