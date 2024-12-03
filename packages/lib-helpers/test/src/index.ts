@@ -27,7 +27,7 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
   const language = 'default'
   const storyId = 'test-story-id'
   const spaceId = 'test-space-id'
-  const userId = 'test-user-id'
+  const userId = 1234
   const token = 'test-token'
   const story = {
     content: {},
@@ -142,6 +142,7 @@ export const setupFieldPlugin = () => {
         data: { callbackId: string } & Record<string, unknown>,
         origin: string,
       ) => {
+        console.log('postMessage', data, origin)
         container.receive({ data, origin })
       },
     ),
