@@ -142,7 +142,6 @@ export const setupFieldPlugin = () => {
         data: { callbackId: string } & Record<string, unknown>,
         origin: string,
       ) => {
-        console.log('postMessage', data, origin)
         container.receive({ data, origin })
       },
     ),
