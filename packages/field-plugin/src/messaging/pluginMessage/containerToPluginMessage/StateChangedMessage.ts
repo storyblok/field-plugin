@@ -13,6 +13,7 @@ export type StateChangedMessage = MessageToPlugin<'state-changed'> & {
   language: string
   interfaceLanguage: string
   spaceId: number | null
+  userId: number | undefined
   story: StoryData
   storyId: number | undefined
   blockId: string | undefined
@@ -33,6 +34,8 @@ export const isStateMessage = (data: unknown): data is StateChangedMessage =>
   typeof data.language === 'string' &&
   hasKey(data, 'schema') &&
   isFieldPluginSchema(data.schema) &&
+  hasKey(data, 'userId') &&
+  (typeof data.userId === 'number' || typeof data.userId === 'undefined') &&
   hasKey(data, 'story') &&
   isStoryData(data.story) &&
   hasKey(data, 'isModalOpen') &&

@@ -13,6 +13,7 @@ export type LoadedMessage = MessageToPlugin<'loaded'> & {
   language: string
   interfaceLanguage: string
   spaceId: number | null
+  userId: number | undefined
   story: StoryData
   storyId: number | undefined
   blockId: string | undefined
@@ -33,6 +34,8 @@ export const isLoadedMessage = (data: unknown): data is LoadedMessage =>
   typeof data.language === 'string' &&
   hasKey(data, 'schema') &&
   isFieldPluginSchema(data.schema) &&
+  hasKey(data, 'userId') &&
+  (typeof data.userId === 'number' || typeof data.userId === 'undefined') &&
   hasKey(data, 'story') &&
   isStoryData(data.story) &&
   hasKey(data, 'isModalOpen') &&

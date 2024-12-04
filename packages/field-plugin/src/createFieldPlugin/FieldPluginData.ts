@@ -8,6 +8,7 @@ export type FieldPluginData<Content> = {
   content: Content
   options: Record<string, string>
   spaceId: number | undefined
+  userId: number | undefined
   interfaceLang: string
   storyLang: string
   story: StoryData
