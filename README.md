@@ -27,6 +27,7 @@ For more details, please refer to the [documentation](https://www.storyblok.com/
     </tr>
     <tr>
       <td align="center" valign="top" width="16.66%"><a href="https://links.dawntraoz.com/"><img src="https://avatars.githubusercontent.com/u/36744484?v=4?s=100" width="100px;" alt="Alba Silvente Fuentes"/><br /><sub><b>Alba Silvente Fuentes</b></sub></a><br /><a href="#code-Dawntraoz" title="Code">💻</a></td>
+      <td align="center" valign="top" width="16.66%"><a href="https://github.com/ECJ222"><img src="https://avatars.githubusercontent.com/u/39567763?v=4?s=100" width="100px;" alt="ECJ"/><br /><sub><b>ECJ</b></sub></a><br /><a href="#code-ECJ222" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
