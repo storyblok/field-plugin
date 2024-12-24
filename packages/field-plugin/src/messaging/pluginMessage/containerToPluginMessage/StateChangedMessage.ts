@@ -40,7 +40,8 @@ export const isStateMessage = (data: unknown): data is StateChangedMessage =>
   hasKey(data, 'userId') &&
   (typeof data.userId === 'number' || typeof data.userId === 'undefined') &&
   hasKey(data, 'userPermissions') &&
-  (typeof data.userPermissions === 'object' || typeof data.userPermissions === 'undefined') &&
+  (typeof data.userPermissions === 'object' ||
+    typeof data.userPermissions === 'undefined') &&
   hasKey(data, 'isSpaceAdmin') &&
   typeof data.isSpaceAdmin === 'boolean' &&
   hasKey(data, 'story') &&

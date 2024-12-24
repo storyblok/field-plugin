@@ -40,7 +40,8 @@ export const isLoadedMessage = (data: unknown): data is LoadedMessage =>
   hasKey(data, 'userId') &&
   (typeof data.userId === 'number' || typeof data.userId === 'undefined') &&
   hasKey(data, 'userPermissions') &&
-  (typeof data.userPermissions === 'object' || typeof data.userPermissions === 'undefined') &&
+  (typeof data.userPermissions === 'object' ||
+    typeof data.userPermissions === 'undefined') &&
   hasKey(data, 'isSpaceAdmin') &&
   typeof data.isSpaceAdmin === 'boolean' &&
   hasKey(data, 'story') &&
@@ -49,4 +50,3 @@ export const isLoadedMessage = (data: unknown): data is LoadedMessage =>
   typeof data.isAIEnabled === 'boolean' &&
   hasKey(data, 'isModalOpen') &&
   typeof data.isModalOpen === 'boolean'
-
