@@ -14,6 +14,8 @@ export type StateChangedMessage = MessageToPlugin<'state-changed'> & {
   interfaceLanguage: string
   spaceId: number | null
   userId: number | undefined
+  userPermissions: Record<string, any> | undefined
+  isSpaceAdmin: boolean
   story: StoryData
   storyId: number | undefined
   blockId: string | undefined
@@ -21,6 +23,7 @@ export type StateChangedMessage = MessageToPlugin<'state-changed'> & {
   // Related to the field type itself
   schema: FieldPluginSchema
   model: unknown
+  isAIEnabled: boolean
   isModalOpen: boolean
   releases: Release[]
   releaseId: number | undefined
@@ -36,7 +39,13 @@ export const isStateMessage = (data: unknown): data is StateChangedMessage =>
   isFieldPluginSchema(data.schema) &&
   hasKey(data, 'userId') &&
   (typeof data.userId === 'number' || typeof data.userId === 'undefined') &&
+  hasKey(data, 'userPermissions') &&
+  (typeof data.userPermissions === 'object' || typeof data.userPermissions === 'undefined') &&
+  hasKey(data, 'isSpaceAdmin') &&
+  typeof data.isSpaceAdmin === 'boolean' &&
   hasKey(data, 'story') &&
   isStoryData(data.story) &&
+  hasKey(data, 'isAIEnabled') &&
+  typeof data.isAIEnabled === 'boolean' &&
   hasKey(data, 'isModalOpen') &&
   typeof data.isModalOpen === 'boolean'

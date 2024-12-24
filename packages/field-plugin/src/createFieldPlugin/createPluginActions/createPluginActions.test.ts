@@ -71,7 +71,10 @@ describe('createPluginActions', () => {
         model: randomString,
         spaceId: null,
         userId: undefined,
+        userPermissions: undefined,
+        isSpaceAdmin: false,
         blockId: undefined,
+        isAIEnabled: false,
         releases: [],
         releaseId: undefined,
       })

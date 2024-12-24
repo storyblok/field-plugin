@@ -6,6 +6,8 @@ const stub: StateChangedMessage = {
   uid: '-preview',
   spaceId: null,
   userId: undefined,
+  userPermissions: undefined,
+  isSpaceAdmin: false,
   model: undefined,
   isModalOpen: false,
   token: null,
@@ -15,6 +17,7 @@ const stub: StateChangedMessage = {
   language: '',
   interfaceLanguage: 'en',
   schema: { options: [], field_type: 'blah', translatable: false },
+  isAIEnabled: false,
   releases: [],
   releaseId: undefined,
 }
@@ -159,6 +162,108 @@ describe('StateChangedMessage', () => {
         isStateMessage({
           ...stub,
           userId: '123',
+        }),
+      ).toEqual(false)
+    })
+  })
+  describe('The "userPermissions" property', () => {
+    it('is an object', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          userPermissions: {},
+        }),
+      ).toEqual(true)
+    })
+    it('is undefined', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          userPermissions: undefined,
+        }),
+      ).toEqual(true)
+    })
+    it('is not null', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          userPermissions: null,
+        }),
+      ).toEqual(false)
+    })
+    it('is not a string', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          userPermissions: '123',
+        }),
+      ).toEqual(false)
+    })
+  })
+  describe('The "isSpaceAdmin" property', () => {
+    it('is a boolean and it is true', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isSpaceAdmin: true,
+        }),
+      ).toEqual(true)
+    })
+    it('is false', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isSpaceAdmin: false,
+        }),
+      ).toEqual(true)
+    })
+    it('is not null', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isSpaceAdmin: null,
+        }),
+      ).toEqual(false)
+    })
+    it('is not a string', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isSpaceAdmin: '123',
+        }),
+      ).toEqual(false)
+    })
+  })
+  describe('The "isAIEnabled" property', () => {
+    it('is a boolean and it is true', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isAIEnabled: true,
+        }),
+      ).toEqual(true)
+    })
+    it('is false', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isAIEnabled: false,
+        }),
+      ).toEqual(true)
+    })
+    it('is not null', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isAIEnabled: null,
+        }),
+      ).toEqual(false)
+    })
+    it('is not a string', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isAIEnabled: '123',
         }),
       ).toEqual(false)
     })
