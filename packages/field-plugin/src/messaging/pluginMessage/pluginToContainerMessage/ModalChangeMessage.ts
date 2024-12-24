@@ -12,7 +12,10 @@ export const isModalChangeMessage = (obj: unknown): obj is ModalChangeMessage =>
   typeof obj.status === 'boolean'
 
 export const modalChangeMessage = (
-  options: Pick<ModalChangeMessage, 'uid' | 'callbackId' | 'status' | 'modalSize'>,
+  options: Pick<
+    ModalChangeMessage,
+    'uid' | 'callbackId' | 'status' | 'modalSize'
+  >,
 ): ModalChangeMessage => ({
   action: 'plugin-changed',
   event: 'toggleModal',
