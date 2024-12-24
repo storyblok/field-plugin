@@ -2,7 +2,10 @@ import { FunctionComponent } from 'react'
 
 const ModalToggle: FunctionComponent<{
   isModalOpen: boolean
-  setModalOpen: (isModalOpen: boolean) => void
+  setModalOpen: (
+    isModalOpen: boolean,
+    modalSize?: { width: string; height: string },
+  ) => void
 }> = ({ isModalOpen, setModalOpen }) => {
   return (
     <div>

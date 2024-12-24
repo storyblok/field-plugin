@@ -69,8 +69,7 @@ export const createPluginActions: CreatePluginActions = ({
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
     console.debug(
-      `Plugin received a message from container of an unknown action type "${
-        data.action
+      `Plugin received a message from container of an unknown action type "${data.action
       }". You may need to upgrade the version of the @storyblok/field-plugin library. Full message: ${JSON.stringify(
         data,
       )}`,
@@ -107,7 +106,7 @@ export const createPluginActions: CreatePluginActions = ({
           )
         })
       },
-      setModalOpen: (isModalOpen) => {
+      setModalOpen: (isModalOpen: boolean, modalSize?: { width: string, height: string }) => {
         return new Promise((resolve) => {
           const callbackId = pushCallback('stateChanged', (message) =>
             resolve(
@@ -115,7 +114,7 @@ export const createPluginActions: CreatePluginActions = ({
             ),
           )
           postToContainer(
-            modalChangeMessage({ uid, callbackId, status: isModalOpen }),
+            modalChangeMessage({ uid, callbackId, status: isModalOpen, modalSize }),
           )
         })
       },
