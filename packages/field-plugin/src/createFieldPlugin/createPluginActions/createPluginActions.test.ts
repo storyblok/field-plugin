@@ -70,6 +70,7 @@ describe('createPluginActions', () => {
         interfaceLanguage: 'en',
         model: randomString,
         spaceId: null,
+        userId: undefined,
         blockId: undefined,
         releases: [],
         releaseId: undefined,

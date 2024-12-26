@@ -133,6 +133,7 @@ const useSandbox = (
       blockId: undefined,
       language,
       spaceId: null,
+      userId: undefined,
       story,
       storyId: undefined,
       token: null,

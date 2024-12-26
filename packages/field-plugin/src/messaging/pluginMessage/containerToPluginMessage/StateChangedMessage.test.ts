@@ -1,8 +1,8 @@
-import { isLoadedMessage, LoadedMessage } from './LoadedMessage'
+import { isStateMessage, StateChangedMessage } from './StateChangedMessage'
 import { FieldPluginSchema } from './FieldPluginSchema'
 
-const stub: LoadedMessage = {
-  action: 'loaded',
+const stub: StateChangedMessage = {
+  action: 'state-changed',
   uid: '-preview',
   spaceId: null,
   userId: undefined,
@@ -19,14 +19,14 @@ const stub: LoadedMessage = {
   releaseId: undefined,
 }
 
-describe('LoadedMessage', () => {
+describe('StateChangedMessage', () => {
   it('should validate', () => {
-    expect(isLoadedMessage(stub)).toEqual(true)
+    expect(isStateMessage(stub)).toEqual(true)
   })
   describe('The "action" property', () => {
     it('equals "loaded"', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           action: 'anotherString',
         }),
@@ -36,7 +36,7 @@ describe('LoadedMessage', () => {
   describe('the "uid" property', () => {
     it('is a string', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           uid: 'anything',
         }),
@@ -44,7 +44,7 @@ describe('LoadedMessage', () => {
     })
     it('is not undefined', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           uid: undefined,
         }),
@@ -52,7 +52,7 @@ describe('LoadedMessage', () => {
     })
     it('is not null', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           uid: null,
         }),
@@ -60,7 +60,7 @@ describe('LoadedMessage', () => {
     })
     it('is not a number', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           uid: 123,
         }),
@@ -71,7 +71,7 @@ describe('LoadedMessage', () => {
   describe('the "language" property', () => {
     it('is a string', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           language: 'anything',
         }),
@@ -79,7 +79,7 @@ describe('LoadedMessage', () => {
     })
     it('is not undefined', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           language: undefined,
         }),
@@ -87,7 +87,7 @@ describe('LoadedMessage', () => {
     })
     it('is not null', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           language: null,
         }),
@@ -95,7 +95,7 @@ describe('LoadedMessage', () => {
     })
     it('is not a number', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           language: 123,
         }),
@@ -105,7 +105,7 @@ describe('LoadedMessage', () => {
   describe('The "schema" property', () => {
     it('is required', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           schema: undefined,
         }),
@@ -113,7 +113,7 @@ describe('LoadedMessage', () => {
     })
     it('must be a schema', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           schema: {
             field_type: 'my-field',
@@ -132,7 +132,7 @@ describe('LoadedMessage', () => {
   describe('The "userId" property', () => {
     it('is a number', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           userId: 123,
         }),
@@ -140,7 +140,7 @@ describe('LoadedMessage', () => {
     })
     it('is undefined', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           userId: undefined,
         }),
@@ -148,7 +148,7 @@ describe('LoadedMessage', () => {
     })
     it('is not null', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           userId: null,
         }),
@@ -156,7 +156,7 @@ describe('LoadedMessage', () => {
     })
     it('is not a string', () => {
       expect(
-        isLoadedMessage({
+        isStateMessage({
           ...stub,
           userId: '123',
         }),
