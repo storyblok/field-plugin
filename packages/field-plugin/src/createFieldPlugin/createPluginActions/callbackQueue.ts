@@ -1,4 +1,5 @@
-import {
+import type {
+  PromptAIResponseMessage,
   AssetSelectedMessage,
   ContextRequestMessage,
   LoadedMessage,
@@ -14,6 +15,7 @@ type CallbackMap = {
   context: Record<CallbackId, OnMessage<ContextRequestMessage>>
   stateChanged: Record<CallbackId, OnMessage<StateChangedMessage>>
   loaded: Record<CallbackId, OnMessage<LoadedMessage>>
+  promptAI: Record<CallbackId, OnMessage<PromptAIResponseMessage>>
 }
 type CallbackType = keyof CallbackMap
 
@@ -23,7 +25,9 @@ export const callbackQueue = () => {
     context: {},
     stateChanged: {},
     loaded: {},
+    promptAI: {},
   }
+
   const pushCallback = <T extends CallbackType>(
     callbackType: T,
     callback: CallbackMap[T][CallbackId],

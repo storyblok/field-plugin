@@ -4,6 +4,7 @@ import {
   assetFromAssetSelectedMessage,
   assetModalChangeMessage,
   getContextMessage,
+  getResponseFromPromptAIMessage,
   heightChangeMessage,
   modalChangeMessage,
   OnAssetSelectMessage,
@@ -12,7 +13,10 @@ import {
   OnStateChangeMessage,
   OnUnknownPluginMessage,
   pluginLoadedMessage,
+  type PromptAIPayload,
+  getPromptAIMessage,
   valueChangeMessage,
+  OnPromptAIMessage,
 } from '../../messaging'
 import { FieldPluginActions, Initialize } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
@@ -55,16 +59,24 @@ export const createPluginActions: CreatePluginActions = ({
     popCallback('stateChanged', data.callbackId)?.(data)
     onUpdateState(pluginStateFromStateChangeMessage(data, validateContent))
   }
+
   const onLoaded: OnLoadedMessage = (data) => {
     popCallback('loaded', data.callbackId)?.(data)
     onUpdateState(pluginStateFromStateChangeMessage(data, validateContent))
   }
+
   const onContextRequest: OnContextRequestMessage = (data) => {
     popCallback('context', data.callbackId)?.(data)
   }
+
   const onAssetSelect: OnAssetSelectMessage = (data) => {
     popCallback('asset', data.callbackId)?.(data)
   }
+
+  const onPromptAI: OnPromptAIMessage = (data) => {
+    popCallback('promptAI', data.callbackId)?.(data)
+  }
+
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
@@ -82,6 +94,7 @@ export const createPluginActions: CreatePluginActions = ({
     onLoaded,
     onContextRequest,
     onAssetSelect,
+    onPromptAI,
     onUnknownMessage,
   }
 
@@ -133,6 +146,16 @@ export const createPluginActions: CreatePluginActions = ({
             resolve(message.story),
           )
           postToContainer(getContextMessage({ uid, callbackId }))
+        })
+      },
+      promptAI: (promptAIMessage: PromptAIPayload) => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('promptAI', (message) =>
+            resolve(getResponseFromPromptAIMessage(message)),
+          )
+          postToContainer(
+            getPromptAIMessage(promptAIMessage, { uid, callbackId }),
+          )
         })
       },
     },
