@@ -47,16 +47,16 @@ export type PluginPromptAIMessage = Omit<
   'action'
 > & {
   action: 'prompt-ai'
-  promptAI: PromptAIPayload
+  payload: PromptAIPayload
 }
 
 export const isPluginPromptAIMessage = (
   obj: unknown,
 ): obj is PluginPromptAIMessage =>
   isMessageToContainer(obj) &&
-  obj.event === 'promptAI' &&
-  hasKey(obj, 'promptAI') &&
-  isPromptAIPayloadValid(obj.promptAI as PromptAIPayload)
+  obj.event === 'payload' &&
+  hasKey(obj, 'payload') &&
+  isPromptAIPayloadValid(obj.payload as PromptAIPayload)
 
 export const getPluginPromptAIMessage = (
   message: PromptAIPayload,
@@ -65,7 +65,7 @@ export const getPluginPromptAIMessage = (
   action: 'prompt-ai',
   event: 'promptAI',
   ...options,
-  promptAI: { ...message },
+  payload: { ...message },
 })
 
 const isPromptAIPayloadValid = (promptAIPayload: PromptAIPayload) =>

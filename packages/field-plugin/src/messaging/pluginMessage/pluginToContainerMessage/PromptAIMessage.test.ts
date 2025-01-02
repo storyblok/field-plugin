@@ -11,7 +11,7 @@ const stub: PluginPromptAIMessage = {
   action: 'prompt-ai',
   event: 'promptAI',
   uid,
-  promptAI: {
+  payload: {
     action: 'prompt',
     text: 'Some text to prompt',
   },
@@ -45,7 +45,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          promptAI: undefined,
+          payload: undefined,
         }),
       ).toEqual(false)
     })
@@ -53,7 +53,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          promptAI: {
+          payload: {
             action: '',
           },
         }),
@@ -62,7 +62,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          promptAI: {
+          payload: {
             text: '',
           },
         }),
@@ -71,7 +71,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          promptAI: {
+          payload: {
             action: 'prompt',
             text: 'random text',
           },
@@ -81,7 +81,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          promptAI: {
+          payload: {
             action: 'prompt',
             text: 123,
           },
@@ -91,7 +91,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          promptAI: {
+          payload: {
             action: null,
             text: 123,
           },
@@ -101,7 +101,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          promptAI: {
+          payload: {
             action: null,
             text: null,
           },
@@ -112,14 +112,13 @@ describe('PromptAIMessage', () => {
   describe('constructor', () => {
     it('includes the uid', () => {
       expect(
-        getPluginPromptAIMessage(stub.promptAI, { uid, callbackId }),
+        getPluginPromptAIMessage(stub.payload, { uid, callbackId }),
       ).toHaveProperty('uid', uid)
     })
-    console.log(getPluginPromptAIMessage(stub.promptAI, { uid, callbackId }))
     it('includes the promptAI data added to the message', () => {
       expect(
-        getPluginPromptAIMessage(stub.promptAI, { uid, callbackId }),
-      ).toHaveProperty('promptAI')
+        getPluginPromptAIMessage(stub.payload, { uid, callbackId }),
+      ).toHaveProperty('payload')
     })
   })
 })
