@@ -107,10 +107,7 @@ export const createPluginActions: CreatePluginActions = ({
           )
         })
       },
-      setModalOpen: (
-        isModalOpen: boolean,
-        modalSize?: { width: string; height: string },
-      ) => {
+      setModalOpen: (isModalOpen, modalSize) => {
         return new Promise((resolve) => {
           const callbackId = pushCallback('stateChanged', (message) =>
             resolve(

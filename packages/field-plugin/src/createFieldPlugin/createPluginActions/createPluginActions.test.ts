@@ -138,6 +138,44 @@ describe('createPluginActions', () => {
         } satisfies Partial<ModalChangeMessage>),
       )
     })
+    it('sends modalSize to the container when opening the modal', () => {
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { setModalOpen },
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        validateContent,
+      })
+
+      setModalOpen(true, { width: '50%' })
+      expect(postToContainer).toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'toggleModal',
+          status: true,
+          modalSize: { width: '50%' },
+        } satisfies Partial<ModalChangeMessage>),
+      )
+
+      setModalOpen(true, { height: '50%' })
+      expect(postToContainer).toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'toggleModal',
+          status: true,
+          modalSize: { height: '50%' },
+        } satisfies Partial<ModalChangeMessage>),
+      )
+
+      setModalOpen(true, { width: '50%', height: '50%' })
+      expect(postToContainer).toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'toggleModal',
+          status: true,
+          modalSize: { width: '50%', height: '50%' },
+        } satisfies Partial<ModalChangeMessage>),
+      )
+    })
   })
   describe('value state change', () => {
     it('updates the value state when setContent is called', () => {

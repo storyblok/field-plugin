@@ -14,7 +14,7 @@ export type StateChangedMessage = MessageToPlugin<'state-changed'> & {
   interfaceLanguage: string
   spaceId: number | null
   userId: number | undefined
-  userPermissions: Record<string, any> | undefined
+  userPermissions: Record<string, string[] | number[]> | undefined
   isSpaceAdmin: boolean
   story: StoryData
   storyId: number | undefined

@@ -1,11 +1,9 @@
 import { FunctionComponent } from 'react'
+import type { SetModalOpen } from '@storyblok/field-plugin'
 
 const ModalToggle: FunctionComponent<{
   isModalOpen: boolean
-  setModalOpen: (
-    isModalOpen: boolean,
-    modalSize?: { width: string; height: string },
-  ) => void
+  setModalOpen: SetModalOpen<number>
 }> = ({ isModalOpen, setModalOpen }) => {
   return (
     <div>

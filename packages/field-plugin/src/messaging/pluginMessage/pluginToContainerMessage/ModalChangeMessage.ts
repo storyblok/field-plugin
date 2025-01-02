@@ -1,10 +1,13 @@
 import { hasKey } from '../../../utils'
 import { isMessageToContainer, MessageToContainer } from './MessageToContainer'
 
+export type ModalSize = { width?: string; height?: string }
+
 export type ModalChangeMessage = MessageToContainer<'toggleModal'> & {
   status: boolean
-  modalSize?: { width: string; height: string }
+  modalSize?: ModalSize
 }
+
 export const isModalChangeMessage = (obj: unknown): obj is ModalChangeMessage =>
   isMessageToContainer(obj) &&
   obj.event === 'toggleModal' &&
