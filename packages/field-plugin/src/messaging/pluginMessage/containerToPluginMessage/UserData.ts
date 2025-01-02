@@ -12,5 +12,7 @@ export const isUserData = (data: unknown): data is UserData =>
   hasKey(data, 'isSpaceAdmin') &&
   typeof data.isSpaceAdmin === 'boolean' &&
   hasKey(data, 'permissions') &&
+  data.permissions !== null &&
   (typeof data.permissions === 'object' ||
-    typeof data.permissions === 'undefined')
+    typeof data.permissions === 'undefined') &&
+  !Array.isArray(data.permissions)
