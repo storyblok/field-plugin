@@ -115,7 +115,7 @@ describe('PromptAIMessage', () => {
         getPluginPromptAIMessage(stub.payload, { uid, callbackId }),
       ).toHaveProperty('uid', uid)
     })
-    it('includes the promptAI data added to the message', () => {
+    it('includes the payload was added to the message', () => {
       expect(
         getPluginPromptAIMessage(stub.payload, { uid, callbackId }),
       ).toHaveProperty('payload')
