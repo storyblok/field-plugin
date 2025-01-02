@@ -1,6 +1,7 @@
 import {
   OnAssetSelectMessage,
   OnContextRequestMessage,
+  OnUserContextRequestMessage,
   OnLoadedMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
@@ -11,6 +12,7 @@ export type PluginMessageCallbacks = {
   onStateChange: OnStateChangeMessage
   onLoaded: OnLoadedMessage
   onContextRequest: OnContextRequestMessage
+  onUserContextRequest: OnUserContextRequestMessage
   onAssetSelect: OnAssetSelectMessage
   onUnknownMessage: OnUnknownPluginMessage
 }

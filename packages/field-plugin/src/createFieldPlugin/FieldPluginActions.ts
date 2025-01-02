@@ -1,4 +1,4 @@
-import type { Asset, StoryData, ModalSize } from '../messaging'
+import type { Asset, StoryData, UserData, ModalSize } from '../messaging'
 import type { FieldPluginData } from './FieldPluginData'
 
 export type SetContent<Content> = (
@@ -9,6 +9,7 @@ export type SetModalOpen<Content> = (
   modalSize?: ModalSize,
 ) => Promise<FieldPluginData<Content>>
 export type RequestContext = () => Promise<StoryData>
+export type RequestUserContext = () => Promise<UserData>
 export type SelectAsset = () => Promise<Asset>
 export type Initialize<Content> = () => Promise<FieldPluginData<Content>>
 
@@ -16,5 +17,6 @@ export type FieldPluginActions<Content> = {
   setContent: SetContent<Content>
   setModalOpen: SetModalOpen<Content>
   requestContext: RequestContext
+  requestUserContext: RequestUserContext
   selectAsset: SelectAsset
 }

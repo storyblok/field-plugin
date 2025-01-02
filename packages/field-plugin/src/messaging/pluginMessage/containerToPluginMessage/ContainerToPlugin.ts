@@ -1,6 +1,7 @@
 import { LoadedMessage } from './LoadedMessage'
 import { AssetSelectedMessage } from './AssetSelectedMessage'
 import { ContextRequestMessage } from './ContextRequestMessage'
+import { UserContextRequestMessage } from './UserContextRequestMessage'
 import { MessageToPlugin } from './MessageToPlugin'
 import { StateChangedMessage } from './StateChangedMessage'
 
@@ -12,4 +13,7 @@ export type OnStateChangeMessage = (message: StateChangedMessage) => void
 export type OnLoadedMessage = (message: LoadedMessage) => void
 export type OnAssetSelectMessage = (message: AssetSelectedMessage) => void
 export type OnContextRequestMessage = (message: ContextRequestMessage) => void
+export type OnUserContextRequestMessage = (
+  message: UserContextRequestMessage,
+) => void
 export type OnUnknownPluginMessage = (message: MessageToPlugin<string>) => void

@@ -9,14 +9,6 @@ export const ContextRequester: PluginComponent = (props) => {
       <Typography textAlign="center">
         {JSON.stringify(data.story, null, 2)}
       </Typography>
-      <Typography variant="subtitle1">Permissions: </Typography>
-      <Typography textAlign="center">
-        {JSON.stringify(data.userPermissions, null, 2)}
-      </Typography>
-      <Typography variant="subtitle1">Is admin: </Typography>
-      <Typography textAlign="center">
-        {data.isSpaceAdmin ? 'Yes' : 'No'}
-      </Typography>
       <Typography variant="subtitle1">Is AI enabled: </Typography>
       <Typography textAlign="center">
         {data.isAIEnabled ? 'Yes' : 'No'}

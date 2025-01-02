@@ -4,10 +4,12 @@ import {
   assetFromAssetSelectedMessage,
   assetModalChangeMessage,
   getContextMessage,
+  getUserContextMessage,
   heightChangeMessage,
   modalChangeMessage,
   OnAssetSelectMessage,
   OnContextRequestMessage,
+  OnUserContextRequestMessage,
   OnLoadedMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
@@ -62,6 +64,9 @@ export const createPluginActions: CreatePluginActions = ({
   const onContextRequest: OnContextRequestMessage = (data) => {
     popCallback('context', data.callbackId)?.(data)
   }
+  const onUserContextRequest: OnUserContextRequestMessage = (data) => {
+    popCallback('userContext', data.callbackId)?.(data)
+  }
   const onAssetSelect: OnAssetSelectMessage = (data) => {
     popCallback('asset', data.callbackId)?.(data)
   }
@@ -69,8 +74,7 @@ export const createPluginActions: CreatePluginActions = ({
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
     console.debug(
-      `Plugin received a message from container of an unknown action type "${
-        data.action
+      `Plugin received a message from container of an unknown action type "${data.action
       }". You may need to upgrade the version of the @storyblok/field-plugin library. Full message: ${JSON.stringify(
         data,
       )}`,
@@ -81,6 +85,7 @@ export const createPluginActions: CreatePluginActions = ({
     onStateChange,
     onLoaded,
     onContextRequest,
+    onUserContextRequest,
     onAssetSelect,
     onUnknownMessage,
   }
@@ -138,6 +143,14 @@ export const createPluginActions: CreatePluginActions = ({
             resolve(message.story),
           )
           postToContainer(getContextMessage({ uid, callbackId }))
+        })
+      },
+      requestUserContext: () => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('userContext', (message) =>
+            resolve(message.user),
+          )
+          postToContainer(getUserContextMessage({ uid, callbackId }))
         })
       },
     },

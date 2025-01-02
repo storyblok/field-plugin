@@ -6,8 +6,6 @@ const stub: LoadedMessage = {
   uid: '-preview',
   spaceId: null,
   userId: undefined,
-  userPermissions: undefined,
-  isSpaceAdmin: false,
   model: undefined,
   isModalOpen: false,
   token: null,
@@ -162,66 +160,6 @@ describe('LoadedMessage', () => {
         isLoadedMessage({
           ...stub,
           userId: '123',
-        }),
-      ).toEqual(false)
-    })
-  })
-  describe('The "userPermissions" property', () => {
-    it('is an object', () => {
-      expect(
-        isLoadedMessage({
-          ...stub,
-          userPermissions: {},
-        }),
-      ).toEqual(true)
-    })
-    it('is undefined', () => {
-      expect(
-        isLoadedMessage({
-          ...stub,
-          userPermissions: undefined,
-        }),
-      ).toEqual(true)
-    })
-    it('is not a string', () => {
-      expect(
-        isLoadedMessage({
-          ...stub,
-          userPermissions: '123',
-        }),
-      ).toEqual(false)
-    })
-  })
-  describe('The "isSpaceAdmin" property', () => {
-    it('is a boolean and it is true', () => {
-      expect(
-        isLoadedMessage({
-          ...stub,
-          isSpaceAdmin: true,
-        }),
-      ).toEqual(true)
-    })
-    it('is false', () => {
-      expect(
-        isLoadedMessage({
-          ...stub,
-          isSpaceAdmin: false,
-        }),
-      ).toEqual(true)
-    })
-    it('is not null', () => {
-      expect(
-        isLoadedMessage({
-          ...stub,
-          isSpaceAdmin: null,
-        }),
-      ).toEqual(false)
-    })
-    it('is not a string', () => {
-      expect(
-        isLoadedMessage({
-          ...stub,
-          isSpaceAdmin: '123',
         }),
       ).toEqual(false)
     })

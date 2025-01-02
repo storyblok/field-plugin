@@ -9,8 +9,6 @@ export type FieldPluginData<Content> = {
   options: Record<string, string>
   spaceId: number | undefined
   userId: number | undefined
-  userPermissions: Record<string, string[] | number[]> | undefined
-  isSpaceAdmin: boolean
   interfaceLang: string
   storyLang: string
   story: StoryData

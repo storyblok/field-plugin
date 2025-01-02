@@ -1,7 +1,8 @@
 import { createPluginActions } from './createPluginActions'
-import {
+import type {
   AssetModalChangeMessage,
   GetContextMessage,
+  GetUserContextMessage,
   ModalChangeMessage,
   ValueChangeMessage,
 } from '../../messaging'
@@ -71,8 +72,6 @@ describe('createPluginActions', () => {
         model: randomString,
         spaceId: null,
         userId: undefined,
-        userPermissions: undefined,
-        isSpaceAdmin: false,
         blockId: undefined,
         isAIEnabled: false,
         releases: [],
@@ -216,6 +215,7 @@ describe('createPluginActions', () => {
       )
     })
   })
+
   describe('requestContext()', () => {
     it('send a message to the container to request the story', () => {
       const { uid, postToContainer, onUpdateState } = mock()
@@ -235,6 +235,27 @@ describe('createPluginActions', () => {
       )
     })
   })
+
+  describe('requestUserContext()', () => {
+    it('send a message to the container to request the user info', () => {
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { requestUserContext },
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        validateContent,
+      })
+      requestUserContext()
+      expect(postToContainer).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          event: 'getUserContext',
+        } satisfies Partial<GetUserContextMessage>),
+      )
+    })
+  })
+
   describe('selectAsset()', () => {
     it('send a message to the container to open the asset selector', () => {
       const { uid, postToContainer, onUpdateState } = mock()

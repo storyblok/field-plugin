@@ -3,6 +3,7 @@ import { PluginMessageCallbacks } from './createPluginMessageListener'
 import {
   AssetSelectedMessage,
   ContextRequestMessage,
+  UserContextRequestMessage,
   LoadedMessage,
   MessageToPlugin,
 } from '../../../messaging'
@@ -12,6 +13,7 @@ const uid = 'abc123'
 const mockCallbacks = (): PluginMessageCallbacks => ({
   onStateChange: vi.fn(),
   onContextRequest: vi.fn(),
+  onUserContextRequest: vi.fn(),
   onAssetSelect: vi.fn(),
   onUnknownMessage: vi.fn(),
   onLoaded: vi.fn(),
@@ -24,6 +26,7 @@ describe('handlePluginMessage', () => {
     handlePluginMessage(data, uid, callbacks)
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
@@ -36,6 +39,7 @@ describe('handlePluginMessage', () => {
     handlePluginMessage(data, uid, callbacks)
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
@@ -48,6 +52,7 @@ describe('handlePluginMessage', () => {
     handlePluginMessage(data, uid, callbacks)
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).toHaveBeenCalledWith(data)
   })
@@ -61,8 +66,6 @@ describe('handlePluginMessage', () => {
       model: 123,
       spaceId: 1234,
       userId: 2345,
-      userPermissions: {},
-      isSpaceAdmin: true,
       story: { content: {} },
       schema: { options: [], field_type: 'avh', translatable: false },
       storyId: 1344,
@@ -77,6 +80,7 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onLoaded).toHaveBeenCalledWith(data)
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
@@ -90,6 +94,21 @@ describe('handlePluginMessage', () => {
     handlePluginMessage(data, uid, callbacks)
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).toHaveBeenCalledWith(data)
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
+    expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
+  })
+  it('handles user context request messages', () => {
+    const data: UserContextRequestMessage = {
+      action: 'get-user-context',
+      uid,
+      user: { isSpaceAdmin: true, permissions: {} },
+    }
+    const callbacks = mockCallbacks()
+    handlePluginMessage(data, uid, callbacks)
+    expect(callbacks.onStateChange).not.toHaveBeenCalled()
+    expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).toHaveBeenCalledWith(data)
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
@@ -106,6 +125,7 @@ describe('handlePluginMessage', () => {
     handlePluginMessage(data, uid, callbacks)
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).toHaveBeenCalledWith(data)
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })

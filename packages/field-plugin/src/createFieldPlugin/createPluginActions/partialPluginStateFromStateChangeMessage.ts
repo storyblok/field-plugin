@@ -24,8 +24,6 @@ export const pluginStateFromStateChangeMessage = <Content>(
     interfaceLang: message.interfaceLanguage,
     spaceId: message.spaceId ?? undefined,
     userId: message.userId ?? undefined,
-    userPermissions: message.userPermissions ?? undefined,
-    isSpaceAdmin: message.isSpaceAdmin ?? false,
     story: message.story ?? undefined,
     storyId: message.storyId ?? undefined,
     storyLang: message.language === '' ? 'default' : message.language,

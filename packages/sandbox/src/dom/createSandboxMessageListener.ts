@@ -1,9 +1,11 @@
 import {
   AssetModalChangeMessage,
   GetContextMessage,
+  GetUserContextMessage,
   HeightChangeMessage,
   isAssetModalChangeMessage,
   isGetContextMessage,
+  isGetUserContextMessage,
   isHeightChangeMessage,
   isMessageToContainer,
   isModalChangeMessage,
@@ -20,6 +22,7 @@ type SandboxActions = {
   setModalOpen: (message: ModalChangeMessage) => void
   setPluginReady: (message: PluginLoadedMessage) => void
   requestContext: (message: GetContextMessage) => void
+  requestUserContext: (message: GetUserContextMessage) => void
   selectAsset: (message: AssetModalChangeMessage) => void
 }
 
@@ -60,6 +63,8 @@ export const createSandboxMessageListener: CreateSandboxListener = (
       eventHandlers.selectAsset(message)
     } else if (isGetContextMessage(message)) {
       eventHandlers.requestContext(message)
+    } else if (isGetUserContextMessage(message)) {
+      eventHandlers.requestUserContext(message)
     } else {
       console.warn(
         `The Sandbox received unknown message from plugin: ${JSON.stringify(

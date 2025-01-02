@@ -10,6 +10,7 @@ import {
   AssetModalChangeMessage,
   AssetSelectedMessage,
   ContextRequestMessage,
+  UserContextRequestMessage,
   FieldPluginData,
   FieldPluginOption,
   FieldPluginSchema,
@@ -21,6 +22,7 @@ import {
   recordFromFieldPluginOptions,
   StateChangedMessage,
   StoryData,
+  UserData,
   urlSearchParamsFromPluginUrlParams,
   ValueChangeMessage,
 } from '@storyblok/field-plugin'
@@ -57,6 +59,10 @@ import { TranslatableCheckbox } from './TranslatableCheckbox'
 const defaultUrl = 'http://localhost:8080'
 const initialStory: StoryData = {
   content: {},
+}
+const initialUser: UserData = {
+  isSpaceAdmin: true,
+  permissions: undefined,
 }
 const initialContent = ''
 const initialHeight = 300
@@ -107,6 +113,7 @@ const useSandbox = (
   }, [fieldPluginURL, pluginParams])
 
   const [story] = useState<StoryData>(initialStory)
+  const [user] = useState<UserData>(initialUser)
 
   // TODO replace with useReducer
   const [subscribeState, setSubscribeState] = useState<boolean>(false)
@@ -134,8 +141,6 @@ const useSandbox = (
       language,
       spaceId: null,
       userId: undefined,
-      userPermissions: undefined,
-      isSpaceAdmin: false,
       story,
       storyId: undefined,
       token: null,
@@ -201,6 +206,13 @@ const useSandbox = (
     },
     [postToPlugin],
   )
+
+  const dispatchUserContextRequest = useCallback(
+    (message: UserContextRequestMessage) => {
+      postToPlugin(message)
+    },
+    [postToPlugin],
+  )
   const dispatchAssetSelected = useCallback(
     (message: AssetSelectedMessage) => {
       postToPlugin(message)
@@ -255,6 +267,17 @@ const useSandbox = (
       }),
     [uid, dispatchContextRequest, story],
   )
+
+  const onUserContextRequested = useCallback(
+    () =>
+      dispatchUserContextRequest({
+        uid,
+        action: 'get-user-context',
+        user,
+      }),
+    [uid, dispatchUserContextRequest, user],
+  )
+
   const onAssetSelected = useCallback(
     (message: AssetModalChangeMessage) => {
       dispatchAssetSelected({
@@ -290,6 +313,7 @@ const useSandbox = (
           setHeight: onHeightChange,
           setModalOpen: onModalChange,
           requestContext: onContextRequested,
+          requestUserContext: onUserContextRequested,
           selectAsset: onAssetSelected,
         },
         {
@@ -306,6 +330,7 @@ const useSandbox = (
       setModalOpen,
       onAssetSelected,
       onContextRequested,
+      onUserContextRequested,
       onHeightChange,
       onModalChange,
       onUpdate,

@@ -1,6 +1,7 @@
 import {
   AssetSelectedMessage,
   ContextRequestMessage,
+  UserContextRequestMessage,
   LoadedMessage,
   OnMessage,
   StateChangedMessage,
@@ -12,6 +13,7 @@ export type CallbackId = string
 type CallbackMap = {
   asset: Record<CallbackId, OnMessage<AssetSelectedMessage>>
   context: Record<CallbackId, OnMessage<ContextRequestMessage>>
+  userContext: Record<CallbackId, OnMessage<UserContextRequestMessage>>
   stateChanged: Record<CallbackId, OnMessage<StateChangedMessage>>
   loaded: Record<CallbackId, OnMessage<LoadedMessage>>
 }
@@ -21,6 +23,7 @@ export const callbackQueue = () => {
   let callbackMap: CallbackMap = {
     asset: {},
     context: {},
+    userContext: {},
     stateChanged: {},
     loaded: {},
   }
