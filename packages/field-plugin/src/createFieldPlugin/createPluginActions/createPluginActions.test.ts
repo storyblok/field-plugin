@@ -1,9 +1,11 @@
 import { createPluginActions } from './createPluginActions'
-import {
+import type {
   AssetModalChangeMessage,
   GetContextMessage,
   ModalChangeMessage,
   ValueChangeMessage,
+  PromptAIPayload,
+  PluginPromptAIMessage,
 } from '../../messaging'
 import { emptyAsset } from '../../messaging/pluginMessage/containerToPluginMessage/Asset.test'
 
@@ -191,6 +193,33 @@ describe('createPluginActions', () => {
         expect.objectContaining({
           event: 'getContext',
         } satisfies Partial<GetContextMessage>),
+      )
+    })
+  })
+  describe('promptAI()', () => {
+    it('send a message to the container to prompt the AI', () => {
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { promptAI },
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        validateContent,
+      })
+
+      const promptAIPayload: PromptAIPayload = {
+        action: 'prompt',
+        text: 'Some text to prompt',
+      }
+
+      promptAI(promptAIPayload)
+
+      expect(postToContainer).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          event: 'promptAI',
+          promptAI: promptAIPayload,
+        } satisfies Partial<PluginPromptAIMessage>),
       )
     })
   })

@@ -1,4 +1,8 @@
-import type { MessageToContainer } from './MessageToContainer'
+import { hasKey } from '../../../utils'
+import {
+  isMessageToContainer,
+  type MessageToContainer,
+} from './MessageToContainer'
 
 export type PromptAIAction =
   | 'prompt'
@@ -38,17 +42,37 @@ export type PromptAIPayload = {
   textLengthUnit?: string
 }
 
-export type PromptAIMessage = Omit<MessageToContainer<'promptAI'>, 'action'> & {
+export type PluginPromptAIMessage = Omit<
+  MessageToContainer<'promptAI'>,
+  'action'
+> & {
   action: 'prompt-ai'
   promptAI: PromptAIPayload
 }
 
-export const getPromptAIMessage = (
+export const isPluginPromptAIMessage = (
+  obj: unknown,
+): obj is PluginPromptAIMessage =>
+  isMessageToContainer(obj) &&
+  obj.event === 'promptAI' &&
+  hasKey(obj, 'promptAI') &&
+  isPromptAIPayloadValid(obj.promptAI as PromptAIPayload)
+
+export const getPluginPromptAIMessage = (
   message: PromptAIPayload,
-  options: Pick<PromptAIMessage, 'uid' | 'callbackId'>,
-): PromptAIMessage => ({
+  options: Pick<PluginPromptAIMessage, 'uid' | 'callbackId'>,
+): PluginPromptAIMessage => ({
   action: 'prompt-ai',
   event: 'promptAI',
   ...options,
   promptAI: { ...message },
 })
+
+const isPromptAIPayloadValid = (promptAIPayload: PromptAIPayload) =>
+  promptAIPayload !== null &&
+  typeof promptAIPayload === 'object' &&
+  hasKey(promptAIPayload, 'action') &&
+  typeof promptAIPayload.action === 'string' &&
+  hasKey(promptAIPayload, 'text') &&
+  typeof promptAIPayload.text === 'string' &&
+  promptAIActionsList.includes(promptAIPayload.action)

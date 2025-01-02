@@ -1,10 +1,11 @@
 import { handlePluginMessage } from './handlePluginMessage'
 import { PluginMessageCallbacks } from './createPluginMessageListener'
-import {
+import type {
   AssetSelectedMessage,
   ContextRequestMessage,
   LoadedMessage,
   MessageToPlugin,
+  PromptAIResponseMessage,
 } from '../../../messaging'
 import { emptyAsset } from '../../../messaging/pluginMessage/containerToPluginMessage/Asset.test'
 
@@ -105,6 +106,24 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).toHaveBeenCalledWith(data)
+    expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
+  })
+
+  it('handles promptAI messages', () => {
+    const data: PromptAIResponseMessage = {
+      action: 'prompt-ai',
+      uid,
+      callbackId: 'test-callback-id',
+      output: 'Some output',
+    }
+
+    const callbacks = mockCallbacks()
+
+    handlePluginMessage(data, uid, callbacks)
+    expect(callbacks.onStateChange).not.toHaveBeenCalled()
+    expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onAssetSelect).not.toHaveBeenCalledWith(data)
+    expect(callbacks.onPromptAI).toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
 })

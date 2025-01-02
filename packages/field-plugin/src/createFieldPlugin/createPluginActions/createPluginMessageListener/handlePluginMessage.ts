@@ -3,8 +3,8 @@ import {
   isMessageToPlugin,
   isLoadedMessage,
   isPromptAIMessage,
+  isContextRequestMessage,
 } from '../../../messaging'
-import { isContextRequestMessage } from '../../../messaging'
 import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { isStateMessage } from '../../../messaging/pluginMessage/containerToPluginMessage/StateChangedMessage'
 

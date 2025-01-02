@@ -14,7 +14,7 @@ import {
   OnUnknownPluginMessage,
   pluginLoadedMessage,
   type PromptAIPayload,
-  getPromptAIMessage,
+  getPluginPromptAIMessage,
   valueChangeMessage,
   OnPromptAIMessage,
 } from '../../messaging'
@@ -154,7 +154,7 @@ export const createPluginActions: CreatePluginActions = ({
             resolve(getResponseFromPromptAIMessage(message)),
           )
           postToContainer(
-            getPromptAIMessage(promptAIMessage, { uid, callbackId }),
+            getPluginPromptAIMessage(promptAIMessage, { uid, callbackId }),
           )
         })
       },
