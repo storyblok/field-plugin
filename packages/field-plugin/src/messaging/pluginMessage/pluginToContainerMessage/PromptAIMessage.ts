@@ -54,7 +54,7 @@ export const isPluginPromptAIMessage = (
   obj: unknown,
 ): obj is PluginPromptAIMessage =>
   isMessageToContainer(obj) &&
-  obj.event === 'payload' &&
+  obj.event === 'promptAI' &&
   hasKey(obj, 'payload') &&
   isPromptAIPayloadValid(obj.payload as PromptAIPayload)
 

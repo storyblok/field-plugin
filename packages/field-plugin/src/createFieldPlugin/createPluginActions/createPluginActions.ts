@@ -13,10 +13,10 @@ import {
   OnStateChangeMessage,
   OnUnknownPluginMessage,
   pluginLoadedMessage,
-  type PromptAIPayload,
   getPluginPromptAIMessage,
   valueChangeMessage,
   OnPromptAIMessage,
+  type PromptAIPayload,
 } from '../../messaging'
 import { FieldPluginActions, Initialize } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
