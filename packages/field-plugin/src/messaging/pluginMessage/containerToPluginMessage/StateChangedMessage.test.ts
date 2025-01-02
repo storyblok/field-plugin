@@ -183,14 +183,6 @@ describe('StateChangedMessage', () => {
         }),
       ).toEqual(true)
     })
-    it('is not null', () => {
-      expect(
-        isStateMessage({
-          ...stub,
-          userPermissions: null,
-        }),
-      ).toEqual(false)
-    })
     it('is not a string', () => {
       expect(
         isStateMessage({

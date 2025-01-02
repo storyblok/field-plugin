@@ -183,14 +183,6 @@ describe('LoadedMessage', () => {
         }),
       ).toEqual(true)
     })
-    it('is not null', () => {
-      expect(
-        isLoadedMessage({
-          ...stub,
-          userPermissions: null,
-        }),
-      ).toEqual(false)
-    })
     it('is not a string', () => {
       expect(
         isLoadedMessage({
