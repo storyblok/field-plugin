@@ -58,6 +58,23 @@ export const isPluginPromptAIMessage = (
   hasKey(obj, 'payload') &&
   isPromptAIPayloadValid(obj.payload as PromptAIPayload)
 
+export const isPromptAIPayloadValid = (promptAIPayload: PromptAIPayload) =>
+  promptAIPayload !== null &&
+  typeof promptAIPayload === 'object' &&
+  hasKey(promptAIPayload, 'action') &&
+  typeof promptAIPayload.action === 'string' &&
+  hasKey(promptAIPayload, 'text') &&
+  typeof promptAIPayload.text === 'string' &&
+  promptAIActionsList.includes(promptAIPayload.action) &&
+  ((promptAIPayload.action === 'translate' &&
+    typeof promptAIPayload.language === 'string' &&
+    promptAIPayload.language !== '') ||
+    promptAIPayload.action !== 'translate') &&
+  ((promptAIPayload.action === 'adjust-tone' &&
+    typeof promptAIPayload.tone === 'string' &&
+    promptAIPayload.tone !== '') ||
+    promptAIPayload.action !== 'adjust-tone')
+
 export const getPluginPromptAIMessage = (
   message: PromptAIPayload,
   options: Pick<PluginPromptAIMessage, 'uid' | 'callbackId'>,
@@ -67,12 +84,3 @@ export const getPluginPromptAIMessage = (
   ...options,
   payload: { ...message },
 })
-
-const isPromptAIPayloadValid = (promptAIPayload: PromptAIPayload) =>
-  promptAIPayload !== null &&
-  typeof promptAIPayload === 'object' &&
-  hasKey(promptAIPayload, 'action') &&
-  typeof promptAIPayload.action === 'string' &&
-  hasKey(promptAIPayload, 'text') &&
-  typeof promptAIPayload.text === 'string' &&
-  promptAIActionsList.includes(promptAIPayload.action)
