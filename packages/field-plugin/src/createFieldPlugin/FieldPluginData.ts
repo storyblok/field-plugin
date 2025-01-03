@@ -17,6 +17,7 @@ export type FieldPluginData<Content> = {
   token: string | undefined
   uid: string
   translatable: boolean
+  isAIEnabled: boolean
   releases: Release[]
   releaseId: number | undefined
 }

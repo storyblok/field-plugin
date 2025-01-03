@@ -134,6 +134,8 @@ export const FieldTypePreview = forwardRef<
     src: string | undefined
     height: number
     modalState: ModalState
+    modalHeight: string
+    modalWidth: string
     fullHeight: boolean
     // Allows the iframe to be refreshed
     iframeKey?: number
@@ -141,7 +143,14 @@ export const FieldTypePreview = forwardRef<
     onModalChange: (isModal: boolean) => void
   }
 >(function FieldTypePreview(props, ref) {
-  const { height, fullHeight, modalState, onModalChange } = props
+  const {
+    height,
+    fullHeight,
+    modalState,
+    modalHeight,
+    modalWidth,
+    onModalChange,
+  } = props
 
   const setTeleported = (el: HTMLIFrameElement | null) => {
     if (modalState === 'modal-with-portal') {
@@ -164,8 +173,13 @@ export const FieldTypePreview = forwardRef<
       <Dialog
         open={modalState === 'modal-with-portal'}
         fullScreen
+        style={{
+          maxWidth: modalWidth,
+          maxHeight: modalHeight,
+        }}
         sx={{
           padding: 10,
+          margin: '0 auto',
         }}
         PaperProps={{
           sx: {

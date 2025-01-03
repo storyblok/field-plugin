@@ -15,6 +15,7 @@ const stub: StateChangedMessage = {
   language: '',
   interfaceLanguage: 'en',
   schema: { options: [], field_type: 'blah', translatable: false },
+  isAIEnabled: false,
   releases: [],
   releaseId: undefined,
 }
@@ -159,6 +160,40 @@ describe('StateChangedMessage', () => {
         isStateMessage({
           ...stub,
           userId: '123',
+        }),
+      ).toEqual(false)
+    })
+  })
+  describe('The "isAIEnabled" property', () => {
+    it('is a boolean and it is true', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isAIEnabled: true,
+        }),
+      ).toEqual(true)
+    })
+    it('is a boolean and it is false', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isAIEnabled: false,
+        }),
+      ).toEqual(true)
+    })
+    it('is not null', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isAIEnabled: null,
+        }),
+      ).toEqual(false)
+    })
+    it('is not a string', () => {
+      expect(
+        isStateMessage({
+          ...stub,
+          isAIEnabled: '123',
         }),
       ).toEqual(false)
     })

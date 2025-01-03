@@ -4,10 +4,12 @@ import {
   assetFromAssetSelectedMessage,
   assetModalChangeMessage,
   getContextMessage,
+  getUserContextMessage,
   heightChangeMessage,
   modalChangeMessage,
   OnAssetSelectMessage,
   OnContextRequestMessage,
+  OnUserContextRequestMessage,
   OnLoadedMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
@@ -62,6 +64,9 @@ export const createPluginActions: CreatePluginActions = ({
   const onContextRequest: OnContextRequestMessage = (data) => {
     popCallback('context', data.callbackId)?.(data)
   }
+  const onUserContextRequest: OnUserContextRequestMessage = (data) => {
+    popCallback('userContext', data.callbackId)?.(data)
+  }
   const onAssetSelect: OnAssetSelectMessage = (data) => {
     popCallback('asset', data.callbackId)?.(data)
   }
@@ -81,6 +86,7 @@ export const createPluginActions: CreatePluginActions = ({
     onStateChange,
     onLoaded,
     onContextRequest,
+    onUserContextRequest,
     onAssetSelect,
     onUnknownMessage,
   }
@@ -107,7 +113,7 @@ export const createPluginActions: CreatePluginActions = ({
           )
         })
       },
-      setModalOpen: (isModalOpen) => {
+      setModalOpen: (isModalOpen, modalSize) => {
         return new Promise((resolve) => {
           const callbackId = pushCallback('stateChanged', (message) =>
             resolve(
@@ -115,7 +121,12 @@ export const createPluginActions: CreatePluginActions = ({
             ),
           )
           postToContainer(
-            modalChangeMessage({ uid, callbackId, status: isModalOpen }),
+            modalChangeMessage({
+              uid,
+              callbackId,
+              status: isModalOpen,
+              modalSize,
+            }),
           )
         })
       },
@@ -133,6 +144,14 @@ export const createPluginActions: CreatePluginActions = ({
             resolve(message.story),
           )
           postToContainer(getContextMessage({ uid, callbackId }))
+        })
+      },
+      requestUserContext: () => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('userContext', (message) =>
+            resolve(message.user),
+          )
+          postToContainer(getUserContextMessage({ uid, callbackId }))
         })
       },
     },

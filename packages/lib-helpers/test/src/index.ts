@@ -2,6 +2,7 @@ import {
   FieldPluginSchema,
   isAssetModalChangeMessage,
   isGetContextMessage,
+  isGetUserContextMessage,
   isHeightChangeMessage,
   isModalChangeMessage,
   isPluginLoadedMessage,
@@ -32,6 +33,11 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
   const story = {
     content: {},
   }
+  const user = {
+    isSpaceAdmin: true,
+    permissions: {},
+  }
+  const isAIEnabled = false
 
   const stateMessage = ({
     action,
@@ -51,6 +57,7 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
     storyId,
     spaceId,
     userId,
+    isAIEnabled,
     token,
     action,
   })
@@ -101,6 +108,13 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
           uid,
           callbackId: data.callbackId,
           story,
+        })
+      } else if (isGetUserContextMessage(data)) {
+        sendToFieldPlugin({
+          action: 'get-user-context',
+          uid,
+          callbackId: data.callbackId,
+          user,
         })
       } else {
         console.warn(
