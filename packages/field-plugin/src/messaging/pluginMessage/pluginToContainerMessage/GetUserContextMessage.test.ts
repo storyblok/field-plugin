@@ -10,7 +10,6 @@ const callbackId = 'test-callback-id'
 const stub: GetUserContextMessage = {
   action: 'plugin-changed',
   event: 'getUserContext',
-  debounce: false,
   uid,
   callbackId,
 }
