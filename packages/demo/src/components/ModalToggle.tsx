@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Stack, Typography, Input, Grid } from '@mui/material'
+import { Button, Stack, Typography, TextField, Grid } from '@mui/material'
 import { PluginComponent } from './FieldPluginDemo'
 import type { ModalSize } from '@storyblok/field-plugin'
 
@@ -21,21 +21,21 @@ export const ModalToggle: PluginComponent = (props) => {
           xs={6}
           item
         >
-          <Typography>Set modal width: </Typography>
-          <Input
+          <TextField
+            label="Set modal width:"
             value={modalSize.width}
             fullWidth
             onChange={(e) =>
               setModalSize({ ...modalSize, width: e.target.value })
             }
-          />{' '}
+          />
         </Grid>
         <Grid
           xs={6}
           item
         >
-          <Typography>Set modal height: </Typography>
-          <Input
+          <TextField
+            label="Set modal height:"
             value={modalSize.height}
             fullWidth
             onChange={(e) =>
