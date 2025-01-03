@@ -12,6 +12,7 @@ export const isPromptAIMessage = (
   data: unknown,
 ): data is PromptAIResponseMessage =>
   isMessageToPlugin(data) &&
+  data.action === 'prompt-ai' &&
   hasKey(data, 'output') &&
   typeof data.output === 'string'
 
