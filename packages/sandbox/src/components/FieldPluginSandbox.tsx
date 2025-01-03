@@ -119,6 +119,8 @@ const useSandbox = (
   // TODO replace with useReducer
   const [subscribeState, setSubscribeState] = useState<boolean>(false)
   const [isModalOpen, setModalOpen] = useState(false)
+  const [modalHeight, setModalHeight] = useState<string>('')
+  const [modalWidth, setModalWidth] = useState<string>('')
   const [height, setHeight] = useState(initialHeight)
   const [fullHeight, setFullHeight] = useState(false)
   const [enablePortalModal, setEnablePortalModal] = useState(false)
@@ -226,8 +228,12 @@ const useSandbox = (
     (message: ModalChangeMessage) => {
       setModalOpen(message.status)
       setStateChangedCallbackId(message.callbackId)
+      if (message.modalSize) {
+        setModalHeight(message.modalSize.height || '')
+        setModalWidth(message.modalSize.width || '')
+      }
     },
-    [setModalOpen, setStateChangedCallbackId],
+    [setModalOpen, setStateChangedCallbackId, setModalHeight, setModalWidth],
   )
 
   const onHeightChange = useCallback(
@@ -357,6 +363,8 @@ const useSandbox = (
       height,
       fullHeight,
       modalState,
+      modalHeight,
+      modalWidth,
       schema,
       url,
       fieldTypeIframe,
@@ -380,6 +388,8 @@ export const FieldPluginSandbox: FunctionComponent = () => {
       content,
       language,
       modalState,
+      modalHeight,
+      modalWidth,
       fullHeight,
       height,
       schema,
@@ -420,6 +430,8 @@ export const FieldPluginSandbox: FunctionComponent = () => {
               src={iframeSrc}
               height={height}
               modalState={modalState}
+              modalHeight={modalHeight}
+              modalWidth={modalWidth}
               fullHeight={fullHeight}
               ref={fieldTypeIframe}
               onModalChange={setModalOpen}

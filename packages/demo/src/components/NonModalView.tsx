@@ -13,7 +13,6 @@ export const NonModalView: PluginComponent = (props) => (
     <Stack gap={6}>
       <ModalToggle {...props} />
       <ValueMutator {...props} />
-      <ModalToggle {...props} />
       <AssetSelector {...props} />
       <ContextRequester {...props} />
       <UserContextRequester {...props} />
