@@ -10,6 +10,7 @@ import {
   AssetModalChangeMessage,
   AssetSelectedMessage,
   ContextRequestMessage,
+  GetUserContextMessage,
   UserContextRequestMessage,
   FieldPluginData,
   FieldPluginOption,
