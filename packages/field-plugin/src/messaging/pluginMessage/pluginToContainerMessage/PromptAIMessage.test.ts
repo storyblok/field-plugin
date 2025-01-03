@@ -108,6 +108,50 @@ describe('PromptAIMessage', () => {
         }),
       ).toEqual(false)
     })
+    it('has the payload a language in case of translation', () => {
+      expect(
+        isPluginPromptAIMessage({
+          ...stub,
+          payload: {
+            ...stub.payload,
+            action: 'translate',
+          },
+        }),
+      ).toEqual(false)
+
+      expect(
+        isPluginPromptAIMessage({
+          ...stub,
+          payload: {
+            ...stub.payload,
+            action: 'translate',
+            language: 'en',
+          },
+        }),
+      ).toEqual(true)
+    })
+    it('has the payload a tone in case of tone adjustment', () => {
+      expect(
+        isPluginPromptAIMessage({
+          ...stub,
+          payload: {
+            ...stub.payload,
+            action: 'adjust-tone',
+          },
+        }),
+      ).toEqual(false)
+
+      expect(
+        isPluginPromptAIMessage({
+          ...stub,
+          payload: {
+            ...stub.payload,
+            action: 'adjust-tone',
+            tone: 'academic',
+          },
+        }),
+      ).toEqual(true)
+    })
   })
   describe('constructor', () => {
     it('includes the uid', () => {
