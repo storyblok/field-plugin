@@ -269,11 +269,12 @@ const useSandbox = (
   )
 
   const onUserContextRequested = useCallback(
-    () =>
+    (message: GetUserContextMessage) =>
       dispatchUserContextRequest({
         uid,
         action: 'get-user-context',
         user,
+        callbackId: message.callbackId,
       }),
     [uid, dispatchUserContextRequest, user],
   )

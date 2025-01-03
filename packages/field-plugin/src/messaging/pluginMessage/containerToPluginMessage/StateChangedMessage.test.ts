@@ -173,7 +173,7 @@ describe('StateChangedMessage', () => {
         }),
       ).toEqual(true)
     })
-    it('is false', () => {
+    it('is a boolean and it is false', () => {
       expect(
         isStateMessage({
           ...stub,
