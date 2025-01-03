@@ -1,7 +1,8 @@
-import {
+import type {
   OnAssetSelectMessage,
   OnContextRequestMessage,
   OnLoadedMessage,
+  OnPromptAIMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
 } from '../../../messaging'
@@ -12,6 +13,7 @@ export type PluginMessageCallbacks = {
   onLoaded: OnLoadedMessage
   onContextRequest: OnContextRequestMessage
   onAssetSelect: OnAssetSelectMessage
+  onPromptAI: OnPromptAIMessage
   onUnknownMessage: OnUnknownPluginMessage
 }
 

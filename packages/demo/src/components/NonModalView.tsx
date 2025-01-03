@@ -6,6 +6,7 @@ import { AssetSelector } from './AssetSelector'
 import { ContextRequester } from './ContextRequester'
 import { PluginComponent } from './FieldPluginDemo'
 import { LanguageView } from './LanguageView'
+import { PromptAI } from './PromptAI'
 
 export const NonModalView: PluginComponent = (props) => (
   <Paper>
@@ -17,6 +18,7 @@ export const NonModalView: PluginComponent = (props) => (
       <ContextRequester {...props} />
       <HeightChangeDemo {...props} />
       <LanguageView {...props} />
+      <PromptAI {...props} />
     </Stack>
   </Paper>
 )

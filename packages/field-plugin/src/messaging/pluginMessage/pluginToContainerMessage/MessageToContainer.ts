@@ -11,7 +11,7 @@ export const isMessageToContainer = (
   obj: unknown,
 ): obj is MessageToContainer<string> =>
   hasKey(obj, 'action') &&
-  obj.action === 'plugin-changed' &&
+  (obj.action === 'plugin-changed' || obj.action === 'prompt-ai') &&
   hasKey(obj, 'uid') &&
   typeof obj.uid === 'string' &&
   hasKey(obj, 'event') &&
