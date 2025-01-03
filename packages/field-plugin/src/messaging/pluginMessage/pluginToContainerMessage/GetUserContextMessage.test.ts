@@ -14,7 +14,7 @@ const stub: GetUserContextMessage = {
   callbackId,
 }
 
-describe('ValueChangeMessage', () => {
+describe('GetUserContextMessage', () => {
   describe('validator', () => {
     it('is a MessageToContainer', () => {
       expect(isMessageToContainer(stub)).toEqual(true)

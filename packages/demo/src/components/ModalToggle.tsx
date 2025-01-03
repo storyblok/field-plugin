@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, Stack, Typography, Input, Grid } from '@mui/material'
 import { PluginComponent } from './FieldPluginDemo'
-import { ModalSize } from '@storyblok/field-plugin'
+import type { ModalSize } from '@storyblok/field-plugin'
 
 export const ModalToggle: PluginComponent = (props) => {
   const { actions, data } = props
