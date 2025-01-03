@@ -12,13 +12,13 @@
     "format": "prettier . --write"
   },
   "devDependencies": {
-    "@types/node": "18.19.54",
+    "@types/node": "18.19.67",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "eslint": "8.57.1",
     "eslint-plugin-prettier": "5.2.1",
-    "prettier": "3.3.3",
-    "typescript": "5.6.2",
-    "vite": "5.4.8"
+    "prettier": "3.4.2",
+    "typescript": "5.7.2",
+    "vite": "5.4.11"
   }
 }
