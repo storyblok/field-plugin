@@ -2121,7 +2121,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@1.4.2, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@npm:1.4.2":
+  version: 1.4.2
+  resolution: "@storyblok/field-plugin@npm:1.4.2"
+  checksum: 8370efd3f41759eea967daec3325d96256f7131c8c3feef48184010158a899bb8013516359dfdfc6f3b2e1ef09f5349f0dd365c0a2735186ad43532a876be703
+  languageName: node
+  linkType: hard
+
+"@storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
