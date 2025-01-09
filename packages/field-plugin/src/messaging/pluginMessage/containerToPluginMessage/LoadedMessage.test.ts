@@ -12,6 +12,7 @@ const stub: LoadedMessage = {
   storyId: undefined,
   blockId: undefined,
   story: { content: {} },
+  isAIEnabled: false,
   language: '',
   interfaceLanguage: 'en',
   schema: { options: [], field_type: 'blah', translatable: false },
@@ -159,6 +160,40 @@ describe('LoadedMessage', () => {
         isLoadedMessage({
           ...stub,
           userId: '123',
+        }),
+      ).toEqual(false)
+    })
+  })
+  describe('The "isAIEnabled" property', () => {
+    it('is a boolean and it is true', () => {
+      expect(
+        isLoadedMessage({
+          ...stub,
+          isAIEnabled: true,
+        }),
+      ).toEqual(true)
+    })
+    it('is a boolean and it is false', () => {
+      expect(
+        isLoadedMessage({
+          ...stub,
+          isAIEnabled: false,
+        }),
+      ).toEqual(true)
+    })
+    it('is not null', () => {
+      expect(
+        isLoadedMessage({
+          ...stub,
+          isAIEnabled: null,
+        }),
+      ).toEqual(false)
+    })
+    it('is not a string', () => {
+      expect(
+        isLoadedMessage({
+          ...stub,
+          isAIEnabled: '123',
         }),
       ).toEqual(false)
     })
