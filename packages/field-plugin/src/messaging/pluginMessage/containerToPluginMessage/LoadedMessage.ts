@@ -21,6 +21,7 @@ export type LoadedMessage = MessageToPlugin<'loaded'> & {
   // Related to the field type itself
   schema: FieldPluginSchema
   model: unknown
+  isAIEnabled: boolean
   isModalOpen: boolean
   releases: Release[]
   releaseId: number | undefined
@@ -38,5 +39,7 @@ export const isLoadedMessage = (data: unknown): data is LoadedMessage =>
   (typeof data.userId === 'number' || typeof data.userId === 'undefined') &&
   hasKey(data, 'story') &&
   isStoryData(data.story) &&
+  hasKey(data, 'isAIEnabled') &&
+  typeof data.isAIEnabled === 'boolean' &&
   hasKey(data, 'isModalOpen') &&
   typeof data.isModalOpen === 'boolean'

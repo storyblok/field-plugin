@@ -3,6 +3,7 @@ import { PluginMessageCallbacks } from './createPluginMessageListener'
 import type {
   AssetSelectedMessage,
   ContextRequestMessage,
+  UserContextRequestMessage,
   LoadedMessage,
   MessageToPlugin,
   PromptAIResponseMessage,
@@ -13,6 +14,7 @@ const uid = 'abc123'
 const mockCallbacks = (): PluginMessageCallbacks => ({
   onStateChange: vi.fn(),
   onContextRequest: vi.fn(),
+  onUserContextRequest: vi.fn(),
   onAssetSelect: vi.fn(),
   onUnknownMessage: vi.fn(),
   onLoaded: vi.fn(),
@@ -27,6 +29,7 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
@@ -41,6 +44,7 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
@@ -55,6 +59,7 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).toHaveBeenCalledWith(data)
@@ -74,6 +79,7 @@ describe('handlePluginMessage', () => {
       storyId: 1344,
       token: 'rfwreff2435wewff43',
       isModalOpen: false,
+      isAIEnabled: false,
       releases: [],
       releaseId: undefined,
     }
@@ -82,6 +88,7 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onLoaded).toHaveBeenCalledWith(data)
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
@@ -97,6 +104,21 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).toHaveBeenCalledWith(data)
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
+    expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
+  })
+  it('handles user context request messages', () => {
+    const data: UserContextRequestMessage = {
+      action: 'get-user-context',
+      uid,
+      user: { isSpaceAdmin: true, permissions: {} },
+    }
+    const callbacks = mockCallbacks()
+    handlePluginMessage(data, uid, callbacks)
+    expect(callbacks.onStateChange).not.toHaveBeenCalled()
+    expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).toHaveBeenCalledWith(data)
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
     expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
@@ -115,6 +137,7 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).toHaveBeenCalledWith(data)
     expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()

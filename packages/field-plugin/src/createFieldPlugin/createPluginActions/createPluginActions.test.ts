@@ -2,6 +2,7 @@ import { createPluginActions } from './createPluginActions'
 import type {
   AssetModalChangeMessage,
   GetContextMessage,
+  GetUserContextMessage,
   ModalChangeMessage,
   ValueChangeMessage,
   PromptAIPayload,
@@ -74,6 +75,7 @@ describe('createPluginActions', () => {
         spaceId: null,
         userId: undefined,
         blockId: undefined,
+        isAIEnabled: false,
         releases: [],
         releaseId: undefined,
       })
@@ -137,6 +139,44 @@ describe('createPluginActions', () => {
         } satisfies Partial<ModalChangeMessage>),
       )
     })
+    it('sends modalSize to the container when opening the modal', () => {
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { setModalOpen },
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        validateContent,
+      })
+
+      setModalOpen(true, { width: '50%' })
+      expect(postToContainer).toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'toggleModal',
+          status: true,
+          modalSize: { width: '50%' },
+        } satisfies Partial<ModalChangeMessage>),
+      )
+
+      setModalOpen(true, { height: '50%' })
+      expect(postToContainer).toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'toggleModal',
+          status: true,
+          modalSize: { height: '50%' },
+        } satisfies Partial<ModalChangeMessage>),
+      )
+
+      setModalOpen(true, { width: '50%', height: '50%' })
+      expect(postToContainer).toHaveBeenCalledWith(
+        expect.objectContaining({
+          event: 'toggleModal',
+          status: true,
+          modalSize: { width: '50%', height: '50%' },
+        } satisfies Partial<ModalChangeMessage>),
+      )
+    })
   })
   describe('value state change', () => {
     it('updates the value state when setContent is called', () => {
@@ -177,6 +217,7 @@ describe('createPluginActions', () => {
       )
     })
   })
+
   describe('requestContext()', () => {
     it('send a message to the container to request the story', () => {
       const { uid, postToContainer, onUpdateState } = mock()
@@ -196,6 +237,7 @@ describe('createPluginActions', () => {
       )
     })
   })
+
   describe('promptAI()', () => {
     it('send a message to the container to prompt the AI', () => {
       const { uid, postToContainer, onUpdateState } = mock()
@@ -223,6 +265,27 @@ describe('createPluginActions', () => {
       )
     })
   })
+
+  describe('requestUserContext()', () => {
+    it('send a message to the container to request the user info', () => {
+      const { uid, postToContainer, onUpdateState } = mock()
+      const {
+        actions: { requestUserContext },
+      } = createPluginActions({
+        uid,
+        postToContainer,
+        onUpdateState,
+        validateContent,
+      })
+      requestUserContext()
+      expect(postToContainer).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          event: 'getUserContext',
+        } satisfies Partial<GetUserContextMessage>),
+      )
+    })
+  })
+
   describe('selectAsset()', () => {
     it('send a message to the container to open the asset selector', () => {
       const { uid, postToContainer, onUpdateState } = mock()

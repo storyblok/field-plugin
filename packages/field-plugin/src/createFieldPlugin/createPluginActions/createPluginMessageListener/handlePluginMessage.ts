@@ -4,6 +4,7 @@ import {
   isLoadedMessage,
   isPromptAIMessage,
   isContextRequestMessage,
+  isUserContextRequestMessage,
 } from '../../../messaging'
 import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { isStateMessage } from '../../../messaging/pluginMessage/containerToPluginMessage/StateChangedMessage'
@@ -31,6 +32,8 @@ export const handlePluginMessage = (
     callbacks.onStateChange(data)
   } else if (isContextRequestMessage(data)) {
     callbacks.onContextRequest(data)
+  } else if (isUserContextRequestMessage(data)) {
+    callbacks.onUserContextRequest(data)
   } else if (isAssetSelectedMessage(data)) {
     callbacks.onAssetSelect(data)
   } else if (isPromptAIMessage(data)) {
