@@ -36,8 +36,7 @@ export const promptAIActionsList: PromptAIAction[] = [
 export type PromptAIPayload = {
   action: PromptAIAction
   text: string
-  // todo: pass the storyId to the container when accepted by the API
-  // storyId?: number
+  basedOnCurrentStory?: boolean
   language?: string
   textLength?: string
   tone?: string

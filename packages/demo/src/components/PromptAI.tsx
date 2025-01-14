@@ -1,4 +1,13 @@
-import { Button, MenuItem, Stack, TextField, Typography } from '@mui/material'
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { useState } from 'react'
 import {
   isPromptAIPayloadValid,
@@ -14,7 +23,9 @@ export const PromptAI: PluginComponent = (props) => {
   const [promptAction, setPromptAction] = useState<PromptAIAction>('prompt')
   const [promptLanguage, setPromptLanguage] = useState<string>()
   const [promptTone, setPromptTone] = useState<string>()
-  const [promptOutput, setPromptOutput] = useState<string>()
+  const [promptAIGeneratedText, setPromptAIGeneratedText] = useState<string>()
+  const [promptBasedOnCurrentStory, setPromptBasedOnCurrentStory] =
+    useState<boolean>(false)
 
   const onSubmit = async () => {
     const payload = {
@@ -22,6 +33,7 @@ export const PromptAI: PluginComponent = (props) => {
       text: promptQuestion,
       language: promptLanguage,
       tone: promptTone,
+      basedOnCurrentStory: promptBasedOnCurrentStory,
     }
 
     if (!isPromptAIPayloadValid(payload)) {
@@ -29,9 +41,9 @@ export const PromptAI: PluginComponent = (props) => {
       return
     }
 
-    const output = await actions.promptAI(payload)
+    const promptAIGeneratedText = await actions.promptAI(payload)
 
-    setPromptOutput(output)
+    setPromptAIGeneratedText(promptAIGeneratedText)
   }
 
   return (
@@ -70,7 +82,17 @@ export const PromptAI: PluginComponent = (props) => {
           label="Tone (optional)"
           onChange={(e) => setPromptTone(e.target.value)}
         />
-        <Typography>Output: {promptOutput}</Typography>
+        <FormControl>
+          <FormLabel htmlFor="based-on-current-story-checkbox">
+            Based on the current story:
+          </FormLabel>
+          <Checkbox
+            id="based-on-current-story-checkbox"
+            value={promptBasedOnCurrentStory}
+            onChange={(e) => setPromptBasedOnCurrentStory(e.target.checked)}
+          />
+        </FormControl>
+        <Typography>AI Generated Text: {promptAIGeneratedText}</Typography>
         <Button
           variant="outlined"
           color="secondary"

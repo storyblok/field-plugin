@@ -1,7 +1,7 @@
 import { hasKey } from '../../../utils'
 
 export type MessageToContainer<Event extends string> = {
-  action: 'plugin-changed'
+  action: 'plugin-changed' | 'prompt-ai'
   uid: string
   event: Event
   callbackId?: string

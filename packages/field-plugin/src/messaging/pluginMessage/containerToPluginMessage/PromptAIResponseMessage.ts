@@ -5,7 +5,7 @@ import { isMessageToPlugin, type MessageToPlugin } from './MessageToPlugin'
  * The object returned when calling the "prompt-ai" action.
  */
 export type PromptAIResponseMessage = MessageToPlugin<'prompt-ai'> & {
-  output: string
+  aiGeneratedText: string
 }
 
 export const isPromptAIMessage = (
@@ -13,12 +13,12 @@ export const isPromptAIMessage = (
 ): data is PromptAIResponseMessage =>
   isMessageToPlugin(data) &&
   data.action === 'prompt-ai' &&
-  hasKey(data, 'output') &&
-  typeof data.output === 'string'
+  hasKey(data, 'aiGeneratedText') &&
+  typeof data.aiGeneratedText === 'string'
 
 export const getResponseFromPromptAIMessage = (
   message: PromptAIResponseMessage,
 ): string => {
-  const { output } = message
-  return output
+  const { aiGeneratedText } = message
+  return aiGeneratedText
 }
