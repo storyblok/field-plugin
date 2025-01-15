@@ -7,7 +7,7 @@ const stub: PromptAIResponseMessage = {
   action: 'prompt-ai',
   uid: '-preview',
   callbackId: 'test-callback-id',
-  output: 'test-output',
+  aiGeneratedText: 'test-ai-generated-text',
 }
 
 describe('PromptAIResponseMessage', function () {
@@ -30,12 +30,12 @@ describe('PromptAIResponseMessage', function () {
       ).toEqual(false)
     })
   })
-  describe('the output property', () => {
+  describe('the aiGeneratedText property', () => {
     it('cannot be undefined', () => {
       expect(
         isPromptAIMessage({
           ...stub,
-          output: undefined,
+          aiGeneratedText: undefined,
         }),
       ).toEqual(false)
     })
@@ -43,37 +43,37 @@ describe('PromptAIResponseMessage', function () {
       expect(
         isPromptAIMessage({
           ...stub,
-          output: 'any-string',
+          aiGeneratedText: 'any-string',
         }),
       ).toEqual(true)
       expect(
         isPromptAIMessage({
           ...stub,
-          output: 123,
+          aiGeneratedText: 123,
         }),
       ).toEqual(false)
       expect(
         isPromptAIMessage({
           ...stub,
-          output: null,
+          aiGeneratedText: null,
         }),
       ).toEqual(false)
       expect(
         isPromptAIMessage({
           ...stub,
-          output: [],
+          aiGeneratedText: [],
         }),
       ).toEqual(false)
       expect(
         isPromptAIMessage({
           ...stub,
-          output: {},
+          aiGeneratedText: {},
         }),
       ).toEqual(false)
       expect(
         isPromptAIMessage({
           ...stub,
-          output: false,
+          aiGeneratedText: false,
         }),
       ).toEqual(false)
     })
