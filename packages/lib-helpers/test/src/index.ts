@@ -115,8 +115,10 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
           action: 'prompt-ai',
           uid,
           callbackId: data.callbackId,
-          aiGeneratedText:
-            'Fake AI generated text for the prompt: ' + data.payload.text,
+          aiResponse: {
+            ok: true,
+            answer: 'Fake AI answer for the prompt: ' + data.payload.text,
+          },
         })
       } else if (isGetUserContextMessage(data)) {
         sendToFieldPlugin({

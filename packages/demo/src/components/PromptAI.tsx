@@ -12,6 +12,7 @@ import { useState } from 'react'
 import {
   isPromptAIPayloadValid,
   promptAIActionsList,
+  PromptAIResponse,
   type PromptAIAction,
 } from '@storyblok/field-plugin'
 import type { PluginComponent } from './FieldPluginDemo'
@@ -23,7 +24,7 @@ export const PromptAI: PluginComponent = (props) => {
   const [promptAction, setPromptAction] = useState<PromptAIAction>('prompt')
   const [promptLanguage, setPromptLanguage] = useState<string>()
   const [promptTone, setPromptTone] = useState<string>()
-  const [promptAIGeneratedText, setPromptAIGeneratedText] = useState<string>()
+  const [promptAIResponse, setPromptAIResponse] = useState<PromptAIResponse>()
   const [promptBasedOnCurrentStory, setPromptBasedOnCurrentStory] =
     useState<boolean>(false)
 
@@ -41,9 +42,9 @@ export const PromptAI: PluginComponent = (props) => {
       return
     }
 
-    const promptAIGeneratedText = await actions.promptAI(payload)
+    const promptAIResponse = await actions.promptAI(payload)
 
-    setPromptAIGeneratedText(promptAIGeneratedText)
+    setPromptAIResponse(promptAIResponse)
   }
 
   return (
@@ -92,7 +93,12 @@ export const PromptAI: PluginComponent = (props) => {
             onChange={(e) => setPromptBasedOnCurrentStory(e.target.checked)}
           />
         </FormControl>
-        <Typography>AI Generated Text: {promptAIGeneratedText}</Typography>
+        <Typography>
+          {promptAIResponse?.ok === true &&
+            `AI Generated Text: ${promptAIResponse.answer}`}
+          {promptAIResponse?.ok === false &&
+            `AI Error: ${promptAIResponse.error}`}
+        </Typography>
         <Button
           variant="outlined"
           color="secondary"

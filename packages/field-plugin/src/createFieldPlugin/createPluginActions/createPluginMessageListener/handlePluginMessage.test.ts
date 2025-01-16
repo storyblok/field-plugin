@@ -148,7 +148,10 @@ describe('handlePluginMessage', () => {
       action: 'prompt-ai',
       uid,
       callbackId: 'test-callback-id',
-      aiGeneratedText: 'Some AI generated text',
+      aiResponse: {
+        ok: true,
+        answer: 'Some AI generated text',
+      },
     }
 
     const callbacks = mockCallbacks()
