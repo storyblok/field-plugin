@@ -2,6 +2,7 @@ import {
   isAssetSelectedMessage,
   isMessageToPlugin,
   isLoadedMessage,
+  isPromptAIMessage,
   isContextRequestMessage,
   isUserContextRequestMessage,
 } from '../../../messaging'
@@ -35,6 +36,8 @@ export const handlePluginMessage = (
     callbacks.onUserContextRequest(data)
   } else if (isAssetSelectedMessage(data)) {
     callbacks.onAssetSelect(data)
+  } else if (isPromptAIMessage(data)) {
+    callbacks.onPromptAI(data)
   } else {
     callbacks.onUnknownMessage(data)
   }

@@ -1,8 +1,4 @@
 import {
-  AssetModalChangeMessage,
-  GetContextMessage,
-  GetUserContextMessage,
-  HeightChangeMessage,
   isAssetModalChangeMessage,
   isGetContextMessage,
   isGetUserContextMessage,
@@ -11,9 +7,15 @@ import {
   isModalChangeMessage,
   isPluginLoadedMessage,
   isValueChangeMessage,
-  ModalChangeMessage,
-  PluginLoadedMessage,
-  ValueChangeMessage,
+  type ModalChangeMessage,
+  type PluginLoadedMessage,
+  type PluginPromptAIMessage,
+  type ValueChangeMessage,
+  type AssetModalChangeMessage,
+  type GetContextMessage,
+  type GetUserContextMessage,
+  type HeightChangeMessage,
+  isPluginPromptAIMessage,
 } from '@storyblok/field-plugin'
 
 type SandboxActions = {
@@ -24,6 +26,7 @@ type SandboxActions = {
   requestContext: (message: GetContextMessage) => void
   requestUserContext: (message: GetUserContextMessage) => void
   selectAsset: (message: AssetModalChangeMessage) => void
+  promptAI: (message: PluginPromptAIMessage) => void
 }
 
 export type CreateSandboxListener = (
@@ -63,6 +66,8 @@ export const createSandboxMessageListener: CreateSandboxListener = (
       eventHandlers.selectAsset(message)
     } else if (isGetContextMessage(message)) {
       eventHandlers.requestContext(message)
+    } else if (isPluginPromptAIMessage(message)) {
+      eventHandlers.promptAI(message)
     } else if (isGetUserContextMessage(message)) {
       eventHandlers.requestUserContext(message)
     } else {

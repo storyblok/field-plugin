@@ -6,6 +6,7 @@ import {
   isHeightChangeMessage,
   isModalChangeMessage,
   isPluginLoadedMessage,
+  isPluginPromptAIMessage,
   isValueChangeMessage,
 } from '@storyblok/field-plugin'
 
@@ -108,6 +109,17 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
           uid,
           callbackId: data.callbackId,
           story,
+        })
+      } else if (isPluginPromptAIMessage(data)) {
+        sendToFieldPlugin({
+          action: 'prompt-ai',
+          uid,
+          callbackId: data.callbackId,
+          aiResponse: {
+            ok: true,
+            answer:
+              'Fake AI answer for the prompt: ' + data.promptAIPayload.text,
+          },
         })
       } else if (isGetUserContextMessage(data)) {
         sendToFieldPlugin({

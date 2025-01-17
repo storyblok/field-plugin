@@ -312,6 +312,15 @@ const useSandbox = (
     [uid, pluginParams, dispatchAssetSelected],
   )
 
+  const onPromptAI = useCallback(
+    () =>
+      onError({
+        title: 'AI Prompt',
+        message: 'AI Prompt is not supported in the sandbox',
+      }),
+    [onError],
+  )
+
   useEffect(
     () =>
       createSandboxMessageListener(
@@ -323,6 +332,7 @@ const useSandbox = (
           requestContext: onContextRequested,
           requestUserContext: onUserContextRequested,
           selectAsset: onAssetSelected,
+          promptAI: onPromptAI,
         },
         {
           iframeOrigin: fieldPluginURL?.origin,
@@ -342,6 +352,7 @@ const useSandbox = (
       onHeightChange,
       onModalChange,
       onUpdate,
+      onPromptAI,
       fieldPluginURL,
     ],
   )

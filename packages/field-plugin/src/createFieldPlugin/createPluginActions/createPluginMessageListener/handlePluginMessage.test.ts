@@ -1,11 +1,12 @@
 import { handlePluginMessage } from './handlePluginMessage'
 import { PluginMessageCallbacks } from './createPluginMessageListener'
-import {
+import type {
   AssetSelectedMessage,
   ContextRequestMessage,
   UserContextRequestMessage,
   LoadedMessage,
   MessageToPlugin,
+  PromptAIResponseMessage,
 } from '../../../messaging'
 import { emptyAsset } from '../../../messaging/pluginMessage/containerToPluginMessage/Asset.test'
 
@@ -17,6 +18,7 @@ const mockCallbacks = (): PluginMessageCallbacks => ({
   onAssetSelect: vi.fn(),
   onUnknownMessage: vi.fn(),
   onLoaded: vi.fn(),
+  onPromptAI: vi.fn(),
 })
 
 describe('handlePluginMessage', () => {
@@ -24,10 +26,12 @@ describe('handlePluginMessage', () => {
     const data = {}
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)
+    expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
+    expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
   it('ignores plugin messages that have incorrect uid', () => {
@@ -37,10 +41,12 @@ describe('handlePluginMessage', () => {
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)
+    expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
+    expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
   it('handles unknown message types', () => {
@@ -50,10 +56,12 @@ describe('handlePluginMessage', () => {
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)
+    expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
+    expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).toHaveBeenCalledWith(data)
   })
   it('handles state change messages', () => {
@@ -82,6 +90,7 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
+    expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
   it('handles context request messages', () => {
@@ -92,6 +101,7 @@ describe('handlePluginMessage', () => {
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)
+    expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).toHaveBeenCalledWith(data)
     expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
@@ -110,6 +120,7 @@ describe('handlePluginMessage', () => {
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onUserContextRequest).toHaveBeenCalledWith(data)
     expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
+    expect(callbacks.onPromptAI).not.toHaveBeenCalled()
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
   it('handles asset select messages', () => {
@@ -123,10 +134,34 @@ describe('handlePluginMessage', () => {
     }
     const callbacks = mockCallbacks()
     handlePluginMessage(data, uid, callbacks)
+    expect(callbacks.onLoaded).not.toHaveBeenCalled()
     expect(callbacks.onStateChange).not.toHaveBeenCalled()
     expect(callbacks.onContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onUserContextRequest).not.toHaveBeenCalled()
     expect(callbacks.onAssetSelect).toHaveBeenCalledWith(data)
+    expect(callbacks.onPromptAI).not.toHaveBeenCalled()
+    expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
+  })
+
+  it('handles promptAI messages', () => {
+    const data: PromptAIResponseMessage = {
+      action: 'prompt-ai',
+      uid,
+      callbackId: 'test-callback-id',
+      aiResponse: {
+        ok: true,
+        answer: 'Some AI generated text',
+      },
+    }
+
+    const callbacks = mockCallbacks()
+
+    handlePluginMessage(data, uid, callbacks)
+    expect(callbacks.onLoaded).not.toHaveBeenCalled()
+    expect(callbacks.onStateChange).not.toHaveBeenCalled()
+    expect(callbacks.onContextRequest).not.toHaveBeenCalled()
+    expect(callbacks.onAssetSelect).not.toHaveBeenCalled()
+    expect(callbacks.onPromptAI).toHaveBeenCalledWith(data)
     expect(callbacks.onUnknownMessage).not.toHaveBeenCalled()
   })
 })
