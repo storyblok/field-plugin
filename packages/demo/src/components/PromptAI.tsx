@@ -2,7 +2,7 @@ import {
   Button,
   Checkbox,
   FormControl,
-  FormLabel,
+  FormControlLabel,
   MenuItem,
   Stack,
   TextField,
@@ -84,13 +84,15 @@ export const PromptAI: PluginComponent = (props) => {
           onChange={(e) => setPromptTone(e.target.value)}
         />
         <FormControl>
-          <FormLabel htmlFor="based-on-current-story-checkbox">
-            Based on the current story:
-          </FormLabel>
-          <Checkbox
-            id="based-on-current-story-checkbox"
-            value={promptBasedOnCurrentStory}
-            onChange={(e) => setPromptBasedOnCurrentStory(e.target.checked)}
+          <FormControlLabel
+            label="Based on the current story"
+            control={
+              <Checkbox
+                value={promptBasedOnCurrentStory}
+                onChange={(e) => setPromptBasedOnCurrentStory(e.target.checked)}
+              />
+            }
+            sx={{ ml: '-9px' }}
           />
         </FormControl>
         <Typography>

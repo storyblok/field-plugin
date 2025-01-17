@@ -4,21 +4,7 @@ import {
   type MessageToContainer,
 } from './MessageToContainer'
 
-export type PromptAIAction =
-  | 'prompt'
-  | 'complete'
-  | 'shorten'
-  | 'extend'
-  | 'rephrase'
-  | 'summarize'
-  | 'simplify'
-  | 'translate'
-  | 'tldr'
-  | 'adjust-tone'
-  | 'emojify'
-  | 'fix_spelling_and_grammar'
-
-export const promptAIActionsList: PromptAIAction[] = [
+export const promptAIActionsList = [
   'prompt',
   'complete',
   'shorten',
@@ -31,7 +17,9 @@ export const promptAIActionsList: PromptAIAction[] = [
   'adjust-tone',
   'emojify',
   'fix_spelling_and_grammar',
-]
+] as const
+
+export type PromptAIAction = (typeof promptAIActionsList)[number]
 
 export type PromptAIPayload = {
   action: PromptAIAction
@@ -48,7 +36,7 @@ export type PluginPromptAIMessage = Omit<
   'action'
 > & {
   action: 'prompt-ai'
-  payload: PromptAIPayload
+  promptAIPayload: PromptAIPayload
 }
 
 export const isPluginPromptAIMessage = (
@@ -56,8 +44,8 @@ export const isPluginPromptAIMessage = (
 ): obj is PluginPromptAIMessage =>
   isMessageToContainer(obj) &&
   obj.event === 'promptAI' &&
-  hasKey(obj, 'payload') &&
-  isPromptAIPayloadValid(obj.payload as PromptAIPayload)
+  hasKey(obj, 'promptAIPayload') &&
+  isPromptAIPayloadValid(obj.promptAIPayload as PromptAIPayload)
 
 export const isPromptAIPayloadValid = (promptAIPayload: PromptAIPayload) =>
   promptAIPayload !== null &&
@@ -83,5 +71,5 @@ export const getPluginPromptAIMessage = (
   action: 'prompt-ai',
   event: 'promptAI',
   ...options,
-  payload: { ...message },
+  promptAIPayload: { ...message },
 })

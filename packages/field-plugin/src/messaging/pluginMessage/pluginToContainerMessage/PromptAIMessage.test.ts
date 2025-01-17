@@ -11,7 +11,7 @@ const stub: PluginPromptAIMessage = {
   action: 'prompt-ai',
   event: 'promptAI',
   uid,
-  payload: {
+  promptAIPayload: {
     action: 'prompt',
     text: 'Some text to prompt',
   },
@@ -36,7 +36,7 @@ describe('PromptAIMessage', () => {
         }),
       ).toEqual(false)
     })
-    it('has a payload', () => {
+    it('has a promptAIPayload', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
@@ -45,15 +45,15 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: undefined,
+          promptAIPayload: undefined,
         }),
       ).toEqual(false)
     })
-    it('has the payload all required fields', () => {
+    it('has the promptAIPayload all required fields', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
+          promptAIPayload: {
             action: '',
           },
         }),
@@ -62,7 +62,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
+          promptAIPayload: {
             text: '',
           },
         }),
@@ -71,7 +71,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
+          promptAIPayload: {
             action: 'prompt',
             text: 'random text',
           },
@@ -81,7 +81,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
+          promptAIPayload: {
             action: 'prompt',
             text: 123,
           },
@@ -91,7 +91,7 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
+          promptAIPayload: {
             action: null,
             text: 123,
           },
@@ -101,19 +101,19 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
+          promptAIPayload: {
             action: null,
             text: null,
           },
         }),
       ).toEqual(false)
     })
-    it('has the payload a language in case of translation', () => {
+    it('has the promptAIPayload a language in case of translation', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
-            ...stub.payload,
+          promptAIPayload: {
+            ...stub.promptAIPayload,
             action: 'translate',
           },
         }),
@@ -122,20 +122,20 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
-            ...stub.payload,
+          promptAIPayload: {
+            ...stub.promptAIPayload,
             action: 'translate',
             language: 'en',
           },
         }),
       ).toEqual(true)
     })
-    it('has the payload a tone in case of tone adjustment', () => {
+    it('has the promptAIPayload a tone in case of tone adjustment', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
-            ...stub.payload,
+          promptAIPayload: {
+            ...stub.promptAIPayload,
             action: 'adjust-tone',
           },
         }),
@@ -144,8 +144,8 @@ describe('PromptAIMessage', () => {
       expect(
         isPluginPromptAIMessage({
           ...stub,
-          payload: {
-            ...stub.payload,
+          promptAIPayload: {
+            ...stub.promptAIPayload,
             action: 'adjust-tone',
             tone: 'academic',
           },
@@ -156,13 +156,13 @@ describe('PromptAIMessage', () => {
   describe('constructor', () => {
     it('includes the uid', () => {
       expect(
-        getPluginPromptAIMessage(stub.payload, { uid, callbackId }),
+        getPluginPromptAIMessage(stub.promptAIPayload, { uid, callbackId }),
       ).toHaveProperty('uid', uid)
     })
-    it('includes the payload was added to the message', () => {
+    it('includes the promptAIPayload', () => {
       expect(
-        getPluginPromptAIMessage(stub.payload, { uid, callbackId }),
-      ).toHaveProperty('payload')
+        getPluginPromptAIMessage(stub.promptAIPayload, { uid, callbackId }),
+      ).toHaveProperty('promptAIPayload')
     })
   })
 })

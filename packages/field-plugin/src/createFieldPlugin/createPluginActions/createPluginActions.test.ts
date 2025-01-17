@@ -260,7 +260,7 @@ describe('createPluginActions', () => {
       expect(postToContainer).toHaveBeenLastCalledWith(
         expect.objectContaining({
           event: 'promptAI',
-          payload: promptAIPayload,
+          promptAIPayload,
         } satisfies Partial<PluginPromptAIMessage>),
       )
     })
