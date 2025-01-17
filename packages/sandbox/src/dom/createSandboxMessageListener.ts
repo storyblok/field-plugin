@@ -1,17 +1,21 @@
 import {
-  AssetModalChangeMessage,
-  GetContextMessage,
-  HeightChangeMessage,
   isAssetModalChangeMessage,
   isGetContextMessage,
+  isGetUserContextMessage,
   isHeightChangeMessage,
   isMessageToContainer,
   isModalChangeMessage,
   isPluginLoadedMessage,
   isValueChangeMessage,
-  ModalChangeMessage,
-  PluginLoadedMessage,
-  ValueChangeMessage,
+  type ModalChangeMessage,
+  type PluginLoadedMessage,
+  type PluginPromptAIMessage,
+  type ValueChangeMessage,
+  type AssetModalChangeMessage,
+  type GetContextMessage,
+  type GetUserContextMessage,
+  type HeightChangeMessage,
+  isPluginPromptAIMessage,
 } from '@storyblok/field-plugin'
 
 type SandboxActions = {
@@ -20,7 +24,9 @@ type SandboxActions = {
   setModalOpen: (message: ModalChangeMessage) => void
   setPluginReady: (message: PluginLoadedMessage) => void
   requestContext: (message: GetContextMessage) => void
+  requestUserContext: (message: GetUserContextMessage) => void
   selectAsset: (message: AssetModalChangeMessage) => void
+  promptAI: (message: PluginPromptAIMessage) => void
 }
 
 export type CreateSandboxListener = (
@@ -60,6 +66,10 @@ export const createSandboxMessageListener: CreateSandboxListener = (
       eventHandlers.selectAsset(message)
     } else if (isGetContextMessage(message)) {
       eventHandlers.requestContext(message)
+    } else if (isPluginPromptAIMessage(message)) {
+      eventHandlers.promptAI(message)
+    } else if (isGetUserContextMessage(message)) {
+      eventHandlers.requestUserContext(message)
     } else {
       console.warn(
         `The Sandbox received unknown message from plugin: ${JSON.stringify(

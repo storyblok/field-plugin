@@ -2,9 +2,11 @@ import {
   FieldPluginSchema,
   isAssetModalChangeMessage,
   isGetContextMessage,
+  isGetUserContextMessage,
   isHeightChangeMessage,
   isModalChangeMessage,
   isPluginLoadedMessage,
+  isPluginPromptAIMessage,
   isValueChangeMessage,
 } from '@storyblok/field-plugin'
 
@@ -32,6 +34,11 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
   const story = {
     content: {},
   }
+  const user = {
+    isSpaceAdmin: true,
+    permissions: {},
+  }
+  const isAIEnabled = false
 
   const stateMessage = ({
     action,
@@ -51,6 +58,7 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
     storyId,
     spaceId,
     userId,
+    isAIEnabled,
     token,
     action,
   })
@@ -101,6 +109,24 @@ const getContainer = (sendToFieldPlugin: (data: unknown) => void) => {
           uid,
           callbackId: data.callbackId,
           story,
+        })
+      } else if (isPluginPromptAIMessage(data)) {
+        sendToFieldPlugin({
+          action: 'prompt-ai',
+          uid,
+          callbackId: data.callbackId,
+          aiResponse: {
+            ok: true,
+            answer:
+              'Fake AI answer for the prompt: ' + data.promptAIPayload.text,
+          },
+        })
+      } else if (isGetUserContextMessage(data)) {
+        sendToFieldPlugin({
+          action: 'get-user-context',
+          uid,
+          callbackId: data.callbackId,
+          user,
         })
       } else {
         console.warn(

@@ -10,6 +10,8 @@ import {
   AssetModalChangeMessage,
   AssetSelectedMessage,
   ContextRequestMessage,
+  GetUserContextMessage,
+  UserContextRequestMessage,
   FieldPluginData,
   FieldPluginOption,
   FieldPluginSchema,
@@ -21,6 +23,7 @@ import {
   recordFromFieldPluginOptions,
   StateChangedMessage,
   StoryData,
+  UserData,
   urlSearchParamsFromPluginUrlParams,
   ValueChangeMessage,
 } from '@storyblok/field-plugin'
@@ -57,6 +60,10 @@ import { TranslatableCheckbox } from './TranslatableCheckbox'
 const defaultUrl = 'http://localhost:8080'
 const initialStory: StoryData = {
   content: {},
+}
+const initialUser: UserData = {
+  isSpaceAdmin: true,
+  permissions: undefined,
 }
 const initialContent = ''
 const initialHeight = 300
@@ -107,10 +114,13 @@ const useSandbox = (
   }, [fieldPluginURL, pluginParams])
 
   const [story] = useState<StoryData>(initialStory)
+  const [user] = useState<UserData>(initialUser)
 
   // TODO replace with useReducer
   const [subscribeState, setSubscribeState] = useState<boolean>(false)
   const [isModalOpen, setModalOpen] = useState(false)
+  const [modalHeight, setModalHeight] = useState<string>('')
+  const [modalWidth, setModalWidth] = useState<string>('')
   const [height, setHeight] = useState(initialHeight)
   const [fullHeight, setFullHeight] = useState(false)
   const [enablePortalModal, setEnablePortalModal] = useState(false)
@@ -137,6 +147,7 @@ const useSandbox = (
       story,
       storyId: undefined,
       token: null,
+      isAIEnabled: false,
       isModalOpen,
       callbackId: stateChangedCallbackId,
       releases: [],
@@ -198,6 +209,13 @@ const useSandbox = (
     },
     [postToPlugin],
   )
+
+  const dispatchUserContextRequest = useCallback(
+    (message: UserContextRequestMessage) => {
+      postToPlugin(message)
+    },
+    [postToPlugin],
+  )
   const dispatchAssetSelected = useCallback(
     (message: AssetSelectedMessage) => {
       postToPlugin(message)
@@ -210,8 +228,12 @@ const useSandbox = (
     (message: ModalChangeMessage) => {
       setModalOpen(message.status)
       setStateChangedCallbackId(message.callbackId)
+      if (message.modalSize) {
+        setModalHeight(message.modalSize.height || '')
+        setModalWidth(message.modalSize.width || '')
+      }
     },
-    [setModalOpen, setStateChangedCallbackId],
+    [setModalOpen, setStateChangedCallbackId, setModalHeight, setModalWidth],
   )
 
   const onHeightChange = useCallback(
@@ -252,6 +274,18 @@ const useSandbox = (
       }),
     [uid, dispatchContextRequest, story],
   )
+
+  const onUserContextRequested = useCallback(
+    (message: GetUserContextMessage) =>
+      dispatchUserContextRequest({
+        uid,
+        action: 'get-user-context',
+        user,
+        callbackId: message.callbackId,
+      }),
+    [uid, dispatchUserContextRequest, user],
+  )
+
   const onAssetSelected = useCallback(
     (message: AssetModalChangeMessage) => {
       dispatchAssetSelected({
@@ -278,6 +312,15 @@ const useSandbox = (
     [uid, pluginParams, dispatchAssetSelected],
   )
 
+  const onPromptAI = useCallback(
+    () =>
+      onError({
+        title: 'AI Prompt',
+        message: 'AI Prompt is not supported in the sandbox',
+      }),
+    [onError],
+  )
+
   useEffect(
     () =>
       createSandboxMessageListener(
@@ -287,7 +330,9 @@ const useSandbox = (
           setHeight: onHeightChange,
           setModalOpen: onModalChange,
           requestContext: onContextRequested,
+          requestUserContext: onUserContextRequested,
           selectAsset: onAssetSelected,
+          promptAI: onPromptAI,
         },
         {
           iframeOrigin: fieldPluginURL?.origin,
@@ -303,9 +348,11 @@ const useSandbox = (
       setModalOpen,
       onAssetSelected,
       onContextRequested,
+      onUserContextRequested,
       onHeightChange,
       onModalChange,
       onUpdate,
+      onPromptAI,
       fieldPluginURL,
     ],
   )
@@ -327,6 +374,8 @@ const useSandbox = (
       height,
       fullHeight,
       modalState,
+      modalHeight,
+      modalWidth,
       schema,
       url,
       fieldTypeIframe,
@@ -350,6 +399,8 @@ export const FieldPluginSandbox: FunctionComponent = () => {
       content,
       language,
       modalState,
+      modalHeight,
+      modalWidth,
       fullHeight,
       height,
       schema,
@@ -390,6 +441,8 @@ export const FieldPluginSandbox: FunctionComponent = () => {
               src={iframeSrc}
               height={height}
               modalState={modalState}
+              modalHeight={modalHeight}
+              modalWidth={modalWidth}
               fullHeight={fullHeight}
               ref={fieldTypeIframe}
               onModalChange={setModalOpen}
