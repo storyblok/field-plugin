@@ -9,18 +9,18 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@emotion/react": "11.13.5",
-    "@emotion/styled": "11.13.5",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
     "@fontsource/roboto": "4.5.8",
-    "@mui/material": "5.16.9",
+    "@mui/material": "5.17.1",
     "@storyblok/field-plugin": "workspace:*",
-    "@storyblok/mui": "0.2.0",
+    "@storyblok/mui": "0.3.1",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
   "devDependencies": {
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^3.0.0",
-    "vite": "5.4.11"
+    "vite": "5.4.16"
   }
 }
