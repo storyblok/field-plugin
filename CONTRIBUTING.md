@@ -80,7 +80,7 @@ yarn test:lib
 To test the library with a demo, you need to run three commands in parallel:
 
 - `yarn dev:lib`: Watches file changes in the library and updates the bundle output.
-- `yarn dev:demo`: Runs the demo Field Plugin located at `packages/demo`. Update it to test changes to the library.
+- `yarn dev:demo`: Runs the demo Field Plugin located at `packages/demo`. Update it to test changes to the library. Uncomment `targetOrigin` at `packages/demo/src/components/FieldPluginDemo.tsx`.
 - `yarn dev:sandbox`: Runs the Sandbox locally.
 
 Run all the commands in three separate terminals, then open the Sandbox at `http://localhost:7070/`. This Container hosts the demo Field Plugin. Whenever you change a file in the library, the bundle output updates automatically and the demo app does Hot-Module Replacement (HMR). You can then seamlessly test it in the running Sandbox application.

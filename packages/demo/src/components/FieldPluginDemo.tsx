@@ -20,6 +20,7 @@ export const FieldPluginDemo: FunctionComponent = () => {
   const { type, data, actions } = useFieldPlugin({
     validateContent,
     enablePortalModal: true,
+    // targetOrigin: 'http://localhost:7070', // Uncomment for local development
   })
 
   if (type === 'loading') {
@@ -39,10 +40,7 @@ export const FieldPluginDemo: FunctionComponent = () => {
     )
   }
 
-  const props = {
-    data,
-    actions,
-  }
+  const props = { data, actions }
 
   return props.data.isModalOpen ? (
     <ModalView {...props} />
