@@ -55,7 +55,7 @@ We strive to keep pull requests as small as possible to facilitate more effectiv
 
 ## Requirements
 
-- Node.js 18.16.0
+- Node.js 22.14.0
 - Yarn 3.2.4
 
 > **Note**
@@ -155,7 +155,7 @@ Once this pull request is reviewed and merged, you'll get a commit like [this](h
 
 Then, go to [Releases](https://github.com/storyblok/field-plugin/releases) and draft a new release:
 
-- Create a tag with the format `<PACKAGE-NAME>@<VERSION>`; for example,  `@storyblok/field-plugin@0.0.1` and `@storyblok/field-plugin-cli@1.0.0-beta.2`
+- Create a tag with the format `<PACKAGE-NAME>@<VERSION>`; for example, `@storyblok/field-plugin@0.0.1` and `@storyblok/field-plugin-cli@1.0.0-beta.2`
 - Set the title to the same name.
 - Generate release notes, and ensure that the content is accurate; for example, check that there are no missing bullet points, and check that library changes should not be listed in CLI release notes.
 

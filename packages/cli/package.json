@@ -34,7 +34,7 @@
     "node-fetch": "^3.3.0",
     "ora": "6.3.1",
     "prompts": "^2.4.2",
-    "vite": "5.4.16",
+    "vite": "6.2.5",
     "walkdir": "^0.4.1"
   },
   "devDependencies": {

@@ -9,6 +9,6 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   }
 }
