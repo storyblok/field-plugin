@@ -5,10 +5,10 @@
   "type": "module",
   "dependencies": {
     "@storyblok/field-plugin": "workspace:*",
-    "prettier": "3.4.2",
+    "prettier": "3.5.3",
     "vue": "^3.3.4"
   },
   "devDependencies": {
-    "typescript": "5.7.2"
+    "typescript": "5.8.2"
   }
 }
