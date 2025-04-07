@@ -4,7 +4,7 @@ runs:
     - name: Setup node
       uses: actions/setup-node@v3
       with:
-        node-version: 18.16.0
+        node-version: 22.14.0
         cache: 'yarn'
     - run: git config --global user.email "you@example.com"
       shell: bash
