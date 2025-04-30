@@ -114,6 +114,7 @@ const FieldPluginIframe = forwardRef<
         flex: 1,
         border: 'none',
       }}
+      allow="clipboard-read; clipboard-write"
     />
   )
 })
