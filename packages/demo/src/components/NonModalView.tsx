@@ -8,6 +8,7 @@ import { UserContextRequester } from './UserContextRequester'
 import { PluginComponent } from './FieldPluginDemo'
 import { LanguageView } from './LanguageView'
 import { PromptAI } from './PromptAI'
+import { PreviewWidth } from './PreviewWidth'
 
 export const NonModalView: PluginComponent = (props) => (
   <Paper>
@@ -20,6 +21,7 @@ export const NonModalView: PluginComponent = (props) => (
       <HeightChangeDemo {...props} />
       <LanguageView {...props} />
       <PromptAI {...props} />
+      <PreviewWidth {...props} />
     </Stack>
   </Paper>
 )

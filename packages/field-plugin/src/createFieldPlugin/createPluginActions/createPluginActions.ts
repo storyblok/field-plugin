@@ -11,6 +11,7 @@ import {
   pluginLoadedMessage,
   getPluginPromptAIMessage,
   valueChangeMessage,
+  previewDimensionsChangeMessage,
   type OnAssetSelectMessage,
   type OnContextRequestMessage,
   type OnUserContextRequestMessage,
@@ -174,6 +175,18 @@ export const createPluginActions: CreatePluginActions = ({
             resolve(message.user),
           )
           postToContainer(getUserContextMessage({ uid, callbackId }))
+        })
+      },
+      setPreviewDimension: (previewWidth) => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('previewDimension', () => resolve())
+          postToContainer(
+            previewDimensionsChangeMessage({
+              uid,
+              callbackId,
+              data: previewWidth,
+            }),
+          )
         })
       },
     },

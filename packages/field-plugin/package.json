@@ -43,6 +43,9 @@
     "test": "vitest",
     "build": "unbuild"
   },
+  "dependencies": {
+    "pure-parse": "^1.0.1"
+  },
   "devDependencies": {
     "@types/core-js": "2.5.8",
     "@types/node": "18.19.85",

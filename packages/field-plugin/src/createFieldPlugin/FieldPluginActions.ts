@@ -20,6 +20,22 @@ export type PromptAI = (payload: PromptAIPayload) => Promise<PromptAIResponse>
 export type RequestUserContext = () => Promise<UserData>
 export type SelectAsset = () => Promise<Asset>
 export type Initialize<Content> = () => Promise<FieldPluginData<Content>>
+export type SetPreviewWidth = (
+  previewWidth:
+    | {
+        tag: 'desktop'
+      }
+    | {
+        tag: 'tablet'
+      }
+    | {
+        tag: 'mobile'
+      }
+    | {
+        tag: 'custom'
+        width: number
+      },
+) => Promise<void>
 
 export type FieldPluginActions<Content> = {
   setContent: SetContent<Content>
@@ -28,4 +44,5 @@ export type FieldPluginActions<Content> = {
   promptAI: PromptAI
   requestUserContext: RequestUserContext
   selectAsset: SelectAsset
+  setPreviewDimension: SetPreviewWidth
 }

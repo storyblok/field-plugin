@@ -6,6 +6,7 @@ import type {
   LoadedMessage,
   OnMessage,
   StateChangedMessage,
+  PreviewDimensionChangeMessage,
 } from '../../messaging'
 import { getRandomUid } from '../../utils'
 
@@ -18,6 +19,7 @@ type CallbackMap = {
   stateChanged: Record<CallbackId, OnMessage<StateChangedMessage>>
   loaded: Record<CallbackId, OnMessage<LoadedMessage>>
   promptAI: Record<CallbackId, OnMessage<PromptAIResponseMessage>>
+  previewDimension: Record<CallbackId, OnMessage<PreviewDimensionChangeMessage>>
 }
 type CallbackType = keyof CallbackMap
 
@@ -29,6 +31,7 @@ export const callbackQueue = () => {
     stateChanged: {},
     loaded: {},
     promptAI: {},
+    previewDimension: {},
   }
 
   const pushCallback = <T extends CallbackType>(
