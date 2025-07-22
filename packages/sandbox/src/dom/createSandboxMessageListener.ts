@@ -6,8 +6,9 @@ import {
   isMessageToContainer,
   isModalChangeMessage,
   isPluginLoadedMessage,
-  isPreviewWidthChangeMessage,
   isValueChangeMessage,
+  isPluginPromptAIMessage,
+  isPreviewDimensionChangeMessage,
   type ModalChangeMessage,
   type PluginLoadedMessage,
   type PluginPromptAIMessage,
@@ -17,7 +18,6 @@ import {
   type GetContextMessage,
   type GetUserContextMessage,
   type HeightChangeMessage,
-  isPluginPromptAIMessage,
 } from '@storyblok/field-plugin'
 
 type SandboxActions = {
@@ -73,7 +73,7 @@ export const createSandboxMessageListener: CreateSandboxListener = (
       eventHandlers.promptAI(message)
     } else if (isGetUserContextMessage(message)) {
       eventHandlers.requestUserContext(message)
-    } else if (isPreviewWidthChangeMessage(message)) {
+    } else if (isPreviewDimensionChangeMessage(message)) {
       eventHandlers.setPreviewDimension(message)
     } else {
       console.warn(
