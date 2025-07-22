@@ -30,7 +30,7 @@ export const PreviewDimension: PluginComponent = (props) => {
   const handleClickCustom = () => {
     actions.setPreviewDimension({
       tag: 'custom',
-      width: 1234,
+      width: width,
     })
   }
 
