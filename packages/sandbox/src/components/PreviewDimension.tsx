@@ -38,6 +38,11 @@ export const PreviewDimension: FunctionComponent<{
           control={<Radio />}
           label="Mobile"
         />
+        <FormControlLabel
+          value="custom"
+          control={<Radio />}
+          label="Custom"
+        />
       </RadioGroup>
     </FormControl>
   )
