@@ -5,6 +5,7 @@ import type {
   ModalSize,
   PromptAIPayload,
   PromptAIResponse,
+  Dimension,
 } from '../messaging'
 import type { FieldPluginData } from './FieldPluginData'
 
@@ -21,20 +22,7 @@ export type RequestUserContext = () => Promise<UserData>
 export type SelectAsset = () => Promise<Asset>
 export type Initialize<Content> = () => Promise<FieldPluginData<Content>>
 export type SetPreviewWidth = (
-  previewWidth:
-    | {
-        tag: 'desktop'
-      }
-    | {
-        tag: 'tablet'
-      }
-    | {
-        tag: 'mobile'
-      }
-    | {
-        tag: 'custom'
-        width: number
-      },
+  previewWidth: Dimension
 ) => Promise<void>
 
 export type FieldPluginActions<Content> = {

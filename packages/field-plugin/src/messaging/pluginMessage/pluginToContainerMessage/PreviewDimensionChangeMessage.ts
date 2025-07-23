@@ -8,22 +8,24 @@ import {
   optionalGuard,
 } from 'pure-parse'
 
+export type Dimension = 
+  | {
+      tag: 'desktop'
+    }
+  | {
+      tag: 'tablet'
+    }
+  | {
+      tag: 'mobile'
+    }
+  | {
+      tag: 'custom'
+      width: number
+    }
+
 export type PreviewDimensionChangeMessage =
   MessageToContainer<'previewDimension'> & {
-    data:
-      | {
-          tag: 'desktop'
-        }
-      | {
-          tag: 'tablet'
-        }
-      | {
-          tag: 'mobile'
-        }
-      | {
-          tag: 'custom'
-          width: number
-        }
+    data: Dimension
   }
 export const isPreviewDimensionChangeMessage =
   objectGuard<PreviewDimensionChangeMessage>({

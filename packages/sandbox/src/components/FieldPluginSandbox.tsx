@@ -545,7 +545,7 @@ export const FieldPluginSandbox: FunctionComponent = () => {
       </Accordion>
       <Accordion defaultExpanded>
         <AccordionSummary>
-          <Typography variant="h3">Data</Typography>
+          <Typography variant="h3">Editor Preview</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <PreviewDimension previewDimension={previewDimension} />
