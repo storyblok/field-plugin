@@ -8,7 +8,7 @@ import {
   optionalGuard,
 } from 'pure-parse'
 
-export type Dimension = 
+export type Dimension =
   | {
       tag: 'desktop'
     }

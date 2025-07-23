@@ -21,9 +21,7 @@ export type PromptAI = (payload: PromptAIPayload) => Promise<PromptAIResponse>
 export type RequestUserContext = () => Promise<UserData>
 export type SelectAsset = () => Promise<Asset>
 export type Initialize<Content> = () => Promise<FieldPluginData<Content>>
-export type SetPreviewWidth = (
-  previewWidth: Dimension
-) => Promise<void>
+export type SetPreviewWidth = (previewWidth: Dimension) => Promise<void>
 
 export type FieldPluginActions<Content> = {
   setContent: SetContent<Content>
