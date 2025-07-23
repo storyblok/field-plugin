@@ -13,6 +13,11 @@ export const PreviewDimension: FunctionComponent<{
 }> = (props) => {
   const { previewDimension } = props
 
+  let customLabel = 'Custom'
+  if (previewDimension.tag === 'custom') {
+    customLabel += ` (${previewDimension.width})`
+  }
+  
   return (
     <FormControl disabled>
       <FormLabel id="demo-radio-buttons-group-label">
@@ -41,7 +46,7 @@ export const PreviewDimension: FunctionComponent<{
         <FormControlLabel
           value="custom"
           control={<Radio />}
-          label="Custom"
+          label={customLabel}
         />
       </RadioGroup>
     </FormControl>
