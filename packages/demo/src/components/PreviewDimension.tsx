@@ -1,14 +1,9 @@
-import { Button, Input, Stack, Typography } from '@mui/material'
+import { Button, Input, Stack, Typography, InputLabel } from '@mui/material'
 import { PluginComponent } from './FieldPluginDemo'
 import { useState } from 'react'
 
 export const PreviewDimension: PluginComponent = (props) => {
   const { data, actions } = props
-
-  const label =
-    typeof data.content === 'undefined'
-      ? 'undefined'
-      : JSON.stringify(data.content)
 
   const [width, setWidth] = useState(300)
 
@@ -36,8 +31,7 @@ export const PreviewDimension: PluginComponent = (props) => {
 
   return (
     <Stack gap={2}>
-      <Typography variant="subtitle1">Field Value</Typography>
-      <Typography textAlign="center">{label}</Typography>
+      <Typography variant="subtitle1">Dimension</Typography>
       <Button
         variant="outlined"
         color="secondary"
@@ -59,19 +53,30 @@ export const PreviewDimension: PluginComponent = (props) => {
       >
         Desktop
       </Button>
-      <Button
-        variant="outlined"
-        color="secondary"
-        onClick={handleClickCustom}
+      <InputLabel
+        htmlFor="field-plugin-custom-width"
+        shrink
       >
-        Custom
-      </Button>
-      <Input
-        type="number"
-        value={width}
-        onChange={(e) => setWidth(Number(e.target.value))}
-        placeholder="Custom Width"
-      />
+        Set custom width:
+      </InputLabel>
+      <Stack direction="row" spacing={2} >
+        <Input
+          id="field-plugin-custom-width"
+          fullWidth
+          type="number"
+          value={width}
+          onChange={(e) => setWidth(Number(e.target.value))}
+          placeholder="Custom Width"
+        />
+        <Button
+          fullWidth
+          variant="outlined"
+          color="secondary"
+          onClick={handleClickCustom}
+        >
+          Custom
+        </Button>
+      </Stack>
     </Stack>
   )
 }
