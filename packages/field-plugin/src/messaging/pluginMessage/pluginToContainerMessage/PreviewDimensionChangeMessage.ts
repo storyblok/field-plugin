@@ -1,12 +1,5 @@
+import { is, object, string, literal, optional, number, variant } from 'valibot'
 import { MessageToContainer } from './MessageToContainer'
-import {
-  equalsGuard,
-  isNumber,
-  isString,
-  objectGuard,
-  oneOfGuard,
-  optionalGuard,
-} from 'pure-parse'
 
 export type Dimension =
   | {
@@ -27,28 +20,34 @@ export type PreviewDimensionChangeMessage =
   MessageToContainer<'previewDimension'> & {
     data: Dimension
   }
-export const isPreviewDimensionChangeMessage =
-  objectGuard<PreviewDimensionChangeMessage>({
-    action: equalsGuard('plugin-changed'),
-    uid: isString,
-    callbackId: optionalGuard(isString),
-    event: equalsGuard('previewDimension'),
-    data: oneOfGuard(
-      objectGuard({
-        tag: equalsGuard('desktop'),
-      }),
-      objectGuard({
-        tag: equalsGuard('tablet'),
-      }),
-      objectGuard({
-        tag: equalsGuard('mobile'),
-      }),
-      objectGuard({
-        tag: equalsGuard('custom'),
-        width: isNumber,
-      }),
-    ),
-  })
+
+export const isPreviewDimensionChangeMessage = (
+  data: unknown,
+): data is PreviewDimensionChangeMessage =>
+  is(
+    object({
+      action: literal('plugin-changed'),
+      uid: string(),
+      callbackId: optional(string()),
+      event: literal('previewDimension'),
+      data: variant('tag', [
+        object({
+          tag: literal('desktop'),
+        }),
+        object({
+          tag: literal('tablet'),
+        }),
+        object({
+          tag: literal('mobile'),
+        }),
+        object({
+          tag: literal('custom'),
+          width: number(),
+        }),
+      ]),
+    }),
+    data,
+  )
 
 export const previewDimensionsChangeMessage = (
   options: Pick<PreviewDimensionChangeMessage, 'uid' | 'callbackId' | 'data'>,

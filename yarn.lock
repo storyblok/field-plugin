@@ -2160,9 +2160,9 @@ __metadata:
     core-js: 3.41.0
     execa: 8.0.1
     jsdom: 25.0.0
-    pure-parse: ^1.0.1
     typescript: 5.8.2
     unbuild: 2.0.0
+    valibot: 1.1.0
     vite: 5.4.16
     vite-plugin-dts: 4.2.1
     vitest: 2.1.9
@@ -8988,13 +8988,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pure-parse@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "pure-parse@npm:1.0.1"
-  checksum: 907d71f16d7d13dbe482aaf42c6bc0b7cc372ac1627e09d81c06b3ac8c6dba53909953f6f23e34b4704e7d6f2acaaf1bb9a70f2881d4f0ca19a7bb4baf5406ff
-  languageName: node
-  linkType: hard
-
 "querystringify@npm:^2.1.1":
   version: 2.2.0
   resolution: "querystringify@npm:2.2.0"
@@ -10837,6 +10830,18 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
+  languageName: node
+  linkType: hard
+
+"valibot@npm:1.1.0":
+  version: 1.1.0
+  resolution: "valibot@npm:1.1.0"
+  peerDependencies:
+    typescript: ">=5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: c1b95d4f783cd62713a1c32a7fd25eb42b588037135dbc2cf2b4788acc720306374f831576d29e91da42f716a497503842c457a3332a04dab92c00cb2fa3227a
   languageName: node
   linkType: hard
 
