@@ -20,10 +20,12 @@ import {
   type OnUnknownPluginMessage,
   type OnPromptAIMessage,
   type PromptAIPayload,
+  OnPreviewDimensionMessage,
 } from '../../messaging'
 import { FieldPluginActions, Initialize } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
 import { callbackQueue } from './callbackQueue'
+import { PreviewDimensionResponse } from '../../messaging/pluginMessage/containerToPluginMessage/PreviewDimensionResponseMessage'
 
 export type ValidateContent<Content> = (content: unknown) => {
   content: Content
@@ -82,6 +84,10 @@ export const createPluginActions: CreatePluginActions = ({
     popCallback('promptAI', data.callbackId)?.(data)
   }
 
+  const onPreviewDimension: OnPreviewDimensionMessage = (data) => {
+    popCallback('previewDimension', data.callbackId)
+  }
+
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
@@ -101,6 +107,7 @@ export const createPluginActions: CreatePluginActions = ({
     onUserContextRequest,
     onAssetSelect,
     onPromptAI,
+    onPreviewDimension,
     onUnknownMessage,
   }
 

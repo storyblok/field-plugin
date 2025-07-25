@@ -6,8 +6,8 @@ import type {
   LoadedMessage,
   OnMessage,
   StateChangedMessage,
-  PreviewDimensionChangeMessage,
 } from '../../messaging'
+import { PreviewDimensionResponse } from '../../messaging/pluginMessage/containerToPluginMessage/PreviewDimensionResponseMessage'
 import { getRandomUid } from '../../utils'
 
 export type CallbackId = string
@@ -19,7 +19,7 @@ type CallbackMap = {
   stateChanged: Record<CallbackId, OnMessage<StateChangedMessage>>
   loaded: Record<CallbackId, OnMessage<LoadedMessage>>
   promptAI: Record<CallbackId, OnMessage<PromptAIResponseMessage>>
-  previewDimension: Record<CallbackId, OnMessage<PreviewDimensionChangeMessage>>
+  previewDimension: Record<CallbackId, OnMessage<PreviewDimensionResponse>>
 }
 type CallbackType = keyof CallbackMap
 

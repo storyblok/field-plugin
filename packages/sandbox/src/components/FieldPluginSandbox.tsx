@@ -331,6 +331,14 @@ const useSandbox = (
   const onSetPreviewDimension = useCallback(
     (message: PreviewDimensionChangeMessage) => {
       setPreviewDimension(message.data)
+
+      //This would make the field plugin to clean its queue
+      //It would also be needed to be changed in the Storyfront side.
+      postToPlugin({
+        uid,
+        action: 'preview-dimension',
+        callbackId: message.callbackId,
+      })
     },
     [],
   )
