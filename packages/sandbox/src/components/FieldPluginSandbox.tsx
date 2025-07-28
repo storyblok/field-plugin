@@ -331,6 +331,12 @@ const useSandbox = (
   const onSetPreviewDimension = useCallback(
     (message: PreviewDimensionChangeMessage) => {
       setPreviewDimension(message.data)
+
+      postToPlugin({
+        uid,
+        action: 'preview-dimension',
+        callbackId: message.callbackId,
+      })
     },
     [],
   )

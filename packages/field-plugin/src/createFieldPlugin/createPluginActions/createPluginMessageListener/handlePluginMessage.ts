@@ -8,6 +8,7 @@ import {
 } from '../../../messaging'
 import { PluginMessageCallbacks } from './createPluginMessageListener'
 import { isStateMessage } from '../../../messaging/pluginMessage/containerToPluginMessage/StateChangedMessage'
+import { isPreviewDimensionResponse } from '../../../messaging/pluginMessage/containerToPluginMessage//PreviewDimensionResponseMessage'
 
 export const handlePluginMessage = (
   data: unknown,
@@ -38,6 +39,8 @@ export const handlePluginMessage = (
     callbacks.onAssetSelect(data)
   } else if (isPromptAIMessage(data)) {
     callbacks.onPromptAI(data)
+  } else if (isPreviewDimensionResponse(data)) {
+    callbacks.onPreviewDimension(data)
   } else {
     callbacks.onUnknownMessage(data)
   }

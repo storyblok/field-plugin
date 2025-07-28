@@ -6,7 +6,7 @@ import type {
   LoadedMessage,
   OnMessage,
   StateChangedMessage,
-  PreviewDimensionChangeMessage,
+  PreviewDimensionResponseMessage,
 } from '../../messaging'
 import { getRandomUid } from '../../utils'
 
@@ -19,7 +19,10 @@ type CallbackMap = {
   stateChanged: Record<CallbackId, OnMessage<StateChangedMessage>>
   loaded: Record<CallbackId, OnMessage<LoadedMessage>>
   promptAI: Record<CallbackId, OnMessage<PromptAIResponseMessage>>
-  previewDimension: Record<CallbackId, OnMessage<PreviewDimensionChangeMessage>>
+  previewDimension: Record<
+    CallbackId,
+    OnMessage<PreviewDimensionResponseMessage>
+  >
 }
 type CallbackType = keyof CallbackMap
 
