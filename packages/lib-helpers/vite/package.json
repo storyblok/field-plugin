@@ -9,6 +9,6 @@
   },
   "devDependencies": {
     "@storyblok/manifest-helper": "workspace:*",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   }
 }
