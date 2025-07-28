@@ -12,7 +12,7 @@
     "deploy": "npm run build && npx @storyblok/field-plugin-cli@latest deploy"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "1.6.0",
+    "@storyblok/field-plugin": "1.7.0",
     "vue": "^2.7.14"
   },
   "devDependencies": {
