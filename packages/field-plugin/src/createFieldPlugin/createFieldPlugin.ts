@@ -55,6 +55,9 @@ export const createFieldPlugin: CreateFieldPlugin = ({
   const { uid, host } = params
 
   // ToDo: In development we need to load localhost:3300
+  // const origin = 'http://localhost:7070'
+  // const origin = 'http://localhost:3300'
+
   const origin =
     typeof targetOrigin === 'string'
       ? targetOrigin

@@ -7,20 +7,23 @@ import {
   isModalChangeMessage,
   isPluginLoadedMessage,
   isValueChangeMessage,
+  isPluginPromptAIMessage,
+  isPreviewDimensionChangeMessage,
   type ModalChangeMessage,
   type PluginLoadedMessage,
   type PluginPromptAIMessage,
+  type PreviewDimensionChangeMessage,
   type ValueChangeMessage,
   type AssetModalChangeMessage,
   type GetContextMessage,
   type GetUserContextMessage,
   type HeightChangeMessage,
-  isPluginPromptAIMessage,
 } from '@storyblok/field-plugin'
 
 type SandboxActions = {
   setHeight: (message: HeightChangeMessage) => void
   setContent: (message: ValueChangeMessage) => void
+  setPreviewDimension: (message: PreviewDimensionChangeMessage) => void
   setModalOpen: (message: ModalChangeMessage) => void
   setPluginReady: (message: PluginLoadedMessage) => void
   requestContext: (message: GetContextMessage) => void
@@ -70,6 +73,8 @@ export const createSandboxMessageListener: CreateSandboxListener = (
       eventHandlers.promptAI(message)
     } else if (isGetUserContextMessage(message)) {
       eventHandlers.requestUserContext(message)
+    } else if (isPreviewDimensionChangeMessage(message)) {
+      eventHandlers.setPreviewDimension(message)
     } else {
       console.warn(
         `The Sandbox received unknown message from plugin: ${JSON.stringify(

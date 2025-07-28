@@ -26,6 +26,7 @@ import {
   UserData,
   urlSearchParamsFromPluginUrlParams,
   ValueChangeMessage,
+  PreviewDimensionChangeMessage,
 } from '@storyblok/field-plugin'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -56,6 +57,7 @@ import { UrlView } from './UrlView'
 import { usePluginParams } from './usePluginParams'
 import { LanguageView } from './LanguageView'
 import { TranslatableCheckbox } from './TranslatableCheckbox'
+import { PreviewDimension } from './PreviewDimension'
 
 const defaultUrl = 'http://localhost:8080'
 const initialStory: StoryData = {
@@ -130,6 +132,11 @@ const useSandbox = (
     translatable: false,
   })
   const [content, setContent] = useState<unknown>(initialContent)
+  const [previewDimension, setPreviewDimension] = useState<
+    PreviewDimensionChangeMessage['data']
+  >({
+    tag: 'desktop',
+  })
   const [language, setLanguage] = useState<string>('default')
   const [stateChangedCallbackId, setStateChangedCallbackId] = useState<string>()
 
@@ -321,6 +328,19 @@ const useSandbox = (
     [onError],
   )
 
+  const onSetPreviewDimension = useCallback(
+    (message: PreviewDimensionChangeMessage) => {
+      setPreviewDimension(message.data)
+
+      postToPlugin({
+        uid,
+        action: 'preview-dimension',
+        callbackId: message.callbackId,
+      })
+    },
+    [],
+  )
+
   useEffect(
     () =>
       createSandboxMessageListener(
@@ -333,6 +353,7 @@ const useSandbox = (
           requestUserContext: onUserContextRequested,
           selectAsset: onAssetSelected,
           promptAI: onPromptAI,
+          setPreviewDimension: onSetPreviewDimension,
         },
         {
           iframeOrigin: fieldPluginURL?.origin,
@@ -380,6 +401,7 @@ const useSandbox = (
       url,
       fieldTypeIframe,
       iframeSrc,
+      previewDimension,
     },
     {
       setContent,
@@ -407,6 +429,7 @@ export const FieldPluginSandbox: FunctionComponent = () => {
       url,
       fieldTypeIframe,
       iframeSrc,
+      previewDimension,
     },
     { setModalOpen, setContent, setLanguage, setSchema, setUrl, randomizeUid },
   ] = useSandbox(error)
@@ -524,6 +547,14 @@ export const FieldPluginSandbox: FunctionComponent = () => {
               } satisfies Partial<FieldPluginData<unknown>>
             }
           />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary>
+          <Typography variant="h3">Editor Preview</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <PreviewDimension previewDimension={previewDimension} />
         </AccordionDetails>
       </Accordion>
     </Container>

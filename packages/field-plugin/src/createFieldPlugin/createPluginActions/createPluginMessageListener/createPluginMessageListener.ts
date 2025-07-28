@@ -6,6 +6,7 @@ import type {
   OnPromptAIMessage,
   OnStateChangeMessage,
   OnUnknownPluginMessage,
+  OnPreviewDimensionMessage,
 } from '../../../messaging'
 import { handlePluginMessage } from './handlePluginMessage'
 
@@ -16,6 +17,7 @@ export type PluginMessageCallbacks = {
   onUserContextRequest: OnUserContextRequestMessage
   onAssetSelect: OnAssetSelectMessage
   onPromptAI: OnPromptAIMessage
+  onPreviewDimension: OnPreviewDimensionMessage
   onUnknownMessage: OnUnknownPluginMessage
 }
 

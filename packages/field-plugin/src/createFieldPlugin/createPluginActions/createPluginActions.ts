@@ -11,6 +11,7 @@ import {
   pluginLoadedMessage,
   getPluginPromptAIMessage,
   valueChangeMessage,
+  previewDimensionsChangeMessage,
   type OnAssetSelectMessage,
   type OnContextRequestMessage,
   type OnUserContextRequestMessage,
@@ -19,6 +20,7 @@ import {
   type OnUnknownPluginMessage,
   type OnPromptAIMessage,
   type PromptAIPayload,
+  type OnPreviewDimensionMessage,
 } from '../../messaging'
 import { FieldPluginActions, Initialize } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
@@ -81,6 +83,10 @@ export const createPluginActions: CreatePluginActions = ({
     popCallback('promptAI', data.callbackId)?.(data)
   }
 
+  const onPreviewDimension: OnPreviewDimensionMessage = (data) => {
+    popCallback('previewDimension', data.callbackId)
+  }
+
   const onUnknownMessage: OnUnknownPluginMessage = (data) => {
     // TODO remove side-effect, making functions in this file pure.
     //  perhaps only show this message in development mode?
@@ -100,6 +106,7 @@ export const createPluginActions: CreatePluginActions = ({
     onUserContextRequest,
     onAssetSelect,
     onPromptAI,
+    onPreviewDimension,
     onUnknownMessage,
   }
 
@@ -174,6 +181,18 @@ export const createPluginActions: CreatePluginActions = ({
             resolve(message.user),
           )
           postToContainer(getUserContextMessage({ uid, callbackId }))
+        })
+      },
+      setPreviewDimension: (previewWidth) => {
+        return new Promise((resolve) => {
+          const callbackId = pushCallback('previewDimension', () => resolve())
+          postToContainer(
+            previewDimensionsChangeMessage({
+              uid,
+              callbackId,
+              data: previewWidth,
+            }),
+          )
         })
       },
     },

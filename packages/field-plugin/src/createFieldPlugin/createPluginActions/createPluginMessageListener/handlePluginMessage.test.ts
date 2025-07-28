@@ -18,6 +18,7 @@ const mockCallbacks = (): PluginMessageCallbacks => ({
   onAssetSelect: vi.fn(),
   onUnknownMessage: vi.fn(),
   onLoaded: vi.fn(),
+  onPreviewDimension: vi.fn(),
   onPromptAI: vi.fn(),
 })
 
