@@ -2151,14 +2151,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@storyblok/field-plugin@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@storyblok/field-plugin@npm:1.6.0"
-  checksum: f257b2487638022e2dc0fdb11631237707bfab637759fd128828963e62f8ed27d1981126c4d8f2fb781b0bb6a477ea45c3032734914344eaaeb94803cceb9ade
-  languageName: node
-  linkType: hard
-
-"@storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
+"@storyblok/field-plugin@1.7.0, @storyblok/field-plugin@workspace:*, @storyblok/field-plugin@workspace:packages/field-plugin":
   version: 0.0.0-use.local
   resolution: "@storyblok/field-plugin@workspace:packages/field-plugin"
   dependencies:
@@ -5702,7 +5695,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-js-template@workspace:packages/cli/templates/js"
   dependencies:
-    "@storyblok/field-plugin": 1.6.0
+    "@storyblok/field-plugin": 1.7.0
     vite: 5.4.16
     vite-plugin-css-injected-by-js: 2.4.0
   languageName: unknown
@@ -5728,7 +5721,7 @@ __metadata:
   resolution: "field-plugin-react-template@workspace:packages/cli/templates/react"
   dependencies:
     "@eslint/js": ^9.23.0
-    "@storyblok/field-plugin": 1.6.0
+    "@storyblok/field-plugin": 1.7.0
     "@testing-library/jest-dom": 6.6.3
     "@testing-library/react": 14.3.1
     "@testing-library/user-event": 14.6.1
@@ -5757,7 +5750,7 @@ __metadata:
   dependencies:
     "@rollup/plugin-node-resolve": 15.3.1
     "@rollup/plugin-replace": 5.0.7
-    "@storyblok/field-plugin": 1.6.0
+    "@storyblok/field-plugin": 1.7.0
     "@vitejs/plugin-vue2": 2.3.3
     rollup: 3.29.5
     typescript: 5.8.2
@@ -5771,7 +5764,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "field-plugin-vue3-template@workspace:packages/cli/templates/vue3"
   dependencies:
-    "@storyblok/field-plugin": 1.6.0
+    "@storyblok/field-plugin": 1.7.0
     "@testing-library/jest-dom": 6.6.3
     "@testing-library/user-event": 14.6.1
     "@testing-library/vue": 8.1.0
