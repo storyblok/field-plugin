@@ -5,7 +5,7 @@ import { UserContextRequestMessage } from './UserContextRequestMessage'
 import { MessageToPlugin } from './MessageToPlugin'
 import { StateChangedMessage } from './StateChangedMessage'
 import { PromptAIResponseMessage } from './PromptAIResponseMessage'
-import { PreviewDimensionResponse } from './PreviewDimensionResponseMessage'
+import { PreviewDimensionResponseMessage } from './PreviewDimensionResponseMessage'
 
 /**
  * The plugin container's sends it's state to the plugin
@@ -16,7 +16,7 @@ export type OnLoadedMessage = (message: LoadedMessage) => void
 export type OnAssetSelectMessage = (message: AssetSelectedMessage) => void
 export type OnPromptAIMessage = (message: PromptAIResponseMessage) => void
 export type OnPreviewDimensionMessage = (
-  message: PreviewDimensionResponse,
+  message: PreviewDimensionResponseMessage,
 ) => void
 export type OnContextRequestMessage = (message: ContextRequestMessage) => void
 export type OnUserContextRequestMessage = (

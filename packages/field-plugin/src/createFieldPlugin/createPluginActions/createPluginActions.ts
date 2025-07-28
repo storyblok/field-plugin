@@ -20,12 +20,11 @@ import {
   type OnUnknownPluginMessage,
   type OnPromptAIMessage,
   type PromptAIPayload,
-  OnPreviewDimensionMessage,
+  type OnPreviewDimensionMessage,
 } from '../../messaging'
 import { FieldPluginActions, Initialize } from '../FieldPluginActions'
 import { pluginStateFromStateChangeMessage } from './partialPluginStateFromStateChangeMessage'
 import { callbackQueue } from './callbackQueue'
-import { PreviewDimensionResponse } from '../../messaging/pluginMessage/containerToPluginMessage/PreviewDimensionResponseMessage'
 
 export type ValidateContent<Content> = (content: unknown) => {
   content: Content
