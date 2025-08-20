@@ -55,7 +55,7 @@ We strive to keep pull requests as small as possible to facilitate more effectiv
 
 ## Requirements
 
-- Node.js 18.16.0
+- Node.js 22.18.0
 - Yarn 3.2.4
 
 > **Note**
