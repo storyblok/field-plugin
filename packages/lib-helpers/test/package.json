@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "devDependencies": {
-    "typescript": "5.8.2"
+    "typescript": "5.9.3"
   },
   "dependencies": {
     "@storyblok/field-plugin": "workspace:*",

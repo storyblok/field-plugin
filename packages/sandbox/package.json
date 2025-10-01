@@ -10,15 +10,15 @@
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
-    "@emotion/styled": "11.14.0",
+    "@emotion/styled": "11.14.1",
     "@fontsource/roboto": "4.5.8",
-    "@mui/material": "5.17.1",
+    "@mui/material": "5.18.0",
     "@storyblok/field-plugin": "workspace:*",
     "@storyblok/mui": "0.3.1",
     "highlight.js": "11.11.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router-dom": "^6.30.0",
+    "react-router-dom": "^6.30.1",
     "use-debounce": "^9.0.3",
     "use-query-params": "^2.2.1",
     "usehooks-ts": "2.16.0"
@@ -26,8 +26,8 @@
   "devDependencies": {
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^3.0.0",
-    "sass": "^1.86.1",
-    "typescript": "5.8.2",
-    "vite": "5.4.16"
+    "sass": "^1.93.2",
+    "typescript": "5.9.3",
+    "vite": "5.4.20"
   }
 }

@@ -13,7 +13,7 @@
     "@storyblok/field-plugin": "1.7.0"
   },
   "devDependencies": {
-    "vite": "5.4.16",
+    "vite": "5.4.20",
     "vite-plugin-css-injected-by-js": "2.4.0"
   }
 }
