@@ -9,7 +9,5 @@ export const disableDefaultStoryblokStyles = (): (() => void) => {
 
   link?.setAttribute('disabled', '')
 
-  return () => {
-    link?.removeAttribute('disabled')
-  }
+  return () => {}
 }
