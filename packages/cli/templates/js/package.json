@@ -10,7 +10,7 @@
     "deploy": "npm run build && npx @storyblok/field-plugin-cli@latest deploy"
   },
   "dependencies": {
-    "@storyblok/field-plugin": "1.7.0"
+    "@storyblok/field-plugin": "1.7.1"
   },
   "devDependencies": {
     "vite": "5.4.16",
