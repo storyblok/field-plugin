@@ -18,10 +18,10 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "15.3.1",
     "@rollup/plugin-replace": "5.0.7",
-    "@vitejs/plugin-vue2": "2.3.3",
+    "@vitejs/plugin-vue2": "2.3.4",
     "rollup": "3.29.5",
-    "typescript": "5.8.2",
-    "vite": "5.4.16",
+    "typescript": "5.9.3",
+    "vite": "5.4.21",
     "vite-plugin-css-injected-by-js": "2.4.0"
   }
 }
