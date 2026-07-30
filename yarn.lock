@@ -2162,7 +2162,7 @@ __metadata:
     jsdom: 25.0.0
     typescript: 5.8.2
     unbuild: 2.0.0
-    valibot: 1.1.0
+    valibot: 1.4.2
     vite: 5.4.16
     vite-plugin-dts: 4.2.1
     vitest: 2.1.9
@@ -10840,15 +10840,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"valibot@npm:1.1.0":
-  version: 1.1.0
-  resolution: "valibot@npm:1.1.0"
+"valibot@npm:1.4.2":
+  version: 1.4.2
+  resolution: "valibot@npm:1.4.2"
   peerDependencies:
     typescript: ">=5"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: c1b95d4f783cd62713a1c32a7fd25eb42b588037135dbc2cf2b4788acc720306374f831576d29e91da42f716a497503842c457a3332a04dab92c00cb2fa3227a
+  checksum: 750da285fecf66d2ce4299e2b44b4b4321b2f13d69498c24de660777fcabb5c8819a496a21245fa7fd49bb6091f2cebc2436f42b514a579b7ea6869e12e78862
   languageName: node
   linkType: hard
 
