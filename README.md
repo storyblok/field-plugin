@@ -1,3 +1,11 @@
+> [!IMPORTANT]
+> **This repository is archived and no longer maintained.**
+>
+> Storyblok plugin development has moved to **[pluginsblok](https://github.com/storyblok/pluginsblok)**, the Storyblok Plugins OSS monorepo. Templates, examples, issues and contributions all live there now.
+>
+> - **New location:** https://github.com/storyblok/pluginsblok
+> - **Plugin documentation:** https://www.storyblok.com/docs/plugins
+
 # `@storyblok/field-plugin`
 
 Build custom fields for Storyblok with the `@storyblok/field-plugin` library and enhance the editing experience.
